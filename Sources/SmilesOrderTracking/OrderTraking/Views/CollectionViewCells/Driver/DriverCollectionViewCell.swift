@@ -48,20 +48,34 @@ final class DriverCollectionViewCell: UICollectionViewCell {
     func updateCell(with viewModel: ViewModel) {
         delegate = viewModel.delegate
         
-        iconImageView.image = UIImage(resource: viewModel.iconImageResource ?? .driverIcon)
         titleLabel.text = viewModel.titleText
         descriptionLabel.text = viewModel.descriptionText
-        actionButton.setImage(UIImage(resource: viewModel.actionButtonImageResource ?? .callIcon), for: .normal)
+        configCell(with: viewModel.cellType)
+    }
+    
+    private func configCell(with type: CellType) {
+        switch type {
+        case .delivery:
+            iconImageView.image = UIImage(resource: .driverIcon)
+            actionButton.setImage(UIImage(resource: .callIcon), for: .normal)
+        case .pickup:
+            iconImageView.image = UIImage(resource: .pickupIcon)
+            actionButton.setImage(UIImage(resource: .navigateToMapsIcon), for: .normal)
+        }
     }
 }
 
 // MARK: - ViewModel
 extension DriverCollectionViewCell {
+    enum CellType {
+        case delivery
+        case pickup
+    }
+    
     struct ViewModel {
         var titleText: String?
         var descriptionText: String?
-        var iconImageResource: ImageResource?
-        var actionButtonImageResource: ImageResource?
+        var cellType: CellType = .delivery
         var delegate: DriverCellActionDelegate?
     }
 }

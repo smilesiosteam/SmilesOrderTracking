@@ -41,17 +41,18 @@
                                         </connections>
                                     </button>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jcB-O5-pr0">
-                                        <rect key="frame" x="48" y="0.0" width="356" height="40"/>
+                                        <rect key="frame" x="48" y="0.0" width="342" height="40"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="40" id="cNJ-zl-8va"/>
                                         </constraints>
                                     </view>
                                     <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Uq9-8b-OVo">
-                                        <rect key="frame" x="412" y="0.0" width="76" height="40"/>
+                                        <rect key="frame" x="398" y="0.0" width="90" height="40"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="40" id="YLF-Aq-SXM"/>
+                                            <constraint firstAttribute="width" constant="90" id="bpd-E7-eaQ"/>
                                         </constraints>
                                         <inset key="contentEdgeInsets" minX="10" minY="0.0" maxX="10" maxY="0.0"/>
                                         <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
@@ -85,6 +86,7 @@
             <connections>
                 <outlet property="containerView" destination="FDi-AV-lGx" id="7c2-lj-7H8"/>
                 <outlet property="dismissButton" destination="eSs-To-dW2" id="fMN-nD-ipR"/>
+                <outlet property="headerStack" destination="CwR-c0-MEE" id="7kP-bz-QGI"/>
                 <outlet property="supportButton" destination="Uq9-8b-OVo" id="Iue-31-B9u"/>
             </connections>
             <point key="canvasLocation" x="129.7709923664122" y="94.366197183098592"/>

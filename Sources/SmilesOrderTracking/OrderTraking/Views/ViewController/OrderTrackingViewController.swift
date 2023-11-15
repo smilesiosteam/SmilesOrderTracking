@@ -31,6 +31,7 @@ public final class OrderTrackingViewController: UIViewController {
         
         collectionView.collectionViewLayout = MountainLayout.createLayout()
         collectionView.dataSource = self
+        collectionView.reloadData()
         
        
 
@@ -48,6 +49,7 @@ extension OrderTrackingViewController: UICollectionViewDataSource {
         
         if indexPath.row % 2 == 0 {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: LocationCollectionViewCell.identifier, for: indexPath) as! LocationCollectionViewCell
+
             return cell
         } else {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: DriverCollectionViewCell.identifier, for: indexPath) as! DriverCollectionViewCell

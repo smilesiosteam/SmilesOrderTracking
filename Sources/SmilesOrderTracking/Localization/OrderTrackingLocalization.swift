@@ -9,11 +9,20 @@ import Foundation
 
 enum OrderTrackingLocalization {
     case support
+    case callRestaurant
+    case orderDetails
+    case cancelOrder
     
     var text: String {
         switch self {
         case .support:
-            "Support"
+           return "Support"
+        case .callRestaurant:
+            return "Call restaurant"
+        case .orderDetails:
+            return "Order details"
+        case .cancelOrder:
+            return "Cancel order"
         }
     }
 }

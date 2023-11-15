@@ -53,7 +53,7 @@ final class DriverCollectionViewCell: UICollectionViewCell {
         configCell(with: viewModel.cellType)
     }
     
-    private func configCell(with type: CellType) {
+    private func configCell(with type: OrderTrackingCellType) {
         switch type {
         case .delivery:
             iconImageView.image = UIImage(resource: .driverIcon)
@@ -67,15 +67,10 @@ final class DriverCollectionViewCell: UICollectionViewCell {
 
 // MARK: - ViewModel
 extension DriverCollectionViewCell {
-    enum CellType {
-        case delivery
-        case pickup
-    }
-    
     struct ViewModel {
         var titleText: String?
         var descriptionText: String?
-        var cellType: CellType = .delivery
+        var cellType: OrderTrackingCellType = .delivery
         var delegate: DriverCellActionDelegate?
     }
 }

@@ -10,8 +10,8 @@ import SmilesFontsManager
 import SmilesUtilities
 
 protocol RatingCellActionDelegate: AnyObject {
-    func rateOrderDidTap()
-    func rateDeliveryDidTap()
+    func rateOrderDidTap(rating: Int)
+    func rateDeliveryDidTap(rating: Int)
 }
 
 final class RatingCollectionViewCell: UICollectionViewCell {
@@ -55,11 +55,27 @@ final class RatingCollectionViewCell: UICollectionViewCell {
     
     // MARK: - Actions
     @IBAction private func rateOrderButtonTapped(_ sender: UIButton) {
-        delegate?.rateOrderDidTap()
+        rateOrderButtonCollection.forEach { button in
+            if button.tag <= sender.tag {
+                button.setImage(UIImage(resource: .ratingStarFilledIcon), for: .normal)
+            } else {
+                button.setImage(UIImage(resource: .ratingStarUnfilledIcon), for: .normal)
+            }
+        }
+        
+        delegate?.rateOrderDidTap(rating: sender.tag)
     }
     
     @IBAction private func rateDeliveryButtonTapped(_ sender: UIButton) {
-        delegate?.rateDeliveryDidTap()
+        rateDeliveryButtonCollection.forEach { button in
+            if button.tag <= sender.tag {
+                button.setImage(UIImage(resource: .ratingStarFilledIcon), for: .normal)
+            } else {
+                button.setImage(UIImage(resource: .ratingStarUnfilledIcon), for: .normal)
+            }
+        }
+        
+        delegate?.rateDeliveryDidTap(rating: sender.tag)
     }
     
     // MARK: - Methods

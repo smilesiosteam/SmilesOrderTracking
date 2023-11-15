@@ -17,11 +17,10 @@ final class LocationCollectionViewCell: UICollectionViewCell {
     @IBOutlet private weak var startImage: UIImageView!
     
     static let identifier =  String(describing: LocationCollectionViewCell.self)
+   
+    // MARK: - Life Cycle
     override func awakeFromNib() {
         super.awakeFromNib()
-        containerView.layer.cornerRadius = 12
-        containerView.layer.borderWidth = 1
-        containerView.layer.borderColor = UIColor.black.withAlphaComponent(0.1).cgColor
         configControllers()
     }
     
@@ -33,12 +32,11 @@ final class LocationCollectionViewCell: UICollectionViewCell {
     }
     
     private func configControllers() {
-    
-      
         endImage.image =  UIImage(resource: .endAddress)
-        
         startImage.image =  UIImage(resource: .startAddress)
-        
+        containerView.layer.cornerRadius = 12
+        containerView.layer.borderWidth = 1
+        containerView.layer.borderColor = UIColor.black.withAlphaComponent(0.1).cgColor
     }
 }
 

@@ -18,6 +18,12 @@ public final class OrderTrackingViewController: UIViewController {
         collectionView.register(
             UINib(nibName: LocationCollectionViewCell.identifier, bundle: .module),
             forCellWithReuseIdentifier: LocationCollectionViewCell.identifier)
+        
+        collectionView.register(
+            UINib(nibName: DriverCollectionViewCell.identifier, bundle: .module),
+            forCellWithReuseIdentifier: DriverCollectionViewCell.identifier)
+        
+        
         collectionView.collectionViewLayout = MountainLayout.createLayout()
         collectionView.dataSource = self
 
@@ -31,9 +37,15 @@ extension OrderTrackingViewController: UICollectionViewDataSource {
     }
     
     public func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: LocationCollectionViewCell.identifier, for: indexPath) as! LocationCollectionViewCell
-//        cell.updateCell(with: .init())
-        return cell
+        
+        if indexPath.row % 2 == 0 {
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: LocationCollectionViewCell.identifier, for: indexPath) as! LocationCollectionViewCell
+            return cell
+        } else {
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: DriverCollectionViewCell.identifier, for: indexPath) as! DriverCollectionViewCell
+            return cell
+        }
+        
     }
     
     

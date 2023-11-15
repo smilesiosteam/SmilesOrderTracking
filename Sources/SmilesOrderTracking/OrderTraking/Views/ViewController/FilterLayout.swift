@@ -74,6 +74,7 @@ final class MountainLayout {
         
         // Section
         let section = NSCollectionLayoutSection(group: group)
+        section.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 16, bottom: 0, trailing: 16)
         section.interGroupSpacing = 13
         return section
     }

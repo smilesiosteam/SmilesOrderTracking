@@ -8,12 +8,12 @@
 import Foundation
 
 enum OrderTrackingLocalization {
-    case title
+    case support
     
     var text: String {
         switch self {
-        case .title:
-            "Set key"
+        case .support:
+            "Support"
         }
     }
 }

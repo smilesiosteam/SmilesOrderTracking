@@ -33,7 +33,7 @@ final class DriverCollectionViewCell: UICollectionViewCell {
     
     // MARK: - Properties
     weak var delegate: DriverCellActionDelegate?
-    
+    static let identifier =  String(describing: DriverCollectionViewCell.self)
     // MARK: - Lifecycle
     override func awakeFromNib() {
         super.awakeFromNib()

@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="22155" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_12" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22131"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="collection view cell content view" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="RestaurantCancelCollectionViewCell" id="TJI-xa-XEi" customClass="RestaurantCancelCollectionViewCell" customModule="SmilesOrderTracking">
+            <rect key="frame" x="0.0" y="0.0" width="298" height="159"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <collectionViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="xvg-5S-89c">
+                <rect key="frame" x="0.0" y="0.0" width="298" height="159"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Pvf-jU-wGT">
+                        <rect key="frame" x="0.0" y="0.0" width="298" height="159"/>
+                        <subviews>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="75i-Yo-hcR">
+                                <rect key="frame" x="16" y="16" width="266" height="127"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Sorry, the restaurant had to cancel your order. Would you like to order from another restaurant?" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zae-fC-Sid">
+                                        <rect key="frame" x="0.0" y="0.0" width="266" height="71"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Kbu-oi-eZS">
+                                        <rect key="frame" x="0.0" y="87" width="266" height="40"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="40" id="sQ1-Oj-vcF"/>
+                                        </constraints>
+                                        <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                        <state key="normal" title="View available restaurants"/>
+                                        <connections>
+                                            <action selector="actionButtonTapped:" destination="TJI-xa-XEi" eventType="touchUpInside" id="J7D-sD-bOz"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                            </stackView>
+                        </subviews>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="75i-Yo-hcR" firstAttribute="top" secondItem="Pvf-jU-wGT" secondAttribute="top" constant="16" id="4xN-bw-KfU"/>
+                            <constraint firstItem="75i-Yo-hcR" firstAttribute="leading" secondItem="Pvf-jU-wGT" secondAttribute="leading" constant="16" id="ECZ-ph-Syh"/>
+                            <constraint firstAttribute="bottom" secondItem="75i-Yo-hcR" secondAttribute="bottom" constant="16" id="Uc5-DU-Nxc"/>
+                            <constraint firstAttribute="trailing" secondItem="75i-Yo-hcR" secondAttribute="trailing" constant="16" id="f2m-Pl-Ija"/>
+                        </constraints>
+                    </view>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="Pvf-jU-wGT" firstAttribute="top" secondItem="xvg-5S-89c" secondAttribute="top" id="JZv-rS-yin"/>
+                    <constraint firstAttribute="trailing" secondItem="Pvf-jU-wGT" secondAttribute="trailing" id="a0s-17-rP6"/>
+                    <constraint firstAttribute="bottom" secondItem="Pvf-jU-wGT" secondAttribute="bottom" id="hGF-UR-jK7"/>
+                    <constraint firstItem="Pvf-jU-wGT" firstAttribute="leading" secondItem="xvg-5S-89c" secondAttribute="leading" id="wJV-uw-XFk"/>
+                </constraints>
+            </collectionViewCellContentView>
+            <size key="customSize" width="298" height="159"/>
+            <connections>
+                <outlet property="actionButton" destination="Kbu-oi-eZS" id="RLh-93-ktC"/>
+                <outlet property="containerView" destination="Pvf-jU-wGT" id="cLw-13-Ts4"/>
+                <outlet property="titleLabel" destination="zae-fC-Sid" id="6mL-mm-nD5"/>
+            </connections>
+            <point key="canvasLocation" x="407.63358778625951" y="67.957746478873247"/>
+        </collectionViewCell>
+    </objects>
+    <resources>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+    </resources>
+</document>

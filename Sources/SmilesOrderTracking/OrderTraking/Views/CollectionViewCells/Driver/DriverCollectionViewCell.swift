@@ -48,19 +48,17 @@ final class DriverCollectionViewCell: UICollectionViewCell {
     func updateCell(with viewModel: ViewModel) {
         delegate = viewModel.delegate
         
-        titleLabel.text = viewModel.titleText
-        descriptionLabel.text = viewModel.descriptionText
-        configCell(with: viewModel.cellType)
-    }
-    
-    private func configCell(with type: OrderTrackingCellType) {
-        switch type {
+        switch viewModel.cellType {
         case .delivery:
             iconImageView.image = UIImage(resource: .driverIcon)
             actionButton.setImage(UIImage(resource: .callIcon), for: .normal)
+            titleLabel.text = viewModel.text
+            descriptionLabel.text = OrderTrackingLocalization.hasPickedUpYourOrder.text
         case .pickup:
             iconImageView.image = UIImage(resource: .pickupIcon)
             actionButton.setImage(UIImage(resource: .navigateToMapsIcon), for: .normal)
+            titleLabel.text = OrderTrackingLocalization.pickUpYourOrderFrom.text + ":"
+            descriptionLabel.text = viewModel.text
         }
     }
 }
@@ -68,8 +66,7 @@ final class DriverCollectionViewCell: UICollectionViewCell {
 // MARK: - ViewModel
 extension DriverCollectionViewCell {
     struct ViewModel {
-        var titleText: String?
-        var descriptionText: String?
+        var text: String?
         var cellType: OrderTrackingCellType = .delivery
         var delegate: DriverCellActionDelegate?
     }

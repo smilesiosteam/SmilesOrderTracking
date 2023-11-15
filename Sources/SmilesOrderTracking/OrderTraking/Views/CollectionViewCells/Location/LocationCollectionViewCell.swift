@@ -34,9 +34,10 @@ final class LocationCollectionViewCell: UICollectionViewCell {
     
     private func configControllers() {
     
-        endImage.image = UIImage(named: "endAddress", in: .module, with: nil)
+      
+        endImage.image =  UIImage(resource: .endAddress)
         
-        startImage.image = UIImage(named: "startAddress", in: .module, with: nil)
+        startImage.image =  UIImage(resource: .startAddress)
         
     }
 }

@@ -12,6 +12,7 @@ public final class OrderTrackingViewController: UIViewController {
     // MARK: - Outlets
     @IBOutlet private weak var collectionView: UICollectionView!
     
+    private let imageHeader = "imageHeader"
     // MARK: - Life Cycle
     public override func viewDidLoad() {
         super.viewDidLoad()
@@ -23,6 +24,10 @@ public final class OrderTrackingViewController: UIViewController {
             UINib(nibName: DriverCollectionViewCell.identifier, bundle: .module),
             forCellWithReuseIdentifier: DriverCollectionViewCell.identifier)
         
+        collectionView.register(
+            UINib(nibName: ImageHeaderCollectionViewCell.identifier, bundle: .module),
+            forSupplementaryViewOfKind: imageHeader,
+            withReuseIdentifier: ImageHeaderCollectionViewCell.identifier)
         
         collectionView.collectionViewLayout = MountainLayout.createLayout()
         collectionView.dataSource = self
@@ -32,6 +37,7 @@ public final class OrderTrackingViewController: UIViewController {
 
 
 extension OrderTrackingViewController: UICollectionViewDataSource {
+    
     public func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         10
     }
@@ -46,6 +52,11 @@ extension OrderTrackingViewController: UICollectionViewDataSource {
             return cell
         }
         
+    }
+    
+    public func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+        let header = collectionView.dequeueReusableSupplementaryView(ofKind: imageHeader, withReuseIdentifier: ImageHeaderCollectionViewCell.identifier, for: indexPath) as! ImageHeaderCollectionViewCell
+        return header
     }
     
     

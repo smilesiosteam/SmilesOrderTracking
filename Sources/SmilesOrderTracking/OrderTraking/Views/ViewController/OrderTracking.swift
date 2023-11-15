@@ -71,11 +71,17 @@ final class MountainLayout {
             ),
             subitems: [.init(layoutSize: layoutSize)]
         )
-        
+        group.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 16, bottom: 0, trailing: 16)
         // Section
         let section = NSCollectionLayoutSection(group: group)
-        section.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 16, bottom: 0, trailing: 16)
+//        section.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 16, bottom: 0, trailing: 16)
         section.interGroupSpacing = 13
+        
+        let headerHeight: CGFloat = 380
+        let headerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(headerHeight))
+//
+        let header = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: headerSize, elementKind: "imageHeader", alignment: .top)
+        section.boundarySupplementaryItems = [header]
         return section
     }
 }

@@ -19,26 +19,26 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="iE3-9z-MYv">
-                        <rect key="frame" x="0.0" y="24" width="373" height="58"/>
+                        <rect key="frame" x="16" y="0.0" width="341" height="98"/>
                         <subviews>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="driver-icon" translatesAutoresizingMaskIntoConstraints="NO" id="hUR-Sm-EQb">
-                                <rect key="frame" x="16" y="5" width="48" height="48"/>
+                                <rect key="frame" x="16" y="25" width="48" height="48"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="48" id="V0B-m3-28Y"/>
                                     <constraint firstAttribute="height" constant="48" id="bfa-lH-jDQ"/>
                                 </constraints>
                             </imageView>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillProportionally" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="dWb-vt-TVS">
-                                <rect key="frame" x="72" y="5" width="229" height="48"/>
+                                <rect key="frame" x="72" y="25" width="197" height="48"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Osama" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="baP-qQ-l5V">
-                                        <rect key="frame" x="0.0" y="0.0" width="229" height="22"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="197" height="22"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="has picked up your order" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yro-Sb-0dy">
-                                        <rect key="frame" x="0.0" y="26" width="229" height="22"/>
+                                        <rect key="frame" x="0.0" y="26" width="197" height="22"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
@@ -46,7 +46,7 @@
                                 </subviews>
                             </stackView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wgp-9d-vX5">
-                                <rect key="frame" x="317" y="5" width="40" height="40"/>
+                                <rect key="frame" x="285" y="25" width="40" height="40"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="40" id="ZSz-uV-G7Z"/>
                                     <constraint firstAttribute="height" constant="40" id="asQ-LJ-WFT"/>
@@ -72,10 +72,10 @@
                     </view>
                 </subviews>
                 <constraints>
-                    <constraint firstItem="iE3-9z-MYv" firstAttribute="leading" secondItem="RF6-37-nm8" secondAttribute="leading" id="6QC-7C-cD3"/>
-                    <constraint firstAttribute="bottom" secondItem="iE3-9z-MYv" secondAttribute="bottom" constant="16" id="M5z-sC-Bdm"/>
-                    <constraint firstItem="iE3-9z-MYv" firstAttribute="top" secondItem="RF6-37-nm8" secondAttribute="top" constant="24" id="gWt-5Y-JSw"/>
-                    <constraint firstAttribute="trailing" secondItem="iE3-9z-MYv" secondAttribute="trailing" id="xhC-ZR-eVA"/>
+                    <constraint firstItem="iE3-9z-MYv" firstAttribute="leading" secondItem="RF6-37-nm8" secondAttribute="leading" constant="16" id="6QC-7C-cD3"/>
+                    <constraint firstAttribute="bottom" secondItem="iE3-9z-MYv" secondAttribute="bottom" id="M5z-sC-Bdm"/>
+                    <constraint firstItem="iE3-9z-MYv" firstAttribute="top" secondItem="RF6-37-nm8" secondAttribute="top" id="gWt-5Y-JSw"/>
+                    <constraint firstAttribute="trailing" secondItem="iE3-9z-MYv" secondAttribute="trailing" constant="16" id="xhC-ZR-eVA"/>
                 </constraints>
             </collectionViewCellContentView>
             <size key="customSize" width="373" height="98"/>

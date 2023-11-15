@@ -5,6 +5,8 @@
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22131"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="Stack View standard spacing" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -19,7 +21,56 @@
                 <subviews>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="FDi-AV-lGx">
                         <rect key="frame" x="0.0" y="0.0" width="520" height="340"/>
+                        <subviews>
+                            <stackView opaque="NO" contentMode="scaleToFill" alignment="top" spacingType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="CwR-c0-MEE">
+                                <rect key="frame" x="16" y="60" width="488" height="40"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eSs-To-dW2">
+                                        <rect key="frame" x="0.0" y="0.0" width="40" height="40"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="40" id="GPq-un-KCR"/>
+                                            <constraint firstAttribute="height" constant="40" id="nl2-so-5CD"/>
+                                        </constraints>
+                                        <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                        <state key="normal" title="X">
+                                            <color key="titleColor" systemColor="labelColor"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="dismissButtonTapped:" destination="gTV-IL-0wX" eventType="touchUpInside" id="BFE-rz-dhW"/>
+                                        </connections>
+                                    </button>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jcB-O5-pr0">
+                                        <rect key="frame" x="48" y="0.0" width="356" height="40"/>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="40" id="cNJ-zl-8va"/>
+                                        </constraints>
+                                    </view>
+                                    <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Uq9-8b-OVo">
+                                        <rect key="frame" x="412" y="0.0" width="76" height="40"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="40" id="YLF-Aq-SXM"/>
+                                        </constraints>
+                                        <inset key="contentEdgeInsets" minX="10" minY="0.0" maxX="10" maxY="0.0"/>
+                                        <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                        <state key="normal" title="Support">
+                                            <color key="titleColor" systemColor="labelColor"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="supportButtonTapped:" destination="gTV-IL-0wX" eventType="touchUpInside" id="mWp-lf-84X"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                            </stackView>
+                        </subviews>
                         <color key="backgroundColor" red="0.45882352939999999" green="0.25882352939999997" blue="0.36862745099999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstItem="CwR-c0-MEE" firstAttribute="top" secondItem="FDi-AV-lGx" secondAttribute="top" constant="60" id="A7v-R7-hSX"/>
+                            <constraint firstAttribute="trailing" secondItem="CwR-c0-MEE" secondAttribute="trailing" constant="16" id="TMG-m4-HGe"/>
+                            <constraint firstItem="CwR-c0-MEE" firstAttribute="leading" secondItem="FDi-AV-lGx" secondAttribute="leading" constant="16" id="dia-NG-rLI"/>
+                        </constraints>
                     </view>
                 </subviews>
             </view>
@@ -31,7 +82,17 @@
                 <constraint firstAttribute="bottom" secondItem="FDi-AV-lGx" secondAttribute="bottom" constant="20" id="zMF-1c-Qtf"/>
             </constraints>
             <size key="customSize" width="520" height="322"/>
+            <connections>
+                <outlet property="containerView" destination="FDi-AV-lGx" id="7c2-lj-7H8"/>
+                <outlet property="dismissButton" destination="eSs-To-dW2" id="fMN-nD-ipR"/>
+                <outlet property="supportButton" destination="Uq9-8b-OVo" id="Iue-31-B9u"/>
+            </connections>
             <point key="canvasLocation" x="129.7709923664122" y="94.366197183098592"/>
         </collectionViewCell>
     </objects>
+    <resources>
+        <systemColor name="labelColor">
+            <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+    </resources>
 </document>

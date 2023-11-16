@@ -94,10 +94,12 @@
             <size key="customSize" width="399" height="197"/>
             <connections>
                 <outlet property="confirmButton" destination="tlv-g0-s2i" id="Keb-sq-xCO"/>
+                <outlet property="containerStackView" destination="X8v-5S-ZaG" id="Qmb-5X-1lH"/>
                 <outlet property="containerView" destination="v03-qh-Bkh" id="8TR-7X-lEc"/>
                 <outlet property="denyButton" destination="mpj-zF-oZf" id="Lgp-FV-N9Q"/>
                 <outlet property="questionLabel" destination="wKo-jj-fAx" id="NOA-Gw-RUC"/>
                 <outlet property="titleLabel" destination="uB8-ap-Tns" id="bRU-9o-la4"/>
+                <outlet property="titleStackView" destination="396-jJ-RTk" id="QRL-hC-ei4"/>
             </connections>
             <point key="canvasLocation" x="434.35114503816794" y="90.492957746478879"/>
         </collectionViewCell>

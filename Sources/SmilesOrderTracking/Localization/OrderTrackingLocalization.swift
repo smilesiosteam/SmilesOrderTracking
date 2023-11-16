@@ -17,6 +17,10 @@ enum OrderTrackingLocalization {
     case hasPickedUpYourOrder
     case restaurantCancelledOrder
     case viewAvailableRestaurants
+    case pendingDeliveryConfirmation
+    case yesTitle
+    case noTitle
+    case haveYouReceivedOrderFrom
     
     var text: String {
         switch self {
@@ -36,6 +40,14 @@ enum OrderTrackingLocalization {
             return "Sorry, the restaurant had to cancel your order. Would you like to order from another restaurant?"
         case .viewAvailableRestaurants:
             return "ViewAvailableRestaurant".localizedString
+        case .pendingDeliveryConfirmation:
+            return "Pending delivery confirmation"
+        case .yesTitle:
+            return "Yes".localizedString
+        case .noTitle:
+            return "No".localizedString
+        case .haveYouReceivedOrderFrom:
+            return "Have you received".localizedString
         }
     }
 }

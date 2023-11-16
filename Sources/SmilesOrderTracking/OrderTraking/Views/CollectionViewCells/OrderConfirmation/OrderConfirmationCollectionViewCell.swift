@@ -21,6 +21,8 @@ final class OrderConfirmationCollectionViewCell: UICollectionViewCell {
             containerView.addBorder(withBorderWidth: 1.0, borderColor: .black.withAlphaComponent(0.1))
         }
     }
+    @IBOutlet private weak var containerStackView: UIStackView!
+    @IBOutlet private weak var titleStackView: UIStackView!
     @IBOutlet private weak var titleLabel: UILabel! {
         didSet {
             titleLabel.fontTextStyle = .smilesHeadline4
@@ -61,6 +63,8 @@ final class OrderConfirmationCollectionViewCell: UICollectionViewCell {
     // MARK: - Lifecycle
     override func awakeFromNib() {
         super.awakeFromNib()
+        
+        configCell()
     }
     
     // MARK: - Actions
@@ -76,6 +80,13 @@ final class OrderConfirmationCollectionViewCell: UICollectionViewCell {
     func updateCell(with viewModel: ViewModel) {
         delegate = viewModel.delegate
         questionLabel.text = String(format: OrderTrackingLocalization.haveYouReceivedOrderFrom.text, viewModel.restaurantName.asStringOrEmpty())
+        
+        configCell()
+    }
+    
+    private func configCell() {
+        containerStackView.setCustomSpacing(8.0, after: titleStackView)
+        containerStackView.setCustomSpacing(24.0, after: titleLabel)
     }
 }
 

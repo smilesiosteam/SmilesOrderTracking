@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="22155" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_12" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22131"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="collection view cell content view" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="OrderCancelledCollectionViewCell" id="Ltj-de-NqG" customClass="OrderCancelledCollectionViewCell" customModule="SmilesOrderTracking">
+            <rect key="frame" x="0.0" y="0.0" width="355" height="45"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <collectionViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="x3K-9i-Euc">
+                <rect key="frame" x="0.0" y="0.0" width="355" height="45"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ZQs-9k-j8r">
+                        <rect key="frame" x="0.0" y="0.0" width="355" height="45"/>
+                        <subviews>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="gfN-er-VIq">
+                                <rect key="frame" x="0.0" y="0.0" width="355" height="45"/>
+                                <subviews>
+                                    <stackView opaque="NO" contentMode="scaleToFill" distribution="equalCentering" translatesAutoresizingMaskIntoConstraints="NO" id="H9Y-FN-zmr">
+                                        <rect key="frame" x="0.0" y="0.0" width="355" height="45"/>
+                                        <subviews>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ylR-kM-389">
+                                                <rect key="frame" x="0.0" y="0.0" width="177" height="45"/>
+                                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                                <state key="normal" title="Order details"/>
+                                                <connections>
+                                                    <action selector="orderDetailsButtonTapped:" destination="Ltj-de-NqG" eventType="touchUpInside" id="ZZ9-N6-fNw"/>
+                                                </connections>
+                                            </button>
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="kNr-8k-xG8">
+                                                <rect key="frame" x="177" y="0.0" width="1" height="45"/>
+                                                <subviews>
+                                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vKb-aq-3oH">
+                                                        <rect key="frame" x="0.0" y="8.6666666666666643" width="1" height="28"/>
+                                                        <color key="backgroundColor" systemColor="systemBrownColor"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="width" constant="1" id="H70-4n-wxf"/>
+                                                        </constraints>
+                                                    </view>
+                                                </subviews>
+                                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="bottom" secondItem="vKb-aq-3oH" secondAttribute="bottom" constant="8.5" id="4Qo-mD-eVy"/>
+                                                    <constraint firstItem="vKb-aq-3oH" firstAttribute="top" secondItem="kNr-8k-xG8" secondAttribute="top" constant="8.5" id="6lL-BJ-gK5"/>
+                                                    <constraint firstItem="vKb-aq-3oH" firstAttribute="centerX" secondItem="kNr-8k-xG8" secondAttribute="centerX" id="QlF-11-jSy"/>
+                                                    <constraint firstAttribute="width" constant="1" id="TSk-ww-Lpz"/>
+                                                </constraints>
+                                            </view>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Maz-nT-mbZ">
+                                                <rect key="frame" x="178" y="0.0" width="177" height="45"/>
+                                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                                <state key="normal" title="Call restaurant"/>
+                                                <connections>
+                                                    <action selector="callRestaurantButtonTapped:" destination="Ltj-de-NqG" eventType="touchUpInside" id="Qev-Gs-xdo"/>
+                                                </connections>
+                                            </button>
+                                        </subviews>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="45" id="5XR-Td-poI"/>
+                                            <constraint firstItem="Maz-nT-mbZ" firstAttribute="leading" secondItem="kNr-8k-xG8" secondAttribute="trailing" id="Gzi-jm-XBJ"/>
+                                            <constraint firstItem="kNr-8k-xG8" firstAttribute="leading" secondItem="ylR-kM-389" secondAttribute="trailing" id="za0-fR-VCC"/>
+                                        </constraints>
+                                    </stackView>
+                                </subviews>
+                            </stackView>
+                        </subviews>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="gfN-er-VIq" firstAttribute="leading" secondItem="ZQs-9k-j8r" secondAttribute="leading" id="6c2-2M-Oe5"/>
+                            <constraint firstAttribute="trailing" secondItem="gfN-er-VIq" secondAttribute="trailing" id="6hN-nC-HYl"/>
+                            <constraint firstAttribute="bottom" secondItem="gfN-er-VIq" secondAttribute="bottom" id="WIx-AO-YlD"/>
+                            <constraint firstItem="gfN-er-VIq" firstAttribute="top" secondItem="ZQs-9k-j8r" secondAttribute="top" id="owi-U1-dre"/>
+                        </constraints>
+                    </view>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="ZQs-9k-j8r" firstAttribute="top" secondItem="x3K-9i-Euc" secondAttribute="top" id="cRM-Mi-8JA"/>
+                    <constraint firstAttribute="bottom" secondItem="ZQs-9k-j8r" secondAttribute="bottom" id="cit-OA-ltj"/>
+                    <constraint firstItem="ZQs-9k-j8r" firstAttribute="leading" secondItem="x3K-9i-Euc" secondAttribute="leading" id="eu9-oi-hKO"/>
+                    <constraint firstAttribute="trailing" secondItem="ZQs-9k-j8r" secondAttribute="trailing" id="kRW-pa-9dk"/>
+                </constraints>
+            </collectionViewCellContentView>
+            <size key="customSize" width="355" height="45"/>
+            <connections>
+                <outlet property="callRestaurantButton" destination="Maz-nT-mbZ" id="WGb-gQ-tYw"/>
+                <outlet property="containerView" destination="ZQs-9k-j8r" id="R7e-Wq-Lcx"/>
+                <outlet property="orderDetailsButton" destination="ylR-kM-389" id="JiV-Y5-x1S"/>
+                <outlet property="separatorView" destination="kNr-8k-xG8" id="Ga9-tE-Kb7"/>
+            </connections>
+            <point key="canvasLocation" x="461.83206106870227" y="46.126760563380287"/>
+        </collectionViewCell>
+    </objects>
+    <resources>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+        <systemColor name="systemBrownColor">
+            <color red="0.63529411759999999" green="0.51764705879999995" blue="0.36862745099999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
+    </resources>
+</document>

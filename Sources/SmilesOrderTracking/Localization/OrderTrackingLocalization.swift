@@ -27,9 +27,9 @@ enum OrderTrackingLocalization {
         case .support:
            return "Support"
         case .callRestaurant:
-            return "Call restaurant"
+            return "Call restaurant".localizedString
         case .orderDetails:
-            return "Order details"
+            return "Order details".localizedString
         case .cancelOrder:
             return "Cancel order"
         case .pickUpYourOrderFrom:

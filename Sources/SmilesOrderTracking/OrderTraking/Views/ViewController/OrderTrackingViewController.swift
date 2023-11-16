@@ -16,9 +16,14 @@ public final class OrderTrackingViewController: UIViewController {
     // MARK: - Life Cycle
     public override func viewDidLoad() {
         super.viewDidLoad()
+        
         collectionView.register(
             UINib(nibName: LocationCollectionViewCell.identifier, bundle: .module),
             forCellWithReuseIdentifier: LocationCollectionViewCell.identifier)
+        
+        collectionView.register(
+            UINib(nibName: TextCollectionViewCell.identifier, bundle: .module),
+            forCellWithReuseIdentifier: TextCollectionViewCell.identifier)
         
         collectionView.register(
             UINib(nibName: DriverCollectionViewCell.identifier, bundle: .module),
@@ -92,6 +97,16 @@ extension OrderTrackingViewController: UICollectionViewDataSource, LocationColle
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: OrderProgressCollectionViewCell.identifier, for: indexPath) as! OrderProgressCollectionViewCell
             cell.updateCell(with: .init(step: .completed, type: .oderFinished))
             return cell
+            
+        case 7:
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: TextCollectionViewCell.identifier, for: indexPath) as! TextCollectionViewCell
+            cell.updateCell(with: "Please wait while we send your order to the restaurant.")
+            return cell
+            
+            case 8:
+                let cell = collectionView.dequeueReusableCell(withReuseIdentifier: TextCollectionViewCell.identifier, for: indexPath) as! TextCollectionViewCell
+                cell.updateCell(with: "A slight delay in your order")
+                return cell
         default:
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: LocationCollectionViewCell.identifier, for: indexPath) as! LocationCollectionViewCell
             return cell

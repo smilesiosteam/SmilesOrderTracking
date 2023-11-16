@@ -16,9 +16,9 @@ protocol LocationCollectionViewProtocol: AnyObject {
 }
 
 extension LocationCollectionViewProtocol{
-    func didTappCallRestaurant(mobileNumber: String?)
-    func didTappOrderDetails(orderId: String)
-    func didTappCancelDetails(orderId: String)
+    func didTappCallRestaurant(mobileNumber: String?) {}
+    func didTappOrderDetails(orderId: String) {}
+    func didTappCancelDetails(orderId: String) {}
 }
 
 final class LocationCollectionViewCell: UICollectionViewCell {

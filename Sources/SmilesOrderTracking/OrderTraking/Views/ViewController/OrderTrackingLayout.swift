@@ -78,7 +78,7 @@ final class MountainLayout {
         section.interGroupSpacing = 13
         
         let headerHeight: CGFloat = 380
-        let headerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(headerHeight))
+        let headerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .estimated(380))
 //
         let header = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: headerSize, elementKind: "imageHeader", alignment: .top)
         section.boundarySupplementaryItems = [header]

@@ -25,41 +25,71 @@ public final class OrderTrackingViewController: UIViewController {
             forCellWithReuseIdentifier: DriverCollectionViewCell.identifier)
         
         collectionView.register(
+            UINib(nibName: RatingCollectionViewCell.identifier, bundle: .module),
+            forCellWithReuseIdentifier: RatingCollectionViewCell.identifier)
+        
+        collectionView.register(
+            UINib(nibName: RestaurantCancelCollectionViewCell.identifier, bundle: .module),
+            forCellWithReuseIdentifier: RestaurantCancelCollectionViewCell.identifier)
+        
+        collectionView.register(
             UINib(nibName: ImageHeaderCollectionViewCell.identifier, bundle: .module),
             forSupplementaryViewOfKind: imageHeader,
             withReuseIdentifier: ImageHeaderCollectionViewCell.identifier)
+        
+        
+        collectionView.register(
+            UINib(nibName: MapHeaderCollectionViewCell.identifier, bundle: .module),
+            forSupplementaryViewOfKind: imageHeader,
+            withReuseIdentifier: MapHeaderCollectionViewCell.identifier)
+        
+        
         
         collectionView.collectionViewLayout = MountainLayout.createLayout()
         collectionView.dataSource = self
         collectionView.reloadData()
         
-       
-
+        collectionView.contentInsetAdjustmentBehavior = .never
     }
 }
 
 
-extension OrderTrackingViewController: UICollectionViewDataSource {
+extension OrderTrackingViewController: UICollectionViewDataSource, LocationCollectionViewProtocol {
     
     public func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         10
     }
     
     public func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        
-        if indexPath.row % 2 == 0 {
+        switch  indexPath.row {
+        case 0:
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: LocationCollectionViewCell.identifier, for: indexPath) as! LocationCollectionViewCell
-
+            cell.updateCell(with: .init(), delegate: self)
             return cell
-        } else {
+        case 1:
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: RatingCollectionViewCell.identifier, for: indexPath) as! RatingCollectionViewCell
+            cell.updateCell(with: .init(cellType: .pickup, delegate: nil))
+            return cell
+        case 2:
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: RatingCollectionViewCell.identifier, for: indexPath) as! RatingCollectionViewCell
+            cell.updateCell(with: .init(cellType: .delivery))
+            return cell
+        case 3:
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: DriverCollectionViewCell.identifier, for: indexPath) as! DriverCollectionViewCell
             return cell
+        case 4:
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: RestaurantCancelCollectionViewCell.identifier, for: indexPath) as! RestaurantCancelCollectionViewCell
+            return cell
+        default:
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: LocationCollectionViewCell.identifier, for: indexPath) as! LocationCollectionViewCell
+            return cell
         }
+        
         
     }
     
     public func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
-        let header = collectionView.dequeueReusableSupplementaryView(ofKind: imageHeader, withReuseIdentifier: ImageHeaderCollectionViewCell.identifier, for: indexPath) as! ImageHeaderCollectionViewCell
+        let header = collectionView.dequeueReusableSupplementaryView(ofKind: imageHeader, withReuseIdentifier: MapHeaderCollectionViewCell.identifier, for: indexPath) as! MapHeaderCollectionViewCell
         return header
     }
     

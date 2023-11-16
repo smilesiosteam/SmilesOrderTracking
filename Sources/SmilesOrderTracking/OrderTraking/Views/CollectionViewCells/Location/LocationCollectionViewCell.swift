@@ -15,6 +15,12 @@ protocol LocationCollectionViewProtocol: AnyObject {
     func didTappCancelDetails(orderId: String)
 }
 
+extension LocationCollectionViewProtocol{
+    func didTappCallRestaurant(mobileNumber: String?)
+    func didTappOrderDetails(orderId: String)
+    func didTappCancelDetails(orderId: String)
+}
+
 final class LocationCollectionViewCell: UICollectionViewCell {
     
     // MARK: - Outlets

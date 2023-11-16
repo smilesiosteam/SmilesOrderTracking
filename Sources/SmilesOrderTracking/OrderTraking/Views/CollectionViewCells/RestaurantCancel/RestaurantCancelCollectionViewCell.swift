@@ -34,13 +34,13 @@ final class RestaurantCancelCollectionViewCell: UICollectionViewCell {
             actionButton.backgroundColor = .appRevampPurpleMainColor
             actionButton.setTitle(OrderTrackingLocalization.viewAvailableRestaurants.text, for: .normal)
             actionButton.fontTextStyle = .smilesHeadline4
-            actionButton.titleLabel?.textColor = .white
+            actionButton.setTitleColor(.white, for: .normal)
         }
     }
     
     // MARK: - Properties
     weak var delegate: RestaurantCancelCellActionDelegate?
-    
+    static let identifier = String(describing: RestaurantCancelCollectionViewCell.self)
     // MARK: - Lifecycle
     override func awakeFromNib() {
         super.awakeFromNib()

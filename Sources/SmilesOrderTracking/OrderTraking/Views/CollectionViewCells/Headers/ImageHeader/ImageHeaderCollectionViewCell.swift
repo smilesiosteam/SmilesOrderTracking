@@ -9,7 +9,7 @@ import UIKit
 import SmilesFontsManager
 import SmilesUtilities
 
-protocol ImageHeaderCollectionViewProtocol: AnyObject {
+protocol HeaderCollectionViewProtocol: AnyObject {
     func didTappDismiss()
     func didTappSupport()
 }
@@ -23,7 +23,7 @@ final class ImageHeaderCollectionViewCell: UICollectionReusableView {
     @IBOutlet weak var headerStack: UIStackView!
     
     static let identifier = String(describing: ImageHeaderCollectionViewCell.self)
-    private weak var delegate: ImageHeaderCollectionViewProtocol?
+    private weak var delegate: HeaderCollectionViewProtocol?
     // MARK: - Life Cycle
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -40,7 +40,7 @@ final class ImageHeaderCollectionViewCell: UICollectionReusableView {
     }
     
     // MARK: - Functions
-    func updateCell(with viewModel: ViewModel, delegate: ImageHeaderCollectionViewProtocol) {
+    func updateCell(with viewModel: ViewModel, delegate: HeaderCollectionViewProtocol) {
         self.delegate = delegate
         headerStack.isHidden = !viewModel.isShowSupportHeader
     }

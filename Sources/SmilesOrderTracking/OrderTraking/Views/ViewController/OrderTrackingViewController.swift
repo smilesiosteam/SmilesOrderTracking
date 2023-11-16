@@ -1,6 +1,6 @@
 //
 //  OrderTrackingViewController.swift
-//  
+//
 //
 //  Created by Ahmed Naguib on 14/11/2023.
 //
@@ -8,7 +8,7 @@
 import UIKit
 
 public final class OrderTrackingViewController: UIViewController {
-
+    
     // MARK: - Outlets
     @IBOutlet private weak var collectionView: UICollectionView!
     
@@ -20,6 +20,10 @@ public final class OrderTrackingViewController: UIViewController {
         collectionView.register(
             UINib(nibName: LocationCollectionViewCell.identifier, bundle: .module),
             forCellWithReuseIdentifier: LocationCollectionViewCell.identifier)
+        
+        collectionView.register(
+            UINib(nibName: OrderConfirmationCollectionViewCell.identifier, bundle: .module),
+            forCellWithReuseIdentifier: OrderConfirmationCollectionViewCell.identifier)
         
         collectionView.register(
             UINib(nibName: TextCollectionViewCell.identifier, bundle: .module),
@@ -66,7 +70,7 @@ public final class OrderTrackingViewController: UIViewController {
 extension OrderTrackingViewController: UICollectionViewDataSource, LocationCollectionViewProtocol {
     
     public func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        10
+        15
     }
     
     public func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -103,15 +107,19 @@ extension OrderTrackingViewController: UICollectionViewDataSource, LocationColle
             cell.updateCell(with: "Please wait while we send your order to the restaurant.")
             return cell
             
-            case 8:
-                let cell = collectionView.dequeueReusableCell(withReuseIdentifier: TextCollectionViewCell.identifier, for: indexPath) as! TextCollectionViewCell
-                cell.updateCell(with: "A slight delay in your order")
-                return cell
+        case 8:
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: OrderConfirmationCollectionViewCell.identifier, for: indexPath) as! OrderConfirmationCollectionViewCell
+            return cell
+            
+        case 9:
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: TextCollectionViewCell.identifier, for: indexPath) as! TextCollectionViewCell
+            cell.updateCell(with: "A slight delay in your order")
+            return cell
         default:
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: LocationCollectionViewCell.identifier, for: indexPath) as! LocationCollectionViewCell
             return cell
         }
-        
+
         
     }
     

@@ -64,8 +64,8 @@ final class LocationCollectionViewCell: UICollectionViewCell {
     func updateCell(with viewModel: ViewModel, delegate: LocationCollectionViewProtocol) {
         self.delegate = delegate
         self.viewModel = viewModel
-        startAddressLabel.text = viewModel.startAddress
-        endAddressLabel.text = viewModel.endAddress
+//        startAddressLabel.text = viewModel.startAddress
+//        endAddressLabel.text = viewModel.endAddress
         configCellType()
     }
     

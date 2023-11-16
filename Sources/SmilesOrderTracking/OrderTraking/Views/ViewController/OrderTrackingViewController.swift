@@ -25,6 +25,10 @@ public final class OrderTrackingViewController: UIViewController {
             forCellWithReuseIdentifier: DriverCollectionViewCell.identifier)
         
         collectionView.register(
+            UINib(nibName: OrderProgressCollectionViewCell.identifier, bundle: .module),
+            forCellWithReuseIdentifier: OrderProgressCollectionViewCell.identifier)
+        
+        collectionView.register(
             UINib(nibName: RatingCollectionViewCell.identifier, bundle: .module),
             forCellWithReuseIdentifier: RatingCollectionViewCell.identifier)
         
@@ -68,7 +72,7 @@ extension OrderTrackingViewController: UICollectionViewDataSource, LocationColle
             return cell
         case 1:
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: RatingCollectionViewCell.identifier, for: indexPath) as! RatingCollectionViewCell
-            cell.updateCell(with: .init(cellType: .pickup, delegate: nil))
+            cell.updateCell(with: .init(cellType: .pickup))
             return cell
         case 2:
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: RatingCollectionViewCell.identifier, for: indexPath) as! RatingCollectionViewCell
@@ -79,6 +83,14 @@ extension OrderTrackingViewController: UICollectionViewDataSource, LocationColle
             return cell
         case 4:
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: RestaurantCancelCollectionViewCell.identifier, for: indexPath) as! RestaurantCancelCollectionViewCell
+            return cell
+        case 5:
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: OrderProgressCollectionViewCell.identifier, for: indexPath) as! OrderProgressCollectionViewCell
+            cell.updateCell(with: .init(step: .second(percentage: 0.6), type: .orderOnWay))
+            return cell
+        case 6:
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: OrderProgressCollectionViewCell.identifier, for: indexPath) as! OrderProgressCollectionViewCell
+            cell.updateCell(with: .init(step: .completed, type: .oderFinished))
             return cell
         default:
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: LocationCollectionViewCell.identifier, for: indexPath) as! LocationCollectionViewCell

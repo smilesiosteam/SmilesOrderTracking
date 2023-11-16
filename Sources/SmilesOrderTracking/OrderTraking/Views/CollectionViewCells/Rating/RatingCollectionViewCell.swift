@@ -80,7 +80,7 @@ final class RatingCollectionViewCell: UICollectionViewCell {
     
     // MARK: - Methods
     func updateCell(with viewModel: ViewModel) {
-        delegate = viewModel.delegate
+//        delegate = viewModel.delegate
         configCell(with: viewModel.cellType)
     }
     
@@ -98,6 +98,6 @@ final class RatingCollectionViewCell: UICollectionViewCell {
 extension RatingCollectionViewCell {
     struct ViewModel {
         var cellType: OrderTrackingCellType = .delivery
-        var delegate: RatingCellActionDelegate?
+//        var delegate: RatingCellActionDelegate?
     }
 }

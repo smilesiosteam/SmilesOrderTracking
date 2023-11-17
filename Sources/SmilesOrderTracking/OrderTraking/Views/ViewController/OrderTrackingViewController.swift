@@ -27,7 +27,8 @@ public final class OrderTrackingViewController: UIViewController {
          DriverCollectionViewCell.self,
          OrderProgressCollectionViewCell.self,
          RatingCollectionViewCell.self,
-         RestaurantCancelCollectionViewCell.self
+         RestaurantCancelCollectionViewCell.self,
+         FreeDeliveryCollectionViewCell.self
         ].forEach({
             collectionView.register(
                 UINib(nibName: String(describing: $0.self), bundle: .module),
@@ -44,8 +45,6 @@ public final class OrderTrackingViewController: UIViewController {
             UINib(nibName: MapHeaderCollectionViewCell.identifier, bundle: .module),
             forSupplementaryViewOfKind: imageHeader,
             withReuseIdentifier: MapHeaderCollectionViewCell.identifier)
-        
-        
         
         collectionView.collectionViewLayout = MountainLayout.createLayout()
         collectionView.dataSource = self
@@ -122,8 +121,13 @@ extension OrderTrackingViewController: UICollectionViewDataSource, LocationColle
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: RestaurantCollectionViewCell.identifier, for: indexPath) as! RestaurantCollectionViewCell
             cell.updateCell(with: .init(items: ["Ahmed", "Naguib", "Moahmed"]))
             return cell
+            
+        case 14:
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: FreeDeliveryCollectionViewCell.identifier, for: indexPath) as! FreeDeliveryCollectionViewCell
+        
+            return cell
         default:
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: LocationCollectionViewCell.identifier, for: indexPath) as! LocationCollectionViewCell
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: FreeDeliveryCollectionViewCell.identifier, for: indexPath) as! FreeDeliveryCollectionViewCell
         
             return cell
         }

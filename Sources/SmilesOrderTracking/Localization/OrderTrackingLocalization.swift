@@ -21,6 +21,7 @@ enum OrderTrackingLocalization {
     case yesTitle
     case noTitle
     case haveYouReceivedOrderFrom
+    case points
     
     var text: String {
         switch self {
@@ -48,6 +49,8 @@ enum OrderTrackingLocalization {
             return "No".localizedString
         case .haveYouReceivedOrderFrom:
             return "Have you received".localizedString
+        case .points:
+            return "smiles points earned and will be credited soon."
         }
     }
 }

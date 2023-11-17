@@ -16,7 +16,6 @@ final class MapHeaderCollectionViewCell: UICollectionReusableView {
     @IBOutlet private weak var supportButton: UIButton!
     
     static let identifier = String(describing: MapHeaderCollectionViewCell.self)
-    
     private weak var delegate: HeaderCollectionViewProtocol?
     // MARK: - Outlets
     override func awakeFromNib() {

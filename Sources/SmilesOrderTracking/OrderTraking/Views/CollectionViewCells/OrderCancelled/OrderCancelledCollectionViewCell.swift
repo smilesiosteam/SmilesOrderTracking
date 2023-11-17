@@ -42,6 +42,7 @@ final class OrderCancelledCollectionViewCell: UICollectionViewCell {
     
     // MARK: - Properties
     weak var delegate: OrderCancelledCellActionDelegate?
+    
     static let identifier = String(describing: OrderCancelledCollectionViewCell.self)
     
     // MARK: - Lifecycle

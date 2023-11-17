@@ -15,6 +15,7 @@ final class CashCollectionViewCell: UICollectionViewCell {
     @IBOutlet private weak var titleLabel: UILabel!
     
     static let identifier = String(describing: CashCollectionViewCell.self)
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         titleLabel.fontTextStyle = .smilesHeadline4

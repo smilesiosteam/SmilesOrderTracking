@@ -19,6 +19,10 @@ public final class OrderTrackingViewController: UIViewController {
         
         
         collectionView.register(
+            UINib(nibName: RestaurantCollectionViewCell.identifier, bundle: .module),
+            forCellWithReuseIdentifier: RestaurantCollectionViewCell.identifier)
+        
+        collectionView.register(
             UINib(nibName: CashCollectionViewCell.identifier, bundle: .module),
             forCellWithReuseIdentifier: CashCollectionViewCell.identifier)
         collectionView.register(
@@ -140,6 +144,11 @@ extension OrderTrackingViewController: UICollectionViewDataSource, LocationColle
             
         case 12:
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CashCollectionViewCell.identifier, for: indexPath) as! CashCollectionViewCell
+            return cell
+            
+        case 13:
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: RestaurantCollectionViewCell.identifier, for: indexPath) as! RestaurantCollectionViewCell
+            cell.updateCell(with: .init(items: ["Ahmed", "Naguib", "Moahmed"]))
             return cell
         default:
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: LocationCollectionViewCell.identifier, for: indexPath) as! LocationCollectionViewCell

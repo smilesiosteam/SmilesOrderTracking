@@ -10,7 +10,7 @@ import UIKit
 final class RestaurantCollectionViewCell: UICollectionViewCell {
     
     @IBOutlet weak var purchasedItemsLabel: UILabel!
-    static let identifier =  String(describing: LocationCollectionViewCell.self)
+    static let identifier =  String(describing: RestaurantCollectionViewCell.self)
     @IBOutlet private weak var containerView: UIView!
     @IBOutlet private weak var nameLabel: UILabel!
     @IBOutlet private weak var iconView: UIImageView!

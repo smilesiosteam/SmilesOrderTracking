@@ -19,6 +19,9 @@ public final class OrderTrackingViewController: UIViewController {
         
         
         collectionView.register(
+            UINib(nibName: CashCollectionViewCell.identifier, bundle: .module),
+            forCellWithReuseIdentifier: CashCollectionViewCell.identifier)
+        collectionView.register(
             UINib(nibName: OrderCancelledCollectionViewCell.identifier, bundle: .module),
             forCellWithReuseIdentifier: OrderCancelledCollectionViewCell.identifier)
         
@@ -133,7 +136,10 @@ extension OrderTrackingViewController: UICollectionViewDataSource, LocationColle
             
         case 11:
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: OrderCancelledCollectionViewCell.identifier, for: indexPath) as! OrderCancelledCollectionViewCell
-           
+            return cell
+            
+        case 12:
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CashCollectionViewCell.identifier, for: indexPath) as! CashCollectionViewCell
             return cell
         default:
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: LocationCollectionViewCell.identifier, for: indexPath) as! LocationCollectionViewCell

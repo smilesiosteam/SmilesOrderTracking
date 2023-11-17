@@ -28,7 +28,8 @@ public final class OrderTrackingViewController: UIViewController {
          OrderProgressCollectionViewCell.self,
          RatingCollectionViewCell.self,
          RestaurantCancelCollectionViewCell.self,
-         FreeDeliveryCollectionViewCell.self
+         FreeDeliveryCollectionViewCell.self,
+         OrderCancelledTimerCollectionViewCell.self,
         ].forEach({
             collectionView.register(
                 UINib(nibName: String(describing: $0.self), bundle: .module),
@@ -58,7 +59,7 @@ public final class OrderTrackingViewController: UIViewController {
 extension OrderTrackingViewController: UICollectionViewDataSource, LocationCollectionViewProtocol {
     
     public func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        15
+        16
     }
     
     public func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -126,8 +127,13 @@ extension OrderTrackingViewController: UICollectionViewDataSource, LocationColle
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: FreeDeliveryCollectionViewCell.identifier, for: indexPath) as! FreeDeliveryCollectionViewCell
         
             return cell
+            
+        case 15:
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: OrderCancelledTimerCollectionViewCell.identifier, for: indexPath) as! OrderCancelledTimerCollectionViewCell
+        
+            return cell
         default:
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: FreeDeliveryCollectionViewCell.identifier, for: indexPath) as! FreeDeliveryCollectionViewCell
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: OrderCancelledTimerCollectionViewCell.identifier, for: indexPath) as! OrderCancelledTimerCollectionViewCell
         
             return cell
         }

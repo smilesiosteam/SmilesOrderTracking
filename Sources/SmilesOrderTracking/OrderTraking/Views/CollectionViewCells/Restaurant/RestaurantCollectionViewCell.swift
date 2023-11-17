@@ -9,9 +9,9 @@ import UIKit
 
 final class RestaurantCollectionViewCell: UICollectionViewCell {
     
+    @IBOutlet weak var purchasedItemsLabel: UILabel!
     static let identifier =  String(describing: LocationCollectionViewCell.self)
     @IBOutlet private weak var containerView: UIView!
-    @IBOutlet private weak var itemsCollectionView: UICollectionView!
     @IBOutlet private weak var nameLabel: UILabel!
     @IBOutlet private weak var iconView: UIImageView!
     
@@ -24,7 +24,7 @@ final class RestaurantCollectionViewCell: UICollectionViewCell {
     func updateCell(with viewModel: ViewModel) {
         self.viewModel = viewModel
         nameLabel.text = viewModel.name
-        itemsCollectionView.reloadData()
+        purchasedItemsLabel.text = viewModel.items.joined(separator: "\n")
         configControllers()
     }
     private func configControllers() {
@@ -33,21 +33,11 @@ final class RestaurantCollectionViewCell: UICollectionViewCell {
         containerView.layer.cornerRadius = 12
         containerView.layer.borderWidth = 1
         containerView.layer.borderColor = UIColor.black.withAlphaComponent(0.1).cgColor
-        itemsCollectionView.register(RestaurantCollectionViewCell.self, forCellWithReuseIdentifier: RestaurantCollectionViewCell.identifier)
+        purchasedItemsLabel.fontTextStyle = .smilesBody3
     }
     
 }
 
-extension RestaurantCollectionViewCell:UICollectionViewDataSource {
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        viewModel.items.count
-    }
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let itemCell = collectionView.dequeueReusableCell(withReuseIdentifier: RestaurantPurchasedItemCollectionViewCell.identifier, for: indexPath) as! RestaurantPurchasedItemCollectionViewCell
-        itemCell.updateCell(with: RestaurantPurchasedItemCollectionViewCell.ViewModel(itemTitle: viewModel.items[indexPath.item]))
-        return itemCell
-    }
-}
 // MARK: - ViewModel
 extension RestaurantCollectionViewCell {
     struct ViewModel {

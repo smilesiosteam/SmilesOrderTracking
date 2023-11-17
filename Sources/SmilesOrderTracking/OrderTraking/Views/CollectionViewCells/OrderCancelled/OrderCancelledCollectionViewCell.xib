@@ -37,20 +37,8 @@
                                             </button>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="kNr-8k-xG8">
                                                 <rect key="frame" x="177" y="0.0" width="1" height="45"/>
-                                                <subviews>
-                                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vKb-aq-3oH">
-                                                        <rect key="frame" x="0.0" y="8.6666666666666643" width="1" height="28"/>
-                                                        <color key="backgroundColor" systemColor="systemBrownColor"/>
-                                                        <constraints>
-                                                            <constraint firstAttribute="width" constant="1" id="H70-4n-wxf"/>
-                                                        </constraints>
-                                                    </view>
-                                                </subviews>
                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <constraints>
-                                                    <constraint firstAttribute="bottom" secondItem="vKb-aq-3oH" secondAttribute="bottom" constant="8.5" id="4Qo-mD-eVy"/>
-                                                    <constraint firstItem="vKb-aq-3oH" firstAttribute="top" secondItem="kNr-8k-xG8" secondAttribute="top" constant="8.5" id="6lL-BJ-gK5"/>
-                                                    <constraint firstItem="vKb-aq-3oH" firstAttribute="centerX" secondItem="kNr-8k-xG8" secondAttribute="centerX" id="QlF-11-jSy"/>
                                                     <constraint firstAttribute="width" constant="1" id="TSk-ww-Lpz"/>
                                                 </constraints>
                                             </view>
@@ -101,9 +89,6 @@
     <resources>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-        </systemColor>
-        <systemColor name="systemBrownColor">
-            <color red="0.63529411759999999" green="0.51764705879999995" blue="0.36862745099999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>

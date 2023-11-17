@@ -17,9 +17,16 @@ public final class OrderTrackingViewController: UIViewController {
     public override func viewDidLoad() {
         super.viewDidLoad()
         
+        
+        collectionView.register(
+            UINib(nibName: OrderCancelledCollectionViewCell.identifier, bundle: .module),
+            forCellWithReuseIdentifier: OrderCancelledCollectionViewCell.identifier)
+        
         collectionView.register(
             UINib(nibName: PointsCollectionViewCell.identifier, bundle: .module),
             forCellWithReuseIdentifier: PointsCollectionViewCell.identifier)
+        
+        
         collectionView.register(
             UINib(nibName: LocationCollectionViewCell.identifier, bundle: .module),
             forCellWithReuseIdentifier: LocationCollectionViewCell.identifier)
@@ -122,6 +129,11 @@ extension OrderTrackingViewController: UICollectionViewDataSource, LocationColle
         case 10:
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: PointsCollectionViewCell.identifier, for: indexPath) as! PointsCollectionViewCell
             cell.updateCell(with: "120")
+            return cell
+            
+        case 11:
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: OrderCancelledCollectionViewCell.identifier, for: indexPath) as! OrderCancelledCollectionViewCell
+           
             return cell
         default:
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: LocationCollectionViewCell.identifier, for: indexPath) as! LocationCollectionViewCell

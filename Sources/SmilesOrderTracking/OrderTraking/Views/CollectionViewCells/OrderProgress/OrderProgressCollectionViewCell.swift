@@ -26,7 +26,6 @@ final class OrderProgressCollectionViewCell: UICollectionViewCell {
     }
     
     // MARK: - Functions
-    
     func updateCell(with viewModel: ViewModel) {
         setProgressBar(step: viewModel.step)
 //        titleLabel.text = viewModel.title

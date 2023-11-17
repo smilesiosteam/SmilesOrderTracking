@@ -11,8 +11,6 @@ final class TextCollectionViewCell: UICollectionViewCell {
     
     // MARK: - Outlets
     @IBOutlet weak private var detailsLable: UILabel!
-    
-    static let identifier = String(describing: TextCollectionViewCell.self)
    
     override func awakeFromNib() {
         super.awakeFromNib()

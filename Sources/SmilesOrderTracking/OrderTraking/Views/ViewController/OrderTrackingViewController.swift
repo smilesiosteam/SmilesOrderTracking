@@ -17,50 +17,22 @@ public final class OrderTrackingViewController: UIViewController {
     public override func viewDidLoad() {
         super.viewDidLoad()
         
-        
-        collectionView.register(
-            UINib(nibName: RestaurantCollectionViewCell.identifier, bundle: .module),
-            forCellWithReuseIdentifier: RestaurantCollectionViewCell.identifier)
-        
-        collectionView.register(
-            UINib(nibName: CashCollectionViewCell.identifier, bundle: .module),
-            forCellWithReuseIdentifier: CashCollectionViewCell.identifier)
-        collectionView.register(
-            UINib(nibName: OrderCancelledCollectionViewCell.identifier, bundle: .module),
-            forCellWithReuseIdentifier: OrderCancelledCollectionViewCell.identifier)
-        
-        collectionView.register(
-            UINib(nibName: PointsCollectionViewCell.identifier, bundle: .module),
-            forCellWithReuseIdentifier: PointsCollectionViewCell.identifier)
-        
-        
-        collectionView.register(
-            UINib(nibName: LocationCollectionViewCell.identifier, bundle: .module),
-            forCellWithReuseIdentifier: LocationCollectionViewCell.identifier)
-        
-        collectionView.register(
-            UINib(nibName: OrderConfirmationCollectionViewCell.identifier, bundle: .module),
-            forCellWithReuseIdentifier: OrderConfirmationCollectionViewCell.identifier)
-        
-        collectionView.register(
-            UINib(nibName: TextCollectionViewCell.identifier, bundle: .module),
-            forCellWithReuseIdentifier: TextCollectionViewCell.identifier)
-        
-        collectionView.register(
-            UINib(nibName: DriverCollectionViewCell.identifier, bundle: .module),
-            forCellWithReuseIdentifier: DriverCollectionViewCell.identifier)
-        
-        collectionView.register(
-            UINib(nibName: OrderProgressCollectionViewCell.identifier, bundle: .module),
-            forCellWithReuseIdentifier: OrderProgressCollectionViewCell.identifier)
-        
-        collectionView.register(
-            UINib(nibName: RatingCollectionViewCell.identifier, bundle: .module),
-            forCellWithReuseIdentifier: RatingCollectionViewCell.identifier)
-        
-        collectionView.register(
-            UINib(nibName: RestaurantCancelCollectionViewCell.identifier, bundle: .module),
-            forCellWithReuseIdentifier: RestaurantCancelCollectionViewCell.identifier)
+        [RestaurantCollectionViewCell.self,
+         CashCollectionViewCell.self,
+         OrderCancelledCollectionViewCell.self,
+         PointsCollectionViewCell.self,
+         LocationCollectionViewCell.self,
+         OrderConfirmationCollectionViewCell.self,
+         TextCollectionViewCell.self,
+         DriverCollectionViewCell.self,
+         OrderProgressCollectionViewCell.self,
+         RatingCollectionViewCell.self,
+         RestaurantCancelCollectionViewCell.self
+        ].forEach({
+            collectionView.register(
+                UINib(nibName: String(describing: $0.self), bundle: .module),
+                forCellWithReuseIdentifier: String(describing: $0.self))
+        })
         
         collectionView.register(
             UINib(nibName: ImageHeaderCollectionViewCell.identifier, bundle: .module),

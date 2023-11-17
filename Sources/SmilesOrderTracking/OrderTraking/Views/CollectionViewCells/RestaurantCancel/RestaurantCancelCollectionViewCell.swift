@@ -40,7 +40,6 @@ final class RestaurantCancelCollectionViewCell: UICollectionViewCell {
     
     // MARK: - Properties
     weak var delegate: RestaurantCancelCellActionDelegate?
-    static let identifier = String(describing: RestaurantCancelCollectionViewCell.self)
     // MARK: - Lifecycle
     override func awakeFromNib() {
         super.awakeFromNib()

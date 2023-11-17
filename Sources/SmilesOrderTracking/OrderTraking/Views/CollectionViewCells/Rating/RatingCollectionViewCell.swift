@@ -47,7 +47,6 @@ final class RatingCollectionViewCell: UICollectionViewCell {
     
     // MARK: - Properties
     weak var delegate: RatingCellActionDelegate?
-    static let identifier = String(describing: RatingCollectionViewCell.self)
     // MARK: - Lifecycle
     override func awakeFromNib() {
         super.awakeFromNib()

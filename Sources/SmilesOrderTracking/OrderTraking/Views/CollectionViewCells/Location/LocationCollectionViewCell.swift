@@ -35,7 +35,6 @@ final class LocationCollectionViewCell: UICollectionViewCell {
     @IBOutlet private weak var stackDetails: UIStackView!
     
     // MARK: - Properties
-    static let identifier = String(describing: LocationCollectionViewCell.self)
     private var viewModel: ViewModel = .init()
     private weak var delegate: LocationCollectionViewProtocol?
     

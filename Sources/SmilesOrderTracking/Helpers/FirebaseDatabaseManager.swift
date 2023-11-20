@@ -9,7 +9,7 @@ import Foundation
 import Firebase
 
 protocol FirebaseDatabaseManagerDelegate {
-    func orderStatusDidChange(with orderId: String, orderNumber: String, orderStatus: OrderStatus, comingFromFirebase: Bool)
+    func orderStatusDidChange(with orderId: String, orderNumber: String, orderStatus: OrderTrackingType, comingFromFirebase: Bool)
     func liveLocationDidUpdate(with latitude: Double, longitude: Double)
 }
 
@@ -27,11 +27,11 @@ struct FirebaseDatabaseManager {
         let secondaryDb = Database.database(app: secondary)
         liveOrderDatabaseReference = secondaryDb.reference(fromURL:  "https://delivery-app-api.firebaseio.com/order_status/\(orderNumber)")
         
-        liveOrderDatabaseReference?.observe(.value) { [self] (snapshot) in
+        liveOrderDatabaseReference?.observe(.value) { [self] snapshot in
             if snapshot.exists() {
                 if let order = snapshot.value as? [String: Any] {
                     if let orderNumber = order["order_number"] as? String, let orderId = order["id"] as? Int, let orderStatus = order["order_status"] as? Int {
-                        delegate?.orderStatusDidChange(with: "\(orderId)", orderNumber: orderNumber, orderStatus: OrderStatus(rawValue: orderStatus) ?? .orderReceived, comingFromFirebase: true)
+                        delegate?.orderStatusDidChange(with: "\(orderId)", orderNumber: orderNumber, orderStatus: OrderTrackingType(rawValue: orderStatus) ?? .orderProcessing, comingFromFirebase: true)
                     }
                 }
             }
@@ -45,8 +45,9 @@ struct FirebaseDatabaseManager {
         // Retrieve a Real Time Database client configured against a specific app.
         let secondaryDb = Database.database(app: secondary)
         driverLocationDatabaseReference = secondaryDb.reference(fromURL: "https://delivery-app-api.firebaseio.com/driver_loc/\(liveTrackingId)")
+        
         var placeDict = [String : Any]()
-        driverLocationDatabaseReference?.observe(.value) { [self] (snapshot) in
+        driverLocationDatabaseReference?.observe(.value) { [self] snapshot in
             if snapshot.exists() {
                 for child in snapshot.children {
                     if let snap = child as? DataSnapshot {

@@ -12,10 +12,10 @@ final class OrderTrackingDataSource: NSObject {
     // MARK: - Properties
     private var orderStatusModel = OrderTrackingModel()
     private let headerName = OrderConstans.headerName.rawValue
-    
+    private let viewModel: OrderTrackingViewModel
     // MARK: - Init
-    init(orderStatusModel: OrderTrackingModel = OrderTrackingModel()) {
-        self.orderStatusModel = orderStatusModel
+    init(viewModel: OrderTrackingViewModel) {
+        self.viewModel = viewModel
     }
     
     // MARK: - Functions
@@ -60,17 +60,39 @@ extension OrderTrackingDataSource: UICollectionViewDataSource {
         switch type {
         case .image(model: let model):
             let header = collectionView.dequeueReusableSupplementaryView(ofKind: headerName, withClass: ImageHeaderCollectionViewCell.self, for: indexPath)
-            header.updateCell(with: model)
+            header.updateCell(with: model, delegate: self)
             return header
         case .map(model: let model):
             let header = collectionView.dequeueReusableSupplementaryView(ofKind: headerName, withClass: MapHeaderCollectionViewCell.self, for: indexPath)
-            header.updateCell(with: model)
+            header.updateCell(with: model, delegate: self)
             return header
         }
     }
 }
 
-
+// MARK: - Location Delegate
 extension OrderTrackingDataSource: LocationCollectionViewProtocol {
+    func didTappCallRestaurant(mobileNumber: String?) {
+        
+    }
     
+    func didTappOrderDetails(orderId: String) {
+        
+    }
+    
+    func didTappCancelDetails(orderId: String) {
+        
+    }
 }
+
+// MARK: - Header Delegate
+extension OrderTrackingDataSource: HeaderCollectionViewProtocol {
+    func didTappDismiss() {
+        
+    }
+    
+    func didTappSupport() {
+        viewModel.support()
+    }
+}
+

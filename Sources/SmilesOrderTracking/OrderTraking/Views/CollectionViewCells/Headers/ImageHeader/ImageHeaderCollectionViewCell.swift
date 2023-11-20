@@ -39,8 +39,8 @@ final class ImageHeaderCollectionViewCell: UICollectionReusableView {
     }
     
     // MARK: - Functions
-    func updateCell(with viewModel: ViewModel) {
-//        self.delegate = delegate
+    func updateCell(with viewModel: ViewModel, delegate: HeaderCollectionViewProtocol) {
+        self.delegate = delegate
         headerStack.isHidden = !viewModel.isShowSupportHeader
     }
     

@@ -34,8 +34,8 @@ final class MapHeaderCollectionViewCell: UICollectionReusableView {
     }
     
     // MARK: - Functions
-    func updateCell(with viewModel: ViewModel) {
-        
+    func updateCell(with viewModel: ViewModel, delegate: HeaderCollectionViewProtocol) {
+        self.delegate = delegate
     }
     private func configControllers() {
         dismissButton.layer.cornerRadius = 20

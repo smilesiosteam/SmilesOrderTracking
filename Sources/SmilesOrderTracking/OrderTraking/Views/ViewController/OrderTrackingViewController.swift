@@ -15,7 +15,7 @@ public final class OrderTrackingViewController: UIViewController {
     
    
     private let viewModel = OrderTrackingViewModel()
-    private let dataSource = OrderTrackingDataSource()
+    private lazy var dataSource = OrderTrackingDataSource(viewModel: viewModel)
     // MARK: - Life Cycle
     public override func viewDidLoad() {
         super.viewDidLoad()

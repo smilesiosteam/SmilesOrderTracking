@@ -29,7 +29,11 @@ final class OrderTrackingViewModel {
                        .location(model: location),
                        .restaurant(model: restaurant)
         ]
-        let header = ImageHeaderCollectionViewCell.ViewModel(isShowSupportHeader: false)
+        let header = ImageHeaderCollectionViewCell.ViewModel(isShowSupportHeader: true)
         orderStatusModel = OrderTrackingModel(header: .image(model: header), items: orderStatus)
+    }
+    
+    func support() {
+        print("Suppert Tapped")
     }
 }

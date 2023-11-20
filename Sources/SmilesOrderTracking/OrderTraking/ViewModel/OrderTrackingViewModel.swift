@@ -11,6 +11,7 @@ import Combine
 final class OrderTrackingViewModel {
     // MARK: - Properties
     private var cancellables = Set<AnyCancellable>()
+    private let useCase = OrderTrackingUseCase()
     var orderStatusModel = OrderTrackingModel()
     var firebaseDatabaseManager = FirebaseDatabaseManager()
     let orderTrackingServiceHandler = OrderTrackingServiceHandler()
@@ -19,6 +20,8 @@ final class OrderTrackingViewModel {
     init() {
         firebaseDatabaseManager.delegate = self
         configProcessingOrder()
+        
+        useCase.load()
     }
     
     // MARK: - Methods

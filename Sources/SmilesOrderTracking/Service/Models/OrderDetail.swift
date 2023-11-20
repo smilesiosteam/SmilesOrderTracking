@@ -21,6 +21,7 @@ struct OrderDetail: Codable {
     var title: String?
     var deliveryTime: String?
     var deliveryTimeRange: String?
+    var deliveryTimeRangeText: String?
     var restaurentNumber: String?
     var partnerNumber: String?
     var deliveryAdrress: String?
@@ -115,6 +116,7 @@ struct OrderDetail: Codable {
         case title
         case deliveryTime
         case deliveryTimeRange
+        case deliveryTimeRangeText
         case restaurentNumber
         case partnerNumber
         case deliveryAdrress
@@ -203,6 +205,7 @@ struct OrderDetail: Codable {
         title = try values.decodeIfPresent(String.self, forKey: .title)
         deliveryTime = try values.decodeIfPresent(String.self, forKey: .deliveryTime)
         deliveryTimeRange = try values.decodeIfPresent(String.self, forKey: .deliveryTimeRange)
+        deliveryTimeRangeText = try values.decodeIfPresent(String.self, forKey: .deliveryTimeRangeText)
         restaurentNumber = try values.decodeIfPresent(String.self, forKey: .restaurentNumber)
         partnerNumber = try values.decodeIfPresent(String.self, forKey: .partnerNumber)
         deliveryAdrress = try values.decodeIfPresent(String.self, forKey: .deliveryAdrress)
@@ -272,7 +275,6 @@ struct OrderDetail: Codable {
         orderDescriptionRangeV2 = try values.decodeIfPresent(String.self, forKey: .orderDescriptionRangeV2)
         subscriptionBannerV2 = try values.decodeIfPresent(SubscriptionsBannerV2.self, forKey: .subscriptionBannerV2)
     }
-    
     
     func getIconForStatus(withOrderType orderType: String?) -> String {
         let orderStatus = OrderTrackingType(rawValue: self.orderStatus ?? 0)

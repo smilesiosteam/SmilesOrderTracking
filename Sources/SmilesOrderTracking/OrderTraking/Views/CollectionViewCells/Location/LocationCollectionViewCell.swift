@@ -11,8 +11,8 @@ import SmilesUtilities
 
 protocol LocationCollectionViewProtocol: AnyObject {
     func didTappCallRestaurant(mobileNumber: String?)
-    func didTappOrderDetails(orderId: String)
-    func didTappCancelDetails(orderId: String)
+    func didTappOrderDetails(orderId: Int?)
+    func didTappCancelDetails(orderId: Int?)
 }
 
 final class LocationCollectionViewCell: UICollectionViewCell {
@@ -106,7 +106,7 @@ extension LocationCollectionViewCell {
     struct ViewModel {
         var startAddress: String?
         var endAddress: String?
-        var orderId: String = ""
+        var orderId: Int?
         var restaurantNumber: String?
         var type: CellType = .cancel
     }

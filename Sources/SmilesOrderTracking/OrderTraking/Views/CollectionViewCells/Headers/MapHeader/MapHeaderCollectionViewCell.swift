@@ -10,19 +10,22 @@ import GoogleMaps
 
 final class MapHeaderCollectionViewCell: UICollectionReusableView {
     
+    // MARK: - Outlets
     @IBOutlet private weak var driverImage: UIImageView!
     @IBOutlet private weak var mapView: GMSMapView!
     @IBOutlet private weak var dismissButton: UIButton!
     @IBOutlet private weak var supportButton: UIButton!
     
+    // MARK: - Properties
     static let identifier = String(describing: MapHeaderCollectionViewCell.self)
     private weak var delegate: HeaderCollectionViewProtocol?
-    // MARK: - Outlets
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         configControllers()
     }
     
+    // MARK: - Buttons Actions
     @IBAction private func dismissButtonTapped(_ sender: Any) {
         delegate?.didTappDismiss()
     }
@@ -31,6 +34,10 @@ final class MapHeaderCollectionViewCell: UICollectionReusableView {
         delegate?.didTappSupport()
     }
     
+    // MARK: - Functions
+    func updateCell(with viewModel: ViewModel) {
+        
+    }
     private func configControllers() {
         dismissButton.layer.cornerRadius = 20
         supportButton.layer.cornerRadius = 20
@@ -43,5 +50,11 @@ final class MapHeaderCollectionViewCell: UICollectionReusableView {
             $0.fontTextStyle = .smilesTitle1
             $0.setTitleColor(.appRevampPurpleMainColor, for: .normal)
         })
+    }
+}
+
+extension MapHeaderCollectionViewCell {
+    struct ViewModel {
+        
     }
 }

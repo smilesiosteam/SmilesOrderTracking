@@ -7,48 +7,7 @@
 
 import UIKit
 
-final class FilterLayout {
-    
-    func createLayout(sections: [String]) -> UICollectionViewCompositionalLayout {
-        let layout = UICollectionViewCompositionalLayout{ [weak self] (index, _) -> NSCollectionLayoutSection? in
-            return self?.createSections(index: index, sections: sections)
-        }
-        return layout
-    }
-    
-    private func createSections(index: Int, sections: [String]) -> NSCollectionLayoutSection? {
-        //        let isFistSection = sections[index].isFirstSection
-        return configLayoutSection()
-    }
-    
-    private func configLayoutSection() -> NSCollectionLayoutSection {
-        let layoutSize = NSCollectionLayoutSize(
-            widthDimension: .fractionalWidth(1.0),
-            heightDimension: .estimated(100)
-        )
-        
-        let group = NSCollectionLayoutGroup.horizontal(
-            layoutSize: .init(
-                widthDimension: .fractionalWidth(1.0),
-                heightDimension: layoutSize.heightDimension
-            ),
-            subitems: [.init(layoutSize: layoutSize)]
-        )
-        //        group.interItemSpacing = .fixed(8)
-        
-        let section = NSCollectionLayoutSection(group: group)
-        //      section.contentInsets = .init(top: 0, leading: 0, bottom: 0, trailing: 0) // 8 8
-        //        section.interGroupSpacing = 14
-        
-        //        let headerHeight: CGFloat = isFirstSection ? 40 : 90
-        //        let headerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(headerHeight))
-        //        let header = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: headerSize, elementKind: "header", alignment: .top)
-        //        section.boundarySupplementaryItems = [header]
-        return section
-    }
-}
-
-final class MountainLayout {
+final class OrderTrackingLayout {
     
     static func createLayout() -> UICollectionViewCompositionalLayout {
         UICollectionViewCompositionalLayout { _, layoutEnvironment in
@@ -72,15 +31,16 @@ final class MountainLayout {
             subitems: [.init(layoutSize: layoutSize)]
         )
         group.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 16, bottom: 0, trailing: 16)
+        
         // Section
         let section = NSCollectionLayoutSection(group: group)
-//        section.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 16, bottom: 0, trailing: 16)
-        section.interGroupSpacing = 13
+        section.interGroupSpacing = 17
         
-        let headerHeight: CGFloat = 380
-        let headerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .estimated(380))
-//
-        let header = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: headerSize, elementKind: "imageHeader", alignment: .top)
+        let headerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), 
+                                                heightDimension: .estimated(380))
+        let header = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: headerSize,
+                                                                 elementKind: OrderConstans.headerName.rawValue,
+                                                                 alignment: .top)
         section.boundarySupplementaryItems = [header]
         return section
     }

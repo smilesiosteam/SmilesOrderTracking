@@ -14,10 +14,10 @@ final class TextCollectionViewCell: UICollectionViewCell {
     
     static let identifier = String(describing: TextCollectionViewCell.self)
     
-   
+
     override func awakeFromNib() {
         super.awakeFromNib()
-        detailsLable.fontTextStyle = .smilesBody2
+        detailsLable.fontTextStyle = .smilesBody3
         detailsLable.textColor = .black.withAlphaComponent(0.8)
     }
     

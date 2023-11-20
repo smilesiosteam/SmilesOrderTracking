@@ -9,8 +9,11 @@ import Foundation
 
 final class OrderTrackingViewModel {
     var orderStatusModel = OrderTrackingModel()
+    var firebaseDatabaseManager = FirebaseDatabaseManager()
+    
     private let useCase = OrderTrackingUseCase()
     init() {
+        firebaseDatabaseManager.delegate = self
         configProcessingOrder()
         
         useCase.load()
@@ -37,5 +40,16 @@ final class OrderTrackingViewModel {
     
     func support() {
         print("Suppert Tapped")
+    }
+}
+
+// MARK: - FirebaseDatabaseManagerDelegate
+extension OrderTrackingViewModel: FirebaseDatabaseManagerDelegate {
+    func orderStatusDidChange(with orderId: String, orderNumber: String, orderStatus: OrderTrackingType, comingFromFirebase: Bool) {
+        // Todo: Call getOrderStatus api here
+    }
+    
+    func liveLocationDidUpdate(with latitude: Double, longitude: Double) {
+        // Todo: Update rider location on map
     }
 }

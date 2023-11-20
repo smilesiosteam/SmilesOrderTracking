@@ -20,7 +20,9 @@ let package = Package(
         .package(url: "https://github.com/smilesiosteam/SmilesUtilities.git", branch: "main"),
         .package(url: "https://github.com/smilesiosteam/SmilesFontsManager.git", branch: "main"),
         .package(url: "https://github.com/YAtechnologies/GoogleMaps-SP.git", .upToNextMinor(from: "7.2.0")),
-        .package(url: "https://github.com/firebase/firebase-ios-sdk.git", .upToNextMajor(from: "10.18.0"))
+        .package(url: "https://github.com/firebase/firebase-ios-sdk.git", .upToNextMajor(from: "10.18.0")),
+        .package(url: "https://github.com/smilesiosteam/SmilesBaseMainRequest.git", branch: "main"),
+        .package(url: "https://github.com/smilesiosteam/NetworkingLayer.git", branch: "main")
     ],
     targets: [
         // Targets are the basic building blocks of a package, defining a module or a test suite.
@@ -31,7 +33,9 @@ let package = Package(
                 .product(name: "SmilesUtilities", package: "SmilesUtilities"),
                 .product(name: "SmilesFontsManager", package: "SmilesFontsManager"),
                 .product(name: "GoogleMaps", package: "GoogleMaps-SP"),
-                .product(name: "FirebaseDatabase", package: "firebase-ios-sdk")
+                .product(name: "FirebaseDatabase", package: "firebase-ios-sdk"),
+                .product(name: "SmilesBaseMainRequestManager", package: "SmilesBaseMainRequest"),
+                .product(name: "NetworkingLayer", package: "NetworkingLayer")
             ]
         ),
         .testTarget(

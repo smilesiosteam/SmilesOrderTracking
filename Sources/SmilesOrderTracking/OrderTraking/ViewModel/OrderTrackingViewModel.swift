@@ -6,16 +6,22 @@
 //
 
 import Foundation
+import Combine
 
 final class OrderTrackingViewModel {
+    // MARK: - Properties
+    private var cancellables = Set<AnyCancellable>()
     var orderStatusModel = OrderTrackingModel()
     var firebaseDatabaseManager = FirebaseDatabaseManager()
+    let orderTrackingServiceHandler = OrderTrackingServiceHandler()
     
+    // MARK: - Lifecycle
     init() {
         firebaseDatabaseManager.delegate = self
         configProcessingOrder()
     }
     
+    // MARK: - Methods
     private func configProcessingOrder() {
         let progressBar: OrderProgressCollectionViewCell.ViewModel = .init(step: .first(percentage: 0.7), title: "Processing your order")
         var location: LocationCollectionViewCell.ViewModel = .init()
@@ -43,7 +49,18 @@ final class OrderTrackingViewModel {
 // MARK: - FirebaseDatabaseManagerDelegate
 extension OrderTrackingViewModel: FirebaseDatabaseManagerDelegate {
     func orderStatusDidChange(with orderId: String, orderNumber: String, orderStatus: OrderTrackingType, comingFromFirebase: Bool) {
-        // Todo: Call getOrderStatus api here
+        orderTrackingServiceHandler.getOrderTrackingStatus(orderId: orderId, orderStatus: orderStatus, orderNumber: orderNumber, isComingFromFirebase: comingFromFirebase)
+            .sink { completion in
+                switch completion {
+                case .failure(let error):
+                    print(error)
+                default:
+                    break
+                }
+            } receiveValue: { response in
+                // Change the states according to the response
+            }
+        .store(in: &cancellables)
     }
     
     func liveLocationDidUpdate(with latitude: Double, longitude: Double) {

@@ -13,6 +13,7 @@ final class TextCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak private var detailsLable: UILabel!
     
     static let identifier = String(describing: TextCollectionViewCell.self)
+    
    
     override func awakeFromNib() {
         super.awakeFromNib()

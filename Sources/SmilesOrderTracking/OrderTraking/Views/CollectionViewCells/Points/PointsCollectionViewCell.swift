@@ -16,6 +16,7 @@ final class PointsCollectionViewCell: UICollectionViewCell {
     @IBOutlet private weak var detailsLabel: UILabel!
     
     // MARK: - Properties
+    
     static let identifier = String(describing: PointsCollectionViewCell.self)
     
     override func awakeFromNib() {

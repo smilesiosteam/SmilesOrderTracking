@@ -12,6 +12,7 @@ enum TrackingCellType {
     case text(message: String)
     case location(model: LocationCollectionViewCell.ViewModel)
     case restaurant(model: RestaurantCollectionViewCell.ViewModel)
+    case subscription(model: FreeDeliveryCollectionViewCell.ViewModel)
 }
 
 enum TrackingHeaderType {

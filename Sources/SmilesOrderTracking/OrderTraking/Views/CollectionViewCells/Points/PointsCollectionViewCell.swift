@@ -38,3 +38,11 @@ final class PointsCollectionViewCell: UICollectionViewCell {
         detailsLabel.attributedText = attributedString
     }
 }
+
+
+extension PointsCollectionViewCell {
+    struct ViewModel {
+        var numberOfPoints: Int?
+        var text: String?
+    }
+}

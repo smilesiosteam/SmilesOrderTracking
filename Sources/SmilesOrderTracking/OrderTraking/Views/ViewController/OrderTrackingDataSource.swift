@@ -13,6 +13,7 @@ final class OrderTrackingDataSource: NSObject {
     private var orderStatusModel = OrderTrackingModel()
     private let headerName = OrderConstans.headerName.rawValue
     private let viewModel: OrderTrackingViewModel
+    
     // MARK: - Init
     init(viewModel: OrderTrackingViewModel) {
         self.viewModel = viewModel
@@ -30,7 +31,8 @@ extension OrderTrackingDataSource: UICollectionViewDataSource {
         orderStatusModel.items.count
     }
     
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+    func collectionView(_ collectionView: UICollectionView, 
+                        cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
         let type = orderStatusModel.items[indexPath.row]
         
@@ -50,11 +52,18 @@ extension OrderTrackingDataSource: UICollectionViewDataSource {
         case .restaurant(model: let model):
             let cell = collectionView.dequeueReusableCell(withClass: RestaurantCollectionViewCell.self, for: indexPath)
             cell.updateCell(with: model)
+        case .subscription(model: let model):
+            let cell = collectionView.dequeueReusableCell(withClass: FreeDeliveryCollectionViewCell.self, for: indexPath)
+            cell.updateCell(with: model, delegate: self)
             return cell
         }
+        
+        return UICollectionViewCell()
     }
     
-    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+    func collectionView(_ collectionView: UICollectionView, 
+                        viewForSupplementaryElementOfKind kind: String,
+                        at indexPath: IndexPath) -> UICollectionReusableView {
         let type = orderStatusModel.header
         
         switch type {
@@ -76,11 +85,11 @@ extension OrderTrackingDataSource: LocationCollectionViewProtocol {
         
     }
     
-    func didTappOrderDetails(orderId: String) {
+    func didTappOrderDetails(orderId: Int?) {
         
     }
     
-    func didTappCancelDetails(orderId: String) {
+    func didTappCancelDetails(orderId: Int?) {
         
     }
 }
@@ -96,3 +105,9 @@ extension OrderTrackingDataSource: HeaderCollectionViewProtocol {
     }
 }
 
+// MARK: - Subscription Delegate
+extension OrderTrackingDataSource: FreeDeliveryCollectionViewProtocol {
+    func didTappSubscribeNow(with url: String?) {
+        
+    }
+}

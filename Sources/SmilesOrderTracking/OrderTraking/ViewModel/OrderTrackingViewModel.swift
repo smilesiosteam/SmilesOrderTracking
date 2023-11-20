@@ -9,9 +9,11 @@ import Foundation
 
 final class OrderTrackingViewModel {
     var orderStatusModel = OrderTrackingModel()
-    
+    private let useCase = OrderTrackingUseCase()
     init() {
         configProcessingOrder()
+        
+        useCase.load()
     }
     
     private func configProcessingOrder() {

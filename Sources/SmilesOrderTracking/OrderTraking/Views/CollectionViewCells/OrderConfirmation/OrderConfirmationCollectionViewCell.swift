@@ -59,8 +59,6 @@ final class OrderConfirmationCollectionViewCell: UICollectionViewCell {
     // MARK: - Properties
     weak var delegate: OrderConfirmationCellActionDelegate?
     
-    static let identifier = String(describing: OrderConfirmationCollectionViewCell.self)
-    
     // MARK: - Lifecycle
     override func awakeFromNib() {
         super.awakeFromNib()

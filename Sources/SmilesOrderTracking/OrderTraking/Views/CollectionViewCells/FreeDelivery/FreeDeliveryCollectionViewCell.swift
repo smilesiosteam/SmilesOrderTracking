@@ -16,7 +16,6 @@ final class FreeDeliveryCollectionViewCell: UICollectionViewCell {
     @IBOutlet private weak var titleLabel: UILabel!
     @IBOutlet private weak var subscribeButton: UIButton!
     
-    static let identifier =  String(describing: FreeDeliveryCollectionViewCell.self)
    
     override func awakeFromNib() {
         super.awakeFromNib()

@@ -18,9 +18,6 @@ final class OrderProgressCollectionViewCell: UICollectionViewCell {
     @IBOutlet private weak var thirdStepView: UIView!
     @IBOutlet private weak var fourthStepView: UIView!
     
-    // MARK: - Properties
-    
-    static let identifier = String(describing: OrderProgressCollectionViewCell.self)
     override func awakeFromNib() {
         super.awakeFromNib()
         configControllers()
@@ -32,13 +29,12 @@ final class OrderProgressCollectionViewCell: UICollectionViewCell {
 //        titleLabel.text = viewModel.title
 //        timeLabel.text = viewModel.time
         
-        switch viewModel.type {
-        case .orderOnWay:
-            timeLabel.isHidden = false
-            titleLabel.fontTextStyle = .smilesHeadline4
-        case .oderFinished:
+        if viewModel.hideTimeLabel {
             timeLabel.isHidden = true
             titleLabel.fontTextStyle = .smilesHeadline2
+        } else {
+            timeLabel.isHidden = false
+            titleLabel.fontTextStyle = .smilesHeadline4
         }
     }
     private func configControllers() {
@@ -101,12 +97,7 @@ extension OrderProgressCollectionViewCell {
         var step: ProgressSteps = .completed
         var title: String?
         var time: String?
-        var type: CellType = .oderFinished
-    }
-    
-    enum CellType {
-        case orderOnWay
-        case oderFinished
+        var hideTimeLabel = true
     }
 }
 

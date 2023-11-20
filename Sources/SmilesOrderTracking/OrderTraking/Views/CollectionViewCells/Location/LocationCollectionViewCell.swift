@@ -15,12 +15,6 @@ protocol LocationCollectionViewProtocol: AnyObject {
     func didTappCancelDetails(orderId: String)
 }
 
-extension LocationCollectionViewProtocol{
-    func didTappCallRestaurant(mobileNumber: String?) {}
-    func didTappOrderDetails(orderId: String) {}
-    func didTappCancelDetails(orderId: String) {}
-}
-
 final class LocationCollectionViewCell: UICollectionViewCell {
     
     // MARK: - Outlets
@@ -35,9 +29,6 @@ final class LocationCollectionViewCell: UICollectionViewCell {
     @IBOutlet private weak var stackDetails: UIStackView!
     
     // MARK: - Properties
-    
-    static let identifier = String(describing: LocationCollectionViewCell.self)
-    
     private var viewModel: ViewModel = .init()
     private weak var delegate: LocationCollectionViewProtocol?
     
@@ -66,8 +57,8 @@ final class LocationCollectionViewCell: UICollectionViewCell {
     func updateCell(with viewModel: ViewModel, delegate: LocationCollectionViewProtocol) {
         self.delegate = delegate
         self.viewModel = viewModel
-//        startAddressLabel.text = viewModel.startAddress
-//        endAddressLabel.text = viewModel.endAddress
+        startAddressLabel.text = viewModel.startAddress
+        endAddressLabel.text = viewModel.endAddress
         configCellType()
     }
     

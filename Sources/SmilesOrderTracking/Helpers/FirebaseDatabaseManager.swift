@@ -21,7 +21,10 @@ struct FirebaseDatabaseManager {
     
     mutating func fetchLiveOrderUpdates(for orderNumber: String) {
         // Retrieve a previous created named app.
-        guard let secondary = FirebaseApp.app(name: "secondary") else { assert(false, "Could not retrieve secondary app") }
+        guard let secondary = FirebaseApp.app(name: "secondary") else {
+            assert(false, "Could not retrieve secondary app")
+            return
+        }
         
         // Retrieve a Real Time Database client configured against a specific app.
         let secondaryDb = Database.database(app: secondary)
@@ -40,7 +43,10 @@ struct FirebaseDatabaseManager {
     
     mutating func fetchLiveLocationUpdates(for liveTrackingId: String) {
         // Retrieve a previous created named app.
-        guard let secondary = FirebaseApp.app(name: "secondary") else { assert(false, "Could not retrieve secondary app") }
+        guard let secondary = FirebaseApp.app(name: "secondary") else {
+            assert(false, "Could not retrieve secondary app")
+            return
+        }
         
         // Retrieve a Real Time Database client configured against a specific app.
         let secondaryDb = Database.database(app: secondary)

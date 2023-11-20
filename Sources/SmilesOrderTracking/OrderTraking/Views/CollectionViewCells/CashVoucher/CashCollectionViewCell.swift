@@ -14,7 +14,6 @@ final class CashCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var containerView: UIView!
     @IBOutlet private weak var titleLabel: UILabel!
     
-    static let identifier = String(describing: CashCollectionViewCell.self)
     
     override func awakeFromNib() {
         super.awakeFromNib()

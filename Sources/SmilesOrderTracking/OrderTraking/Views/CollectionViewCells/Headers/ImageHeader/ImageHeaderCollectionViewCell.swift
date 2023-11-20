@@ -22,8 +22,6 @@ final class ImageHeaderCollectionViewCell: UICollectionReusableView {
     @IBOutlet private weak var supportButton: UIButton!
     @IBOutlet weak var headerStack: UIStackView!
     
-    static let identifier = String(describing: ImageHeaderCollectionViewCell.self)
-    
     private weak var delegate: HeaderCollectionViewProtocol?
     // MARK: - Life Cycle
     override func awakeFromNib() {

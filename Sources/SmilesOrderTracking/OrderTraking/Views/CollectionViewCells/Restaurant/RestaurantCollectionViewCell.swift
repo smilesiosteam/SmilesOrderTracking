@@ -18,7 +18,6 @@ final class RestaurantCollectionViewCell: UICollectionViewCell {
     
     // MARK: - Properties
     private var viewModel = ViewModel()
-    static let identifier = String(describing: RestaurantCollectionViewCell.self)
     
     // MARK: - Life Cycle
     override func awakeFromNib() {

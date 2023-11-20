@@ -18,9 +18,6 @@ final class OrderProgressCollectionViewCell: UICollectionViewCell {
     @IBOutlet private weak var thirdStepView: UIView!
     @IBOutlet private weak var fourthStepView: UIView!
     
-    // MARK: - Properties
-    static let identifier = String(describing: OrderProgressCollectionViewCell.self)
-    
     override func awakeFromNib() {
         super.awakeFromNib()
         configControllers()

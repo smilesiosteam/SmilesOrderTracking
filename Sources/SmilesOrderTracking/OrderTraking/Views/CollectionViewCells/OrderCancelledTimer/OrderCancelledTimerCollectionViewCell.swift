@@ -44,7 +44,6 @@ final class OrderCancelledTimerCollectionViewCell: UICollectionViewCell {
     
     // MARK: - Properties
     weak var delegate: OrderCancelledTimerCellActionDelegate?
-    static let identifier = String(describing: OrderCancelledTimerCollectionViewCell.self)
     private var timer: Timer?
     var count = 900
     

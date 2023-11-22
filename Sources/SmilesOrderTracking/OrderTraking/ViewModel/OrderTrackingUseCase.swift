@@ -24,7 +24,7 @@ final class OrderTrackingUseCase {
         }
     }
     
-    func configOrderStatus(response: OrderTrackingResponseModel) -> OrderTrackingModel {
+    func configOrderStatus(response: OrderTrackingStatusResponse) -> OrderTrackingModel {
         let status = response.orderDetails?.orderStatus
         
         switch status {

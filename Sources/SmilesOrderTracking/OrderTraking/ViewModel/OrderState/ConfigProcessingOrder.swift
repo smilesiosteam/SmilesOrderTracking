@@ -8,11 +8,7 @@
 import Foundation
 
 struct ConfigProcessingOrder: OrderTrackable {
-    var response: OrderTrackingResponseModel
-    
-    init(response: OrderTrackingResponseModel) {
-        self.response = response
-    }
+    var response: OrderTrackingStatusResponse
     
     func build() -> OrderTrackingModel {
         var progressBar = orderProgressBar

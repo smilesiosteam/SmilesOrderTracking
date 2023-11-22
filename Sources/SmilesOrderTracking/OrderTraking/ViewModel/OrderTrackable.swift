@@ -9,7 +9,7 @@ import Foundation
 import SmilesUtilities
 
 protocol OrderTrackable {
-    var response: OrderTrackingResponseModel { get set }
+    var response: OrderTrackingStatusResponse { get set }
     func build() -> OrderTrackingModel
 }
 
@@ -26,7 +26,7 @@ extension OrderTrackable {
         vieModel.startAddress = response.orderDetails?.restaurantAddress
         vieModel.endAddress = response.orderDetails?.deliveryAdrress
         vieModel.restaurantNumber = response.orderDetails?.restaurentNumber
-        vieModel.orderId = response.orderDetails?.orderID
+        vieModel.orderId = response.orderDetails?.orderId
         return vieModel
     }
     
@@ -59,7 +59,7 @@ extension OrderTrackable {
     var orderRestaurant: RestaurantCollectionViewCell.ViewModel {
         var viewModel = RestaurantCollectionViewCell.ViewModel()
         viewModel.name = response.orderDetails?.restaurantName
-        viewModel.iconUrl = response.orderDetails?.iconURL
+        viewModel.iconUrl = response.orderDetails?.iconUrl
         let orderItems = response.orderItems?.map({ "\($0.quantity ?? 0) x \($0.itemName ?? "")" }) ?? []
         viewModel.items = orderItems.joined(separator: "\n")
         return viewModel

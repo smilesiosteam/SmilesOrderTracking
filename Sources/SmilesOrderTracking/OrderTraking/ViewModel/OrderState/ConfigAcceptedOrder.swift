@@ -9,7 +9,7 @@ import Foundation
 
 
 struct ConfigAcceptedOrder: OrderTrackable {
-    var response: OrderTrackingResponseModel
+    var response: OrderTrackingStatusResponse
     
     func build() -> OrderTrackingModel {
         var progressBar = orderProgressBar

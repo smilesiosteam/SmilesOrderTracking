@@ -14,8 +14,6 @@ final class OrderTrackingViewModel {
     var orderStatusModel = OrderTrackingModel()
 //     var firebaseDatabaseManager = FirebaseDatabaseManager()
     @Published private(set) var isShowToast = false
-    private var cancellables: Set<AnyCancellable> = []
-    private let useCase = OrderTrackingUseCase()
     init() {
 //        firebaseDatabaseManager.delegate = self
 //        configProcessingOrder()

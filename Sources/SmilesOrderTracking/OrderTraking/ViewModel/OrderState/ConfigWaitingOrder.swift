@@ -8,7 +8,7 @@
 import Foundation
 
 struct ConfigWaitingOrder: OrderTrackable {
-    var response: OrderTrackingResponseModel
+    var response: OrderTrackingStatusResponse
     
     func build() -> OrderTrackingModel {
         var progressBar = orderProgressBar

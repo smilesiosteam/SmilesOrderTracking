@@ -48,7 +48,7 @@ extension OrderTrackable {
         if let subscriptionModel = response.orderDetails?.subscriptionBanner {
             var viewModel = FreeDeliveryCollectionViewCell.ViewModel()
             viewModel.iconUrl = subscriptionModel.subscriptionIcon
-            viewModel.redirectUrl = subscriptionModel.redirectionURL
+            viewModel.redirectUrl = subscriptionModel.redirectionUrl
             viewModel.title = subscriptionModel.subscriptionTitle
             viewModel.subTitle = "No set Yet"
             return viewModel

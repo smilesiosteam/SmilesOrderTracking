@@ -15,7 +15,7 @@ final class OrderTrackingUseCase {
     func load() {
         if let jsonData = jsonString.data(using: .utf8) {
             do {
-                let orderResponse = try JSONDecoder().decode(OrderTrackingResponseModel.self, from: jsonData)
+                let orderResponse = try JSONDecoder().decode(OrderTrackingStatusResponse.self, from: jsonData)
                 print(orderResponse)
                 orderModel =  self.configOrderStatus(response: orderResponse)
             } catch {

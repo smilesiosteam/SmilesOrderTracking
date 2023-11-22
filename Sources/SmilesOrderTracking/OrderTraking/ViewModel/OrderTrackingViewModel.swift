@@ -8,6 +8,9 @@
 import Foundation
 import Combine
 final class OrderTrackingViewModel {
+    // MARK: - Properties
+    private var cancellables = Set<AnyCancellable>()
+    private let useCase = OrderTrackingUseCase()
     var orderStatusModel = OrderTrackingModel()
 //     var firebaseDatabaseManager = FirebaseDatabaseManager()
     @Published private(set) var isShowToast = false

@@ -18,6 +18,10 @@ final class OrderProgressCollectionViewCell: UICollectionViewCell {
     @IBOutlet private weak var thirdStepView: UIView!
     @IBOutlet private weak var fourthStepView: UIView!
     
+    // MARK: - Properties
+    private var leadingConstraint: NSLayoutConstraint!
+    private let animatedView = UIView()
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         configControllers()
@@ -26,8 +30,8 @@ final class OrderProgressCollectionViewCell: UICollectionViewCell {
     // MARK: - Functions
     func updateCell(with viewModel: ViewModel) {
         setProgressBar(step: viewModel.step)
-//        titleLabel.text = viewModel.title
-//        timeLabel.text = viewModel.time
+        titleLabel.text = viewModel.title
+        timeLabel.text = viewModel.time
         
         if viewModel.hideTimeLabel {
             timeLabel.isHidden = true
@@ -47,16 +51,16 @@ final class OrderProgressCollectionViewCell: UICollectionViewCell {
         [firstStepView, secondStepView, thirdStepView, fourthStepView].forEach({ $0?.backgroundColor = .black.withAlphaComponent(0.1) })
     }
     
-    private func fillViewWAfterStepCompleted(currentView: UIView, percentage: Double) {
-        currentView.backgroundColor = .appRevampPurpleMainColor.withAlphaComponent(0.2)
-        let gradientLayer = CAGradientLayer()
-        gradientLayer.colors = [UIColor.appRevampPurpleMainColor.cgColor, UIColor.appRevampPurpleMainColor.cgColor]
-        
-        let width = currentView.frame.width * percentage
-        let height = currentView.frame.height
-        gradientLayer.frame = CGRect(x: 0, y: 0, width: width, height: height)
-        currentView.layer.addSublayer(gradientLayer)
-    }
+//    private func fillViewWAfterStepCompleted(currentView: UIView, percentage: Double) {
+//        currentView.backgroundColor = .appRevampPurpleMainColor.withAlphaComponent(0.2)
+//        let gradientLayer = CAGradientLayer()
+//        gradientLayer.colors = [UIColor.appRevampPurpleMainColor.cgColor, UIColor.appRevampPurpleMainColor.cgColor]
+//        
+//        let width = currentView.frame.width * percentage
+//        let height = currentView.frame.height
+//        gradientLayer.frame = CGRect(x: 0, y: 0, width: width, height: height)
+//        currentView.layer.addSublayer(gradientLayer)
+//    }
     
     private func fillResetCompletedSteps(views: [UIView]) {
         views.forEach({ $0.backgroundColor = .appRevampPurpleMainColor })
@@ -66,16 +70,16 @@ final class OrderProgressCollectionViewCell: UICollectionViewCell {
         setAllStepsWithClearColor()
         switch step {
             
-        case .first(percentage: let percentage):
-            fillViewWAfterStepCompleted(currentView: firstStepView, percentage: percentage)
-        case .second(percentage: let percentage):
-            fillViewWAfterStepCompleted(currentView: secondStepView, percentage: percentage)
+        case .first:
+            setAnimatedView(on: firstStepView)
+        case .second:
+            setAnimatedView(on: secondStepView)
             fillResetCompletedSteps(views: [firstStepView])
-        case .third(percentage: let percentage):
-            fillViewWAfterStepCompleted(currentView: thirdStepView, percentage: percentage)
+        case .third:
+            setAnimatedView(on: thirdStepView)
             fillResetCompletedSteps(views: [firstStepView, secondStepView])
-        case .fourth(percentage: let percentage):
-            fillViewWAfterStepCompleted(currentView: fourthStepView, percentage: percentage)
+        case .fourth:
+            setAnimatedView(on: fourthStepView)
             fillResetCompletedSteps(views: [firstStepView, secondStepView, thirdStepView])
         case .completed:
             fillResetCompletedSteps(views: [firstStepView, secondStepView, thirdStepView, fourthStepView])
@@ -84,12 +88,56 @@ final class OrderProgressCollectionViewCell: UICollectionViewCell {
     
 }
 
+// MARK: - Animation
+extension OrderProgressCollectionViewCell {
+    private func setAnimatedView(on currentView: UIView) {
+        
+        animatedView.backgroundColor = .clear
+        currentView.addSubview(animatedView)
+        animatedView.translatesAutoresizingMaskIntoConstraints = false
+        
+        NSLayoutConstraint.activate([
+            animatedView.heightAnchor.constraint(equalToConstant: 5),
+            animatedView.leadingAnchor.constraint(equalTo: currentView.leadingAnchor),
+        ])
+        
+        leadingConstraint = animatedView.trailingAnchor.constraint(equalTo: currentView.trailingAnchor, constant: 0)
+        leadingConstraint.isActive = true
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+            self.leadingConstraint.constant = -currentView.frame.width
+            self.animatedView.backgroundColor = .appRevampPurpleMainColor
+            self.contentView.layoutIfNeeded()
+            self.startFillAnimation(on: currentView)
+        }
+    }
+    private func startFillAnimation(on currentView: UIView) {
+        UIView.animate(withDuration: 1.0, delay: 0.0, options: [.curveLinear], animations: {
+            
+            self.leadingConstraint.constant = 0
+            self.contentView.layoutIfNeeded() // Trigger layout update
+        }, completion: { _ in
+            UIView.animate(withDuration: 1.0, animations: {
+                self.animatedView.backgroundColor = .appRevampPurpleMainColor.withAlphaComponent(0.0)
+                
+                self.contentView.layoutIfNeeded()
+            }) { _ in
+                // Repeat the animation
+                self.leadingConstraint.constant = -currentView.frame.width
+                self.animatedView.backgroundColor = .appRevampPurpleMainColor
+                self.contentView.layoutIfNeeded()
+                self.startFillAnimation(on: currentView)
+            }
+        })
+    }
+}
+
 extension OrderProgressCollectionViewCell {
     enum ProgressSteps {
-        case first(percentage: Double)
-        case second(percentage: Double)
-        case third(percentage: Double)
-        case fourth(percentage: Double)
+        case first
+        case second
+        case third
+        case fourth
         case completed
     }
     

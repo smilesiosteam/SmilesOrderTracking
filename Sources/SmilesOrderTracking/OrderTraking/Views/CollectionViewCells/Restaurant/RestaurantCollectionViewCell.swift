@@ -29,12 +29,13 @@ final class RestaurantCollectionViewCell: UICollectionViewCell {
     func updateCell(with viewModel: ViewModel) {
         self.viewModel = viewModel
         nameLabel.text = viewModel.name
-        purchasedItemsLabel.text = viewModel.itemsString
+        purchasedItemsLabel.text = viewModel.items
         purchasedItemsLabel.setLineHeight(lineHeight: 8)
+        iconView.setImageWithUrlString(viewModel.iconUrl ?? "")
     }
     
     private func configControllers() {
-        iconView.image = UIImage(resource: .pickupIcon)
+        iconView.layer.cornerRadius = 8
         nameLabel.fontTextStyle = .smilesHeadline4
         containerView.layer.cornerRadius = 12
         containerView.layer.borderWidth = 1
@@ -48,9 +49,6 @@ extension RestaurantCollectionViewCell {
     struct ViewModel {
         var name: String?
         var iconUrl: String?
-        var items: [String] = []
-        var itemsString: String {
-            items.joined(separator: "\n")
-        }
+        var items: String?
     }
 }

@@ -6,32 +6,53 @@
 //
 
 import Foundation
+import Combine
 
 final class OrderTrackingUseCase {
     
+    var orderModel: OrderTrackingModel = .init()
+    @Published private(set) var isShowToast = false
     func load() {
         if let jsonData = jsonString.data(using: .utf8) {
             do {
                 let orderResponse = try JSONDecoder().decode(OrderTrackingResponseModel.self, from: jsonData)
                 print(orderResponse)
+                orderModel =  self.configOrderStatus(response: orderResponse)
             } catch {
                 print("Error decoding JSON: \(error)")
             }
         }
     }
     
-    
-    
-    
-    
-    
+    func configOrderStatus(response: OrderTrackingResponseModel) -> OrderTrackingModel {
+        let status = response.orderDetails?.orderStatus
+        
+        switch status {
+        case OrderTrackingType.orderProcessing.rawValue:
+            return ConfigProcessingOrder(response: response).build()
+        case OrderTrackingType.waitingForTheRestaurant.rawValue:
+            return ConfigWaitingOrder(response: response).build()
+        case OrderTrackingType.orderAccepted.rawValue:
+            isShowToast = true
+            return ConfigAcceptedOrder(response: response).build()
+        case OrderTrackingType.inTheKitchen.rawValue:
+            return ConfigInTheKitchenOrder(response: response).build()
+        case OrderTrackingType.orderIsReadyForPickup.rawValue,  OrderTrackingType.orderHasBeenPickedUp.rawValue:
+            return ConfigInTheKitchenOrder(response: response).build()
+        default:
+            return ConfigWaitingOrder(response: response).build()
+            
+        }
+        
+    }
+
 }
 
 let jsonString = """
 {
   "extTransactionId": "3530191483630",
   "orderDetails": {
-    "orderStatus": 0,
+    "orderStatus": 2,
     "title": "Waiting for the restaurant",
     "orderDescription": "Hardee's should accept your order soon.",
     "orderNumber": "SMHD112020230000467215",
@@ -62,7 +83,7 @@ let jsonString = """
     "isCancelationAllowed": false,
     "orderType": "DELIVERY",
     "determineStatus": false,
-    "earnPoints": 0,
+    "earnPoints": 120,
     "addressTitle": "Home",
     "reOrder": true,
     "liveTracking": false,
@@ -101,6 +122,45 @@ let jsonString = """
       "isVeg": false,
       "isEggIncluded": false,
       "itemName": "Quattro Box",
+      "price": 56.0,
+      "inlineItemIncluded": false
+    },
+    {
+      "quantity": 4,
+      "choicesName": [
+        " Wraptor sandwich ,  Mayonnaise ,  Wraptor sandwich ,  Mayonnaise ,  Wraptor sandwich ,  Mayonnaise ,  Wraptor sandwich ,  Mayonnaise ,  Family Curly fries ,   7 Up "
+      ],
+      "discountPrice": 56.0,
+      "actualChoicePoints": 6223,
+      "isVeg": false,
+      "isEggIncluded": false,
+      "itemName": "Dummy Box",
+      "price": 56.0,
+      "inlineItemIncluded": false
+    },
+    {
+      "quantity": 10,
+      "choicesName": [
+        " Wraptor sandwich ,  Mayonnaise ,  Wraptor sandwich ,  Mayonnaise ,  Wraptor sandwich ,  Mayonnaise ,  Wraptor sandwich ,  Mayonnaise ,  Family Curly fries ,   7 Up "
+      ],
+      "discountPrice": 56.0,
+      "actualChoicePoints": 6223,
+      "isVeg": false,
+      "isEggIncluded": false,
+      "itemName": "Beef",
+      "price": 56.0,
+      "inlineItemIncluded": false
+    },
+    {
+      "quantity": 18,
+      "choicesName": [
+        " Wraptor sandwich ,  Mayonnaise ,  Wraptor sandwich ,  Mayonnaise ,  Wraptor sandwich ,  Mayonnaise ,  Wraptor sandwich ,  Mayonnaise ,  Family Curly fries ,   7 Up "
+      ],
+      "discountPrice": 56.0,
+      "actualChoicePoints": 6223,
+      "isVeg": false,
+      "isEggIncluded": false,
+      "itemName": "Burger",
       "price": 56.0,
       "inlineItemIncluded": false
     }

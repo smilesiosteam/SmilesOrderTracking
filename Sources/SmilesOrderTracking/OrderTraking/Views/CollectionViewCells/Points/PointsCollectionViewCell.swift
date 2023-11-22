@@ -21,13 +21,13 @@ final class PointsCollectionViewCell: UICollectionViewCell {
     }
     
     // MARK: - Functions
-    func updateCell(with points: String) {
+    func updateCell(with viewModel: ViewModel) {
         
         let text = OrderTrackingLocalization.points.text
-        let combinedText = "\(points) \(text)"
+        let combinedText = "\(viewModel.numberOfPoints) \(text)"
         let attributedString = NSMutableAttributedString(string: combinedText)
         
-        let boldRange = (combinedText as NSString).range(of: "\(points)")
+        let boldRange = (combinedText as NSString).range(of: "\(viewModel.numberOfPoints)")
         let boldFont = SmilesFontsManager.defaultAppFont.getFont(style: .medium, size: 16)
         attributedString.addAttributes([.font: boldFont], range: boldRange)
         
@@ -42,7 +42,7 @@ final class PointsCollectionViewCell: UICollectionViewCell {
 
 extension PointsCollectionViewCell {
     struct ViewModel {
-        var numberOfPoints: Int?
+        var numberOfPoints: Int = 0
         var text: String?
     }
 }

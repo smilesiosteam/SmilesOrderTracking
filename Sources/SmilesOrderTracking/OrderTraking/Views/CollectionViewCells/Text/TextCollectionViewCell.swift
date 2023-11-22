@@ -18,7 +18,7 @@ final class TextCollectionViewCell: UICollectionViewCell {
         detailsLable.textColor = .black.withAlphaComponent(0.8)
     }
     
-    func updateCell(with details: String) {
+    func updateCell(with details: String?) {
         detailsLable.text = details
     }
 }

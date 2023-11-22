@@ -26,6 +26,7 @@ enum OrderTrackingLocalization {
     case orderCancelledBadWeather
     case orderCancelledLikeToPickupOrder
     case minText
+    case orderAccepted
     
     var text: String {
         switch self {
@@ -63,6 +64,8 @@ enum OrderTrackingLocalization {
             return "I’d like to pick up order"
         case .minText:
             return "MinTitle".localizedString
+        case .orderAccepted:
+            return "Your order has been accepted"
         }
     }
 }

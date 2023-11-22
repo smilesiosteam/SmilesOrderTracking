@@ -1,0 +1,34 @@
+//
+//  File.swift
+//  
+//
+//  Created by Ahmed Naguib on 21/11/2023.
+//
+
+import Foundation
+
+struct ConfigProcessingOrder: OrderTrackable {
+    var response: OrderTrackingResponseModel
+    
+    init(response: OrderTrackingResponseModel) {
+        self.response = response
+    }
+    
+    func build() -> OrderTrackingModel {
+        var progressBar = orderProgressBar
+        progressBar.step = .first
+        
+        var location = orderLocation
+        location.type = .cancel
+        
+        let cells: [TrackingCellType] = [
+            .progressBar(model: progressBar),
+            .text(message: orderText),
+            .location(model: location),
+            .restaurant(model: orderRestaurant)
+        ]
+        
+        let header: TrackingHeaderType = .image(model: .init(isShowSupportHeader: false))
+        return .init(header: header, cells: cells)
+    }
+}

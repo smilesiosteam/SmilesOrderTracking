@@ -9,10 +9,11 @@ import Foundation
 
 enum TrackingCellType {
     case progressBar(model: OrderProgressCollectionViewCell.ViewModel)
-    case text(message: String)
+    case text(message: String?)
     case location(model: LocationCollectionViewCell.ViewModel)
     case restaurant(model: RestaurantCollectionViewCell.ViewModel)
     case subscription(model: FreeDeliveryCollectionViewCell.ViewModel)
+    case point(model: PointsCollectionViewCell.ViewModel)
 }
 
 enum TrackingHeaderType {
@@ -22,5 +23,5 @@ enum TrackingHeaderType {
 
 struct OrderTrackingModel {
     var header: TrackingHeaderType = .image(model: .init())
-    var items: [TrackingCellType] = []
+    var cells: [TrackingCellType] = []
 }

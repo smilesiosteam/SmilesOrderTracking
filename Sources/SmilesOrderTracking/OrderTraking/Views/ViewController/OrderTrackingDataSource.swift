@@ -28,13 +28,13 @@ final class OrderTrackingDataSource: NSObject {
 // MARK: - DataSource
 extension OrderTrackingDataSource: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        orderStatusModel.items.count
+        orderStatusModel.cells.count
     }
     
     func collectionView(_ collectionView: UICollectionView, 
                         cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
-        let type = orderStatusModel.items[indexPath.row]
+        let type = orderStatusModel.cells[indexPath.row]
         
         switch type {
         case .progressBar(model: let model):
@@ -52,13 +52,16 @@ extension OrderTrackingDataSource: UICollectionViewDataSource {
         case .restaurant(model: let model):
             let cell = collectionView.dequeueReusableCell(withClass: RestaurantCollectionViewCell.self, for: indexPath)
             cell.updateCell(with: model)
+            return cell
         case .subscription(model: let model):
             let cell = collectionView.dequeueReusableCell(withClass: FreeDeliveryCollectionViewCell.self, for: indexPath)
             cell.updateCell(with: model, delegate: self)
             return cell
+        case .point(model: let model):
+            let cell = collectionView.dequeueReusableCell(withClass: PointsCollectionViewCell.self, for: indexPath)
+            cell.updateCell(with: model)
+            return cell
         }
-        
-        return UICollectionViewCell()
     }
     
     func collectionView(_ collectionView: UICollectionView, 

@@ -36,7 +36,19 @@ final class MapHeaderCollectionViewCell: UICollectionReusableView {
     // MARK: - Functions
     func updateCell(with viewModel: ViewModel, delegate: HeaderCollectionViewProtocol) {
         self.delegate = delegate
+        
+        let startPoint = CLLocationCoordinate2D(latitude: viewModel.startPoint.lat, longitude: viewModel.startPoint.lang)
+        let endPoint = CLLocationCoordinate2D(latitude: viewModel.endPoint.lat, longitude: viewModel.endPoint.lang)
+
+        let bounds = GMSCoordinateBounds(coordinate: startPoint, coordinate: endPoint)
+        let padding = UIEdgeInsets(top: 100, left: 50, bottom: 100, right: 50)
+        let cameraUpdate = GMSCameraUpdate.fit(bounds, with: padding)
+        
+        mapView.animate(with: cameraUpdate)
+        mapView.addMarker(model: viewModel.startPoint)
+        mapView.addMarker(model: viewModel.endPoint)
     }
+    
     private func configControllers() {
         dismissButton.layer.cornerRadius = 20
         supportButton.layer.cornerRadius = 20
@@ -53,7 +65,10 @@ final class MapHeaderCollectionViewCell: UICollectionReusableView {
 }
 
 extension MapHeaderCollectionViewCell {
+    
     struct ViewModel {
-        
+        var startPoint: MarkerModel
+        var endPoint: MarkerModel
+        var userImageURL: String
     }
 }

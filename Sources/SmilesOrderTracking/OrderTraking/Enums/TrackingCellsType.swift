@@ -14,6 +14,8 @@ enum TrackingCellType {
     case restaurant(model: RestaurantCollectionViewCell.ViewModel)
     case subscription(model: FreeDeliveryCollectionViewCell.ViewModel)
     case point(model: PointsCollectionViewCell.ViewModel)
+    case driver(model: DriverCollectionViewCell.ViewModel)
+    case rating(model: RatingCollectionViewCell.ViewModel)
 }
 
 enum TrackingHeaderType {

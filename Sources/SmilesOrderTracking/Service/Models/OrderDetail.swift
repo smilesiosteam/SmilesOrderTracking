@@ -97,7 +97,7 @@ struct OrderDetail: Codable {
     var deliveryTimeRangeV2: String?
     var orderDescriptionRangeV2: String?
     var subscriptionBannerV2: SubscriptionsBannerV2?
-
+    var driverStatusText: String?
     enum CodingKeys: String, CodingKey {
         case virtualRestaurantIncluded
         case inlineItemTotal
@@ -183,6 +183,7 @@ struct OrderDetail: Codable {
         case deliveryTimeRangeV2
         case orderDescriptionRangeV2
         case subscriptionBannerV2
+        case driverStatusText
     }
     
     init(from decoder: Decoder) throws {
@@ -274,6 +275,7 @@ struct OrderDetail: Codable {
         deliveryTimeRangeV2 = try values.decodeIfPresent(String.self, forKey: .deliveryTimeRangeV2)
         orderDescriptionRangeV2 = try values.decodeIfPresent(String.self, forKey: .orderDescriptionRangeV2)
         subscriptionBannerV2 = try values.decodeIfPresent(SubscriptionsBannerV2.self, forKey: .subscriptionBannerV2)
+        driverStatusText = try values.decodeIfPresent(String.self, forKey: .driverStatusText)
     }
     
     func getIconForStatus(withOrderType orderType: String?) -> String {

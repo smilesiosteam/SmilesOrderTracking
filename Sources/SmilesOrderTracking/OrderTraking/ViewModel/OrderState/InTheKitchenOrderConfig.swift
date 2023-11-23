@@ -2,17 +2,18 @@
 //  File.swift
 //  
 //
-//  Created by Ahmed Naguib on 21/11/2023.
+//  Created by Ahmed Naguib on 22/11/2023.
 //
 
 import Foundation
 
-struct ConfigWaitingOrder: OrderTrackable {
+struct InTheKitchenOrderConfig: OrderTrackable {
     var response: OrderTrackingStatusResponse
     
     func build() -> OrderTrackingModel {
         var progressBar = orderProgressBar
-        progressBar.step = .first
+        progressBar.step = .second
+        progressBar.hideTimeLabel = false
         
         var location = orderLocation
         location.type = .details
@@ -30,7 +31,7 @@ struct ConfigWaitingOrder: OrderTrackable {
             cells.append(.subscription(model: orderSubscription))
         }
         
-        let header: TrackingHeaderType = .image(model: .init(isShowSupportHeader: true))
+        let header: TrackingHeaderType = .map(model: orderMapModel)
         return .init(header: header, cells: cells)
     }
 }

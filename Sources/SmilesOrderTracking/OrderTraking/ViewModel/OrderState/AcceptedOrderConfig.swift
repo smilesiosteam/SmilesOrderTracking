@@ -7,8 +7,7 @@
 
 import Foundation
 
-
-struct ConfigAcceptedOrder: OrderTrackable {
+struct AcceptedOrderConfig: OrderTrackable {
     var response: OrderTrackingStatusResponse
     
     func build() -> OrderTrackingModel {

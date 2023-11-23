@@ -9,8 +9,8 @@ import UIKit
 import SmilesFontsManager
 
 // MARK: - Protocol
-protocol DriverCellActionDelegate: AnyObject {
-    func actionButtonDidTap()
+protocol DriverCellActionDelegate: AnyObject, PhoneCallable {
+    func opneMap(lat: Double, lng: Double)
 }
 
 final class DriverCollectionViewCell: UICollectionViewCell {
@@ -33,6 +33,7 @@ final class DriverCollectionViewCell: UICollectionViewCell {
     
     // MARK: - Properties
     weak var delegate: DriverCellActionDelegate?
+    private var viewModel: ViewModel = .init()
     
     // MARK: - Lifecycle
     override func awakeFromNib() {
@@ -41,24 +42,25 @@ final class DriverCollectionViewCell: UICollectionViewCell {
     
     // MARK: - Actions
     @IBAction private func actionButtonTapped(_ sender: UIButton) {
-        delegate?.actionButtonDidTap()
+        delegate?.didTappPhoneCall(with: viewModel.driverMobileNumber)
     }
     
     // MARK: - Methods
-    func updateCell(with viewModel: ViewModel) {
-        delegate = viewModel.delegate
+    func updateCell(with viewModel: ViewModel, delegate: DriverCellActionDelegate) {
+        self.delegate = delegate
+        self.viewModel = viewModel
         
         switch viewModel.cellType {
         case .delivery:
             iconImageView.image = UIImage(resource: .driverIcon)
             actionButton.setImage(UIImage(resource: .callIcon), for: .normal)
-            titleLabel.text = viewModel.text
+            titleLabel.text = viewModel.title
             descriptionLabel.text = OrderTrackingLocalization.hasPickedUpYourOrder.text
         case .pickup:
             iconImageView.image = UIImage(resource: .pickupIcon)
             actionButton.setImage(UIImage(resource: .navigateToMapsIcon), for: .normal)
             titleLabel.text = OrderTrackingLocalization.pickUpYourOrderFrom.text + ":"
-            descriptionLabel.text = viewModel.text
+            descriptionLabel.text = viewModel.subTitle
         }
     }
 }
@@ -66,8 +68,11 @@ final class DriverCollectionViewCell: UICollectionViewCell {
 // MARK: - ViewModel
 extension DriverCollectionViewCell {
     struct ViewModel {
-        var text: String?
+        var title: String?
+        var subTitle: String?
+        var driverMobileNumber: String?
+        var lat: Double = 0.0
+        var lng: Double = 0.0
         var cellType: OrderTrackingCellType = .delivery
-        var delegate: DriverCellActionDelegate?
     }
 }

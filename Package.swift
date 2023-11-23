@@ -23,7 +23,8 @@ let package = Package(
 //        .package(url: "https://github.com/firebase/firebase-ios-sdk.git", .upToNextMajor(from: "10.18.0")),
         .package(url: "https://github.com/smilesiosteam/SmilesBaseMainRequest.git", branch: "main"),
         .package(url: "https://github.com/smilesiosteam/NetworkingLayer.git", branch: "main"),
-        .package(url: "https://github.com/smilesiosteam/SmilesLocationHandler.git", branch: "main")
+        .package(url: "https://github.com/smilesiosteam/SmilesLocationHandler.git", branch: "main"),
+        .package(url: "https://github.com/evgenyneu/Cosmos.git", .upToNextMajor(from: "23.0.0"))
     ],
     targets: [
         // Targets are the basic building blocks of a package, defining a module or a test suite.
@@ -37,7 +38,8 @@ let package = Package(
 //                .product(name: "FirebaseDatabase", package: "firebase-ios-sdk"),
                 .product(name: "SmilesBaseMainRequestManager", package: "SmilesBaseMainRequest"),
                 .product(name: "NetworkingLayer", package: "NetworkingLayer"),
-                .product(name: "SmilesLocationHandler", package: "SmilesLocationHandler")
+                .product(name: "SmilesLocationHandler", package: "SmilesLocationHandler"),
+                .product(name: "Cosmos", package: "Cosmos")
             ]
         ),
         .testTarget(

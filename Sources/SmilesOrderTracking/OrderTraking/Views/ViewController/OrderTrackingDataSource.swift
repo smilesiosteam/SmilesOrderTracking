@@ -61,6 +61,14 @@ extension OrderTrackingDataSource: UICollectionViewDataSource {
             let cell = collectionView.dequeueReusableCell(withClass: PointsCollectionViewCell.self, for: indexPath)
             cell.updateCell(with: model)
             return cell
+        case .driver(model: let model):
+            let cell = collectionView.dequeueReusableCell(withClass: DriverCollectionViewCell.self, for: indexPath)
+            cell.updateCell(with: model, delegate: self)
+            return cell
+        case .rating(model: let model):
+            let cell = collectionView.dequeueReusableCell(withClass: RatingCollectionViewCell.self, for: indexPath)
+            cell.updateCell(with: model)
+            return cell
         }
     }
     
@@ -84,7 +92,7 @@ extension OrderTrackingDataSource: UICollectionViewDataSource {
 
 // MARK: - Location Delegate
 extension OrderTrackingDataSource: LocationCollectionViewProtocol {
-    func didTappCallRestaurant(mobileNumber: String?) {
+    func didTappPhoneCall(with mobileNumber: String?) {
         
     }
     
@@ -113,4 +121,9 @@ extension OrderTrackingDataSource: FreeDeliveryCollectionViewProtocol {
     func didTappSubscribeNow(with url: String?) {
         
     }
+}
+
+// MARK: - Driver Delegate
+extension OrderTrackingDataSource: DriverCellActionDelegate {
+    func opneMap(lat: Double, lng: Double) {}
 }

@@ -81,4 +81,15 @@ extension OrderTrackable {
         let viewModel = MapHeaderCollectionViewCell.ViewModel(startPoint: startModel, endPoint: endModel, userImageURL: "")
         return viewModel
     }
+    
+     var orderDriverModel: DriverCollectionViewCell.ViewModel {
+        var viewModel = DriverCollectionViewCell.ViewModel()
+        let orderDetails = response.orderDetails
+        viewModel.title = orderDetails?.driverName
+        viewModel.lat = Double(orderDetails?.latitude ?? "") ?? 0.0
+        viewModel.lng = Double(orderDetails?.longitude ?? "") ?? 0.0
+        viewModel.subTitle = orderDetails?.driverStatusText
+        viewModel.cellType = .delivery
+        return viewModel
+    }
 }

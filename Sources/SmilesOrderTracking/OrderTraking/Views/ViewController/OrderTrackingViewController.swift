@@ -9,7 +9,9 @@ import UIKit
 import SmilesUtilities
 import SmilesFontsManager
 import Combine
-public final class OrderTrackingViewController: UIViewController {
+import GoogleMaps
+
+public final class OrderTrackingViewController: UIViewController, Toastable {
     
     // MARK: - Outlets
     @IBOutlet private weak var collectionView: UICollectionView!
@@ -17,13 +19,14 @@ public final class OrderTrackingViewController: UIViewController {
     private var cancellables: Set<AnyCancellable> = []
     private let viewModel = OrderTrackingViewModel()
     private lazy var dataSource = OrderTrackingDataSource(viewModel: viewModel)
+    
     // MARK: - Life Cycle
     public override func viewDidLoad() {
         super.viewDidLoad()
         
         configCollectionView()
         viewModel.load()
-       
+        
     }
     
     public override func viewDidAppear(_ animated: Bool) {
@@ -31,23 +34,21 @@ public final class OrderTrackingViewController: UIViewController {
         dataSource.updateState(with: viewModel.orderStatusModel)
         collectionView.reloadData()
         bindData()
-    }
-    
-    
-    public override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-//        dataSource.updateState(with: viewModel.orderStatusModel)
-//        collectionView.reloadData()
+        
     }
     
     private func bindData() {
         viewModel.$isShowToast.sink { [weak self] value in
             if value  {
                 let icon = UIImage(resource: .sucess)
-                self?.showToast(message: OrderTrackingLocalization.orderAccepted.text, icon: icon)
+                var model = ToastModel()
+                model.title =  OrderTrackingLocalization.orderAccepted.text
+                model.imageIcon = icon
+                self?.showToast(model: model)
             }
         }.store(in: &cancellables)
     }
+    
     // MARK: - Functions
     private func configCollectionView() {
         [RestaurantCollectionViewCell.self,
@@ -71,9 +72,9 @@ public final class OrderTrackingViewController: UIViewController {
         
         [ImageHeaderCollectionViewCell.self, MapHeaderCollectionViewCell.self].forEach({
             collectionView.register(
-            UINib(nibName: String(describing: $0.self), bundle: .module),
-            forSupplementaryViewOfKind: OrderConstans.headerName.rawValue,
-            withReuseIdentifier: String(describing: $0.self))
+                UINib(nibName: String(describing: $0.self), bundle: .module),
+                forSupplementaryViewOfKind: OrderConstans.headerName.rawValue,
+                withReuseIdentifier: String(describing: $0.self))
         })
         
         collectionView.collectionViewLayout = OrderTrackingLayout.createLayout()
@@ -92,81 +93,48 @@ extension OrderTrackingViewController {
 }
 
 
-final class ToastView: UIView {
-    private let iconImageView = UIImageView()
-    private let messageLabel = UILabel()
 
-    init(message: String, icon: UIImage? = nil) {
-        super.init(frame: CGRect.zero)
 
-        configureView()
-        configureIconImageView(icon: icon)
-        configureMessageLabel(message: message)
-    }
+//    func updateMapWithLocation(newLocation: CLLocation) {
+//        // Assuming you have a reference to the MapHeaderCell
+//        let indexPath = IndexPath(item: 0, section: 0)
+//        let headerView = collectionView?.supplementaryView(forElementKind: UICollectionView.elementKindSectionHeader, at: indexPath)
+//        print(headerView)
+//
+//        if let mapHeaderCell = getFirstMapHeader() {
+//            let camera = GMSCameraPosition.camera(withTarget: newLocation.coordinate, zoom: 15.0)
+//            mapHeaderCell.mapView.camera = camera
+//
+//            // Remove existing markers if any
+//            mapHeaderCell.mapView.clear()
+//
+//            // Add a new marker for the updated location
+//            let marker = GMSMarker(position: newLocation.coordinate)
+//            marker.title = "New Location"
+//            marker.map = mapHeaderCell.mapView
+//        }
+//    }
 
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-
-    private func configureView() {
-        backgroundColor = UIColor.black.withAlphaComponent(0.7)
-        layer.cornerRadius = 10
-        clipsToBounds = true
-
-        translatesAutoresizingMaskIntoConstraints = false
-    }
-
-    private func configureIconImageView(icon: UIImage?) {
-        iconImageView.image = icon
-        iconImageView.contentMode = .scaleAspectFit
-
-        addSubview(iconImageView)
-
-        iconImageView.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            iconImageView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 13),
-            iconImageView.centerYAnchor.constraint(equalTo: centerYAnchor),
-            iconImageView.widthAnchor.constraint(equalToConstant: 24),
-            iconImageView.heightAnchor.constraint(equalToConstant: 24)
-        ])
-    }
-
-    private func configureMessageLabel(message: String) {
-        messageLabel.text = message
-        messageLabel.textColor = UIColor.white
-        messageLabel.textAlignment = .center
-        messageLabel.numberOfLines = 0
-        messageLabel.fontTextStyle = .smilesHeadline5
-        addSubview(messageLabel)
-
-        messageLabel.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            messageLabel.leadingAnchor.constraint(equalTo: iconImageView.trailingAnchor, constant: 2),
-            messageLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -8),
-            messageLabel.topAnchor.constraint(equalTo: topAnchor, constant: 8),
-            messageLabel.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -8)
-        ])
-    }
-}
-
-extension UIViewController {
-    func showToast(message: String, icon: UIImage? = nil) {
-        let toastView = ToastView(message: message, icon: icon)
-
-        view.addSubview(toastView)
-
-        NSLayoutConstraint.activate([
-            toastView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 60),
-            toastView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -60),
-            toastView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -20),
-            toastView.heightAnchor.constraint(equalToConstant: 50)
-        ])
-
-        UIView.animate(withDuration: 0.3, delay: 10.0, options: .curveEaseOut, animations: {
-            toastView.alpha = 0
-        }) { _ in
-            toastView.removeFromSuperview()
-        }
-    }
-}
-
+//    func getNewLocationFromAPI() {
+//
+//            // Assume you get a new location (CLLocation) from your API
+//            let newLocation = CLLocation(latitude: 37.7749, longitude: -122.4194)
+//            updateMapWithLocation(newLocation: newLocation)
+//        }
+//
+//    func getFirstMapHeader() -> MapHeaderCollectionViewCell? {
+//        guard let collectionView = collectionView else {
+//            return nil
+//        }
+//
+//        // Iterate through visible supplementary views
+//        for indexPath in collectionView.indexPathsForVisibleSupplementaryElements(ofKind: OrderConstans.headerName.rawValue) {
+//            if let headerView = collectionView.supplementaryView(forElementKind: OrderConstans.headerName.rawValue, at: indexPath) as? MapHeaderCollectionViewCell {
+//                // Found the first MapHeaderCollectionViewCell
+//                return headerView
+//            }
+//        }
+//
+//        // If no MapHeaderCollectionViewCell is found
+//        return nil
+//    }

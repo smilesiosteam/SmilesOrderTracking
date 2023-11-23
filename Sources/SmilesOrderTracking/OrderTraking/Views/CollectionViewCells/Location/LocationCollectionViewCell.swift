@@ -9,8 +9,11 @@ import UIKit
 import SmilesFontsManager
 import SmilesUtilities
 
-protocol LocationCollectionViewProtocol: AnyObject {
-    func didTappCallRestaurant(mobileNumber: String?)
+protocol PhoneCallable {
+    func didTappPhoneCall(with mobileNumber: String?)
+}
+
+protocol LocationCollectionViewProtocol: AnyObject, PhoneCallable {
     func didTappOrderDetails(orderId: Int?)
     func didTappCancelDetails(orderId: Int?)
 }
@@ -42,7 +45,7 @@ final class LocationCollectionViewCell: UICollectionViewCell {
     
     // MARK: - Button Actions
     @IBAction func callRestrantTapped(_ sender: Any) {
-        delegate?.didTappCallRestaurant(mobileNumber: viewModel.restaurantNumber)
+        delegate?.didTappPhoneCall(with: viewModel.restaurantNumber)
     }
     
     @IBAction func orderDetailsTapped(_ sender: Any) {

@@ -25,23 +25,40 @@ final class OrderTrackingUseCase {
     }
     
     func configOrderStatus(response: OrderTrackingStatusResponse) -> OrderTrackingModel {
-        let status = response.orderDetails?.orderStatus
+        guard let status = response.orderDetails?.orderStatus,
+                let value = OrderTrackingType(rawValue: status) else {
+            return .init()
+        }
         
-        switch status {
-        case OrderTrackingType.orderProcessing.rawValue:
-            return ConfigProcessingOrder(response: response).build()
-        case OrderTrackingType.waitingForTheRestaurant.rawValue:
-            return ConfigWaitingOrder(response: response).build()
-        case OrderTrackingType.orderAccepted.rawValue:
+        
+        switch value {
+        case .orderProcessing:
+            return ProcessingOrderConfig(response: response).build()
+        case .waitingForTheRestaurant:
+            return WaitingOrderConfig(response: response).build()
+        case .orderAccepted:
             isShowToast = true
-            return ConfigAcceptedOrder(response: response).build()
-        case OrderTrackingType.inTheKitchen.rawValue:
-            return ConfigInTheKitchenOrder(response: response).build()
-        case OrderTrackingType.orderIsReadyForPickup.rawValue,  OrderTrackingType.orderHasBeenPickedUp.rawValue:
-            return ConfigInTheKitchenOrder(response: response).build()
-        default:
-            return ConfigWaitingOrder(response: response).build()
-            
+            return AcceptedOrderConfig(response: response).build()
+        case .inTheKitchen:
+            return InTheKitchenOrderConfig(response: response).build()
+        case .orderIsReadyForPickup, .orderHasBeenPickedUp:
+            return InTheKitchenOrderConfig(response: response).build()
+        case .orderIsOnTheWay:
+            return OnTheWayOrderConfig(response: response).build()
+        case .orderHasBeenDelivered:
+            return .init()
+        case .orderCancelled:
+            return .init()
+        case .changedToPickup:
+            return .init()
+        case .determineStatus:
+            return .init()
+        case .someItemsAreUnavailable:
+            return .init()
+        case .orderNearYourLocation:
+            return NearOfLocationConfig(response: response).build()
+        case .delivered:
+            return DeliveredOrderConfig(response: response).build()
         }
         
     }
@@ -52,8 +69,8 @@ let jsonString = """
 {
   "extTransactionId": "3530191483630",
   "orderDetails": {
-    "orderStatus": 2,
-    "title": "Waiting for the restaurant",
+    "orderStatus": 15,
+    "title": "Wow, your order has arrived X min early. Enjoy! Ya Naguib",
     "orderDescription": "Hardee's should accept your order soon.",
     "orderNumber": "SMHD112020230000467215",
     "restaurantName": "Hardee's",
@@ -109,7 +126,9 @@ let jsonString = """
     "isDeliveryFree": false,
     "deliveryTip": 0,
     "isLiveChatEnable": true,
-    "deliveryBy": "Delivered By Restaurant"
+    "deliveryBy": "Delivered By Restaurant",
+    "driverStatusText": "has picked up your order",
+    "driverName": "Osama Tester Driver",
   },
   "orderItems": [
     {

@@ -7,12 +7,13 @@
 
 import UIKit
 import GoogleMaps
+import Combine
 
 final class MapHeaderCollectionViewCell: UICollectionReusableView {
     
     // MARK: - Outlets
     @IBOutlet private weak var driverImage: UIImageView!
-    @IBOutlet private weak var mapView: GMSMapView!
+    @IBOutlet weak var mapView: GMSMapView!
     @IBOutlet private weak var dismissButton: UIButton!
     @IBOutlet private weak var supportButton: UIButton!
     
@@ -61,6 +62,10 @@ final class MapHeaderCollectionViewCell: UICollectionReusableView {
             $0.fontTextStyle = .smilesTitle1
             $0.setTitleColor(.appRevampPurpleMainColor, for: .normal)
         })
+    }
+    
+    func updateLocation() {
+        
     }
 }
 

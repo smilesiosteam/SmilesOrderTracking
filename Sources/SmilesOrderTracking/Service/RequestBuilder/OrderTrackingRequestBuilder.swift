@@ -12,6 +12,11 @@ import NetworkingLayer
 enum OrderTrackingRequestBuilder {
     // organise all the end points here for clarity
     case getOrderTrackingStatus(request: OrderTrackingStatusRequest)
+    case setOrderConfirmationStatus(request: OrderTrackingStatusRequest)
+    case changeOrderType(request: OrderTrackingStatusRequest)
+    case resumeOrder(request: OrderTrackingStatusRequest)
+    case pauseOrder(request: OrderTrackingStatusRequest)
+    case cancelOrder(request: OrderCancelRequest)
     
     // gave a default timeout but can be different for each.
     var requestTimeOut: Int {
@@ -22,6 +27,16 @@ enum OrderTrackingRequestBuilder {
     var httpMethod: SmilesHTTPMethod {
         switch self {
         case .getOrderTrackingStatus:
+            return .POST
+        case .setOrderConfirmationStatus:
+            return .POST
+        case .changeOrderType:
+            return .POST
+        case .resumeOrder:
+            return .POST
+        case .pauseOrder:
+            return .POST
+        case .cancelOrder:
             return .POST
         }
     }
@@ -42,6 +57,16 @@ enum OrderTrackingRequestBuilder {
         switch self {
         case .getOrderTrackingStatus(let request):
             return request
+        case .setOrderConfirmationStatus(let request):
+            return request
+        case .changeOrderType(let request):
+            return request
+        case .resumeOrder(let request):
+            return request
+        case .pauseOrder(let request):
+            return request
+        case .cancelOrder(let request):
+            return request
         }
     }
     
@@ -51,6 +76,16 @@ enum OrderTrackingRequestBuilder {
         
         switch self {
         case .getOrderTrackingStatus:
+            return "\(baseUrl)\(endPoint)"
+        case .setOrderConfirmationStatus:
+            return "\(baseUrl)\(endPoint)"
+        case .changeOrderType:
+            return "\(baseUrl)\(endPoint)"
+        case .resumeOrder:
+            return "\(baseUrl)\(endPoint)"
+        case .pauseOrder:
+            return "\(baseUrl)\(endPoint)"
+        case .cancelOrder:
             return "\(baseUrl)\(endPoint)"
         }
     }

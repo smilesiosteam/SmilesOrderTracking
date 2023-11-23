@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import NetworkingLayer
 
 struct OrderTrackingStatusResponse: Codable {
     var orderDetails: OrderDetail?

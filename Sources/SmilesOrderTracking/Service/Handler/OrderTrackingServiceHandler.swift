@@ -10,6 +10,7 @@ import Combine
 import NetworkingLayer
 import SmilesUtilities
 import SmilesBaseMainRequestManager
+import SmilesLocationHandler
 
 struct OrderTrackingServiceHandler {    
     func getOrderTrackingStatus(orderId: String, orderStatus: OrderTrackingType, orderNumber: String, isComingFromFirebase: Bool = false) -> AnyPublisher<OrderTrackingStatusResponse, NetworkError> {
@@ -44,5 +45,67 @@ struct OrderTrackingServiceHandler {
         )
         
         return service.getOrderTrackingStatusService(request: request)
+    }
+    
+    func setOrderConfirmationStatus(orderId: String, orderStatus: OrderTrackingType) -> AnyPublisher<OrderTrackingStatusResponse, NetworkError> {
+        let request = OrderTrackingStatusRequest(orderId: orderId, orderStatus: orderStatus.rawValue)
+        let service = OrderTrackingRepository(
+            networkRequest: NetworkingLayerRequestable(requestTimeOut: 60),
+            baseUrl: AppCommonMethods.serviceBaseUrl,
+            endPoint: .orderConfirmationStatus
+        )
+        
+        return service.setOrderConfirmationStatusService(request: request)
+    }
+    
+    func changeOrderType(orderId: String) -> AnyPublisher<OrderChangeTypeResponse, NetworkError> {
+        let request = OrderTrackingStatusRequest(orderId: orderId)
+        let service = OrderTrackingRepository(
+            networkRequest: NetworkingLayerRequestable(requestTimeOut: 60),
+            baseUrl: AppCommonMethods.serviceBaseUrl,
+            endPoint: .orderChangeType
+        )
+        
+        return service.changeOrderTypeService(request: request)
+    }
+    
+    func resumeOrder(orderId: String) -> AnyPublisher<BaseMainResponse, NetworkError> {
+        let request = OrderTrackingStatusRequest(orderId: orderId)
+        let service = OrderTrackingRepository(
+            networkRequest: NetworkingLayerRequestable(requestTimeOut: 60),
+            baseUrl: AppCommonMethods.serviceBaseUrl,
+            endPoint: .resumeOrder
+        )
+        
+        return service.resumeOrderService(request: request)
+    }
+    
+    func pauseOrder(orderId: String) -> AnyPublisher<BaseMainResponse, NetworkError> {
+        let request = OrderTrackingStatusRequest(orderId: orderId)
+        let service = OrderTrackingRepository(
+            networkRequest: NetworkingLayerRequestable(requestTimeOut: 60),
+            baseUrl: AppCommonMethods.serviceBaseUrl,
+            endPoint: .pauseOrder
+        )
+        
+        return service.pauseOrderService(request: request)
+    }
+    
+    func cancelOrder(orderId: String) -> AnyPublisher<OrderCancelResponse, NetworkError> {
+        let request = OrderCancelRequest(orderId: orderId)
+        if let userInfo = LocationStateSaver.getLocationInfo() {
+            let requestUserInfo = SmilesUserInfo()
+            requestUserInfo.mambaId = userInfo.mambaId
+            requestUserInfo.locationId = userInfo.locationId
+            request.userInfo = requestUserInfo
+        }
+        
+        let service = OrderTrackingRepository(
+            networkRequest: NetworkingLayerRequestable(requestTimeOut: 60),
+            baseUrl: AppCommonMethods.serviceBaseUrl,
+            endPoint: .cancelOrder
+        )
+        
+        return service.cancelOrderService(request: request)
     }
 }

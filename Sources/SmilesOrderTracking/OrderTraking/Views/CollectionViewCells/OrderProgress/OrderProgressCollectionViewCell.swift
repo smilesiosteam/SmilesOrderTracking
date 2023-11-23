@@ -51,16 +51,16 @@ final class OrderProgressCollectionViewCell: UICollectionViewCell {
         [firstStepView, secondStepView, thirdStepView, fourthStepView].forEach({ $0?.backgroundColor = .black.withAlphaComponent(0.1) })
     }
     
-//    private func fillViewWAfterStepCompleted(currentView: UIView, percentage: Double) {
-//        currentView.backgroundColor = .appRevampPurpleMainColor.withAlphaComponent(0.2)
-//        let gradientLayer = CAGradientLayer()
-//        gradientLayer.colors = [UIColor.appRevampPurpleMainColor.cgColor, UIColor.appRevampPurpleMainColor.cgColor]
-//        
-//        let width = currentView.frame.width * percentage
-//        let height = currentView.frame.height
-//        gradientLayer.frame = CGRect(x: 0, y: 0, width: width, height: height)
-//        currentView.layer.addSublayer(gradientLayer)
-//    }
+    private func fillViewWAfterStepCompleted(currentView: UIView, percentage: Double) {
+        currentView.backgroundColor = .appRevampPurpleMainColor.withAlphaComponent(0.2)
+        let gradientLayer = CAGradientLayer()
+        gradientLayer.colors = [UIColor.appRevampPurpleMainColor.cgColor, UIColor.appRevampPurpleMainColor.cgColor]
+        
+        let width = currentView.frame.width * percentage
+        let height = currentView.frame.height
+        gradientLayer.frame = CGRect(x: 0, y: 0, width: width, height: height)
+        currentView.layer.addSublayer(gradientLayer)
+    }
     
     private func fillResetCompletedSteps(views: [UIView]) {
         views.forEach({ $0.backgroundColor = .appRevampPurpleMainColor })

@@ -22,6 +22,7 @@ final class MapHeaderCollectionViewCell: UICollectionReusableView {
     
     override func awakeFromNib() {
         super.awakeFromNib()
+        setupMap()
         configControllers()
     }
     
@@ -40,14 +41,11 @@ final class MapHeaderCollectionViewCell: UICollectionReusableView {
         
         let startPoint = CLLocationCoordinate2D(latitude: viewModel.startPoint.lat, longitude: viewModel.startPoint.lang)
         let endPoint = CLLocationCoordinate2D(latitude: viewModel.endPoint.lat, longitude: viewModel.endPoint.lang)
-
-        let bounds = GMSCoordinateBounds(coordinate: startPoint, coordinate: endPoint)
-        let padding = UIEdgeInsets(top: 100, left: 50, bottom: 100, right: 50)
-        let cameraUpdate = GMSCameraUpdate.fit(bounds, with: padding)
+        addBoundForMap(startPoint: startPoint, endPoint: endPoint)
         
-        mapView.animate(with: cameraUpdate)
         mapView.addMarker(model: viewModel.startPoint)
         mapView.addMarker(model: viewModel.endPoint)
+        
     }
     
     private func configControllers() {
@@ -64,7 +62,24 @@ final class MapHeaderCollectionViewCell: UICollectionReusableView {
         })
     }
     
-    func updateLocation() {
+    private func setupMap() {
+        mapView.isUserInteractionEnabled = false
+        if let styleURL = Bundle.main.url(forResource: "MapsStyling", withExtension: "json"),
+           let mapStyle = try? GMSMapStyle(contentsOfFileURL: styleURL) {
+            mapView.mapStyle = mapStyle
+        }
+    }
+    
+    private func addBoundForMap(startPoint: CLLocationCoordinate2D, endPoint: CLLocationCoordinate2D) {
+        let path = GMSMutablePath()
+        path.add(startPoint)
+        path.add(endPoint)
+        
+        let bounds = GMSCoordinateBounds(path: path)
+        
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime(uptimeNanoseconds: UInt64(0.3))) {
+            self.mapView.animate(with: GMSCameraUpdate.fit(bounds, withPadding: 100.0))
+        }
         
     }
 }

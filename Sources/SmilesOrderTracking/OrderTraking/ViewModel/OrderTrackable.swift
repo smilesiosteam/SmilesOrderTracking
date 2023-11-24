@@ -82,7 +82,7 @@ extension OrderTrackable {
         return viewModel
     }
     
-     var orderDriverModel: DriverCollectionViewCell.ViewModel {
+    var orderDriverModel: DriverCollectionViewCell.ViewModel {
         var viewModel = DriverCollectionViewCell.ViewModel()
         let orderDetails = response.orderDetails
         viewModel.title = orderDetails?.driverName
@@ -91,5 +91,9 @@ extension OrderTrackable {
         viewModel.subTitle = orderDetails?.driverStatusText
         viewModel.cellType = .delivery
         return viewModel
+    }
+    
+    var isLiveTracking: Bool {
+        response.orderDetails?.liveTracking ?? false
     }
 }

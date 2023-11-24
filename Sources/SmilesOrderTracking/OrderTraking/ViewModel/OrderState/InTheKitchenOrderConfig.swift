@@ -31,7 +31,8 @@ struct InTheKitchenOrderConfig: OrderTrackable {
             cells.append(.subscription(model: orderSubscription))
         }
         
-        let header: TrackingHeaderType = .map(model: orderMapModel)
+        var header: TrackingHeaderType = .map(model: orderMapModel)
+        header = isLiveTracking ? header : .image(model: .init(isShowSupportHeader: true))
         return .init(header: header, cells: cells)
     }
 }

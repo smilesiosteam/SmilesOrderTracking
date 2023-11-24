@@ -26,6 +26,15 @@ enum OrderTrackingLocalization {
     case orderCancelledBadWeather
     case orderCancelledLikeToPickupOrder
     case minText
+    case orderAccepted
+    case rateYourDeliveryExperience
+    case howWouldYouRateRiderDelivery
+    case riderDeliveredYourOrderInMins
+    case submit
+    case facedTroubleWithYourOrder
+    case getSupport
+    case rateYourFoodExperience
+    case howWouldYouRateRestaurantFood
     
     var text: String {
         switch self {
@@ -63,6 +72,24 @@ enum OrderTrackingLocalization {
             return "I’d like to pick up order"
         case .minText:
             return "MinTitle".localizedString
+        case .orderAccepted:
+            return "Your order has been accepted"
+        case .rateYourDeliveryExperience:
+            return "RateYourDeliveryExperience".localizedString
+        case .howWouldYouRateRiderDelivery:
+            return "HowWouldYouRateRiderDelivery".localizedString
+        case .riderDeliveredYourOrderInMins:
+            return "RiderDeliveredYourOrderInMins".localizedString
+        case .submit:
+            return "SubmitTitleSmall".localizedString
+        case .facedTroubleWithYourOrder:
+            return "Faced trouble with your order?".localizedString
+        case .getSupport:
+            return "GetSupport".localizedString
+        case .rateYourFoodExperience:
+            return "RateYourFoodExperience".localizedString
+        case .howWouldYouRateRestaurantFood:
+            return "HowWouldYouRateRestaurantFood".localizedString
         }
     }
 }

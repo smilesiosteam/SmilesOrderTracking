@@ -1,23 +1,32 @@
 //
 //  FreeDelivery CollectionViewCell.swift
-//  
+//
 //
 //  Created by Ahmed Naguib on 17/11/2023.
 //
 
 import UIKit
+import SmilesUtilities
 import SmilesFontsManager
 
-final class FreeDeliveryCollectionViewCell: UICollectionViewCell {
+protocol FreeDeliveryCollectionViewProtocol: AnyObject {
+    func didTappSubscribeNow(with url: String?)
+}
 
+final class FreeDeliveryCollectionViewCell: UICollectionViewCell {
+    
     // MARK: - Outlets
     @IBOutlet private weak var containerView: UIView!
     @IBOutlet private weak var subtitleLabel: UILabel!
     @IBOutlet private weak var titleLabel: UILabel!
     @IBOutlet private weak var subscribeButton: UIButton!
+    @IBOutlet private weak var iconIMage: UIImageView!
     
-    static let identifier =  String(describing: FreeDeliveryCollectionViewCell.self)
-   
+    // MARK: - Properties
+    private var viewModel = ViewModel()
+    private weak var delegate: FreeDeliveryCollectionViewProtocol?
+    
+    // MARK: - Life Cycle
     override func awakeFromNib() {
         super.awakeFromNib()
         
@@ -32,8 +41,26 @@ final class FreeDeliveryCollectionViewCell: UICollectionViewCell {
         subscribeButton.titleLabel?.textColor = .white
     }
     
+    // MARK: - Button Actions
     @IBAction func subscribeTapped(_ sender: Any) {
+        delegate?.didTappSubscribeNow(with: viewModel.redirectUrl)
     }
     
+    // MARK: - Functions
+    func updateCell(with viewModel: ViewModel, delegate: FreeDeliveryCollectionViewProtocol) {
+        self.viewModel = viewModel
+        self.delegate = delegate
+        titleLabel.text = viewModel.title
+        subtitleLabel.text = viewModel.subTitle
+        iconIMage.setImageWithUrlString(viewModel.iconUrl ?? "")
+    }
+}
 
+extension FreeDeliveryCollectionViewCell {
+    struct ViewModel {
+        var iconUrl: String?
+        var title: String?
+        var subTitle: String?
+        var redirectUrl: String?
+    }
 }

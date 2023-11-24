@@ -6,17 +6,51 @@
 //
 
 import UIKit
+import SmilesUtilities
+import SmilesFontsManager
+import Combine
+import GoogleMaps
 
-public final class OrderTrackingViewController: UIViewController {
+public final class OrderTrackingViewController: UIViewController, Toastable {
     
     // MARK: - Outlets
     @IBOutlet private weak var collectionView: UICollectionView!
     
-    private let imageHeader = "imageHeader"
+    private var cancellables: Set<AnyCancellable> = []
+    private let viewModel = OrderTrackingViewModel()
+    private lazy var dataSource = OrderTrackingDataSource(viewModel: viewModel)
+    
     // MARK: - Life Cycle
     public override func viewDidLoad() {
         super.viewDidLoad()
         
+        configCollectionView()
+        viewModel.load()
+        
+    }
+    
+    public override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        dataSource.updateState(with: viewModel.orderStatusModel)
+        collectionView.reloadData()
+        bindData()
+        
+    }
+    
+    private func bindData() {
+        viewModel.$isShowToast.sink { [weak self] value in
+            if value  {
+                let icon = UIImage(resource: .sucess)
+                var model = ToastModel()
+                model.title =  OrderTrackingLocalization.orderAccepted.text
+                model.imageIcon = icon
+                self?.showToast(model: model)
+            }
+        }.store(in: &cancellables)
+    }
+    
+    // MARK: - Functions
+    private func configCollectionView() {
         [RestaurantCollectionViewCell.self,
          CashCollectionViewCell.self,
          OrderCancelledCollectionViewCell.self,
@@ -36,117 +70,18 @@ public final class OrderTrackingViewController: UIViewController {
                 forCellWithReuseIdentifier: String(describing: $0.self))
         })
         
-        collectionView.register(
-            UINib(nibName: ImageHeaderCollectionViewCell.identifier, bundle: .module),
-            forSupplementaryViewOfKind: imageHeader,
-            withReuseIdentifier: ImageHeaderCollectionViewCell.identifier)
+        [ImageHeaderCollectionViewCell.self, MapHeaderCollectionViewCell.self].forEach({
+            collectionView.register(
+                UINib(nibName: String(describing: $0.self), bundle: .module),
+                forSupplementaryViewOfKind: OrderConstans.headerName.rawValue,
+                withReuseIdentifier: String(describing: $0.self))
+        })
         
-        
-        collectionView.register(
-            UINib(nibName: MapHeaderCollectionViewCell.identifier, bundle: .module),
-            forSupplementaryViewOfKind: imageHeader,
-            withReuseIdentifier: MapHeaderCollectionViewCell.identifier)
-        
-        collectionView.collectionViewLayout = MountainLayout.createLayout()
-        collectionView.dataSource = self
+        collectionView.collectionViewLayout = OrderTrackingLayout.createLayout()
+        collectionView.dataSource = dataSource
         collectionView.reloadData()
-        
         collectionView.contentInsetAdjustmentBehavior = .never
     }
-}
-
-
-extension OrderTrackingViewController: UICollectionViewDataSource, LocationCollectionViewProtocol {
-    
-    public func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        16
-    }
-    
-    public func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        switch  indexPath.row {
-        case 0:
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: LocationCollectionViewCell.identifier, for: indexPath) as! LocationCollectionViewCell
-            cell.updateCell(with: .init(), delegate: self)
-            return cell
-        case 1:
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: RatingCollectionViewCell.identifier, for: indexPath) as! RatingCollectionViewCell
-            cell.updateCell(with: .init(cellType: .pickup))
-            return cell
-        case 2:
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: RatingCollectionViewCell.identifier, for: indexPath) as! RatingCollectionViewCell
-            cell.updateCell(with: .init(cellType: .delivery))
-            return cell
-        case 3:
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: DriverCollectionViewCell.identifier, for: indexPath) as! DriverCollectionViewCell
-            return cell
-        case 4:
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: RestaurantCancelCollectionViewCell.identifier, for: indexPath) as! RestaurantCancelCollectionViewCell
-            return cell
-        case 5:
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: OrderProgressCollectionViewCell.identifier, for: indexPath) as! OrderProgressCollectionViewCell
-            cell.updateCell(with: .init(step: .second(percentage: 0.6), type: .orderOnWay))
-            return cell
-        case 6:
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: OrderProgressCollectionViewCell.identifier, for: indexPath) as! OrderProgressCollectionViewCell
-            cell.updateCell(with: .init(step: .completed, type: .oderFinished))
-            return cell
-            
-        case 7:
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: TextCollectionViewCell.identifier, for: indexPath) as! TextCollectionViewCell
-            cell.updateCell(with: "Please wait while we send your order to the restaurant.")
-            return cell
-            
-        case 8:
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: OrderConfirmationCollectionViewCell.identifier, for: indexPath) as! OrderConfirmationCollectionViewCell
-            return cell
-            
-        case 9:
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: TextCollectionViewCell.identifier, for: indexPath) as! TextCollectionViewCell
-            cell.updateCell(with: "A slight delay in your order")
-            return cell
-            
-        case 10:
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: PointsCollectionViewCell.identifier, for: indexPath) as! PointsCollectionViewCell
-            cell.updateCell(with: "120")
-            return cell
-            
-        case 11:
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: OrderCancelledCollectionViewCell.identifier, for: indexPath) as! OrderCancelledCollectionViewCell
-            return cell
-            
-        case 12:
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CashCollectionViewCell.identifier, for: indexPath) as! CashCollectionViewCell
-            return cell
-            
-        case 13:
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: RestaurantCollectionViewCell.identifier, for: indexPath) as! RestaurantCollectionViewCell
-            cell.updateCell(with: .init(items: ["Ahmed", "Naguib", "Moahmed"]))
-            return cell
-            
-        case 14:
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: FreeDeliveryCollectionViewCell.identifier, for: indexPath) as! FreeDeliveryCollectionViewCell
-        
-            return cell
-            
-        case 15:
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: OrderCancelledTimerCollectionViewCell.identifier, for: indexPath) as! OrderCancelledTimerCollectionViewCell
-        
-            return cell
-        default:
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: OrderCancelledTimerCollectionViewCell.identifier, for: indexPath) as! OrderCancelledTimerCollectionViewCell
-        
-            return cell
-        }
-
-        
-    }
-    
-    public func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
-        let header = collectionView.dequeueReusableSupplementaryView(ofKind: imageHeader, withReuseIdentifier: MapHeaderCollectionViewCell.identifier, for: indexPath) as! MapHeaderCollectionViewCell
-        return header
-    }
-    
-    
 }
 
 // MARK: - Create
@@ -156,3 +91,50 @@ extension OrderTrackingViewController {
         return viewController
     }
 }
+
+
+
+
+//    func updateMapWithLocation(newLocation: CLLocation) {
+//        // Assuming you have a reference to the MapHeaderCell
+//        let indexPath = IndexPath(item: 0, section: 0)
+//        let headerView = collectionView?.supplementaryView(forElementKind: UICollectionView.elementKindSectionHeader, at: indexPath)
+//        print(headerView)
+//
+//        if let mapHeaderCell = getFirstMapHeader() {
+//            let camera = GMSCameraPosition.camera(withTarget: newLocation.coordinate, zoom: 15.0)
+//            mapHeaderCell.mapView.camera = camera
+//
+//            // Remove existing markers if any
+//            mapHeaderCell.mapView.clear()
+//
+//            // Add a new marker for the updated location
+//            let marker = GMSMarker(position: newLocation.coordinate)
+//            marker.title = "New Location"
+//            marker.map = mapHeaderCell.mapView
+//        }
+//    }
+
+//    func getNewLocationFromAPI() {
+//
+//            // Assume you get a new location (CLLocation) from your API
+//            let newLocation = CLLocation(latitude: 37.7749, longitude: -122.4194)
+//            updateMapWithLocation(newLocation: newLocation)
+//        }
+//
+//    func getFirstMapHeader() -> MapHeaderCollectionViewCell? {
+//        guard let collectionView = collectionView else {
+//            return nil
+//        }
+//
+//        // Iterate through visible supplementary views
+//        for indexPath in collectionView.indexPathsForVisibleSupplementaryElements(ofKind: OrderConstans.headerName.rawValue) {
+//            if let headerView = collectionView.supplementaryView(forElementKind: OrderConstans.headerName.rawValue, at: indexPath) as? MapHeaderCollectionViewCell {
+//                // Found the first MapHeaderCollectionViewCell
+//                return headerView
+//            }
+//        }
+//
+//        // If no MapHeaderCollectionViewCell is found
+//        return nil
+//    }

@@ -25,6 +25,10 @@
                                 <subviews>
                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="delivery" translatesAutoresizingMaskIntoConstraints="NO" id="6oZ-Ec-rYL">
                                         <rect key="frame" x="0.0" y="10.666666666666668" width="40" height="40"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="40" id="5gy-eP-gzo"/>
+                                            <constraint firstAttribute="width" constant="40" id="fPz-4h-6EX"/>
+                                        </constraints>
                                     </imageView>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Unlimited Free Delivery" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="q3b-cr-OrO">
                                         <rect key="frame" x="45.000000000000014" y="20.666666666666664" width="176.33333333333337" height="20.333333333333336"/>
@@ -79,6 +83,7 @@
             <size key="customSize" width="393" height="259"/>
             <connections>
                 <outlet property="containerView" destination="xSL-gm-7Bg" id="9IL-qd-QYb"/>
+                <outlet property="iconIMage" destination="6oZ-Ec-rYL" id="PVx-Dx-vnk"/>
                 <outlet property="subscribeButton" destination="5Od-Bx-ln7" id="NIW-Te-qlQ"/>
                 <outlet property="subtitleLabel" destination="Yla-7i-YpQ" id="BkJ-OZ-hmD"/>
                 <outlet property="titleLabel" destination="q3b-cr-OrO" id="MzH-o7-Sow"/>

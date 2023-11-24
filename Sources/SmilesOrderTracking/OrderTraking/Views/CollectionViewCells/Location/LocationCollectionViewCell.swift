@@ -9,16 +9,13 @@ import UIKit
 import SmilesFontsManager
 import SmilesUtilities
 
-protocol LocationCollectionViewProtocol: AnyObject {
-    func didTappCallRestaurant(mobileNumber: String?)
-    func didTappOrderDetails(orderId: String)
-    func didTappCancelDetails(orderId: String)
+protocol PhoneCallable {
+    func didTappPhoneCall(with mobileNumber: String?)
 }
 
-extension LocationCollectionViewProtocol{
-    func didTappCallRestaurant(mobileNumber: String?) {}
-    func didTappOrderDetails(orderId: String) {}
-    func didTappCancelDetails(orderId: String) {}
+protocol LocationCollectionViewProtocol: AnyObject, PhoneCallable {
+    func didTappOrderDetails(orderId: Int?)
+    func didTappCancelDetails(orderId: Int?)
 }
 
 final class LocationCollectionViewCell: UICollectionViewCell {
@@ -35,9 +32,6 @@ final class LocationCollectionViewCell: UICollectionViewCell {
     @IBOutlet private weak var stackDetails: UIStackView!
     
     // MARK: - Properties
-    
-    static let identifier = String(describing: LocationCollectionViewCell.self)
-    
     private var viewModel: ViewModel = .init()
     private weak var delegate: LocationCollectionViewProtocol?
     
@@ -51,7 +45,7 @@ final class LocationCollectionViewCell: UICollectionViewCell {
     
     // MARK: - Button Actions
     @IBAction func callRestrantTapped(_ sender: Any) {
-        delegate?.didTappCallRestaurant(mobileNumber: viewModel.restaurantNumber)
+        delegate?.didTappPhoneCall(with: viewModel.restaurantNumber)
     }
     
     @IBAction func orderDetailsTapped(_ sender: Any) {
@@ -66,8 +60,8 @@ final class LocationCollectionViewCell: UICollectionViewCell {
     func updateCell(with viewModel: ViewModel, delegate: LocationCollectionViewProtocol) {
         self.delegate = delegate
         self.viewModel = viewModel
-//        startAddressLabel.text = viewModel.startAddress
-//        endAddressLabel.text = viewModel.endAddress
+        startAddressLabel.text = viewModel.startAddress
+        endAddressLabel.text = viewModel.endAddress
         configCellType()
     }
     
@@ -115,7 +109,7 @@ extension LocationCollectionViewCell {
     struct ViewModel {
         var startAddress: String?
         var endAddress: String?
-        var orderId: String = ""
+        var orderId: Int?
         var restaurantNumber: String?
         var type: CellType = .cancel
     }

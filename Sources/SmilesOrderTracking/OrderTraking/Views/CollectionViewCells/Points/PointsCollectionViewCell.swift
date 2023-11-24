@@ -15,23 +15,19 @@ final class PointsCollectionViewCell: UICollectionViewCell {
     @IBOutlet private weak var pointImage: UIImageView!
     @IBOutlet private weak var detailsLabel: UILabel!
     
-    // MARK: - Properties
-    
-    static let identifier = String(describing: PointsCollectionViewCell.self)
-    
     override func awakeFromNib() {
         super.awakeFromNib()
         containerView.layer.cornerRadius = 8
     }
     
     // MARK: - Functions
-    func updateCell(with points: String) {
+    func updateCell(with viewModel: ViewModel) {
         
         let text = OrderTrackingLocalization.points.text
-        let combinedText = "\(points) \(text)"
+        let combinedText = "\(viewModel.numberOfPoints) \(text)"
         let attributedString = NSMutableAttributedString(string: combinedText)
         
-        let boldRange = (combinedText as NSString).range(of: "\(points)")
+        let boldRange = (combinedText as NSString).range(of: "\(viewModel.numberOfPoints)")
         let boldFont = SmilesFontsManager.defaultAppFont.getFont(style: .medium, size: 16)
         attributedString.addAttributes([.font: boldFont], range: boldRange)
         
@@ -40,5 +36,13 @@ final class PointsCollectionViewCell: UICollectionViewCell {
         attributedString.addAttributes([.font: regularFont], range: regularRange)
         
         detailsLabel.attributedText = attributedString
+    }
+}
+
+
+extension PointsCollectionViewCell {
+    struct ViewModel {
+        var numberOfPoints: Int = 0
+        var text: String?
     }
 }

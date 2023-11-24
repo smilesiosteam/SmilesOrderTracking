@@ -7,6 +7,6 @@
 
 import Foundation
 
-final class OrderTrackingViewModel {
+public final class OrderTrackingViewModel {
     
 }

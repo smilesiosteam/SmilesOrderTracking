@@ -15,7 +15,10 @@ protocol RatingCellActionDelegate: AnyObject {
 }
 
 final class RatingCollectionViewCell: UICollectionViewCell {
+    
     // MARK: - Outlets
+    @IBOutlet private weak var deliveryRateImage: UIImageView!
+    @IBOutlet private weak var foodRateImage: UIImageView!
     @IBOutlet private weak var containerView: UIView! {
         didSet {
             containerView.addMaskedCorner(withMaskedCorner: [.layerMaxXMaxYCorner, .layerMaxXMinYCorner, .layerMinXMaxYCorner, .layerMinXMinYCorner], cornerRadius: 12.0)
@@ -53,33 +56,17 @@ final class RatingCollectionViewCell: UICollectionViewCell {
     }
     
     // MARK: - Actions
-    @IBAction private func rateOrderButtonTapped(_ sender: UIButton) {
-        rateOrderButtonCollection.forEach { button in
-            if button.tag <= sender.tag {
-                button.setImage(UIImage(resource: .ratingStarFilledIcon), for: .normal)
-            } else {
-                button.setImage(UIImage(resource: .ratingStarUnfilledIcon), for: .normal)
-            }
-        }
+    @IBAction private func foodRateTapped(_ sender: Any) {
         
-        delegate?.rateOrderDidTap(rating: sender.tag)
     }
     
-    @IBAction private func rateDeliveryButtonTapped(_ sender: UIButton) {
-        rateDeliveryButtonCollection.forEach { button in
-            if button.tag <= sender.tag {
-                button.setImage(UIImage(resource: .ratingStarFilledIcon), for: .normal)
-            } else {
-                button.setImage(UIImage(resource: .ratingStarUnfilledIcon), for: .normal)
-            }
-        }
+    @IBAction private func deliveryRateTapped(_ sender: Any) {
         
-        delegate?.rateDeliveryDidTap(rating: sender.tag)
     }
     
     // MARK: - Methods
-    func updateCell(with viewModel: ViewModel) {
-//        delegate = viewModel.delegate
+    func updateCell(with viewModel: ViewModel, delegate: RatingCellActionDelegate) {
+        self.delegate = delegate
         configCell(with: viewModel.cellType)
     }
     
@@ -96,7 +83,18 @@ final class RatingCollectionViewCell: UICollectionViewCell {
 // MARK: - ViewModel
 extension RatingCollectionViewCell {
     struct ViewModel {
-        var cellType: OrderTrackingCellType = .delivery
-//        var delegate: RatingCellActionDelegate?
+        var orderId: Int
+        var items: [RateModel] = []
+    }
+    
+    enum RateType: String {
+        case delivery = "delivery"
+        case food = "food"
+    }
+    
+    struct RateModel {
+        var type: RateType
+        var title: String?
+        var iconUrl: String?
     }
 }

@@ -65,60 +65,45 @@
                                             <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="2" translatesAutoresizingMaskIntoConstraints="NO" id="1k0-2E-FN6">
                                                 <rect key="frame" x="193" y="0.0" width="128" height="24"/>
                                                 <subviews>
-                                                    <button opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pGl-Eu-FKC">
+                                                    <button opaque="NO" userInteractionEnabled="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pGl-Eu-FKC">
                                                         <rect key="frame" x="0.0" y="0.0" width="24" height="24"/>
                                                         <constraints>
                                                             <constraint firstAttribute="width" constant="24" id="nIe-r9-fcz"/>
                                                         </constraints>
                                                         <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                                         <state key="normal" image="rating-star-unfilled-icon"/>
-                                                        <connections>
-                                                            <action selector="rateOrderButtonTapped:" destination="JvX-lX-vLB" eventType="touchUpInside" id="Dlf-vl-OGu"/>
-                                                        </connections>
                                                     </button>
-                                                    <button opaque="NO" tag="2" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3QO-NE-27c">
+                                                    <button opaque="NO" userInteractionEnabled="NO" tag="2" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3QO-NE-27c">
                                                         <rect key="frame" x="26" y="0.0" width="24" height="24"/>
                                                         <constraints>
                                                             <constraint firstAttribute="width" constant="24" id="JSu-9L-dWs"/>
                                                         </constraints>
                                                         <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                                         <state key="normal" image="rating-star-unfilled-icon"/>
-                                                        <connections>
-                                                            <action selector="rateOrderButtonTapped:" destination="JvX-lX-vLB" eventType="touchUpInside" id="Dw6-H7-cJZ"/>
-                                                        </connections>
                                                     </button>
-                                                    <button opaque="NO" tag="3" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="czN-eE-rhG">
+                                                    <button opaque="NO" userInteractionEnabled="NO" tag="3" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="czN-eE-rhG">
                                                         <rect key="frame" x="52" y="0.0" width="24" height="24"/>
                                                         <constraints>
                                                             <constraint firstAttribute="width" constant="24" id="ThD-JE-377"/>
                                                         </constraints>
                                                         <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                                         <state key="normal" image="rating-star-unfilled-icon"/>
-                                                        <connections>
-                                                            <action selector="rateOrderButtonTapped:" destination="JvX-lX-vLB" eventType="touchUpInside" id="Nvo-5w-fg9"/>
-                                                        </connections>
                                                     </button>
-                                                    <button opaque="NO" tag="4" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Gd3-vg-rxY">
+                                                    <button opaque="NO" userInteractionEnabled="NO" tag="4" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Gd3-vg-rxY">
                                                         <rect key="frame" x="78" y="0.0" width="24" height="24"/>
                                                         <constraints>
                                                             <constraint firstAttribute="width" constant="24" id="ddP-8Z-yU5"/>
                                                         </constraints>
                                                         <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                                         <state key="normal" image="rating-star-unfilled-icon"/>
-                                                        <connections>
-                                                            <action selector="rateOrderButtonTapped:" destination="JvX-lX-vLB" eventType="touchUpInside" id="jZc-U9-kw3"/>
-                                                        </connections>
                                                     </button>
-                                                    <button opaque="NO" tag="5" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="l0U-tD-uJc">
+                                                    <button opaque="NO" userInteractionEnabled="NO" tag="5" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="l0U-tD-uJc">
                                                         <rect key="frame" x="104" y="0.0" width="24" height="24"/>
                                                         <constraints>
                                                             <constraint firstAttribute="width" constant="24" id="lu2-1R-e0E"/>
                                                         </constraints>
                                                         <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                                         <state key="normal" image="rating-star-unfilled-icon"/>
-                                                        <connections>
-                                                            <action selector="rateOrderButtonTapped:" destination="JvX-lX-vLB" eventType="touchUpInside" id="QZa-Mq-Tex"/>
-                                                        </connections>
                                                     </button>
                                                 </subviews>
                                             </stackView>
@@ -159,60 +144,45 @@
                                             <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="2" translatesAutoresizingMaskIntoConstraints="NO" id="Mnm-RD-inw">
                                                 <rect key="frame" x="193" y="0.0" width="128" height="24"/>
                                                 <subviews>
-                                                    <button opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ji2-NG-rzs">
+                                                    <button opaque="NO" userInteractionEnabled="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ji2-NG-rzs">
                                                         <rect key="frame" x="0.0" y="0.0" width="24" height="24"/>
                                                         <constraints>
                                                             <constraint firstAttribute="width" constant="24" id="xhu-YU-gHH"/>
                                                         </constraints>
                                                         <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                                         <state key="normal" image="rating-star-unfilled-icon"/>
-                                                        <connections>
-                                                            <action selector="rateDeliveryButtonTapped:" destination="JvX-lX-vLB" eventType="touchUpInside" id="Urv-Nd-sJP"/>
-                                                        </connections>
                                                     </button>
-                                                    <button opaque="NO" tag="2" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="N9w-Q6-DPC">
+                                                    <button opaque="NO" userInteractionEnabled="NO" tag="2" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="N9w-Q6-DPC">
                                                         <rect key="frame" x="26" y="0.0" width="24" height="24"/>
                                                         <constraints>
                                                             <constraint firstAttribute="width" constant="24" id="xFe-xT-0aA"/>
                                                         </constraints>
                                                         <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                                         <state key="normal" image="rating-star-unfilled-icon"/>
-                                                        <connections>
-                                                            <action selector="rateDeliveryButtonTapped:" destination="JvX-lX-vLB" eventType="touchUpInside" id="xRB-Gp-c7e"/>
-                                                        </connections>
                                                     </button>
-                                                    <button opaque="NO" tag="3" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="XmE-AM-tlH">
+                                                    <button opaque="NO" userInteractionEnabled="NO" tag="3" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="XmE-AM-tlH">
                                                         <rect key="frame" x="52" y="0.0" width="24" height="24"/>
                                                         <constraints>
                                                             <constraint firstAttribute="width" constant="24" id="ax8-90-M9E"/>
                                                         </constraints>
                                                         <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                                         <state key="normal" image="rating-star-unfilled-icon"/>
-                                                        <connections>
-                                                            <action selector="rateDeliveryButtonTapped:" destination="JvX-lX-vLB" eventType="touchUpInside" id="PJZ-6w-mpZ"/>
-                                                        </connections>
                                                     </button>
-                                                    <button opaque="NO" tag="4" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Z32-wA-0Yn">
+                                                    <button opaque="NO" userInteractionEnabled="NO" tag="4" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Z32-wA-0Yn">
                                                         <rect key="frame" x="78" y="0.0" width="24" height="24"/>
                                                         <constraints>
                                                             <constraint firstAttribute="width" constant="24" id="MVZ-y4-Kmu"/>
                                                         </constraints>
                                                         <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                                         <state key="normal" image="rating-star-unfilled-icon"/>
-                                                        <connections>
-                                                            <action selector="rateDeliveryButtonTapped:" destination="JvX-lX-vLB" eventType="touchUpInside" id="VPu-Y9-crM"/>
-                                                        </connections>
                                                     </button>
-                                                    <button opaque="NO" tag="5" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ffB-hn-Jx8">
+                                                    <button opaque="NO" userInteractionEnabled="NO" tag="5" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ffB-hn-Jx8">
                                                         <rect key="frame" x="104" y="0.0" width="24" height="24"/>
                                                         <constraints>
                                                             <constraint firstAttribute="width" constant="24" id="1mX-jT-7ed"/>
                                                         </constraints>
                                                         <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                                         <state key="normal" image="rating-star-unfilled-icon"/>
-                                                        <connections>
-                                                            <action selector="rateDeliveryButtonTapped:" destination="JvX-lX-vLB" eventType="touchUpInside" id="GWm-mi-2Cu"/>
-                                                        </connections>
                                                     </button>
                                                 </subviews>
                                             </stackView>
@@ -232,32 +202,46 @@
                             <constraint firstItem="deh-Yi-yRJ" firstAttribute="top" secondItem="4od-gm-e5H" secondAttribute="top" constant="16" id="ecL-m0-QBf"/>
                         </constraints>
                     </view>
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Emt-UX-h0g" userLabel="FoodRate">
+                        <rect key="frame" x="16" y="56" width="321" height="24"/>
+                        <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                        <connections>
+                            <action selector="foodRateTapped:" destination="JvX-lX-vLB" eventType="touchUpInside" id="HLx-pE-ml1"/>
+                        </connections>
+                    </button>
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="naw-U5-Shj" userLabel="DelivryRate">
+                        <rect key="frame" x="16" y="96" width="321" height="24"/>
+                        <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                        <connections>
+                            <action selector="deliveryRateTapped:" destination="JvX-lX-vLB" eventType="touchUpInside" id="XL3-8O-tde"/>
+                        </connections>
+                    </button>
                 </subviews>
                 <constraints>
                     <constraint firstAttribute="trailing" secondItem="4od-gm-e5H" secondAttribute="trailing" id="78P-we-61g"/>
+                    <constraint firstItem="naw-U5-Shj" firstAttribute="trailing" secondItem="H1f-Lg-Wy4" secondAttribute="trailing" id="BpB-02-WcZ"/>
+                    <constraint firstItem="naw-U5-Shj" firstAttribute="bottom" secondItem="H1f-Lg-Wy4" secondAttribute="bottom" id="G5u-Be-hba"/>
+                    <constraint firstItem="Emt-UX-h0g" firstAttribute="leading" secondItem="5yW-Bm-o57" secondAttribute="leading" id="GzX-9r-0gw"/>
+                    <constraint firstItem="naw-U5-Shj" firstAttribute="top" secondItem="H1f-Lg-Wy4" secondAttribute="top" id="HjL-nI-m24"/>
                     <constraint firstItem="4od-gm-e5H" firstAttribute="leading" secondItem="gKk-oc-Oq2" secondAttribute="leading" id="Se2-ap-XKv"/>
+                    <constraint firstItem="Emt-UX-h0g" firstAttribute="bottom" secondItem="5yW-Bm-o57" secondAttribute="bottom" id="XWH-YI-llo"/>
+                    <constraint firstItem="Emt-UX-h0g" firstAttribute="trailing" secondItem="5yW-Bm-o57" secondAttribute="trailing" id="aBF-mA-7TW"/>
                     <constraint firstItem="4od-gm-e5H" firstAttribute="top" secondItem="gKk-oc-Oq2" secondAttribute="top" id="bd5-8N-hzJ"/>
+                    <constraint firstItem="naw-U5-Shj" firstAttribute="leading" secondItem="H1f-Lg-Wy4" secondAttribute="leading" id="pNJ-qH-J04"/>
                     <constraint firstAttribute="bottom" secondItem="4od-gm-e5H" secondAttribute="bottom" id="ryq-uF-H0U"/>
+                    <constraint firstItem="Emt-UX-h0g" firstAttribute="top" secondItem="5yW-Bm-o57" secondAttribute="top" id="vQl-N1-RPC"/>
                 </constraints>
             </collectionViewCellContentView>
             <size key="customSize" width="353" height="138"/>
             <connections>
                 <outlet property="containerView" destination="4od-gm-e5H" id="HRN-r8-JfO"/>
+                <outlet property="deliveryRateImage" destination="g85-Ig-45Z" id="mmW-Qt-OlE"/>
+                <outlet property="foodRateImage" destination="LZm-Tb-ezm" id="YB4-4S-N8n"/>
                 <outlet property="rateDeliveryLabel" destination="XzL-t8-djg" id="r0a-bS-Hcr"/>
                 <outlet property="rateDeliveryStackView" destination="H1f-Lg-Wy4" id="LDj-If-5kc"/>
                 <outlet property="rateOrderLabel" destination="RiD-S4-B5y" id="jPB-SI-WVF"/>
                 <outlet property="rateOrderStackView" destination="5yW-Bm-o57" id="TBd-YF-gMm"/>
                 <outlet property="titleLabel" destination="cx1-gR-z8q" id="kdZ-dB-4Uy"/>
-                <outletCollection property="rateOrderButtonCollection" destination="pGl-Eu-FKC" collectionClass="NSMutableArray" id="iFu-7z-SWs"/>
-                <outletCollection property="rateOrderButtonCollection" destination="3QO-NE-27c" collectionClass="NSMutableArray" id="M5D-Lz-xbd"/>
-                <outletCollection property="rateOrderButtonCollection" destination="czN-eE-rhG" collectionClass="NSMutableArray" id="ypb-WU-ubH"/>
-                <outletCollection property="rateOrderButtonCollection" destination="Gd3-vg-rxY" collectionClass="NSMutableArray" id="FBg-yW-fub"/>
-                <outletCollection property="rateOrderButtonCollection" destination="l0U-tD-uJc" collectionClass="NSMutableArray" id="Gl2-Wy-SUO"/>
-                <outletCollection property="rateDeliveryButtonCollection" destination="ji2-NG-rzs" collectionClass="NSMutableArray" id="cuP-xT-0x7"/>
-                <outletCollection property="rateDeliveryButtonCollection" destination="N9w-Q6-DPC" collectionClass="NSMutableArray" id="u90-9r-c9m"/>
-                <outletCollection property="rateDeliveryButtonCollection" destination="XmE-AM-tlH" collectionClass="NSMutableArray" id="KB2-16-8gJ"/>
-                <outletCollection property="rateDeliveryButtonCollection" destination="Z32-wA-0Yn" collectionClass="NSMutableArray" id="8fc-qZ-DW2"/>
-                <outletCollection property="rateDeliveryButtonCollection" destination="ffB-hn-Jx8" collectionClass="NSMutableArray" id="TsR-c5-E2a"/>
             </connections>
             <point key="canvasLocation" x="270.99236641221376" y="-22.183098591549296"/>
         </collectionViewCell>

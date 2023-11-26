@@ -96,4 +96,21 @@ extension OrderTrackable {
     var isLiveTracking: Bool {
         response.orderDetails?.liveTracking ?? false
     }
+    
+    var orderRate: RatingCollectionViewCell.ViewModel {
+        let orderId = response.orderDetails?.orderId ?? 0
+        var viewModel = RatingCollectionViewCell.ViewModel(orderId: orderId)
+        let ratingModels = response.orderRating ?? []
+        let rates = ratingModels.compactMap { ratingModel -> RatingCollectionViewCell.RateModel? in
+            guard let type = RatingCollectionViewCell.RateType(rawValue: ratingModel.ratingType ?? "") else {
+                return nil
+            }
+            
+            let model = RatingCollectionViewCell.RateModel(type: type, title: ratingModel.title, iconUrl: ratingModel.image)
+            return model
+        }
+        
+        viewModel.items = rates
+        return viewModel
+    }
 }

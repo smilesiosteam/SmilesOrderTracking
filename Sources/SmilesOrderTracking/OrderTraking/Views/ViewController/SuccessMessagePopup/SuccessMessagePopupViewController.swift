@@ -1,19 +1,18 @@
 //
-//  ConfirmationPopupViewController.swift
+//  SuccessMessagePopupViewController.swift
 //  
 //
-//  Created by Shmeel Ahmed on 20/11/2023.
+//  Created by Shmeel Ahmed on 23/11/2023.
 //
 
 import UIKit
 import SmilesUtilities
 
-public class ConfirmationPopupViewController: UIViewController {
+public class SuccessMessagePopupViewController: UIViewController {
 
     @IBOutlet weak var primaryButton: UIButton!
     @IBOutlet weak var popupTitleContainer: UIView!
     
-    @IBOutlet weak var secondaryButton: UIButton!
     @IBOutlet weak var closeButton: UIButton!
     
     @IBOutlet weak var roundedView: UIView!
@@ -26,7 +25,7 @@ public class ConfirmationPopupViewController: UIViewController {
     
     var dismissViewTranslation = CGPoint(x: 0, y: 0)
     
-    var data = ConfirmationPopupViewModelData(message: "", primaryButtonTitle: "", secondaryButtonTitle: "")
+    var data = SuccessPopupViewModelData(message: "", primaryButtonTitle: "")
     // MARK: Lifecycle
 
     fileprivate func setupUI() {
@@ -37,19 +36,18 @@ public class ConfirmationPopupViewController: UIViewController {
         descriptionMessage.text = data.descriptionMessage
         descriptionMessage.isHidden = data.descriptionMessage?.isEmpty ?? true
         closeButton.isHidden = !data.showCloseButton
+        popupTitle.isHidden = data.popupTitle?.isEmpty ?? true
         popupTitleContainer.isHidden = !data.showCloseButton && (data.popupTitle?.isEmpty ?? true)
         popupTitle.fontTextStyle = .smilesHeadline4
         messageText.fontTextStyle = .smilesHeadline2
         descriptionMessage.fontTextStyle = .smilesBody2
         
         primaryButton.setTitle(data.primaryButtonTitle, for: .normal)
-        secondaryButton.setTitle(data.secondaryButtonTitle, for: .normal)
         primaryButton.fontTextStyle = .smilesHeadline4
-        secondaryButton.fontTextStyle = .smilesHeadline4
-        secondaryButton.layer.borderWidth = 2
-        secondaryButton.layer.borderColor = UIColor.appRevampPurpleMainColor.withAlphaComponent(0.4).cgColor
+        
         roundedView.layer.cornerRadius = 12
         roundedView.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
+        
     }
     
     public override func viewDidLoad() {
@@ -57,9 +55,9 @@ public class ConfirmationPopupViewController: UIViewController {
         setupUI()
     }
     
-    public init(popupData:ConfirmationPopupViewModelData) {
+    public init(popupData:SuccessPopupViewModelData) {
         self.data = popupData
-        super.init(nibName: "ConfirmationPopupViewController", bundle: .module)
+        super.init(nibName: "SuccessMessagePopupViewController", bundle: .module)
     }
     
     required init?(coder: NSCoder) {
@@ -106,9 +104,23 @@ public class ConfirmationPopupViewController: UIViewController {
         data.primaryAction()
     }
     
-    @IBAction func secondaryAction(_ sender: Any) {
-        dismiss(animated: true)
-        data.secondaryAction()
-    }
     
+}
+
+
+public struct SuccessPopupViewModelData {
+    var showCloseButton = true
+    var popupTitle:String?
+    var message:String
+    var descriptionMessage:String?
+    var primaryButtonTitle:String
+    var primaryAction={}
+    public init(showCloseButton: Bool = true, popupTitle: String? = nil, message: String, descriptionMessage: String? = nil, primaryButtonTitle: String, primaryAction: @escaping ()->Void = {}) {
+        self.showCloseButton = showCloseButton
+        self.popupTitle = popupTitle
+        self.message = message
+        self.descriptionMessage = descriptionMessage
+        self.primaryButtonTitle = primaryButtonTitle
+        self.primaryAction = primaryAction
+    }
 }

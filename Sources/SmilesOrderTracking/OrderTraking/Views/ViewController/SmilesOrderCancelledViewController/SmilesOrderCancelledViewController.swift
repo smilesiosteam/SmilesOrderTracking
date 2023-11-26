@@ -1,5 +1,5 @@
 //
-//  ConfirmationPopupViewController.swift
+//  SmilesOrderCancelledViewController.swift
 //  
 //
 //  Created by Shmeel Ahmed on 20/11/2023.
@@ -8,42 +8,37 @@
 import UIKit
 import SmilesUtilities
 
-public class ConfirmationPopupViewController: UIViewController {
+public class SmilesOrderCancelledViewController: UIViewController {
 
     @IBOutlet weak var primaryButton: UIButton!
+    @IBOutlet weak var animationView: UIImageView!
     @IBOutlet weak var popupTitleContainer: UIView!
     
     @IBOutlet weak var secondaryButton: UIButton!
     @IBOutlet weak var closeButton: UIButton!
     
     @IBOutlet weak var roundedView: UIView!
-    @IBOutlet weak var popupTitle: UILabel!
     @IBOutlet var panDismissView: UIView!
 
     @IBOutlet weak var messageText: UILabel!
     
     @IBOutlet weak var descriptionMessage: UILabel!
-    
+    var submitAction: ()->Void = {}
+    var supportAction: ()->Void = {}
     var dismissViewTranslation = CGPoint(x: 0, y: 0)
     
-    var data = ConfirmationPopupViewModelData(message: "", primaryButtonTitle: "", secondaryButtonTitle: "")
     // MARK: Lifecycle
 
     fileprivate func setupUI() {
         panDismissView.addGestureRecognizer(UIPanGestureRecognizer(target: self, action: #selector(handleDismiss)))
         panDismissView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleTap)))
-        popupTitle.text = data.popupTitle
-        messageText.text = data.message
-        descriptionMessage.text = data.descriptionMessage
-        descriptionMessage.isHidden = data.descriptionMessage?.isEmpty ?? true
-        closeButton.isHidden = !data.showCloseButton
-        popupTitleContainer.isHidden = !data.showCloseButton && (data.popupTitle?.isEmpty ?? true)
-        popupTitle.fontTextStyle = .smilesHeadline4
+        messageText.text = "Your order has been cancelled".localizedString
+        descriptionMessage.text = "Please let us know why you need to cancel your order".localizedString
         messageText.fontTextStyle = .smilesHeadline2
         descriptionMessage.fontTextStyle = .smilesBody2
         
-        primaryButton.setTitle(data.primaryButtonTitle, for: .normal)
-        secondaryButton.setTitle(data.secondaryButtonTitle, for: .normal)
+        primaryButton.setTitle("SubmitTitleSmall".localizedString, for: .normal)
+        secondaryButton.setTitle("GetSupport".localizedString, for: .normal)
         primaryButton.fontTextStyle = .smilesHeadline4
         secondaryButton.fontTextStyle = .smilesHeadline4
         secondaryButton.layer.borderWidth = 2
@@ -57,9 +52,10 @@ public class ConfirmationPopupViewController: UIViewController {
         setupUI()
     }
     
-    public init(popupData:ConfirmationPopupViewModelData) {
-        self.data = popupData
-        super.init(nibName: "ConfirmationPopupViewController", bundle: .module)
+    public init(submitAction: @escaping ()->Void = {}, supportAction: @escaping ()->Void = {}) {
+        self.submitAction = submitAction
+        self.supportAction = supportAction
+        super.init(nibName: "SmilesOrderCancelledViewController", bundle: .module)
     }
     
     required init?(coder: NSCoder) {
@@ -103,12 +99,12 @@ public class ConfirmationPopupViewController: UIViewController {
     
     @IBAction func primaryAction(_ sender: Any) {
         dismiss(animated: true)
-        data.primaryAction()
+        submitAction()
     }
     
     @IBAction func secondaryAction(_ sender: Any) {
         dismiss(animated: true)
-        data.secondaryAction()
+        supportAction()
     }
     
 }

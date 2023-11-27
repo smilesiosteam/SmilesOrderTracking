@@ -35,6 +35,8 @@ enum OrderTrackingLocalization {
     case getSupport
     case rateYourFoodExperience
     case howWouldYouRateRestaurantFood
+    case didReceivedOrder
+    case didPickedOrder
     
     var text: String {
         switch self {
@@ -90,6 +92,11 @@ enum OrderTrackingLocalization {
             return "RateYourFoodExperience".localizedString
         case .howWouldYouRateRestaurantFood:
             return "HowWouldYouRateRestaurantFood".localizedString
+        case .didPickedOrder:
+            return "DidPicked".localizedString
+        case .didReceivedOrder:
+            return "DidReceived".localizedString
+            
         }
     }
 }

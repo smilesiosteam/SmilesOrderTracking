@@ -10,8 +10,8 @@ import SmilesFontsManager
 import SmilesUtilities
 
 protocol RatingCellActionDelegate: AnyObject {
-    func rateOrderDidTap(rating: Int)
-    func rateDeliveryDidTap(rating: Int)
+    func rateOrderDidTap(orderId: Int)
+    func rateDeliveryDidTap(orderId: Int)
 }
 
 final class RatingCollectionViewCell: UICollectionViewCell {
@@ -38,7 +38,6 @@ final class RatingCollectionViewCell: UICollectionViewCell {
             rateOrderLabel.textColor = .black.withAlphaComponent(0.8)
         }
     }
-    @IBOutlet private var rateOrderButtonCollection: [UIButton]!
     @IBOutlet private weak var rateDeliveryStackView: UIStackView!
     @IBOutlet private weak var rateDeliveryLabel: UILabel! {
         didSet {
@@ -46,36 +45,39 @@ final class RatingCollectionViewCell: UICollectionViewCell {
             rateDeliveryLabel.textColor = .black.withAlphaComponent(0.8)
         }
     }
-    @IBOutlet private var rateDeliveryButtonCollection: [UIButton]!
     
     // MARK: - Properties
     weak var delegate: RatingCellActionDelegate?
-    // MARK: - Lifecycle
-    override func awakeFromNib() {
-        super.awakeFromNib()
-    }
+    private var orderId: Int = 0
     
     // MARK: - Actions
     @IBAction private func foodRateTapped(_ sender: Any) {
-        
+        delegate?.rateOrderDidTap(orderId: orderId)
     }
     
     @IBAction private func deliveryRateTapped(_ sender: Any) {
-        
+        delegate?.rateDeliveryDidTap(orderId: orderId)
     }
     
     // MARK: - Methods
     func updateCell(with viewModel: ViewModel, delegate: RatingCellActionDelegate) {
         self.delegate = delegate
-        configCell(with: viewModel.cellType)
+        self.orderId = viewModel.orderId
+        for item in viewModel.items {
+            configCell(with: item)
+        }
     }
     
-    private func configCell(with type: OrderTrackingCellType) {
-        switch type {
+    private func configCell(with model: RateModel) {
+        switch model.type {
         case .delivery:
             rateDeliveryStackView.isHidden = false
-        case .pickup:
-            rateDeliveryStackView.isHidden = true
+            rateDeliveryLabel.text = model.title
+            deliveryRateImage.setImageWithUrlString(model.iconUrl ?? "")
+        case .food:
+            rateOrderStackView.isHidden = false
+            rateOrderLabel.text = model.title
+            foodRateImage.setImageWithUrlString(model.iconUrl ?? "")
         }
     }
 }
@@ -83,7 +85,7 @@ final class RatingCollectionViewCell: UICollectionViewCell {
 // MARK: - ViewModel
 extension RatingCollectionViewCell {
     struct ViewModel {
-        var orderId: Int
+        var orderId: Int = 0
         var items: [RateModel] = []
     }
     

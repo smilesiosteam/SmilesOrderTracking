@@ -67,7 +67,11 @@ extension OrderTrackingDataSource: UICollectionViewDataSource {
             return cell
         case .rating(model: let model):
             let cell = collectionView.dequeueReusableCell(withClass: RatingCollectionViewCell.self, for: indexPath)
-            cell.updateCell(with: model)
+            cell.updateCell(with: model, delegate: self)
+            return cell
+        case .confirmation(model: let model):
+            let cell = collectionView.dequeueReusableCell(withClass: OrderConfirmationCollectionViewCell.self, for: indexPath)
+            cell.updateCell(with: model, delegate: self)
             return cell
         }
     }
@@ -126,4 +130,25 @@ extension OrderTrackingDataSource: FreeDeliveryCollectionViewProtocol {
 // MARK: - Driver Delegate
 extension OrderTrackingDataSource: DriverCellActionDelegate {
     func opneMap(lat: Double, lng: Double) {}
+}
+
+// MARK: - Rating Delegate
+extension OrderTrackingDataSource: RatingCellActionDelegate {
+    func rateOrderDidTap(orderId: Int) {
+        print("rateOrderDidTap")
+    }
+    
+    func rateDeliveryDidTap(orderId: Int) {
+        print("rateDeliveryDidTap")
+    }
+}
+// MARK: - Confirmation Delegate
+extension OrderTrackingDataSource: OrderConfirmationCellActionDelegate {
+    func didGetTheOrder(with orderId: Int) {
+        print("Yes")
+    }
+    
+    func didNotGetTheOrder(with orderId: Int) {
+        print("No")
+    }
 }

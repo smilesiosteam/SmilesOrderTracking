@@ -97,7 +97,7 @@ extension OrderTrackable {
         response.orderDetails?.liveTracking ?? false
     }
     
-    var orderRate: RatingCollectionViewCell.ViewModel {
+    var orderRateModel: RatingCollectionViewCell.ViewModel? {
         let orderId = response.orderDetails?.orderId ?? 0
         var viewModel = RatingCollectionViewCell.ViewModel(orderId: orderId)
         let ratingModels = response.orderRating ?? []
@@ -111,6 +111,6 @@ extension OrderTrackable {
         }
         
         viewModel.items = rates
-        return viewModel
+        return rates.isEmpty ? nil : viewModel
     }
 }

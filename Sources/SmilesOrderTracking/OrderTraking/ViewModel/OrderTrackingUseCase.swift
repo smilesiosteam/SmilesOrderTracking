@@ -45,14 +45,12 @@ final class OrderTrackingUseCase {
             return InTheKitchenOrderConfig(response: response).build()
         case .orderIsOnTheWay:
             return OnTheWayOrderConfig(response: response).build()
-        case .orderHasBeenDelivered:
-            return .init()
         case .orderCancelled:
             return .init()
         case .changedToPickup:
             return .init()
-        case .determineStatus:
-            return .init()
+        case .confirmation:
+            return ConfirmationOrderConfig(response: response).build()
         case .someItemsAreUnavailable:
             return .init()
         case .orderNearYourLocation:
@@ -69,7 +67,7 @@ let jsonString = """
 {
   "extTransactionId": "3530191483630",
   "orderDetails": {
-    "orderStatus": 15,
+    "orderStatus": 10,
     "title": "Wow, your order has arrived X min early. Enjoy! Ya Naguib",
     "orderDescription": "Hardee's should accept your order soon.",
     "orderNumber": "SMHD112020230000467215",
@@ -130,6 +128,14 @@ let jsonString = """
     "driverStatusText": "has picked up your order",
     "driverName": "Osama Tester Driver",
   },
+"orderRatings": [
+            {
+                "ratingType": "food",
+                "userRating": 0.0,
+                "title": "how was the food from Hardee's?",
+                "image": "https://cdn.eateasily.com/restaurants/9d237d8a2148c1c2354ff1a2b769f3e2/17338_small.jpg"
+            }
+        ],
   "orderItems": [
     {
       "quantity": 1,

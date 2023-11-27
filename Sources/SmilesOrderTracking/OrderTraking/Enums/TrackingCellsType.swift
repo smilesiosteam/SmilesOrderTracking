@@ -16,6 +16,7 @@ enum TrackingCellType {
     case point(model: PointsCollectionViewCell.ViewModel)
     case driver(model: DriverCollectionViewCell.ViewModel)
     case rating(model: RatingCollectionViewCell.ViewModel)
+    case confirmation(model: OrderConfirmationCollectionViewCell.ViewModel)
 }
 
 enum TrackingHeaderType {

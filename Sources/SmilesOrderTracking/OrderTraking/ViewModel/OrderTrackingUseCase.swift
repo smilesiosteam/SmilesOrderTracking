@@ -46,7 +46,7 @@ final class OrderTrackingUseCase {
         case .orderIsOnTheWay:
             return OnTheWayOrderConfig(response: response).build()
         case .orderCancelled:
-            return .init()
+            return CanceledOrderConfig(response: response).build()
         case .changedToPickup:
             return .init()
         case .confirmation:
@@ -67,7 +67,7 @@ let jsonString = """
 {
   "extTransactionId": "3530191483630",
   "orderDetails": {
-    "orderStatus": 10,
+    "orderStatus": 8,
     "title": "Wow, your order has arrived X min early. Enjoy! Ya Naguib",
     "orderDescription": "Hardee's should accept your order soon.",
     "orderNumber": "SMHD112020230000467215",

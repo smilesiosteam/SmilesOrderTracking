@@ -20,7 +20,7 @@ struct ConfirmationOrderConfig: OrderTrackable {
         
         var cells: [TrackingCellType] = [
             .progressBar(model: progressBar),
-            .text(message: orderText),
+            .text(model: .init(title: orderText)),
             .location(model: location),
             .confirmation(model: getConfirmationModel())
         ]

@@ -19,7 +19,7 @@ struct ProcessingOrderConfig: OrderTrackable {
         
         let cells: [TrackingCellType] = [
             .progressBar(model: progressBar),
-            .text(message: orderText),
+            .text(model: .init(title: orderText)),
             .location(model: location),
             .restaurant(model: orderRestaurant)
         ]

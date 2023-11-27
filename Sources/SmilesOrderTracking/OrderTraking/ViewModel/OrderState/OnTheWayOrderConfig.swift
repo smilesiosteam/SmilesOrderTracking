@@ -22,7 +22,7 @@ struct OnTheWayOrderConfig: OrderTrackable {
         
         var cells: [TrackingCellType] = [
             .progressBar(model: progressBar),
-            .text(message: orderText),
+            .text(model: .init(title: orderText)),
             .driver(model: orderDriverModel),
             .location(model: location),
         ]

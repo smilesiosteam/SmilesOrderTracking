@@ -18,7 +18,29 @@ final class TextCollectionViewCell: UICollectionViewCell {
         detailsLable.textColor = .black.withAlphaComponent(0.8)
     }
     
-    func updateCell(with details: String?) {
-        detailsLable.text = details
+    func updateCell(with viewModel: ViewModel) {
+        detailsLable.text = viewModel.title
+        detailsLable.fontTextStyle = viewModel.type.style
+    }
+}
+
+extension TextCollectionViewCell {
+    struct ViewModel {
+        var title: String?
+        var type: FontType = .subTitle
+    }
+    
+    enum FontType {
+        case title
+        case subTitle
+        
+        var style: UIFont.TextStyle {
+            switch self {
+            case .title:
+                return .smilesHeadline2
+            case .subTitle:
+                return .smilesBody3
+            }
+        }
     }
 }

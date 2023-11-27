@@ -13,12 +13,13 @@ enum OrderTrackingType: Int {
     case orderAccepted = 2
     case inTheKitchen = 3
     case orderIsReadyForPickup = 4
-    case orderHasBeenPickedUp = 5
+    case orderHasBeenPickedUpPickup = 5
     case orderIsOnTheWay = 6
     case delivered = 7
     case orderCancelled = 8
     case changedToPickup = 9 // Delivery unavailable
     case confirmation = 10
     case someItemsAreUnavailable = 11
+    case orderHasBeenPickedUpDelivery = 13
     case orderNearYourLocation = 14
 }

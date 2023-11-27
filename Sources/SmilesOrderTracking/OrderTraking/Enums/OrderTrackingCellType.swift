@@ -7,16 +7,7 @@
 
 import Foundation
 
-enum OrderTrackingCellType {
-    case delivery
-    case pickup
-    
-    var text: String {
-        switch self {
-        case .delivery:
-            return "DELIVERY"
-        case .pickup:
-            return "PICK_UP"
-        }
-    }
+enum OrderTrackingCellType: String {
+    case delivery = "DELIVERY"
+    case pickup = "PICK_UP"
 }

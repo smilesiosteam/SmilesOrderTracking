@@ -42,7 +42,7 @@ struct ConfirmationOrderConfig: OrderTrackable {
 
         let orderType = response.orderDetails?.orderType?.lowercased() ?? ""
        
-        let questionFormat = (orderType == OrderTrackingCellType.delivery.text.lowercased()) ? OrderTrackingLocalization.didReceivedOrder.text : OrderTrackingLocalization.didPickedOrder.text
+        let questionFormat = (orderType == OrderTrackingCellType.delivery.rawValue.lowercased()) ? OrderTrackingLocalization.didReceivedOrder.text : OrderTrackingLocalization.didPickedOrder.text
         let question = String(format: questionFormat, restaurantName)
         
         viewModel.question = question

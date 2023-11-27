@@ -39,7 +39,7 @@ enum OrderTrackingLocalization {
     case didPickedOrder
     case restaurantCanceledTitle
     case restaurantCanceledButtonTitle
-    
+    case pickUpOrderFrom
     var text: String {
         switch self {
         case .support:
@@ -103,6 +103,8 @@ enum OrderTrackingLocalization {
             return "Sorry, the restaurant had to cancel your order. Would you like to order from another restaurant?"
         case .restaurantCanceledButtonTitle:
             return "View available restaurants"
+        case .pickUpOrderFrom:
+            return "Pick up your order from:"
         }
     }
 }

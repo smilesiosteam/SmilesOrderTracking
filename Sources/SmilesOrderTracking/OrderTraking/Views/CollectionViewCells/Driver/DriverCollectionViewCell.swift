@@ -16,6 +16,7 @@ protocol DriverCellActionDelegate: AnyObject, PhoneCallable {
 final class DriverCollectionViewCell: UICollectionViewCell {
     
     // MARK: - Outlets
+    
     @IBOutlet private weak var iconImageView: UIImageView!
     @IBOutlet private weak var titleLabel: UILabel! {
         didSet {
@@ -49,6 +50,8 @@ final class DriverCollectionViewCell: UICollectionViewCell {
     func updateCell(with viewModel: ViewModel, delegate: DriverCellActionDelegate) {
         self.delegate = delegate
         self.viewModel = viewModel
+        iconImageView.setImageWithUrlString(viewModel.driverIconURL ?? "")
+        actionButton.setImageWithUrlString(viewModel.driverIconURL ?? "", state: .normal)
         
         switch viewModel.cellType {
         case .delivery:
@@ -71,6 +74,8 @@ extension DriverCollectionViewCell {
         var title: String?
         var subTitle: String?
         var driverMobileNumber: String?
+        var driverIconURL: String?
+        var iconURL: String?
         var lat: Double = 0.0
         var lng: Double = 0.0
         var cellType: OrderTrackingCellType = .delivery

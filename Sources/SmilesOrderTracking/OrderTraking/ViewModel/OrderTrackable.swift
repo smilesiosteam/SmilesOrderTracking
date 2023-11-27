@@ -113,4 +113,9 @@ extension OrderTrackable {
         viewModel.items = rates
         return rates.isEmpty ? nil : viewModel
     }
+    
+    var orderType: OrderTrackingCellType {
+        let orderType = response.orderDetails?.orderType ?? ""
+        return OrderTrackingCellType(rawValue: orderType) ?? .delivery
+    }
 }

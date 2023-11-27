@@ -41,14 +41,14 @@ final class OrderTrackingUseCase {
             return AcceptedOrderConfig(response: response).build()
         case .inTheKitchen:
             return InTheKitchenOrderConfig(response: response).build()
-        case .orderIsReadyForPickup, .orderHasBeenPickedUp:
+        case .orderIsReadyForPickup, .orderHasBeenPickedUpPickup, .orderHasBeenPickedUpDelivery:
             return InTheKitchenOrderConfig(response: response).build()
         case .orderIsOnTheWay:
             return OnTheWayOrderConfig(response: response).build()
         case .orderCancelled:
             return CanceledOrderConfig(response: response).build()
         case .changedToPickup:
-            return .init()
+            return ChangedToPickupOrderConfig(response: response).build()
         case .confirmation:
             return ConfirmationOrderConfig(response: response).build()
         case .someItemsAreUnavailable:
@@ -67,7 +67,7 @@ let jsonString = """
 {
   "extTransactionId": "3530191483630",
   "orderDetails": {
-    "orderStatus": 8,
+    "orderStatus": 3,
     "title": "Wow, your order has arrived X min early. Enjoy! Ya Naguib",
     "orderDescription": "Hardee's should accept your order soon.",
     "orderNumber": "SMHD112020230000467215",
@@ -96,7 +96,7 @@ let jsonString = """
     "deliveryAdrress": "maama, Annan, Alan, amann, Sheikh Zayed Rd - Za'abeel - Dubai - United Arab Emirates, Al Kifaf",
     "orderTimeOut": 2,
     "isCancelationAllowed": false,
-    "orderType": "DELIVERY",
+    "orderType": "PICK_UP",
     "determineStatus": false,
     "earnPoints": 120,
     "addressTitle": "Home",

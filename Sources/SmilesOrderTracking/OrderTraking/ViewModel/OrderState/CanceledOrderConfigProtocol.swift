@@ -30,4 +30,11 @@ extension CanceledOrderConfigProtocol {
         viewModel.title = title
         return viewModel
     }
+    
+    func getHeader() -> TrackingHeaderType {
+        var viewModel =  ImageHeaderCollectionViewCell.ViewModel()
+        viewModel.isShowSupportHeader = true
+        let header: TrackingHeaderType = .image(model: viewModel)
+        return header
+    }
 }

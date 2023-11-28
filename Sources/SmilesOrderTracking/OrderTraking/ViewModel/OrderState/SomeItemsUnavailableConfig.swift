@@ -20,7 +20,7 @@ struct SomeItemsUnavailableConfig: CanceledOrderConfigProtocol {
             .cashVoucher(model: .init()),
             .orderActions(model: getOrderActionsModel())
         ]
-        let header: TrackingHeaderType = .image(model: .init())
-        return .init(header: header, cells: cells)
+        
+        return .init(header: getHeader(), cells: cells)
     }
 }

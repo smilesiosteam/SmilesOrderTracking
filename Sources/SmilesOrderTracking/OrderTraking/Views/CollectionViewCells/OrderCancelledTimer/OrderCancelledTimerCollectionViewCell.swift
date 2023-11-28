@@ -13,6 +13,10 @@ protocol OrderCancelledTimerCellActionDelegate: AnyObject {
 
 final class OrderCancelledTimerCollectionViewCell: UICollectionViewCell {
     // MARK: - Outlets
+    
+    @IBOutlet weak var bottomConstraint: NSLayoutConstraint!
+    @IBOutlet weak var topConstraint: NSLayoutConstraint!
+    @IBOutlet private weak var mainStackView: UIStackView!
     @IBOutlet private weak var containerView: UIView! {
         didSet {
             containerView.addMaskedCorner(withMaskedCorner: [.layerMaxXMaxYCorner, .layerMaxXMinYCorner, .layerMinXMaxYCorner, .layerMinXMinYCorner], cornerRadius: 12.0)
@@ -29,7 +33,6 @@ final class OrderCancelledTimerCollectionViewCell: UICollectionViewCell {
         didSet {
             actionButton.addMaskedCorner(withMaskedCorner: [.layerMaxXMaxYCorner, .layerMaxXMinYCorner, .layerMinXMaxYCorner, .layerMinXMinYCorner], cornerRadius: actionButton.bounds.height / 2)
             actionButton.fontTextStyle = .smilesHeadline4
-//            actionButton.setTitle(OrderTrackingLocalization.orderCancelledLikeToPickupOrder.text, for: .normal)
             actionButton.setTitleColor(.white, for: .normal)
             actionButton.backgroundColor = .appRevampPurpleMainColor
         }
@@ -92,6 +95,10 @@ final class OrderCancelledTimerCollectionViewCell: UICollectionViewCell {
             timer?.invalidate()
             timer = nil
             timeLabel.text = "00:00" + " " + OrderTrackingLocalization.minText.text
+            textLabel.text = OrderTrackingLocalization.orderCancelledTimeFinished.text
+            mainStackView.spacing = 8
+            bottomConstraint.constant = 9
+            topConstraint.constant = 9
             disableButton()
         }
     }

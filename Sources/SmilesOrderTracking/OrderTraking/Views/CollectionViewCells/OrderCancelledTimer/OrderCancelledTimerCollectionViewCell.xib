@@ -12,26 +12,26 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="OrderCancelledTimerCollectionViewCell" id="mvh-X5-H5F" customClass="OrderCancelledTimerCollectionViewCell" customModule="SmilesOrderTracking">
-            <rect key="frame" x="0.0" y="0.0" width="419" height="199"/>
+            <rect key="frame" x="0.0" y="0.0" width="356" height="197"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <collectionViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="CmO-lj-2aq">
-                <rect key="frame" x="0.0" y="0.0" width="419" height="199"/>
+                <rect key="frame" x="0.0" y="0.0" width="356" height="197"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="DLg-n6-KqS">
-                        <rect key="frame" x="0.0" y="0.0" width="419" height="199"/>
+                        <rect key="frame" x="0.0" y="0.0" width="356" height="197"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="eT0-ZA-xrh">
-                                <rect key="frame" x="16" y="16" width="387" height="167"/>
+                                <rect key="frame" x="16" y="16" width="324" height="165"/>
                                 <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" text="Oops, looks like you’ve run out of time to convert your order to a pick-up order! You can try placing the order again." textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4Bx-Wt-pV9">
-                                        <rect key="frame" x="0.0" y="0.0" width="387" height="61"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Sorry, the restaurant is not able to deliver your order due to bad weather." textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4Bx-Wt-pV9">
+                                        <rect key="frame" x="0.0" y="0.0" width="324" height="59"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="khv-i9-Hwe">
-                                        <rect key="frame" x="0.0" y="77" width="387" height="40"/>
+                                        <rect key="frame" x="0.0" y="75" width="324" height="40"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="40" id="M9Q-BY-ytj"/>
                                         </constraints>
@@ -42,7 +42,10 @@
                                         </connections>
                                     </button>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="00:00 min" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NeX-Cv-tC8">
-                                        <rect key="frame" x="0.0" y="133" width="387" height="34"/>
+                                        <rect key="frame" x="0.0" y="131" width="324" height="34"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="34" id="NTI-4z-WfX"/>
+                                        </constraints>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
@@ -66,14 +69,17 @@
                     <constraint firstAttribute="bottom" secondItem="DLg-n6-KqS" secondAttribute="bottom" id="e44-sQ-E68"/>
                 </constraints>
             </collectionViewCellContentView>
-            <size key="customSize" width="419" height="199"/>
+            <size key="customSize" width="356" height="197"/>
             <connections>
                 <outlet property="actionButton" destination="khv-i9-Hwe" id="BdY-kd-LD1"/>
+                <outlet property="bottomConstraint" destination="9G0-u4-xrC" id="sUS-GO-Jg9"/>
                 <outlet property="containerView" destination="DLg-n6-KqS" id="yu3-I4-A2X"/>
+                <outlet property="mainStackView" destination="eT0-ZA-xrh" id="GEW-ya-ivd"/>
                 <outlet property="textLabel" destination="4Bx-Wt-pV9" id="0wu-7y-0mt"/>
                 <outlet property="timeLabel" destination="NeX-Cv-tC8" id="kYi-7y-mEX"/>
+                <outlet property="topConstraint" destination="qLj-25-6ee" id="hbH-cl-qHH"/>
             </connections>
-            <point key="canvasLocation" x="260.30534351145036" y="72.183098591549296"/>
+            <point key="canvasLocation" x="143.5114503816794" y="68.661971830985919"/>
         </collectionViewCell>
     </objects>
     <resources>

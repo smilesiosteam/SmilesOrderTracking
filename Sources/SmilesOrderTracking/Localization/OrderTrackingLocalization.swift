@@ -40,6 +40,11 @@ enum OrderTrackingLocalization {
     case restaurantCanceledTitle
     case restaurantCanceledButtonTitle
     case pickUpOrderFrom
+    
+    // Some items are unavailable
+    case unavailableItemsTitle
+    case unavailableItemsButtonTitle
+    
     var text: String {
         switch self {
         case .support:
@@ -105,6 +110,10 @@ enum OrderTrackingLocalization {
             return "View available restaurants"
         case .pickUpOrderFrom:
             return "Pick up your order from:"
+        case .unavailableItemsTitle:
+            return "Some of the items you ordered are not available. We have replaced them with items of a lower price and created new order."
+        case .unavailableItemsButtonTitle:
+            return "Continue with new order"
         }
     }
 }

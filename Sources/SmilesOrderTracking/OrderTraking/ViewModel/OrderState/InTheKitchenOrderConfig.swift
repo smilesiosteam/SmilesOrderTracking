@@ -21,8 +21,6 @@ struct InTheKitchenOrderConfig: OrderTrackable {
             cells.append(.point(model: orderPoint))
         }
         
-        
-        
         if let orderSubscription {
             cells.append(.subscription(model: orderSubscription))
         }
@@ -49,6 +47,7 @@ struct InTheKitchenOrderConfig: OrderTrackable {
         viewModel.iconURL = response.orderDetails?.subTitleImageIconUrl
         viewModel.title = OrderTrackingLocalization.pickUpOrderFrom.text
         viewModel.subTitle = response.orderDetails?.restaurantAddress
+        viewModel.cellType = .pickup
         return viewModel
     }
 }

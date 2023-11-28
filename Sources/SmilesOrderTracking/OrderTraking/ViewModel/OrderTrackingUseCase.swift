@@ -32,16 +32,14 @@ final class OrderTrackingUseCase {
         
         
         switch value {
-        case .orderProcessing:
+        case .orderProcessing, .pickupChanged:
             return ProcessingOrderConfig(response: response).build()
         case .waitingForTheRestaurant:
             return WaitingOrderConfig(response: response).build()
         case .orderAccepted:
             isShowToast = true
             return AcceptedOrderConfig(response: response).build()
-        case .inTheKitchen:
-            return InTheKitchenOrderConfig(response: response).build()
-        case .orderIsReadyForPickup, .orderHasBeenPickedUpPickup, .orderHasBeenPickedUpDelivery:
+        case .inTheKitchen, .orderIsReadyForPickup, .orderHasBeenPickedUpPickup, .orderHasBeenPickedUpDelivery:
             return InTheKitchenOrderConfig(response: response).build()
         case .orderIsOnTheWay:
             return OnTheWayOrderConfig(response: response).build()
@@ -52,7 +50,7 @@ final class OrderTrackingUseCase {
         case .confirmation:
             return ConfirmationOrderConfig(response: response).build()
         case .someItemsAreUnavailable:
-            return .init()
+            return SomeItemsUnavailableConfig(response: response).build()
         case .orderNearYourLocation:
             return NearOfLocationConfig(response: response).build()
         case .delivered:
@@ -67,7 +65,7 @@ let jsonString = """
 {
   "extTransactionId": "3530191483630",
   "orderDetails": {
-    "orderStatus": 3,
+    "orderStatus": 11,
     "title": "Wow, your order has arrived X min early. Enjoy! Ya Naguib",
     "orderDescription": "Hardee's should accept your order soon.",
     "orderNumber": "SMHD112020230000467215",
@@ -127,6 +125,10 @@ let jsonString = """
     "deliveryBy": "Delivered By Restaurant",
     "driverStatusText": "has picked up your order",
     "driverName": "Osama Tester Driver",
+    "driverImageIconUrl": "https://www.smilesuae.ae/images/APP/ORDER_TRACKING/IMAGES/driverimageIcon.png",
+    "driverPhoneImageUrl": "https://www.smilesuae.ae/images/APP/ORDER_TRACKING/IMAGES/driverphoneIcon.png",
+    "mapImageIconUrl": "https://www.smilesuae.ae/images/APP/ORDER_TRACKING/IMAGES/mapIcon.png",
+    "subTitleImageIconUrl": "https://www.smilesuae.ae/images/APP/ORDER_TRACKING/IMAGES/SubTitleimageIcon.png"
   },
 "orderRatings": [
             {

@@ -20,6 +20,7 @@ enum OrderTrackingType: Int {
     case changedToPickup = 9 // Delivery unavailable
     case confirmation = 10
     case someItemsAreUnavailable = 11
+    case pickupChanged  = 12
     case orderHasBeenPickedUpDelivery = 13
     case orderNearYourLocation = 14
 }

@@ -21,6 +21,6 @@ struct SomeItemsUnavailableConfig: CanceledOrderConfigProtocol {
             .orderActions(model: getOrderActionsModel())
         ]
         
-        return .init(header: getHeader(), cells: cells)
+        return .init(header: getCanceledHeader(), cells: cells)
     }
 }

@@ -51,11 +51,9 @@ final class DriverCollectionViewCell: UICollectionViewCell {
         self.viewModel = viewModel
         iconImageView.setImageWithUrlString(viewModel.driverIconURL ?? "")
         actionButton.setImageWithUrlString(viewModel.iconURL ?? "", state: .normal)
-        actionButton.backgroundColor = .blue
         titleLabel.text = viewModel.title
         descriptionLabel.text = viewModel.subTitle
         
-        #warning("Remove thoses")
         switch viewModel.cellType {
         case .delivery:
             iconImageView.image = UIImage(resource: .driverIcon)

@@ -6,8 +6,9 @@
 //
 
 import Foundation
+import UIKit
 
-protocol CanceledOrderConfigProtocol: OrderTrackable { }
+protocol CanceledOrderConfigProtocol: OrderTrackable, CancelHeaderProtocol { }
 
 extension CanceledOrderConfigProtocol {
     func getOrderActionsModel() -> OrderCancelledCollectionViewCell.ViewModel {
@@ -30,10 +31,30 @@ extension CanceledOrderConfigProtocol {
         viewModel.title = title
         return viewModel
     }
-    
-    func getHeader() -> TrackingHeaderType {
-        var viewModel =  ImageHeaderCollectionViewCell.ViewModel()
+}
+
+protocol CancelHeaderProtocol: OrderTrackable { }
+
+extension CancelHeaderProtocol {
+    func getCanceledHeader() -> TrackingHeaderType {
+        let color = UIColor(red: 74, green: 9, blue: 0)
+        let image = "Cancelled"
+        var viewModel = ImageHeaderCollectionViewCell.ViewModel(type: .image(imageName: image, backgroundColor: color))
         viewModel.isShowSupportHeader = true
+        let header: TrackingHeaderType = .image(model: viewModel)
+        return header
+    }
+}
+
+
+protocol AnimationHeaderProtocol: OrderTrackable {
+   
+}
+
+extension AnimationHeaderProtocol {
+    func getAnimationHeader(isShowButtons: Bool) -> TrackingHeaderType {
+        var viewModel = ImageHeaderCollectionViewCell.ViewModel(type: .animation(url: ""))
+        viewModel.isShowSupportHeader = isShowButtons
         let header: TrackingHeaderType = .image(model: viewModel)
         return header
     }

@@ -28,6 +28,6 @@ enum TrackingHeaderType {
 }
 
 struct OrderTrackingModel {
-    var header: TrackingHeaderType = .image(model: .init())
+    var header: TrackingHeaderType = .image(model: .init(type: .animation(url: "")))
     var cells: [TrackingCellType] = []
 }

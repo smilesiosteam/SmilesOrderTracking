@@ -65,12 +65,21 @@
                                     </button>
                                 </subviews>
                             </stackView>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" image="Delivered" translatesAutoresizingMaskIntoConstraints="NO" id="4Xz-2J-0AY">
+                                <rect key="frame" x="135" y="140" width="250" height="200"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="200" id="UkJ-hI-cjy"/>
+                                    <constraint firstAttribute="width" constant="250" id="veU-7z-v2b"/>
+                                </constraints>
+                            </imageView>
                         </subviews>
                         <color key="backgroundColor" red="0.45882352939999999" green="0.25882352939999997" blue="0.36862745099999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="CwR-c0-MEE" firstAttribute="top" secondItem="FDi-AV-lGx" secondAttribute="top" constant="60" id="A7v-R7-hSX"/>
                             <constraint firstAttribute="trailing" secondItem="CwR-c0-MEE" secondAttribute="trailing" constant="16" id="TMG-m4-HGe"/>
+                            <constraint firstItem="4Xz-2J-0AY" firstAttribute="centerX" secondItem="FDi-AV-lGx" secondAttribute="centerX" id="Y94-pf-Qxj"/>
                             <constraint firstItem="CwR-c0-MEE" firstAttribute="leading" secondItem="FDi-AV-lGx" secondAttribute="leading" constant="16" id="dia-NG-rLI"/>
+                            <constraint firstAttribute="bottom" secondItem="4Xz-2J-0AY" secondAttribute="bottom" id="fNL-z3-X3g"/>
                         </constraints>
                     </view>
                 </subviews>
@@ -86,6 +95,7 @@
             <connections>
                 <outlet property="containerView" destination="FDi-AV-lGx" id="7c2-lj-7H8"/>
                 <outlet property="dismissButton" destination="eSs-To-dW2" id="fMN-nD-ipR"/>
+                <outlet property="headerImage" destination="4Xz-2J-0AY" id="57j-Op-Gjc"/>
                 <outlet property="headerStack" destination="CwR-c0-MEE" id="7kP-bz-QGI"/>
                 <outlet property="supportButton" destination="Uq9-8b-OVo" id="Iue-31-B9u"/>
             </connections>
@@ -93,6 +103,7 @@
         </collectionViewCell>
     </objects>
     <resources>
+        <image name="Delivered" width="258" height="209"/>
         <systemColor name="labelColor">
             <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>

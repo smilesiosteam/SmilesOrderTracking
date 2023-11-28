@@ -38,19 +38,16 @@ extension OrderTrackable {
         if let point = response.orderDetails?.earnPoints, point > 0 {
             var viewModel = PointsCollectionViewCell.ViewModel()
             viewModel.numberOfPoints = point
-            viewModel.text = "smiles points earned and will be credited soon."
+            viewModel.text = OrderTrackingLocalization.points.text
             return viewModel
         }
         return nil
     }
     
     var orderSubscription: FreeDeliveryCollectionViewCell.ViewModel? {
-        if let subscriptionModel = response.orderDetails?.subscriptionBanner {
+        if let bannerImageUrl = response.orderDetails?.bannerImageUrl {
             var viewModel = FreeDeliveryCollectionViewCell.ViewModel()
-            viewModel.iconUrl = subscriptionModel.subscriptionIcon
-            viewModel.redirectUrl = subscriptionModel.redirectionUrl
-            viewModel.title = subscriptionModel.subscriptionTitle
-            viewModel.subTitle = "No set Yet"
+            viewModel.imageURL = bannerImageUrl
             return viewModel
         }
         return nil

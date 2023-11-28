@@ -11,6 +11,21 @@ import SmilesFontsManager
 import Combine
 import GoogleMaps
 
+protocol OrderTrackingViewDelegate: AnyObject {
+    func presentCancelFlow(orderId: Int)
+    func presentRateFlow()
+}
+
+extension OrderTrackingViewController: OrderTrackingViewDelegate {
+    func presentCancelFlow(orderId: Int) {
+        print("presentCancelFlow")
+    }
+    
+    func presentRateFlow() {
+        print("presentRateFlow")
+    }
+}
+
 public final class OrderTrackingViewController: UIViewController, Toastable {
     
     // MARK: - Outlets

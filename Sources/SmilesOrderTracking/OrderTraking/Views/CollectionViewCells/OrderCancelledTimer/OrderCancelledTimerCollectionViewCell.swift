@@ -12,10 +12,10 @@ protocol OrderCancelledTimerCellActionDelegate: AnyObject {
 }
 
 final class OrderCancelledTimerCollectionViewCell: UICollectionViewCell {
-    // MARK: - Outlets
     
-    @IBOutlet weak var bottomConstraint: NSLayoutConstraint!
-    @IBOutlet weak var topConstraint: NSLayoutConstraint!
+    // MARK: - Outlets
+    @IBOutlet private weak var bottomConstraint: NSLayoutConstraint!
+    @IBOutlet private weak var topConstraint: NSLayoutConstraint!
     @IBOutlet private weak var mainStackView: UIStackView!
     @IBOutlet private weak var containerView: UIView! {
         didSet {

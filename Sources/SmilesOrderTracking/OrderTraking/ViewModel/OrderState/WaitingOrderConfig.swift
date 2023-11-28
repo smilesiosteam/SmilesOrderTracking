@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct WaitingOrderConfig: OrderTrackable {
+struct WaitingOrderConfig: OrderTrackable, AnimationHeaderProtocol {
     var response: OrderTrackingStatusResponse
     
     func build() -> OrderTrackingModel {
@@ -30,7 +30,7 @@ struct WaitingOrderConfig: OrderTrackable {
             cells.append(.subscription(model: orderSubscription))
         }
         
-        let header: TrackingHeaderType = .image(model: .init(isShowSupportHeader: true))
-        return .init(header: header, cells: cells)
+       
+        return .init(header: getAnimationHeader(isShowButtons: true), cells: cells)
     }
 }

@@ -13,7 +13,7 @@ final class OrderTrackingDataSource: NSObject {
     private var orderStatusModel = OrderTrackingModel()
     private let headerName = OrderConstans.headerName.rawValue
     private let viewModel: OrderTrackingViewModel
-    
+    weak var delegate: OrderTrackingViewDelegate?
     // MARK: - Init
     init(viewModel: OrderTrackingViewModel) {
         self.viewModel = viewModel
@@ -109,15 +109,16 @@ extension OrderTrackingDataSource: UICollectionViewDataSource {
 // MARK: - Location Delegate
 extension OrderTrackingDataSource: LocationCollectionViewProtocol {
     func didTappPhoneCall(with mobileNumber: String?) {
-        
+        print("didTappPhoneCall")
     }
     
     func didTappOrderDetails(orderId: Int?) {
-        
+        print("didTappOrderDetails")
     }
     
     func didTappCancelDetails(orderId: Int?) {
-        
+        print("didTappCancelDetails")
+        delegate?.presentCancelFlow(orderId: orderId ?? 0)
     }
 }
 
@@ -134,8 +135,8 @@ extension OrderTrackingDataSource: HeaderCollectionViewProtocol {
 
 // MARK: - Subscription Delegate
 extension OrderTrackingDataSource: FreeDeliveryCollectionViewProtocol {
-    func didTappSubscribeNow(with url: String?) {
-        
+    func didTappSubscribeNow() {
+        print("didTappSubscribeNow")
     }
 }
 
@@ -152,6 +153,7 @@ extension OrderTrackingDataSource: RatingCellActionDelegate {
     
     func rateDeliveryDidTap(orderId: Int) {
         print("rateDeliveryDidTap")
+        delegate?.presentRateFlow()
     }
 }
 // MARK: - Confirmation Delegate

@@ -65,7 +65,7 @@ let jsonString = """
 {
   "extTransactionId": "3530191483630",
   "orderDetails": {
-    "orderStatus": 9,
+    "orderStatus": 10,
     "title": "Wow, your order has arrived X min early. Enjoy! Ya Naguib",
     "orderDescription": "Hardee's should accept your order soon.",
     "orderNumber": "SMHD112020230000467215",
@@ -94,7 +94,7 @@ let jsonString = """
     "deliveryAdrress": "maama, Annan, Alan, amann, Sheikh Zayed Rd - Za'abeel - Dubai - United Arab Emirates, Al Kifaf",
     "orderTimeOut": 2,
     "isCancelationAllowed": false,
-    "orderType": "PICK_UP",
+    "orderType": "DELIVERY",
     "determineStatus": false,
     "earnPoints": 120,
     "addressTitle": "Home",
@@ -128,13 +128,21 @@ let jsonString = """
     "driverImageIconUrl": "https://www.smilesuae.ae/images/APP/ORDER_TRACKING/IMAGES/driverimageIcon.png",
     "driverPhoneImageUrl": "https://www.smilesuae.ae/images/APP/ORDER_TRACKING/IMAGES/driverphoneIcon.png",
     "mapImageIconUrl": "https://www.smilesuae.ae/images/APP/ORDER_TRACKING/IMAGES/mapIcon.png",
-    "subTitleImageIconUrl": "https://www.smilesuae.ae/images/APP/ORDER_TRACKING/IMAGES/SubTitleimageIcon.png"
+    "subTitleImageIconUrl": "https://www.smilesuae.ae/images/APP/ORDER_TRACKING/IMAGES/SubTitleimageIcon.png",
+    "bannerImageUrl": "https://www.smilesuae.ae/images/APP/BANNERS/ENGLISH/BOTTOM/OrderTrackingULFD_V2.png",
+
   },
 "orderRatings": [
             {
                 "ratingType": "food",
                 "userRating": 0.0,
                 "title": "how was the food from Hardee's?",
+                "image": "https://cdn.eateasily.com/restaurants/9d237d8a2148c1c2354ff1a2b769f3e2/17338_small.jpg"
+            },
+            {
+                "ratingType": "delivery",
+                "userRating": 0.0,
+                "title": "Rate delivery",
                 "image": "https://cdn.eateasily.com/restaurants/9d237d8a2148c1c2354ff1a2b769f3e2/17338_small.jpg"
             }
         ],

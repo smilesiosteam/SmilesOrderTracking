@@ -47,6 +47,7 @@ public final class OrderTrackingViewController: UIViewController, Toastable {
     public override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         dataSource.updateState(with: viewModel.orderStatusModel)
+        dataSource.delegate = self
         collectionView.reloadData()
         bindData()
         

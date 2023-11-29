@@ -27,7 +27,7 @@ public class SmilesOrderCancelledViewController: UIViewController, UICollectionV
     @IBOutlet weak var messageText: UILabel!
     
     @IBOutlet weak var descriptionMessage: UILabel!
-    var onSubmitSuccess: ()->Void = {}
+    var onSubmitSuccess: (_:OrderCancelResponse)->Void = {resonse in}
     var supportAction: ()->Void = {}
     var dismissViewTranslation = CGPoint(x: 0, y: 0)
     
@@ -40,13 +40,15 @@ public class SmilesOrderCancelledViewController: UIViewController, UICollectionV
     
     var cancelResponse:OrderCancelResponse!
     var orderId:String!
+    var orderNumber:String!
     
-    var rejectionReasons : [String]? = ["good","bad","Other"]
+    var rejectionReasons : [String] = []
     
     @IBOutlet weak var textView: UITextView!
     // MARK: Lifecycle
 
     fileprivate func setupUI() {
+        self.rejectionReasons = cancelResponse.rejectionReasons ?? []
         panDismissView.addGestureRecognizer(UIPanGestureRecognizer(target: self, action: #selector(handleDismiss)))
         panDismissView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleTap)))
         messageText.text = "Your order has been cancelled".localizedString
@@ -62,11 +64,11 @@ public class SmilesOrderCancelledViewController: UIViewController, UICollectionV
         secondaryButton.layer.borderColor = UIColor.appRevampPurpleMainColor.withAlphaComponent(0.4).cgColor
         roundedView.layer.cornerRadius = 12
         roundedView.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
-        
-        LottieAnimationManager.showAnimationForOrders(onView: animationView, withJsonFileName: "Order cancelled 195x169", removeFromSuper: false, loopMode: .loop) { _ in
-        }
         modalPresentationStyle = .overFullScreen
         setupCollectionView()
+        
+        textViewContainer.layer.borderWidth = 1
+        textViewContainer.layer.borderColor = UIColor.appRevampPurpleMainColor.cgColor
     }
     
     public override func viewDidLoad() {
@@ -79,15 +81,22 @@ public class SmilesOrderCancelledViewController: UIViewController, UICollectionV
         let output = viewModel.transform(input: input.eraseToAnyPublisher())
         output
             .sink { [weak self] event in
+                SmilesLoader.dismiss()
                 switch event {
                 // MARK: -- Success cases
                 case .cancelOrderDidSucceed(let response):
-                    self?.onSubmitSuccess()
-                    SmilesLoader.dismiss()
+                    self?.onSubmitSuccess(response)
+                case .pauseOrderDidSucceed:
+                    break
+                case .resumeOrderDidSucceed:
+                    break
                 //MARK: -- Failure cases
                 case .cancelOrderDidFail(let error):
                     debugPrint(error)
-                    SmilesLoader.dismiss()
+                case .pauseOrderDidFail(let error):
+                    debugPrint(error)
+                case .resumeOrderDidFail(let error):
+                    debugPrint(error)
                 }
             }.store(in: &cancellables)
     }
@@ -101,7 +110,7 @@ public class SmilesOrderCancelledViewController: UIViewController, UICollectionV
         
         self.reasonsCollectionView.register(UINib(nibName: String(describing: ReasonCollectionViewCell.self), bundle: .module), forCellWithReuseIdentifier: String(describing: ReasonCollectionViewCell.self))
         reasonsCollectionView.allowsMultipleSelection = true
-        let rows = Int(rejectionReasons?.count ?? 0)/2 + (rejectionReasons?.count ?? 0)%2
+        let rows = Int(rejectionReasons.count)/2 + (rejectionReasons.count)%2
         let spacings = CGFloat(max(rows-1,0)*10)
         collectionHeight.constant = min(500,max(100,CGFloat(rows*40)-spacings))
     }
@@ -112,11 +121,12 @@ public class SmilesOrderCancelledViewController: UIViewController, UICollectionV
         primaryButton.backgroundColor = enabled ? .appRevampPurpleMainColor : UIColor(white: 0, alpha: 0.1)
     }
     
-    public init(orderId:String, cancelResponse:OrderCancelResponse, onSubmitSuccess: @escaping ()->Void = {}, supportAction: @escaping ()->Void = {}) {
+    public init(orderId:String, orderNumber:String, cancelResponse:OrderCancelResponse, onSubmitSuccess: @escaping (_:OrderCancelResponse)->Void = {}, supportAction: @escaping ()->Void = {}) {
         self.onSubmitSuccess = onSubmitSuccess
         self.supportAction = supportAction
         self.cancelResponse = cancelResponse
         self.orderId = orderId
+        self.orderNumber = orderNumber
         super.init(nibName: "SmilesOrderCancelledViewController", bundle: .module)
     }
     
@@ -161,7 +171,8 @@ public class SmilesOrderCancelledViewController: UIViewController, UICollectionV
     
     @IBAction func primaryAction(_ sender: Any) {
         dismiss(animated: true)
-        let reason = reasonsCollectionView.indexPathsForSelectedItems?.compactMap { self.rejectionReasons?[$0.item] }.joined(separator: ",")
+        
+        let reason = textViewContainer.isHidden ? reasonsCollectionView.indexPathsForSelectedItems?.compactMap { self.rejectionReasons[$0.item] }.joined(separator: ",") : textView.text
         SmilesLoader.show()
         self.input.send(.cancelOrder(ordeId: self.orderId, reason: reason))
     }
@@ -175,13 +186,13 @@ public class SmilesOrderCancelledViewController: UIViewController, UICollectionV
 
 extension SmilesOrderCancelledViewController: UICollectionViewDelegateFlowLayout{
     public func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return rejectionReasons?.count ?? 0
+        return rejectionReasons.count
     }
     
     public func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
         if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ReasonCollectionViewCell", for: indexPath) as? ReasonCollectionViewCell {
-            cell.titleLabel.text = rejectionReasons?[indexPath.item]
+            cell.titleLabel.text = rejectionReasons[indexPath.item]
             return cell
         }
         
@@ -191,7 +202,7 @@ extension SmilesOrderCancelledViewController: UICollectionViewDelegateFlowLayout
     public func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         
         let label = UILabel(frame: CGRect.zero)
-        label.text = rejectionReasons?[indexPath.row] ?? ""
+        label.text = rejectionReasons[indexPath.row]
         label.sizeToFit()
         
         return CGSize(width: (collectionView.frame.width - 10)/2.0, height: 40)
@@ -199,7 +210,7 @@ extension SmilesOrderCancelledViewController: UICollectionViewDelegateFlowLayout
     
     public func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         setBtnUI(enabled: (collectionView.indexPathsForSelectedItems?.count ?? 0) > 0)
-        if ((rejectionReasons?[safe: indexPath.row] ?? "").lowercased().contains("other")){
+        if ((rejectionReasons[safe: indexPath.row] ?? "").lowercased().contains("other")){
             reasonsCollectionView.isHidden = true
             textViewContainer.isHidden = false
             UIView.animate(withDuration: 0.5) {

@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct ProcessingOrderConfig: OrderTrackable {
+struct ProcessingOrderConfig: OrderTrackable, AnimationHeaderProtocol {
     var response: OrderTrackingStatusResponse
     
     func build() -> OrderTrackingModel {
@@ -19,12 +19,10 @@ struct ProcessingOrderConfig: OrderTrackable {
         
         let cells: [TrackingCellType] = [
             .progressBar(model: progressBar),
-            .text(message: orderText),
+            .text(model: .init(title: orderText)),
             .location(model: location),
             .restaurant(model: orderRestaurant)
         ]
-        
-        let header: TrackingHeaderType = .image(model: .init(isShowSupportHeader: false))
-        return .init(header: header, cells: cells)
+        return .init(header: getAnimationHeader(isShowButtons: false), cells: cells)
     }
 }

@@ -32,29 +32,25 @@ final class OrderTrackingUseCase {
         
         
         switch value {
-        case .orderProcessing:
+        case .orderProcessing, .pickupChanged:
             return ProcessingOrderConfig(response: response).build()
         case .waitingForTheRestaurant:
             return WaitingOrderConfig(response: response).build()
         case .orderAccepted:
             isShowToast = true
             return AcceptedOrderConfig(response: response).build()
-        case .inTheKitchen:
-            return InTheKitchenOrderConfig(response: response).build()
-        case .orderIsReadyForPickup, .orderHasBeenPickedUp:
+        case .inTheKitchen, .orderIsReadyForPickup, .orderHasBeenPickedUpPickup, .orderHasBeenPickedUpDelivery:
             return InTheKitchenOrderConfig(response: response).build()
         case .orderIsOnTheWay:
             return OnTheWayOrderConfig(response: response).build()
-        case .orderHasBeenDelivered:
-            return .init()
         case .orderCancelled:
-            return .init()
+            return CanceledOrderConfig(response: response).build()
         case .changedToPickup:
-            return .init()
-        case .determineStatus:
-            return .init()
+            return ChangedToPickupOrderConfig(response: response).build()
+        case .confirmation:
+            return ConfirmationOrderConfig(response: response).build()
         case .someItemsAreUnavailable:
-            return .init()
+            return SomeItemsUnavailableConfig(response: response).build()
         case .orderNearYourLocation:
             return NearOfLocationConfig(response: response).build()
         case .delivered:
@@ -69,7 +65,7 @@ let jsonString = """
 {
   "extTransactionId": "3530191483630",
   "orderDetails": {
-    "orderStatus": 15,
+    "orderStatus": 0,
     "title": "Wow, your order has arrived X min early. Enjoy! Ya Naguib",
     "orderDescription": "Hardee's should accept your order soon.",
     "orderNumber": "SMHD112020230000467215",
@@ -129,7 +125,27 @@ let jsonString = """
     "deliveryBy": "Delivered By Restaurant",
     "driverStatusText": "has picked up your order",
     "driverName": "Osama Tester Driver",
+    "driverImageIconUrl": "https://www.smilesuae.ae/images/APP/ORDER_TRACKING/IMAGES/driverimageIcon.png",
+    "driverPhoneImageUrl": "https://www.smilesuae.ae/images/APP/ORDER_TRACKING/IMAGES/driverphoneIcon.png",
+    "mapImageIconUrl": "https://www.smilesuae.ae/images/APP/ORDER_TRACKING/IMAGES/mapIcon.png",
+    "subTitleImageIconUrl": "https://www.smilesuae.ae/images/APP/ORDER_TRACKING/IMAGES/SubTitleimageIcon.png",
+    "bannerImageUrl": "https://www.smilesuae.ae/images/APP/BANNERS/ENGLISH/BOTTOM/OrderTrackingULFD_V2.png",
+
   },
+"orderRatings": [
+            {
+                "ratingType": "food",
+                "userRating": 0.0,
+                "title": "how was the food from Hardee's?",
+                "image": "https://cdn.eateasily.com/restaurants/9d237d8a2148c1c2354ff1a2b769f3e2/17338_small.jpg"
+            },
+            {
+                "ratingType": "delivery",
+                "userRating": 0.0,
+                "title": "Rate delivery",
+                "image": "https://cdn.eateasily.com/restaurants/9d237d8a2148c1c2354ff1a2b769f3e2/17338_small.jpg"
+            }
+        ],
   "orderItems": [
     {
       "quantity": 1,

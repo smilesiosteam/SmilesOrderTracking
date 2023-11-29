@@ -11,9 +11,8 @@ import SmilesFontsManager
 final class CashCollectionViewCell: UICollectionViewCell {
 
     @IBOutlet private weak var subtitleLabel: UILabel!
-    @IBOutlet weak var containerView: UIView!
+    @IBOutlet private weak var containerView: UIView!
     @IBOutlet private weak var titleLabel: UILabel!
-    
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -21,5 +20,14 @@ final class CashCollectionViewCell: UICollectionViewCell {
         subtitleLabel.fontTextStyle = .smilesBody3
         containerView.layer.cornerRadius = 12
     }
+    
+    func updateCell(with viewModel: ViewModel) {
+        
+    }
+}
 
+extension CashCollectionViewCell {
+    struct ViewModel {
+        
+    }
 }

@@ -35,32 +35,33 @@ final class DriverCollectionViewCell: UICollectionViewCell {
     weak var delegate: DriverCellActionDelegate?
     private var viewModel: ViewModel = .init()
     
-    // MARK: - Lifecycle
-    override func awakeFromNib() {
-        super.awakeFromNib()
-    }
-    
     // MARK: - Actions
     @IBAction private func actionButtonTapped(_ sender: UIButton) {
-        delegate?.didTappPhoneCall(with: viewModel.driverMobileNumber)
+        switch viewModel.cellType {
+        case .delivery:
+            delegate?.didTappPhoneCall(with: viewModel.driverMobileNumber)
+        case .pickup:
+            delegate?.opneMap(lat: viewModel.lat, lng: viewModel.lng)
+        }
     }
     
     // MARK: - Methods
     func updateCell(with viewModel: ViewModel, delegate: DriverCellActionDelegate) {
         self.delegate = delegate
         self.viewModel = viewModel
+        iconImageView.setImageWithUrlString(viewModel.driverIconURL ?? "")
+        actionButton.setImageWithUrlString(viewModel.iconURL ?? "", state: .normal)
+        titleLabel.text = viewModel.title
+        descriptionLabel.text = viewModel.subTitle
         
         switch viewModel.cellType {
         case .delivery:
             iconImageView.image = UIImage(resource: .driverIcon)
             actionButton.setImage(UIImage(resource: .callIcon), for: .normal)
-            titleLabel.text = viewModel.title
-            descriptionLabel.text = OrderTrackingLocalization.hasPickedUpYourOrder.text
+            
         case .pickup:
             iconImageView.image = UIImage(resource: .pickupIcon)
             actionButton.setImage(UIImage(resource: .navigateToMapsIcon), for: .normal)
-            titleLabel.text = OrderTrackingLocalization.pickUpYourOrderFrom.text + ":"
-            descriptionLabel.text = viewModel.subTitle
         }
     }
 }
@@ -71,6 +72,8 @@ extension DriverCollectionViewCell {
         var title: String?
         var subTitle: String?
         var driverMobileNumber: String?
+        var driverIconURL: String?
+        var iconURL: String?
         var lat: Double = 0.0
         var lng: Double = 0.0
         var cellType: OrderTrackingCellType = .delivery

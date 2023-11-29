@@ -13,7 +13,7 @@ final class OrderTrackingDataSource: NSObject {
     private var orderStatusModel = OrderTrackingModel()
     private let headerName = OrderConstans.headerName.rawValue
     private let viewModel: OrderTrackingViewModel
-    
+    weak var delegate: OrderTrackingViewDelegate?
     // MARK: - Init
     init(viewModel: OrderTrackingViewModel) {
         self.viewModel = viewModel
@@ -41,9 +41,9 @@ extension OrderTrackingDataSource: UICollectionViewDataSource {
             let cell = collectionView.dequeueReusableCell(withClass: OrderProgressCollectionViewCell.self, for: indexPath)
             cell.updateCell(with: model)
             return cell
-        case .text(message: let message):
+        case .text(model: let model):
             let cell = collectionView.dequeueReusableCell(withClass: TextCollectionViewCell.self, for: indexPath)
-            cell.updateCell(with: message)
+            cell.updateCell(with: model)
             return cell
         case .location(model: let model):
             let cell = collectionView.dequeueReusableCell(withClass: LocationCollectionViewCell.self, for: indexPath)
@@ -67,7 +67,23 @@ extension OrderTrackingDataSource: UICollectionViewDataSource {
             return cell
         case .rating(model: let model):
             let cell = collectionView.dequeueReusableCell(withClass: RatingCollectionViewCell.self, for: indexPath)
+            cell.updateCell(with: model, delegate: self)
+            return cell
+        case .confirmation(model: let model):
+            let cell = collectionView.dequeueReusableCell(withClass: OrderConfirmationCollectionViewCell.self, for: indexPath)
+            cell.updateCell(with: model, delegate: self)
+            return cell
+        case .orderActions(model: let model):
+            let cell = collectionView.dequeueReusableCell(withClass: OrderCancelledCollectionViewCell.self, for: indexPath)
+            cell.updateCell(with: model, delegate: self)
+            return cell
+        case .cashVoucher(model: let model):
+            let cell = collectionView.dequeueReusableCell(withClass: CashCollectionViewCell.self, for: indexPath)
             cell.updateCell(with: model)
+            return cell
+        case .orderCancelled(model: let model):
+            let cell = collectionView.dequeueReusableCell(withClass: OrderCancelledTimerCollectionViewCell.self, for: indexPath)
+            cell.updateCell(with: model, delegate: self)
             return cell
         }
     }
@@ -93,15 +109,16 @@ extension OrderTrackingDataSource: UICollectionViewDataSource {
 // MARK: - Location Delegate
 extension OrderTrackingDataSource: LocationCollectionViewProtocol {
     func didTappPhoneCall(with mobileNumber: String?) {
-        
+        print("didTappPhoneCall")
     }
     
     func didTappOrderDetails(orderId: Int?) {
-        
+        print("didTappOrderDetails")
     }
     
     func didTappCancelDetails(orderId: Int?) {
-        
+        print("didTappCancelDetails")
+        delegate?.presentCancelFlow(orderId: orderId ?? 0)
     }
 }
 
@@ -118,12 +135,40 @@ extension OrderTrackingDataSource: HeaderCollectionViewProtocol {
 
 // MARK: - Subscription Delegate
 extension OrderTrackingDataSource: FreeDeliveryCollectionViewProtocol {
-    func didTappSubscribeNow(with url: String?) {
-        
+    func didTappSubscribeNow() {
+        print("didTappSubscribeNow")
     }
 }
 
 // MARK: - Driver Delegate
 extension OrderTrackingDataSource: DriverCellActionDelegate {
     func opneMap(lat: Double, lng: Double) {}
+}
+
+// MARK: - Rating Delegate
+extension OrderTrackingDataSource: RatingCellActionDelegate {
+    func rateOrderDidTap(orderId: Int) {
+        print("rateOrderDidTap")
+    }
+    
+    func rateDeliveryDidTap(orderId: Int) {
+        print("rateDeliveryDidTap")
+        delegate?.presentRateFlow()
+    }
+}
+// MARK: - Confirmation Delegate
+extension OrderTrackingDataSource: OrderConfirmationCellActionDelegate {
+    func didGetTheOrder(with orderId: Int) {
+        print("Yes")
+    }
+    
+    func didNotGetTheOrder(with orderId: Int) {
+        print("No")
+    }
+}
+// MARK: - Canceled order Delegate
+extension OrderTrackingDataSource: OrderCancelledTimerCellActionDelegate {
+    func likeToPickupOrderDidTap() {
+        print("likeToPickupOrderDidTap")
+    }
 }

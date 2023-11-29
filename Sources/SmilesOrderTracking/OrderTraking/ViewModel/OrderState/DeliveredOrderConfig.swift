@@ -18,14 +18,15 @@ struct DeliveredOrderConfig: OrderTrackable {
         var location = orderLocation
         location.type = .details
         
-        var rating = RatingCollectionViewCell.ViewModel()
-        rating.cellType = .delivery
         var cells: [TrackingCellType] = [
             .progressBar(model: progressBar),
             .driver(model: orderDriverModel),
-            .rating(model: rating),
             .location(model: location),
         ]
+        
+        if let orderRateModel {
+            cells.append(.rating(model: orderRateModel))
+        }
         
         if let orderSubscription {
             cells.append(.subscription(model: orderSubscription))

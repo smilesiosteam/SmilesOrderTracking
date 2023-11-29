@@ -9,11 +9,14 @@ import UIKit
 
 protocol OrderCancelledTimerCellActionDelegate: AnyObject {
     func likeToPickupOrderDidTap()
-    func timeElapsed(count: Int)
 }
 
 final class OrderCancelledTimerCollectionViewCell: UICollectionViewCell {
+    
     // MARK: - Outlets
+    @IBOutlet private weak var bottomConstraint: NSLayoutConstraint!
+    @IBOutlet private weak var topConstraint: NSLayoutConstraint!
+    @IBOutlet private weak var mainStackView: UIStackView!
     @IBOutlet private weak var containerView: UIView! {
         didSet {
             containerView.addMaskedCorner(withMaskedCorner: [.layerMaxXMaxYCorner, .layerMaxXMinYCorner, .layerMinXMaxYCorner, .layerMinXMinYCorner], cornerRadius: 12.0)
@@ -30,7 +33,6 @@ final class OrderCancelledTimerCollectionViewCell: UICollectionViewCell {
         didSet {
             actionButton.addMaskedCorner(withMaskedCorner: [.layerMaxXMaxYCorner, .layerMaxXMinYCorner, .layerMinXMaxYCorner, .layerMinXMinYCorner], cornerRadius: actionButton.bounds.height / 2)
             actionButton.fontTextStyle = .smilesHeadline4
-            actionButton.setTitle(OrderTrackingLocalization.orderCancelledLikeToPickupOrder.text, for: .normal)
             actionButton.setTitleColor(.white, for: .normal)
             actionButton.backgroundColor = .appRevampPurpleMainColor
         }
@@ -43,9 +45,9 @@ final class OrderCancelledTimerCollectionViewCell: UICollectionViewCell {
     }
     
     // MARK: - Properties
-    weak var delegate: OrderCancelledTimerCellActionDelegate?
+   private weak var delegate: OrderCancelledTimerCellActionDelegate?
     private var timer: Timer?
-    var count = 900
+    private var count = 900
     
     // MARK: - Lifecycle
     override func awakeFromNib() {
@@ -64,11 +66,18 @@ final class OrderCancelledTimerCollectionViewCell: UICollectionViewCell {
     }
     
     // MARK: - Methods
-    func updateCell(with viewModel: ViewModel) {
-        delegate = viewModel.delegate
-        
-        count = viewModel.timerCount ?? 0
-        constructTimer()
+    func updateCell(with viewModel: ViewModel, delegate: OrderCancelledTimerCellActionDelegate) {
+        self.delegate = delegate
+        actionButton.setTitle(viewModel.buttonTitle, for: .normal)
+        textLabel.text = viewModel.title
+       
+        if let timerCount = viewModel.timerCount {
+            count = timerCount
+            timeLabel.isHidden = false
+            constructTimer()
+        }  else {
+            timeLabel.isHidden = true
+        }
     }
     
     private func constructTimer() {
@@ -81,12 +90,15 @@ final class OrderCancelledTimerCollectionViewCell: UICollectionViewCell {
             let minutes = Int(count) / 60 % 60
             let seconds = Int(count) % 60
             timeLabel.text = String(format: "%02d:%02d", minutes, seconds) + " " + OrderTrackingLocalization.minText.text
-            delegate?.timeElapsed(count: count)
             count -= 1
         } else {
             timer?.invalidate()
             timer = nil
             timeLabel.text = "00:00" + " " + OrderTrackingLocalization.minText.text
+            textLabel.text = OrderTrackingLocalization.orderCancelledTimeFinished.text
+            mainStackView.spacing = 8
+            bottomConstraint.constant = 9
+            topConstraint.constant = 9
             disableButton()
         }
     }
@@ -101,7 +113,8 @@ final class OrderCancelledTimerCollectionViewCell: UICollectionViewCell {
 // MARK: - ViewModel
 extension OrderCancelledTimerCollectionViewCell {
     struct ViewModel {
-        var timerCount: Int?
-        var delegate: OrderCancelledTimerCellActionDelegate?
+        var timerCount: Int? = nil
+        var title: String?
+        var buttonTitle: String?
     }
 }

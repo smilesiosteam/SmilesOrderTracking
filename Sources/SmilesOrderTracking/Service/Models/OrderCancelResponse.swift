@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct OrderCancelResponse: Codable {
+public struct OrderCancelResponse: Codable {
     // MARK: - Properties
     var status: Int?
     var title: String?
@@ -23,11 +23,12 @@ struct OrderCancelResponse: Codable {
     }
     
     // MARK: - Lifecycle
-    init(from decoder: Decoder) throws {
+    public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         self.status = try container.decodeIfPresent(Int.self, forKey: .status)
         self.title = try container.decodeIfPresent(String.self, forKey: .title)
         self.description = try container.decodeIfPresent(String.self, forKey: .description)
         self.rejectionReasons = try container.decodeIfPresent([String].self, forKey: .rejectionReasons)
     }
+    public init(){}
 }

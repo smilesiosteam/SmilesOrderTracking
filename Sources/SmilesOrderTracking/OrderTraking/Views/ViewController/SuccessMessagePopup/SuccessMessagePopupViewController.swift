@@ -47,7 +47,7 @@ public class SuccessMessagePopupViewController: UIViewController {
         
         roundedView.layer.cornerRadius = 12
         roundedView.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
-        
+        modalPresentationStyle = .overFullScreen
     }
     
     public override func viewDidLoad() {
@@ -103,7 +103,20 @@ public class SuccessMessagePopupViewController: UIViewController {
         dismiss(animated: true)
         data.primaryAction()
     }
-    
+    public class func showFeedbackSuccessViewController(from viewController:UIViewController){
+        let vc = SuccessMessagePopupViewController(
+            popupData: SuccessPopupViewModelData(
+                showCloseButton: true,
+                message: "Thank you for sending your feedback".localizedString,
+                descriptionMessage: "We’re always working on updating our system. Your feedback helps us to improve customer experience.".localizedString,
+                primaryButtonTitle: "Back to home".localizedString.capitalizingFirstLetter(),
+                primaryAction: {
+                    
+                }
+            )
+        )
+        viewController.present(vc)
+    }
     
 }
 

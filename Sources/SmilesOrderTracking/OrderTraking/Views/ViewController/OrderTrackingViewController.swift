@@ -22,7 +22,12 @@ extension OrderTrackingViewController: OrderTrackingViewDelegate {
     }
     
     func presentRateFlow() {
-        print("presentRateFlow")
+        let uiModel = OrderRatingUIModel(popupType: .food, ratingType: "food", contentType: "tracking", isLiveTracking: true, orderId: "466715")
+        let handeler = OrderTrackingServiceHandler()
+        let model = OrderRatingViewModel(orderRatingUIModel: uiModel, serviceHandler: handeler)
+        let viewController = OrderRatingViewController.create(with: model)
+//        viewController.modalPresentationStyle = .fullScreen
+        self.present(viewController)
     }
 }
 

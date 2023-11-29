@@ -92,7 +92,7 @@ final public class OrderRatingViewController: UIViewController {
     public override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.backgroundColor = .appRevampFilterTextColor.withAlphaComponent(0.6)
+        view.backgroundColor =  UIColor.black.withAlphaComponent(0.2) //.appRevampFilterTextColor.withAlphaComponent(0.6)
         submitButtonState(enabled: false)
         updatePopupState()
         configureUI()

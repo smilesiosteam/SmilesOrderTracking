@@ -43,8 +43,12 @@ final class OrderTrackingUseCase {
         case .orderAccepted:
             isShowToast = true
             return AcceptedOrderConfig(response: response).build()
-        case .inTheKitchen, .orderIsReadyForPickup, .orderHasBeenPickedUpPickup, .orderHasBeenPickedUpDelivery:
+        case .inTheKitchen, .orderHasBeenPickedUpDelivery:
             return InTheKitchenOrderConfig(response: response).build()
+        case .orderIsReadyForPickup:
+            return ReadyForPickupOrderConfig(response: response).build()
+        case .orderHasBeenPickedUpPickup:
+            return OrderHasBeenDeliveredConfig(response: response).build()
         case .orderIsOnTheWay:
             return OnTheWayOrderConfig(response: response).build()
         case .orderCancelled:
@@ -59,8 +63,6 @@ final class OrderTrackingUseCase {
             return NearOfLocationConfig(response: response).build()
         case .delivered:
             return DeliveredOrderConfig(response: response).build()
-        case .orderHasBeenDelivered:
-            return OrderHasBeenDeliveredConfig(response: response).build()
         }
         
     }
@@ -86,7 +88,7 @@ let jsonString = """
 {
   "extTransactionId": "3530191483630",
   "orderDetails": {
-    "orderStatus": 0,
+    "orderStatus": 4,
     "title": "Wow, your order has arrived X min early. Enjoy! Ya Naguib",
     "orderDescription": "Hardee's should accept your order soon.",
     "orderNumber": "SMHD112020230000467215",
@@ -115,7 +117,7 @@ let jsonString = """
     "deliveryAdrress": "maama, Annan, Alan, amann, Sheikh Zayed Rd - Za'abeel - Dubai - United Arab Emirates, Al Kifaf",
     "orderTimeOut": 2,
     "isCancelationAllowed": true,
-    "orderType": "DELIVERY",
+    "orderType": "PICK_UP",
     "determineStatus": false,
     "earnPoints": 120,
     "addressTitle": "Home",

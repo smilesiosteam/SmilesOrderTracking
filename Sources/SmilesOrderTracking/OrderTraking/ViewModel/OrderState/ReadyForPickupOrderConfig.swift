@@ -1,48 +1,38 @@
 //
 //  File.swift
-//  
 //
-//  Created by Ahmed Naguib on 21/11/2023.
+//
+//  Created by Ahmed Naguib on 29/11/2023.
 //
 
 import Foundation
 
-struct AcceptedOrderConfig: OrderTrackable {
+struct ReadyForPickupOrderConfig: OrderTrackable {
     var response: OrderTrackingStatusResponse
     
     func build() -> OrderTrackingModel {
-
-        var cells: [TrackingCellType] = [
-            .progressBar(model: getProgressBarModel())
-        ]
         
+        var cells: [TrackingCellType] = [.progressBar(model: getProgressBarModel())]
         if let description = orderText {
-            cells.append(.text(model: .init(title: orderText)))
+            cells.append(.text(model: .init(title: description)))
         }
-        if orderType == .pickup {
-            cells.append(.driver(model: getDriverModel()))
-        }
+        
+        cells.append(.driver(model: getDriverModel()))
         
         cells.append(.location(model: getLocationOrderModel()))
-        if let orderPoint {
-            cells.append(.point(model: orderPoint))
-        }
         
         if let orderSubscription {
             cells.append(.subscription(model: orderSubscription))
         }
-        
-        let header: TrackingHeaderType = .map(model: orderMapModel)
-        return .init(header: header, cells: cells)
+        return .init(header: getHeaderModel(), cells: cells)
     }
     
     private func getProgressBarModel() -> OrderProgressCollectionViewCell.ViewModel {
         var progressBar = orderProgressBar
-        progressBar.step = .second
-        progressBar.hideTimeLabel = false
+        progressBar.step = .fourth
+        progressBar.hideTimeLabel = true
         return progressBar
     }
-    
     private func getLocationOrderModel() -> LocationCollectionViewCell.ViewModel {
         var location = orderLocation
         location.type = .details
@@ -55,5 +45,11 @@ struct AcceptedOrderConfig: OrderTrackable {
         viewModel.subTitle = response.orderDetails?.restaurantAddress
         viewModel.cellType = .pickup
         return viewModel
+    }
+    
+    private func getHeaderModel() -> TrackingHeaderType {
+        var header = orderMapModel
+        header.type = .image(imageName: "DriverArrived")
+        return .map(model: header)
     }
 }

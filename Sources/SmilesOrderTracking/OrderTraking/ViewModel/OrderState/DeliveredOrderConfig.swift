@@ -19,10 +19,15 @@ struct DeliveredOrderConfig: OrderTrackable {
         location.type = .details
         
         var cells: [TrackingCellType] = [
-            .progressBar(model: progressBar),
-            .driver(model: orderDriverModel),
-            .location(model: location),
+            .progressBar(model: progressBar)
         ]
+        
+        if let description = orderText {
+            cells.append(.text(model: .init(title: orderText)))
+        }
+        
+        cells.append(.driver(model: orderDriverModel))
+        cells.append(.location(model: location))
         
         if let orderRateModel {
             cells.append(.rating(model: orderRateModel))

@@ -164,7 +164,7 @@ extension OrderTrackingDataSource: RatingCellActionDelegate {
 // MARK: - Confirmation Delegate
 extension OrderTrackingDataSource: OrderConfirmationCellActionDelegate {
     func didGetTheOrder(with orderId: Int) {
-        viewModel.fetchOrderStatus(status: OrderTrackingType.orderHasBeenDelivered.rawValue)
+        viewModel.fetchOrderStatus(status: OrderTrackingType.orderHasBeenPickedUpPickup.rawValue)
     }
     
     func didNotGetTheOrder(with orderId: Int) {

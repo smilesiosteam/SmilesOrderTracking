@@ -49,8 +49,6 @@ final class DriverCollectionViewCell: UICollectionViewCell {
     func updateCell(with viewModel: ViewModel, delegate: DriverCellActionDelegate) {
         self.delegate = delegate
         self.viewModel = viewModel
-        iconImageView.setImageWithUrlString(viewModel.driverIconURL ?? "")
-        actionButton.setImageWithUrlString(viewModel.iconURL ?? "", state: .normal)
         titleLabel.text = viewModel.title
         descriptionLabel.text = viewModel.subTitle
         
@@ -72,8 +70,6 @@ extension DriverCollectionViewCell {
         var title: String?
         var subTitle: String?
         var driverMobileNumber: String?
-        var driverIconURL: String?
-        var iconURL: String?
         var lat: Double = 0.0
         var lng: Double = 0.0
         var cellType: OrderTrackingCellType = .delivery

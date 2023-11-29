@@ -23,6 +23,4 @@ enum OrderTrackingType: Int {
     case pickupChanged  = 12
     case orderHasBeenPickedUpDelivery = 13
     case orderNearYourLocation = 14
-    // This case for me to navigate to the OrderHasBeenDeliveredConfig state
-    case orderHasBeenDelivered = 20
 }

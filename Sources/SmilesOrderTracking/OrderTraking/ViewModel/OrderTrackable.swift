@@ -31,7 +31,10 @@ extension OrderTrackable {
     }
     
     var orderText: String? {
-        response.orderDetails?.orderDescription
+        if let text = response.orderDetails?.orderDescription, !text.isEmpty {
+            return text
+        }
+        return nil
     }
     
     var orderPoint: PointsCollectionViewCell.ViewModel? {

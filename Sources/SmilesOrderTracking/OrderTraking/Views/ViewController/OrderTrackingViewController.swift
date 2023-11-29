@@ -38,31 +38,50 @@ public final class OrderTrackingViewController: UIViewController, Toastable {
     // MARK: - Life Cycle
     public override func viewDidLoad() {
         super.viewDidLoad()
-        
         configCollectionView()
-        viewModel.load()
-        
-    }
-    
-    public override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        dataSource.updateState(with: viewModel.orderStatusModel)
         dataSource.delegate = self
-        collectionView.reloadData()
-        bindData()
-        
     }
     
-    private func bindData() {
+    public override func viewIsAppearing(_ animated: Bool) {
+        super.viewIsAppearing(animated)
+        bindToast()
+        bindOrderStatus()
+        viewModel.fetchOrderStatus()
+        
+    }
+    private func bindToast() {
         viewModel.$isShowToast.sink { [weak self] value in
             if value  {
                 let icon = UIImage(resource: .sucess)
                 var model = ToastModel()
                 model.title =  OrderTrackingLocalization.orderAccepted.text
                 model.imageIcon = icon
-                self?.showToast(model: model)
+                DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                    self?.showToast(model: model)
+                }
             }
         }.store(in: &cancellables)
+    }
+    
+    private func bindOrderStatus() {
+        viewModel.orderStatusSubject.sink { [weak self] status in
+            
+            self?.play()
+                self?.dataSource.updateState(with: status)
+            self?.play()
+                self?.collectionView.reloadData()
+            
+            
+        }.store(in: &cancellables)
+    }
+    func play() {
+        for cell in collectionView.visibleCells {
+            cell.layer.removeAllAnimations()
+        }
+        self.view.subviews.forEach({$0.layer.removeAllAnimations()})
+            self.view.layer.removeAllAnimations()
+            self.view.layoutIfNeeded()
+        
     }
     
     // MARK: - Functions

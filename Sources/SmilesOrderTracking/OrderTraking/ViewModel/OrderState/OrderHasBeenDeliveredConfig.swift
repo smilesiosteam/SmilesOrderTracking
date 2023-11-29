@@ -2,12 +2,13 @@
 //  File.swift
 //  
 //
-//  Created by Ahmed Naguib on 23/11/2023.
+//  Created by Ahmed Naguib on 28/11/2023.
 //
 
 import Foundation
+import UIKit
 
-struct DeliveredOrderConfig: OrderTrackable {
+struct OrderHasBeenDeliveredConfig: OrderTrackable {
     var response: OrderTrackingStatusResponse
     
     func build() -> OrderTrackingModel {
@@ -20,7 +21,6 @@ struct DeliveredOrderConfig: OrderTrackable {
         
         var cells: [TrackingCellType] = [
             .progressBar(model: progressBar),
-            .driver(model: orderDriverModel),
             .location(model: location),
         ]
         
@@ -28,13 +28,23 @@ struct DeliveredOrderConfig: OrderTrackable {
             cells.append(.rating(model: orderRateModel))
         }
         
+        if let orderPoint {
+            cells.append(.point(model: orderPoint))
+        }
+        
         if let orderSubscription {
             cells.append(.subscription(model: orderSubscription))
         }
         
-        var headerModel = orderMapModel
-        headerModel.type = .image(imageName: "DriverArrived")
-        let header: TrackingHeaderType = .map(model: headerModel)
-        return .init(header: header, cells: cells)
+        return .init(header: getCanceledHeader(), cells: cells)
+    }
+    
+   private func getCanceledHeader() -> TrackingHeaderType {
+        let color = UIColor(red: 11, green: 68, blue: 18)
+        let image = "Delivered"
+        var viewModel = ImageHeaderCollectionViewCell.ViewModel(type: .image(imageName: image, backgroundColor: color))
+        viewModel.isShowSupportHeader = true
+        let header: TrackingHeaderType = .image(model: viewModel)
+        return header
     }
 }

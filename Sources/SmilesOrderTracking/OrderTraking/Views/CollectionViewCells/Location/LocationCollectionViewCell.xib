@@ -211,11 +211,14 @@
             </constraints>
             <size key="customSize" width="509" height="244"/>
             <connections>
+                <outlet property="bottomConstraint" destination="gbU-MV-IVc" id="cp3-Wx-0iI"/>
+                <outlet property="buttonsStack" destination="UvN-fw-okt" id="CsP-eq-aXe"/>
                 <outlet property="callRestrantButton" destination="xjB-dV-yED" id="MZf-VN-Zus"/>
                 <outlet property="cancelOrderButton" destination="JpX-AX-O23" id="ZNw-FK-EFW"/>
                 <outlet property="containerView" destination="gJ1-76-Cmk" id="3o1-1h-F9Z"/>
                 <outlet property="endAddressLabel" destination="syb-WV-zzO" id="ite-J5-Pab"/>
                 <outlet property="endImage" destination="0qo-vu-1fp" id="i00-xF-SwD"/>
+                <outlet property="lineView" destination="rUD-Ms-sGU" id="3An-m0-TcH"/>
                 <outlet property="orderDetailsButton" destination="zYM-uG-7wF" id="lv5-xn-zjC"/>
                 <outlet property="stackDetails" destination="x6R-68-dzF" id="G3Z-X8-pCP"/>
                 <outlet property="startAddressLabel" destination="tCE-D6-tqw" id="zGt-Lq-iFh"/>

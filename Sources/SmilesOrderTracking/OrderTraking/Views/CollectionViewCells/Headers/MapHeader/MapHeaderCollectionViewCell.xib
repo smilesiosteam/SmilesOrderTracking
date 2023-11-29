@@ -65,29 +65,40 @@
                             </button>
                         </subviews>
                     </stackView>
-                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="ITG-f2-BDO">
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gR6-cV-Wj8">
                         <rect key="frame" x="16" y="290" width="100" height="100"/>
+                        <subviews>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="ITG-f2-BDO">
+                                <rect key="frame" x="0.0" y="0.0" width="100" height="100"/>
+                            </imageView>
+                        </subviews>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
-                            <constraint firstAttribute="height" constant="100" id="35i-yU-OG9"/>
-                            <constraint firstAttribute="width" constant="100" id="HQE-Tx-j6A"/>
+                            <constraint firstAttribute="height" constant="100" id="505-Xa-UxY"/>
+                            <constraint firstAttribute="trailing" secondItem="ITG-f2-BDO" secondAttribute="trailing" id="5DT-T7-q6V"/>
+                            <constraint firstItem="ITG-f2-BDO" firstAttribute="top" secondItem="gR6-cV-Wj8" secondAttribute="top" id="LQl-W8-OFO"/>
+                            <constraint firstAttribute="width" constant="100" id="NS7-J7-9KG"/>
+                            <constraint firstAttribute="bottom" secondItem="ITG-f2-BDO" secondAttribute="bottom" id="hvu-Yi-iHk"/>
+                            <constraint firstItem="ITG-f2-BDO" firstAttribute="leading" secondItem="gR6-cV-Wj8" secondAttribute="leading" id="zLY-NH-OX2"/>
                         </constraints>
-                    </imageView>
+                    </view>
                 </subviews>
             </view>
             <viewLayoutGuide key="safeArea" id="ZTg-uK-7eu"/>
             <constraints>
-                <constraint firstItem="ITG-f2-BDO" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" constant="16" id="8Oo-8d-xaL"/>
                 <constraint firstItem="wHE-Br-azS" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" constant="16" id="8bZ-P7-ThD"/>
+                <constraint firstItem="gR6-cV-Wj8" firstAttribute="centerY" secondItem="Tcp-Bw-59I" secondAttribute="bottom" id="9yp-Cw-R7k"/>
                 <constraint firstItem="wHE-Br-azS" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" constant="60" id="Ea8-4d-0ip"/>
-                <constraint firstItem="ITG-f2-BDO" firstAttribute="centerY" secondItem="Tcp-Bw-59I" secondAttribute="bottom" id="FzO-eT-dVa"/>
                 <constraint firstAttribute="trailing" secondItem="wHE-Br-azS" secondAttribute="trailing" constant="16" id="Hda-j0-okD"/>
                 <constraint firstItem="Tcp-Bw-59I" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" id="MM8-Hu-kvw"/>
                 <constraint firstItem="Tcp-Bw-59I" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" id="UR6-BQ-2hD"/>
+                <constraint firstItem="gR6-cV-Wj8" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" constant="16" id="azJ-Yd-ZX2"/>
                 <constraint firstAttribute="trailing" secondItem="Tcp-Bw-59I" secondAttribute="trailing" id="jgq-iQ-tfX"/>
                 <constraint firstAttribute="bottom" secondItem="Tcp-Bw-59I" secondAttribute="bottom" constant="70" id="kwR-em-JXr"/>
             </constraints>
             <size key="customSize" width="443" height="340"/>
             <connections>
+                <outlet property="animationView" destination="gR6-cV-Wj8" id="DjA-QH-HcR"/>
                 <outlet property="dismissButton" destination="u8L-fj-VdJ" id="ztD-Y0-kSL"/>
                 <outlet property="driverImage" destination="ITG-f2-BDO" id="T08-fj-OWc"/>
                 <outlet property="mapView" destination="Tcp-Bw-59I" id="yk8-zX-yMM"/>
@@ -99,6 +110,9 @@
     <resources>
         <systemColor name="labelColor">
             <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
     </resources>
 </document>

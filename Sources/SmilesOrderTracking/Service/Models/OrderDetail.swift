@@ -9,6 +9,7 @@ import Foundation
 import SmilesUtilities
 
 struct OrderDetail: Codable {
+    var showCancelButtonTimeout: Bool?
     var isCancelationAllowed: Bool?
     var isLiveChatEnable: Bool?
     var orderDescription: String?

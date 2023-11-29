@@ -17,7 +17,7 @@ final class OrderProgressCollectionViewCell: UICollectionViewCell {
     @IBOutlet private weak var secondStepView: UIView!
     @IBOutlet private weak var thirdStepView: UIView!
     @IBOutlet private weak var fourthStepView: UIView!
-    
+    private var fillAnimator: UIViewPropertyAnimator?
     // MARK: - Properties
     private var leadingConstraint: NSLayoutConstraint!
     private let animatedView = UIView()
@@ -25,11 +25,48 @@ final class OrderProgressCollectionViewCell: UICollectionViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         configControllers()
+        self.contentView.layer.removeAllAnimations()
+        self.layer.removeAllAnimations()
+        self.contentView.layoutIfNeeded()
+        layoutIfNeeded()
+    }
+    private var isAnimationInProgress = false
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        fillAnimator?.stopAnimation(true)
+        fillAnimator = nil
+//        play()
+        
+        
     }
     
+    private func play() {
+        
+        self.contentView.layer.removeAllAnimations()
+        self.layer.removeAllAnimations()
+        self.contentView.layoutIfNeeded()
+        layer.sublayers?.forEach { $0.removeAllAnimations() }
+        contentView.layer.sublayers?.forEach { $0.removeAllAnimations() }
+        
+        
+        contentView.layer.removeAllAnimations()
+            animatedView.layer.removeAllAnimations()
+            leadingConstraint.constant = 0
+            animatedView.backgroundColor = .clear
+        animatedView.removeFromSuperview()
+        
+        [firstStepView, secondStepView, thirdStepView, fourthStepView].forEach({
+            $0?.layer.removeAllAnimations()
+        })
+        contentView.layoutIfNeeded()
+        layoutIfNeeded()
+    }
     // MARK: - Functions
     func updateCell(with viewModel: ViewModel) {
-        setProgressBar(step: viewModel.step)
+        
+        self.setProgressBar(step: viewModel.step)
+        
+        
         titleLabel.text = viewModel.title
         timeLabel.text = viewModel.time
         
@@ -111,15 +148,46 @@ extension OrderProgressCollectionViewCell {
             self.startFillAnimation(on: currentView)
         }
     }
+//    private func startFillAnimation(on currentView: UIView) {
+//       
+//           // Set the flag to indicate that the animation is in progress
+//        
+//        
+//        UIView.animate(withDuration: 1.0, delay: 0.0, options: [.curveLinear], animations: {
+//            print("startFillAnimation")
+//            self.leadingConstraint.constant = 0
+//            self.contentView.layoutIfNeeded() // Trigger layout update
+//        }, completion: { _ in
+//            UIView.animate(withDuration: 1.0, animations: {
+//                self.animatedView.backgroundColor = .appRevampPurpleMainColor.withAlphaComponent(0.0)
+//                
+//                self.contentView.layoutIfNeeded()
+//            }) { _ in
+//                // Repeat the animation
+//                self.leadingConstraint.constant = -currentView.frame.width
+//                self.animatedView.backgroundColor = .appRevampPurpleMainColor
+//                self.contentView.layoutIfNeeded()
+//                self.startFillAnimation(on: currentView)
+//            }
+//        })
+//    }
+    
+    
     private func startFillAnimation(on currentView: UIView) {
-        UIView.animate(withDuration: 1.0, delay: 0.0, options: [.curveLinear], animations: {
-            
+        guard fillAnimator?.state != .active else {
+            return
+        }
+
+        // First part of the animation
+        fillAnimator = UIViewPropertyAnimator(duration: 1.0, curve: .linear) {
             self.leadingConstraint.constant = 0
-            self.contentView.layoutIfNeeded() // Trigger layout update
-        }, completion: { _ in
-            UIView.animate(withDuration: 1.0, animations: {
+            self.contentView.layoutIfNeeded()
+        }
+
+        fillAnimator?.addCompletion { _ in
+            // Second part of the animation
+            UIViewPropertyAnimator.runningPropertyAnimator(withDuration: 1.0, delay: 0.0, options: [], animations: {
                 self.animatedView.backgroundColor = .appRevampPurpleMainColor.withAlphaComponent(0.0)
-                
                 self.contentView.layoutIfNeeded()
             }) { _ in
                 // Repeat the animation
@@ -128,8 +196,43 @@ extension OrderProgressCollectionViewCell {
                 self.contentView.layoutIfNeeded()
                 self.startFillAnimation(on: currentView)
             }
-        })
+        }
+
+        // Start the animation
+        fillAnimator?.startAnimation()
     }
+//    private func startFillAnimation(on currentView: UIView) {
+//        // Check if the animation is already in progress
+//        guard !isAnimationInProgress else {
+//            return
+//        }
+//        
+//        // Set the flag to indicate that the animation is in progress
+//        isAnimationInProgress = true
+//        
+//        UIView.animate(withDuration: 1.0, delay: 0.0, options: [.curveLinear], animations: {
+//            print("startFillAnimation")
+//            self.leadingConstraint.constant = 0
+//            self.contentView.layoutIfNeeded() // Trigger layout update
+//        }, completion: { _ in
+//            UIView.animate(withDuration: 1.0, animations: {
+//                self.animatedView.backgroundColor = .appRevampPurpleMainColor.withAlphaComponent(0.0)
+//                self.contentView.layoutIfNeeded()
+//            }) { _ in
+//                // Reset the flag to indicate that the animation is complete
+//                self.isAnimationInProgress = false
+//                
+//                // Repeat the animation only if it wasn't canceled
+//                if !self.isAnimationInProgress {
+//                    self.leadingConstraint.constant = -currentView.frame.width
+//                    self.animatedView.backgroundColor = .appRevampPurpleMainColor
+//                    self.contentView.layoutIfNeeded()
+//                    self.startFillAnimation(on: currentView)
+//                }
+//            }
+//        })
+//    }
+
 }
 
 extension OrderProgressCollectionViewCell {

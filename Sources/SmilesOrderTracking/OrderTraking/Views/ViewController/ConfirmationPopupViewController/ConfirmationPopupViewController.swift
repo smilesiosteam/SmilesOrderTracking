@@ -7,6 +7,7 @@
 
 import UIKit
 import SmilesUtilities
+import SmilesLoader
 
 public class ConfirmationPopupViewController: UIViewController {
 
@@ -50,6 +51,7 @@ public class ConfirmationPopupViewController: UIViewController {
         secondaryButton.layer.borderColor = UIColor.appRevampPurpleMainColor.withAlphaComponent(0.4).cgColor
         roundedView.layer.cornerRadius = 12
         roundedView.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
+        modalPresentationStyle = .overFullScreen
     }
     
     public override func viewDidLoad() {
@@ -111,4 +113,21 @@ public class ConfirmationPopupViewController: UIViewController {
         data.secondaryAction()
     }
     
+    public class func showCancelOrderConfirmation(orderId:String, from viewController:UIViewController, getSupport:@escaping()->Void){
+        let vc = ConfirmationPopupViewController(popupData: ConfirmationPopupViewModelData(showCloseButton:false, message: "Cancel order?".localizedString, descriptionMessage: "Are you sure you want to cancel your order? If you cancel now you won’t be charged.".localizedString, primaryButtonTitle: "Don't cancel".localizedString, secondaryButtonTitle: "Yes cancel".localizedString, primaryAction: {
+            SmilesLoader.show()
+            let service = OrderTrackingServiceHandler()
+            _ = service.cancelOrder(orderId: orderId, rejectionReason: nil)
+                .sink {_ in
+                    SmilesLoader.dismiss()
+                } receiveValue: {response in
+                    SmilesLoader.dismiss()
+                    let feedbackVC = SmilesOrderCancelledViewController(orderId: orderId, cancelResponse: response, onSubmitSuccess: {
+                        SuccessMessagePopupViewController.showFeedbackSuccessViewController(from: viewController)
+                    }, supportAction: getSupport)
+                    viewController.present(feedbackVC, animated: false)
+                }
+        }))
+        viewController.present(vc)
+    }
 }

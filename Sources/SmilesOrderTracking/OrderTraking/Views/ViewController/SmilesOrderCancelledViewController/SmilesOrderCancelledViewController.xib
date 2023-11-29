@@ -2,6 +2,7 @@
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="22154" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_12" orientation="portrait" appearance="light"/>
     <dependencies>
+        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22130"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
@@ -20,13 +21,17 @@
             <connections>
                 <outlet property="animationView" destination="3l3-X1-Tt6" id="z46-Rh-JOL"/>
                 <outlet property="closeButton" destination="P0p-7h-Rya" id="G04-SN-mcr"/>
+                <outlet property="collectionHeight" destination="ukU-rr-Ips" id="8FM-ty-JDV"/>
                 <outlet property="descriptionMessage" destination="8ZC-e2-CE0" id="kXR-yo-55s"/>
                 <outlet property="messageText" destination="jNN-gX-hXR" id="zIo-Y4-gka"/>
                 <outlet property="panDismissView" destination="azp-je-OAS" id="kak-1P-TxJ"/>
                 <outlet property="popupTitleContainer" destination="1pW-Xc-vPU" id="CYR-aE-KtK"/>
                 <outlet property="primaryButton" destination="Fdc-bM-m8g" id="ojV-Xl-yj7"/>
+                <outlet property="reasonsCollectionView" destination="5xl-2Q-WMj" id="Uj9-yq-z14"/>
                 <outlet property="roundedView" destination="xEg-Ne-n2c" id="Mln-pr-xkY"/>
                 <outlet property="secondaryButton" destination="mjQ-2k-x7n" id="1Tq-Dh-yx5"/>
+                <outlet property="textView" destination="h6E-7l-0Eg" id="sbZ-xt-NSl"/>
+                <outlet property="textViewContainer" destination="CEC-XO-x06" id="O2e-QI-5gg"/>
                 <outlet property="view" destination="uXw-eI-bLk" id="RDA-Pf-yrH"/>
             </connections>
         </placeholder>
@@ -136,7 +141,7 @@
                                     <color key="textColor" white="0.0" alpha="0.80000000000000004" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     <nil key="highlightedColor"/>
                                 </label>
-                                <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="5xl-2Q-WMj">
+                                <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" verticalHuggingPriority="1000" verticalCompressionResistancePriority="1000" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="5xl-2Q-WMj">
                                     <rect key="frame" x="0.0" y="205.66666666666669" width="361" height="174.33333333333331"/>
                                     <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                     <constraints>
@@ -149,7 +154,38 @@
                                         <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                     </collectionViewFlowLayout>
                                     <cells/>
+                                    <connections>
+                                        <outlet property="dataSource" destination="-1" id="95i-7Z-blu"/>
+                                        <outlet property="delegate" destination="-1" id="0CI-xj-cxB"/>
+                                    </connections>
                                 </collectionView>
+                                <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="CEC-XO-x06">
+                                    <rect key="frame" x="0.0" y="388" width="361" height="144"/>
+                                    <subviews>
+                                        <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="h6E-7l-0Eg">
+                                            <rect key="frame" x="8" y="8" width="345" height="128"/>
+                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="128" id="Bbb-L9-Oc1"/>
+                                            </constraints>
+                                            <color key="textColor" systemColor="labelColor"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                            <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                                        </textView>
+                                    </subviews>
+                                    <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.050000000000000003" colorSpace="custom" customColorSpace="sRGB"/>
+                                    <constraints>
+                                        <constraint firstItem="h6E-7l-0Eg" firstAttribute="top" secondItem="CEC-XO-x06" secondAttribute="top" constant="8" id="OLA-l4-Eow"/>
+                                        <constraint firstItem="h6E-7l-0Eg" firstAttribute="leading" secondItem="CEC-XO-x06" secondAttribute="leading" constant="8" id="U5t-WG-QL9"/>
+                                        <constraint firstAttribute="bottom" secondItem="h6E-7l-0Eg" secondAttribute="bottom" constant="8" id="qPL-ec-2zZ"/>
+                                        <constraint firstAttribute="trailing" secondItem="h6E-7l-0Eg" secondAttribute="trailing" constant="8" id="ymb-6f-x2I"/>
+                                    </constraints>
+                                    <userDefinedRuntimeAttributes>
+                                        <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                            <integer key="value" value="12"/>
+                                        </userDefinedRuntimeAttribute>
+                                    </userDefinedRuntimeAttributes>
+                                </view>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Fdc-bM-m8g">
                                     <rect key="frame" x="0.0" y="396" width="361" height="48"/>
                                     <color key="backgroundColor" red="0.45882352939999999" green="0.25882352939999997" blue="0.5568627451" alpha="1" colorSpace="calibratedRGB"/>
@@ -221,6 +257,9 @@
     <resources>
         <image name="close_icon_purple" width="32" height="31"/>
         <image name="success_star" width="90" height="90"/>
+        <systemColor name="labelColor">
+            <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>

@@ -91,8 +91,8 @@ struct OrderTrackingServiceHandler {
         return service.pauseOrderService(request: request)
     }
     
-    func cancelOrder(orderId: String) -> AnyPublisher<OrderCancelResponse, NetworkError> {
-        let request = OrderCancelRequest(orderId: orderId)
+    func cancelOrder(orderId: String, rejectionReason:String?) -> AnyPublisher<OrderCancelResponse, NetworkError> {
+        let request = OrderCancelRequest(orderId: orderId, rejectionReason: rejectionReason)
         if let userInfo = LocationStateSaver.getLocationInfo() {
             let requestUserInfo = SmilesUserInfo()
             requestUserInfo.mambaId = userInfo.mambaId

@@ -15,17 +15,19 @@ struct OnTheWayOrderConfig: OrderTrackable {
         progressBar.step = .third
         progressBar.hideTimeLabel = false
         
-        
         var location = orderLocation
         location.type = .details
         
-        
         var cells: [TrackingCellType] = [
-            .progressBar(model: progressBar),
-            .text(message: orderText),
-            .driver(model: orderDriverModel),
-            .location(model: location),
+            .progressBar(model: progressBar)
         ]
+        
+        if let description = orderText {
+            cells.append(.text(model: .init(title: orderText)))
+        }
+        
+        cells.append( .driver(model: orderDriverModel))
+        cells.append(.location(model: location))
         
         if let orderPoint {
             cells.append(.point(model: orderPoint))

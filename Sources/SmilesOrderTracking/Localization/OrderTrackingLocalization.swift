@@ -37,6 +37,15 @@ enum OrderTrackingLocalization {
     case howWouldYouRateRestaurantFood
     case done
     case okay
+    case didReceivedOrder
+    case didPickedOrder
+    case restaurantCanceledTitle
+    case restaurantCanceledButtonTitle
+    case pickUpOrderFrom
+    
+    // Some items are unavailable
+    case unavailableItemsTitle
+    case unavailableItemsButtonTitle
     
     var text: String {
         switch self {
@@ -96,6 +105,21 @@ enum OrderTrackingLocalization {
             return "Done".localizedString
         case .okay:
             return "Okay".localizedString
+        case .didPickedOrder:
+            return "DidPicked".localizedString
+        case .didReceivedOrder:
+            return "DidReceived".localizedString
+            
+        case .restaurantCanceledTitle:
+            return "Sorry, the restaurant had to cancel your order. Would you like to order from another restaurant?"
+        case .restaurantCanceledButtonTitle:
+            return "View available restaurants"
+        case .pickUpOrderFrom:
+            return "Pick up your order from:"
+        case .unavailableItemsTitle:
+            return "Some of the items you ordered are not available. We have replaced them with items of a lower price and created new order."
+        case .unavailableItemsButtonTitle:
+            return "Continue with new order"
         }
     }
 }

@@ -10,7 +10,8 @@ import SmilesFontsManager
 import SmilesUtilities
 
 protocol OrderConfirmationCellActionDelegate: AnyObject {
-    func pendingOrder(didReceive: Bool)
+    func didGetTheOrder(with orderId: Int)
+    func didNotGetTheOrder(with orderId: Int)
 }
 
 final class OrderConfirmationCollectionViewCell: UICollectionViewCell {
@@ -57,30 +58,28 @@ final class OrderConfirmationCollectionViewCell: UICollectionViewCell {
     }
     
     // MARK: - Properties
-    weak var delegate: OrderConfirmationCellActionDelegate?
+    private weak var delegate: OrderConfirmationCellActionDelegate?
+    private var orderId: Int = 0
     
     // MARK: - Lifecycle
     override func awakeFromNib() {
         super.awakeFromNib()
-        
         configCell()
     }
     
     // MARK: - Actions
     @IBAction private func confirmButtonTapped(_ sender: UIButton) {
-        delegate?.pendingOrder(didReceive: true)
+        delegate?.didGetTheOrder(with: orderId)
     }
     
     @IBAction private func denyButtonTapped(_ sender: UIButton) {
-        delegate?.pendingOrder(didReceive: false)
+        delegate?.didNotGetTheOrder(with: orderId)
     }
     
     // MARK: - Methods
-    func updateCell(with viewModel: ViewModel) {
-        delegate = viewModel.delegate
-        questionLabel.text = String(format: OrderTrackingLocalization.haveYouReceivedOrderFrom.text, viewModel.restaurantName.asStringOrEmpty())
-        
-        configCell()
+    func updateCell(with viewModel: ViewModel, delegate: OrderConfirmationCellActionDelegate) {
+        self.delegate = delegate
+        questionLabel.text = viewModel.question
     }
     
     private func configCell() {
@@ -92,7 +91,7 @@ final class OrderConfirmationCollectionViewCell: UICollectionViewCell {
 // MARK: - ViewModel
 extension OrderConfirmationCollectionViewCell {
     struct ViewModel {
-        var restaurantName: String?
-        var delegate: OrderConfirmationCellActionDelegate?
+        var question: String?
+        var orderId: Int = 0
     }
 }

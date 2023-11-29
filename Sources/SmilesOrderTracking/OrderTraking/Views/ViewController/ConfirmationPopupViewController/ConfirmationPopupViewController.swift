@@ -7,8 +7,9 @@
 
 import UIKit
 import SmilesUtilities
+import SmilesLoader
 
-class ConfirmationPopupViewController: UIViewController {
+public class ConfirmationPopupViewController: UIViewController {
 
     @IBOutlet weak var primaryButton: UIButton!
     @IBOutlet weak var popupTitleContainer: UIView!
@@ -35,6 +36,7 @@ class ConfirmationPopupViewController: UIViewController {
         popupTitle.text = data.popupTitle
         messageText.text = data.message
         descriptionMessage.text = data.descriptionMessage
+        descriptionMessage.isHidden = data.descriptionMessage?.isEmpty ?? true
         closeButton.isHidden = !data.showCloseButton
         popupTitleContainer.isHidden = !data.showCloseButton && (data.popupTitle?.isEmpty ?? true)
         popupTitle.fontTextStyle = .smilesHeadline4
@@ -45,16 +47,19 @@ class ConfirmationPopupViewController: UIViewController {
         secondaryButton.setTitle(data.secondaryButtonTitle, for: .normal)
         primaryButton.fontTextStyle = .smilesHeadline4
         secondaryButton.fontTextStyle = .smilesHeadline4
+        secondaryButton.layer.borderWidth = 2
+        secondaryButton.layer.borderColor = UIColor.appRevampPurpleMainColor.withAlphaComponent(0.4).cgColor
         roundedView.layer.cornerRadius = 12
         roundedView.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
+        modalPresentationStyle = .overFullScreen
     }
     
-    override func viewDidLoad() {
+    public override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
     }
     
-    public  init(popupData:ConfirmationPopupViewModelData) {
+    public init(popupData:ConfirmationPopupViewModelData) {
         self.data = popupData
         super.init(nibName: "ConfirmationPopupViewController", bundle: .module)
     }
@@ -63,7 +68,7 @@ class ConfirmationPopupViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
-    override func viewWillAppear(_ animated: Bool) {
+    public override func viewWillAppear(_ animated: Bool) {
         self.navigationController?.isNavigationBarHidden = true
     }
 
@@ -94,21 +99,35 @@ class ConfirmationPopupViewController: UIViewController {
         dismiss(animated: true)
     }
 
-    
-    @IBAction func termsCheckBoxPressed(_ sender: UIButton) {
-        sender.isSelected = !sender.isSelected
-    }
-    
     @IBAction func closePressed(_ sender: Any) {
         dismiss(animated: true)
     }
     
     @IBAction func primaryAction(_ sender: Any) {
+        dismiss(animated: true)
         data.primaryAction()
     }
     
     @IBAction func secondaryAction(_ sender: Any) {
+        dismiss(animated: true)
         data.secondaryAction()
     }
     
+    public class func showCancelOrderConfirmation(orderId:String, from viewController:UIViewController, getSupport:@escaping()->Void){
+        let vc = ConfirmationPopupViewController(popupData: ConfirmationPopupViewModelData(showCloseButton:false, message: "Cancel order?".localizedString, descriptionMessage: "Are you sure you want to cancel your order? If you cancel now you won’t be charged.".localizedString, primaryButtonTitle: "Don't cancel".localizedString, secondaryButtonTitle: "Yes cancel".localizedString, primaryAction: {
+            SmilesLoader.show()
+            let service = OrderTrackingServiceHandler()
+            _ = service.cancelOrder(orderId: orderId, rejectionReason: nil)
+                .sink {_ in
+                    SmilesLoader.dismiss()
+                } receiveValue: {response in
+                    SmilesLoader.dismiss()
+                    let feedbackVC = SmilesOrderCancelledViewController(orderId: orderId, cancelResponse: response, onSubmitSuccess: {
+                        SuccessMessagePopupViewController.showFeedbackSuccessViewController(from: viewController)
+                    }, supportAction: getSupport)
+                    viewController.present(feedbackVC, animated: false)
+                }
+        }))
+        viewController.present(vc)
+    }
 }

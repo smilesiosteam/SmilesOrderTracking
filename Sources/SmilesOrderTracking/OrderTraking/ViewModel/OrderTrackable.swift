@@ -31,26 +31,26 @@ extension OrderTrackable {
     }
     
     var orderText: String? {
-        response.orderDetails?.orderDescription
+        if let text = response.orderDetails?.orderDescription, !text.isEmpty {
+            return text
+        }
+        return nil
     }
     
     var orderPoint: PointsCollectionViewCell.ViewModel? {
         if let point = response.orderDetails?.earnPoints, point > 0 {
             var viewModel = PointsCollectionViewCell.ViewModel()
             viewModel.numberOfPoints = point
-            viewModel.text = "smiles points earned and will be credited soon."
+            viewModel.text = OrderTrackingLocalization.points.text
             return viewModel
         }
         return nil
     }
     
     var orderSubscription: FreeDeliveryCollectionViewCell.ViewModel? {
-        if let subscriptionModel = response.orderDetails?.subscriptionBanner {
+        if let bannerImageUrl = response.orderDetails?.bannerImageUrl {
             var viewModel = FreeDeliveryCollectionViewCell.ViewModel()
-            viewModel.iconUrl = subscriptionModel.subscriptionIcon
-            viewModel.redirectUrl = subscriptionModel.redirectionUrl
-            viewModel.title = subscriptionModel.subscriptionTitle
-            viewModel.subTitle = "No set Yet"
+            viewModel.imageURL = bannerImageUrl
             return viewModel
         }
         return nil
@@ -78,7 +78,7 @@ extension OrderTrackable {
         let endImage = "endPin"
         let endModel = MarkerModel(lat: endLat, lang: endLang, image: endImage)
         
-        let viewModel = MapHeaderCollectionViewCell.ViewModel(startPoint: startModel, endPoint: endModel, userImageURL: "")
+        let viewModel = MapHeaderCollectionViewCell.ViewModel(startPoint: startModel, endPoint: endModel, type: .animation(url: ""))
         return viewModel
     }
     
@@ -95,5 +95,27 @@ extension OrderTrackable {
     
     var isLiveTracking: Bool {
         response.orderDetails?.liveTracking ?? false
+    }
+    
+    var orderRateModel: RatingCollectionViewCell.ViewModel? {
+        let orderId = response.orderDetails?.orderId ?? 0
+        var viewModel = RatingCollectionViewCell.ViewModel(orderId: orderId)
+        let ratingModels = response.orderRating ?? []
+        let rates = ratingModels.compactMap { ratingModel -> RatingCollectionViewCell.RateModel? in
+            guard let type = RatingCollectionViewCell.RateType(rawValue: ratingModel.ratingType ?? "") else {
+                return nil
+            }
+            
+            let model = RatingCollectionViewCell.RateModel(type: type, title: ratingModel.title, iconUrl: ratingModel.image)
+            return model
+        }
+        
+        viewModel.items = rates
+        return rates.isEmpty ? nil : viewModel
+    }
+    
+    var orderType: OrderTrackingCellType {
+        let orderType = response.orderDetails?.orderType ?? ""
+        return OrderTrackingCellType(rawValue: orderType) ?? .delivery
     }
 }

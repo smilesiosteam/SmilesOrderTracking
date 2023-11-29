@@ -7,11 +7,6 @@
 
 import UIKit
 
-protocol OrderCancelledCellActionDelegate: AnyObject {
-    func orderDetailsDidTap()
-    func callRestaurantDidTap()
-}
-
 final class OrderCancelledCollectionViewCell: UICollectionViewCell {
     // MARK: - Outlets
     @IBOutlet private weak var containerView: UIView! {
@@ -41,7 +36,8 @@ final class OrderCancelledCollectionViewCell: UICollectionViewCell {
     }
     
     // MARK: - Properties
-    weak var delegate: OrderCancelledCellActionDelegate?
+    private weak var delegate: LocationCollectionViewProtocol?
+    private var viewModel = ViewModel()
     
     // MARK: - Lifecycle
     override func awakeFromNib() {
@@ -50,22 +46,24 @@ final class OrderCancelledCollectionViewCell: UICollectionViewCell {
     
     // MARK: - Actions
     @IBAction private func orderDetailsButtonTapped(_ sender: UIButton) {
-        delegate?.orderDetailsDidTap()
+        delegate?.didTappOrderDetails(orderId: viewModel.orderId)
     }
     
     @IBAction private func callRestaurantButtonTapped(_ sender: UIButton) {
-        delegate?.callRestaurantDidTap()
+        delegate?.didTappPhoneCall(with: viewModel.restaurantNumber)
     }
     
     // MARK: - Methods
-    func updateCell(with viewModel: ViewModel) {
-        delegate = viewModel.delegate
+    func updateCell(with viewModel: ViewModel, delegate: LocationCollectionViewProtocol) {
+        self.delegate = delegate
+        self.viewModel = viewModel
     }
 }
 
 // MARK: - ViewModel
 extension OrderCancelledCollectionViewCell {
     struct ViewModel {
-        var delegate: OrderCancelledCellActionDelegate?
+        var orderId: Int?
+        var restaurantNumber: String?
     }
 }

@@ -11,18 +11,15 @@ struct InTheKitchenOrderConfig: OrderTrackable {
     var response: OrderTrackingStatusResponse
     
     func build() -> OrderTrackingModel {
-        var progressBar = orderProgressBar
-        progressBar.step = .second
-        progressBar.hideTimeLabel = false
-        
-        var location = orderLocation
-        location.type = .details
-        
-        var cells: [TrackingCellType] = [
-            .progressBar(model: progressBar),
-            .location(model: location),
-        ]
-        
+     
+        var cells: [TrackingCellType] = [.progressBar(model: getProgressBarModel())]
+        if let description = orderText {
+            cells.append(.text(model: .init(title: description)))
+        }
+        if orderType == .pickup {
+            cells.append(.driver(model: getDriverModel()))
+        }
+        cells.append(.location(model: getLocationOrderModel()))
         if let orderPoint {
             cells.append(.point(model: orderPoint))
         }
@@ -31,8 +28,27 @@ struct InTheKitchenOrderConfig: OrderTrackable {
             cells.append(.subscription(model: orderSubscription))
         }
         
-        var header: TrackingHeaderType = .map(model: orderMapModel)
-        header = isLiveTracking ? header : .image(model: .init(isShowSupportHeader: true))
+        let header: TrackingHeaderType = .map(model: orderMapModel)
         return .init(header: header, cells: cells)
+    }
+    
+    private func getProgressBarModel() -> OrderProgressCollectionViewCell.ViewModel {
+        var progressBar = orderProgressBar
+        progressBar.step = .second
+        progressBar.hideTimeLabel = false
+        return progressBar
+    }
+    private func getLocationOrderModel() -> LocationCollectionViewCell.ViewModel {
+        var location = orderLocation
+        location.type = .details
+        return location
+    }
+    
+    private func getDriverModel() -> DriverCollectionViewCell.ViewModel {
+        var viewModel = orderDriverModel
+        viewModel.title = OrderTrackingLocalization.pickUpOrderFrom.text
+        viewModel.subTitle = response.orderDetails?.restaurantAddress
+        viewModel.cellType = .pickup
+        return viewModel
     }
 }

@@ -30,7 +30,10 @@ final class LocationCollectionViewCell: UICollectionViewCell {
     @IBOutlet private weak var orderDetailsButton: UIButton!
     @IBOutlet private weak var callRestrantButton: UIButton!
     @IBOutlet private weak var stackDetails: UIStackView!
+    @IBOutlet private weak var lineView: UIView!
+    @IBOutlet private weak var buttonsStack: UIStackView!
     
+    @IBOutlet weak var bottomConstraint: NSLayoutConstraint!
     // MARK: - Properties
     private var viewModel: ViewModel = .init()
     private weak var delegate: LocationCollectionViewProtocol?
@@ -88,13 +91,20 @@ final class LocationCollectionViewCell: UICollectionViewCell {
     }
     
     private func configCellType() {
+        buttonsStack.isHidden = false
+        lineView.isHidden = false
+        
         switch viewModel.type {
-        case .cancel:
+        case .showCancelButton:
             stackDetails.isHidden = true
             cancelOrderButton.isHidden = false
         case .details:
             stackDetails.isHidden = false
             cancelOrderButton.isHidden = true
+        case .hideAllButtons:
+            buttonsStack.isHidden = true
+            lineView.isHidden = true
+            bottomConstraint.constant = -20
         }
     }
 }
@@ -102,8 +112,9 @@ final class LocationCollectionViewCell: UICollectionViewCell {
 // MARK: - ViewModel
 extension LocationCollectionViewCell {
     enum CellType {
-        case cancel
+        case showCancelButton
         case details
+        case hideAllButtons
     }
     
     struct ViewModel {
@@ -111,6 +122,6 @@ extension LocationCollectionViewCell {
         var endAddress: String?
         var orderId: Int?
         var restaurantNumber: String?
-        var type: CellType = .cancel
+        var type: CellType = .showCancelButton
     }
 }

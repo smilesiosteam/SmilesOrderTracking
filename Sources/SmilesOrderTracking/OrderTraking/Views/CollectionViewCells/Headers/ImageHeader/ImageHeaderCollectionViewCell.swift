@@ -20,7 +20,8 @@ final class ImageHeaderCollectionViewCell: UICollectionReusableView {
     @IBOutlet private weak var containerView: UIView!
     @IBOutlet private weak var dismissButton: UIButton!
     @IBOutlet private weak var supportButton: UIButton!
-    @IBOutlet weak var headerStack: UIStackView!
+    @IBOutlet private weak var headerStack: UIStackView!
+    @IBOutlet private weak var headerImage: UIImageView!
     
     private weak var delegate: HeaderCollectionViewProtocol?
     // MARK: - Life Cycle
@@ -42,6 +43,16 @@ final class ImageHeaderCollectionViewCell: UICollectionReusableView {
     func updateCell(with viewModel: ViewModel, delegate: HeaderCollectionViewProtocol) {
         self.delegate = delegate
         headerStack.isHidden = !viewModel.isShowSupportHeader
+        
+        switch viewModel.type {
+        case .image(let imageName, let backgroundColor):
+            headerImage.image = UIImage(named: imageName, in: .module, with: nil)
+            containerView.backgroundColor = backgroundColor
+            headerImage.isHidden = false
+        case .animation(let url):
+            headerImage.isHidden = true
+            print(url)
+        }
     }
     
     private func configControllers() {
@@ -59,5 +70,11 @@ extension ImageHeaderCollectionViewCell {
     struct ViewModel {
         var isShowSupportHeader = false
         var url: String?
+        var type: CellType
+    }
+    
+    enum CellType {
+        case image(imageName: String, backgroundColor: UIColor)
+        case animation(url: String)
     }
 }

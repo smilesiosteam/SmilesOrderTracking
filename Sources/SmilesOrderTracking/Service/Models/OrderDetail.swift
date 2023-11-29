@@ -9,6 +9,7 @@ import Foundation
 import SmilesUtilities
 
 struct OrderDetail: Codable {
+    var showCancelButtonTimeout: Bool?
     var isCancelationAllowed: Bool?
     var isLiveChatEnable: Bool?
     var orderDescription: String?
@@ -98,6 +99,12 @@ struct OrderDetail: Codable {
     var orderDescriptionRangeV2: String?
     var subscriptionBannerV2: SubscriptionsBannerV2?
     var driverStatusText: String?
+    
+    var driverImageIconUrl: String?
+    var driverPhoneImageUrl: String?
+    var mapImageIconUrl: String?
+    var subTitleImageIconUrl: String?
+    var bannerImageUrl: String?
     enum CodingKeys: String, CodingKey {
         case virtualRestaurantIncluded
         case inlineItemTotal
@@ -184,6 +191,11 @@ struct OrderDetail: Codable {
         case orderDescriptionRangeV2
         case subscriptionBannerV2
         case driverStatusText
+        case driverImageIconUrl
+        case driverPhoneImageUrl
+        case mapImageIconUrl
+        case subTitleImageIconUrl
+        case bannerImageUrl
     }
     
     init(from decoder: Decoder) throws {
@@ -276,6 +288,12 @@ struct OrderDetail: Codable {
         orderDescriptionRangeV2 = try values.decodeIfPresent(String.self, forKey: .orderDescriptionRangeV2)
         subscriptionBannerV2 = try values.decodeIfPresent(SubscriptionsBannerV2.self, forKey: .subscriptionBannerV2)
         driverStatusText = try values.decodeIfPresent(String.self, forKey: .driverStatusText)
+        driverImageIconUrl = try values.decodeIfPresent(String.self, forKey: .driverImageIconUrl)
+        driverPhoneImageUrl = try values.decodeIfPresent(String.self, forKey: .driverPhoneImageUrl)
+        mapImageIconUrl = try values.decodeIfPresent(String.self, forKey: .mapImageIconUrl)
+        subTitleImageIconUrl = try values.decodeIfPresent(String.self, forKey: .subTitleImageIconUrl)
+        bannerImageUrl = try values.decodeIfPresent(String.self, forKey: .bannerImageUrl)
+        
     }
     
     func getIconForStatus(withOrderType orderType: String?) -> String {
@@ -287,7 +305,7 @@ struct OrderDetail: Codable {
             return "refreshIconSmall"
         case .orderCancelled, .someItemsAreUnavailable:
             return "cancelOrderIcon"
-        case .orderHasBeenDelivered, .orderHasBeenPickedUp:
+        case .orderHasBeenPickedUpPickup:
             if let orderType = orderType {
                 if orderType.lowercased() == RestaurantMenuType.DELIVERY.rawValue.lowercased() {
                     return "greenTick"

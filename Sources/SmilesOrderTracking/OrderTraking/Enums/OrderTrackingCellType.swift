@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum OrderTrackingCellType {
-    case delivery
-    case pickup
+enum OrderTrackingCellType: String {
+    case delivery = "DELIVERY"
+    case pickup = "PICK_UP"
 }

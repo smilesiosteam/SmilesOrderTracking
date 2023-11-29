@@ -7,24 +7,41 @@
 
 import Foundation
 
-struct ProcessingOrderConfig: OrderTrackable {
+struct ProcessingOrderConfig: OrderTrackable, AnimationHeaderProtocol {
     var response: OrderTrackingStatusResponse
-    
+    var hideCancelButton: () -> Void = {}
     func build() -> OrderTrackingModel {
         var progressBar = orderProgressBar
         progressBar.step = .first
         
-        var location = orderLocation
-        location.type = .cancel
-        
         let cells: [TrackingCellType] = [
             .progressBar(model: progressBar),
-            .text(message: orderText),
-            .location(model: location),
+            .text(model: .init(title: orderText)),
+            .location(model: getOrderLocation()),
             .restaurant(model: orderRestaurant)
         ]
         
-        let header: TrackingHeaderType = .image(model: .init(isShowSupportHeader: false))
-        return .init(header: header, cells: cells)
+        return .init(header: getAnimationHeader(isShowButtons: false), cells: cells)
+    }
+    
+    private func getOrderLocation() ->  LocationCollectionViewCell.ViewModel {
+        var location = orderLocation
+        let isCancelationAllowed = response.orderDetails?.isCancelationAllowed ?? true
+        location.type = isCancelationAllowed ? .showCancelButton : .hideAllButtons
+        fireCancelButton(isShowCancelButton: isCancelationAllowed)
+        // This for hide cancel button after 10 seconds
+        let showCancelButtonTimeout = response.orderDetails?.showCancelButtonTimeout ?? false
+        location.type = showCancelButtonTimeout ? .hideAllButtons :  location.type
+        return location
+    }
+    
+    private func fireCancelButton(isShowCancelButton: Bool) {
+        
+        guard isShowCancelButton else {
+            return
+        }
+        DispatchQueue.main.asyncAfter(deadline: .now() + 10) {
+            self.hideCancelButton()
+        }
     }
 }

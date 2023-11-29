@@ -13,8 +13,9 @@ final class MapHeaderCollectionViewCell: UICollectionReusableView {
     
     // MARK: - Outlets
     @IBOutlet private weak var driverImage: UIImageView!
-    @IBOutlet weak var mapView: GMSMapView!
+    @IBOutlet private weak var mapView: GMSMapView!
     @IBOutlet private weak var dismissButton: UIButton!
+    @IBOutlet private weak var animationView: UIView!
     @IBOutlet private weak var supportButton: UIButton!
     
     // MARK: - Properties
@@ -38,23 +39,35 @@ final class MapHeaderCollectionViewCell: UICollectionReusableView {
     // MARK: - Functions
     func updateCell(with viewModel: ViewModel, delegate: HeaderCollectionViewProtocol) {
         self.delegate = delegate
-        
+        configCellType(type: viewModel.type)
         let startPoint = CLLocationCoordinate2D(latitude: viewModel.startPoint.lat, longitude: viewModel.startPoint.lang)
         let endPoint = CLLocationCoordinate2D(latitude: viewModel.endPoint.lat, longitude: viewModel.endPoint.lang)
         addBoundForMap(startPoint: startPoint, endPoint: endPoint)
         
         mapView.addMarker(model: viewModel.startPoint)
         mapView.addMarker(model: viewModel.endPoint)
+    }
+    
+    private func configCellType(type: CellType) {
+        print("ddddd")
         
+        switch type {
+        case .image(let imageName):
+            animationView.backgroundColor = .clear
+            print(imageName)
+            driverImage.image = UIImage(named: imageName, in: .module, with: nil)
+            driverImage.isHidden = false
+        case .animation(let url):
+            driverImage.isHidden = true
+            print(url)
+        }
     }
     
     private func configControllers() {
         dismissButton.layer.cornerRadius = 20
         supportButton.layer.cornerRadius = 20
         driverImage.layer.cornerRadius = 50
-        driverImage.backgroundColor = .red
-        driverImage.layer.borderWidth = 4
-        driverImage.layer.borderColor = UIColor.white.cgColor
+        animationView.layer.cornerRadius = 50
         supportButton.setTitle(OrderTrackingLocalization.support.text, for: .normal)
         [supportButton, dismissButton].forEach({
             $0.fontTextStyle = .smilesTitle1
@@ -89,6 +102,11 @@ extension MapHeaderCollectionViewCell {
     struct ViewModel {
         var startPoint: MarkerModel
         var endPoint: MarkerModel
-        var userImageURL: String
+        var type: CellType
+    }
+    
+    enum CellType {
+        case image(imageName: String)
+        case animation(url: String)
     }
 }

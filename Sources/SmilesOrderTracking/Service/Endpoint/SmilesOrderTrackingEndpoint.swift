@@ -14,6 +14,8 @@ enum SmilesOrderTrackingEndpoint {
     case resumeOrder
     case pauseOrder
     case cancelOrder
+    case submitOrderRating
+    case getOrderRating
     
     var url: String {
         switch self {
@@ -29,6 +31,10 @@ enum SmilesOrderTrackingEndpoint {
             return "order/v1/pause-order"
         case .cancelOrder:
             return "order/v1/cancel-order"
+        case .submitOrderRating:
+            return "order-review/v1/submit-reviews"
+        case .getOrderRating:
+            return "order-review/v1/order-rating"
         }
     }
 }

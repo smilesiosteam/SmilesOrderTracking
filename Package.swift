@@ -24,7 +24,8 @@ let package = Package(
         .package(url: "https://github.com/smilesiosteam/SmilesBaseMainRequest.git", branch: "main"),
         .package(url: "https://github.com/smilesiosteam/NetworkingLayer.git", branch: "main"),
         .package(url: "https://github.com/smilesiosteam/SmilesLocationHandler.git", branch: "main"),
-        .package(url: "https://github.com/evgenyneu/Cosmos.git", .upToNextMajor(from: "23.0.0"))
+        .package(url: "https://github.com/evgenyneu/Cosmos.git", .upToNextMajor(from: "23.0.0")),
+        .package(url: "https://github.com/smilesiosteam/LottieAnimationManager.git", branch: "main")
     ],
     targets: [
         // Targets are the basic building blocks of a package, defining a module or a test suite.
@@ -39,8 +40,10 @@ let package = Package(
                 .product(name: "SmilesBaseMainRequestManager", package: "SmilesBaseMainRequest"),
                 .product(name: "NetworkingLayer", package: "NetworkingLayer"),
                 .product(name: "SmilesLocationHandler", package: "SmilesLocationHandler"),
-                .product(name: "Cosmos", package: "Cosmos")
-            ]
+                .product(name: "Cosmos", package: "Cosmos"),
+                .product(name: "LottieAnimationManager", package: "LottieAnimationManager")
+            ],
+            resources: [.process("Resources")]
         ),
         .testTarget(
             name: "SmilesOrderTrackingTests",

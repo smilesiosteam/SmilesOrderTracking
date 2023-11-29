@@ -35,6 +35,8 @@ enum OrderTrackingLocalization {
     case getSupport
     case rateYourFoodExperience
     case howWouldYouRateRestaurantFood
+    case done
+    case okay
     case didReceivedOrder
     case didPickedOrder
     case restaurantCanceledTitle
@@ -99,6 +101,10 @@ enum OrderTrackingLocalization {
             return "RateYourFoodExperience".localizedString
         case .howWouldYouRateRestaurantFood:
             return "HowWouldYouRateRestaurantFood".localizedString
+        case .done:
+            return "Done".localizedString
+        case .okay:
+            return "Okay".localizedString
         case .didPickedOrder:
             return "DidPicked".localizedString
         case .didReceivedOrder:

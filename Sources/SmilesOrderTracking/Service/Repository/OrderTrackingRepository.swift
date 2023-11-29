@@ -16,6 +16,8 @@ protocol OrderTrackingServiceable {
     func resumeOrderService(request: OrderTrackingStatusRequest) -> AnyPublisher<BaseMainResponse, NetworkError>
     func pauseOrderService(request: OrderTrackingStatusRequest) -> AnyPublisher<BaseMainResponse, NetworkError>
     func cancelOrderService(request: OrderCancelRequest) -> AnyPublisher<OrderCancelResponse, NetworkError>
+    func submitOrderRatingService(request: RateOrderRequest) -> AnyPublisher<RateOrderResponse, NetworkError>
+    func getOrderRatingService(request: GetOrderRatingRequest) -> AnyPublisher<GetOrderRatingResponse, NetworkError>
 }
 
 final class OrderTrackingRepository: OrderTrackingServiceable {
@@ -82,6 +84,26 @@ final class OrderTrackingRepository: OrderTrackingServiceable {
     
     func cancelOrderService(request: OrderCancelRequest) -> AnyPublisher<OrderCancelResponse, NetworkError> {
         let endPoint = OrderTrackingRequestBuilder.cancelOrder(request: request)
+        let request = endPoint.createRequest(
+            baseUrl: self.baseUrl,
+            endPoint: self.endPoint
+        )
+        
+        return self.networkRequest.request(request)
+    }
+    
+    func submitOrderRatingService(request: RateOrderRequest) -> AnyPublisher<RateOrderResponse, NetworkError> {
+        let endPoint = OrderTrackingRequestBuilder.submitOrderRating(request: request)
+        let request = endPoint.createRequest(
+            baseUrl: self.baseUrl,
+            endPoint: self.endPoint
+        )
+        
+        return self.networkRequest.request(request)
+    }
+    
+    func getOrderRatingService(request: GetOrderRatingRequest) -> AnyPublisher<GetOrderRatingResponse, NetworkError> {
+        let endPoint = OrderTrackingRequestBuilder.getOrderRating(request: request)
         let request = endPoint.createRequest(
             baseUrl: self.baseUrl,
             endPoint: self.endPoint

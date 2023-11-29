@@ -18,9 +18,14 @@ struct WaitingOrderConfig: OrderTrackable, AnimationHeaderProtocol {
         location.type = .details
         
         var cells: [TrackingCellType] = [
-            .progressBar(model: progressBar),
-            .location(model: location),
+            .progressBar(model: progressBar)
         ]
+        
+        if let description = orderText {
+            cells.append(.text(model: .init(title: orderText)))
+        }
+        
+        cells.append(.location(model: location))
         
         if let orderPoint {
             cells.append(.point(model: orderPoint))

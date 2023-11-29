@@ -19,10 +19,15 @@ struct DeliveredOrderConfig: OrderTrackable {
         location.type = .details
         
         var cells: [TrackingCellType] = [
-            .progressBar(model: progressBar),
-            .driver(model: orderDriverModel),
-            .location(model: location),
+            .progressBar(model: progressBar)
         ]
+        
+        if let description = orderText {
+            cells.append(.text(model: .init(title: orderText)))
+        }
+        
+        cells.append(.driver(model: orderDriverModel))
+        cells.append(.location(model: location))
         
         if let orderRateModel {
             cells.append(.rating(model: orderRateModel))
@@ -32,7 +37,9 @@ struct DeliveredOrderConfig: OrderTrackable {
             cells.append(.subscription(model: orderSubscription))
         }
         
-        let header: TrackingHeaderType = .map(model: orderMapModel)
+        var headerModel = orderMapModel
+        headerModel.type = .image(imageName: "DriverArrived")
+        let header: TrackingHeaderType = .map(model: headerModel)
         return .init(header: header, cells: cells)
     }
 }

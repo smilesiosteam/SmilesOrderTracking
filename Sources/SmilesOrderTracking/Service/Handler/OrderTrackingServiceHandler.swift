@@ -108,4 +108,36 @@ struct OrderTrackingServiceHandler {
         
         return service.cancelOrderService(request: request)
     }
+    
+    func submitOrderRating(orderNumber: String, orderId: String, restaurantName: String, itemRatings: [ItemRatings]?, orderRating: [OrderRatingModel]?, isAccrualPointsAllowed: Bool, itemLevelRatingEnabled: Bool, restaurantId: String?) -> AnyPublisher<RateOrderResponse, NetworkError> {
+        
+        let request = RateOrderRequest(orderId: orderId, orderNumber: orderNumber, restaurantName: restaurantName, orderRatings: orderRating, itemRatings: itemRatings, isAccuralPointsAllowed: isAccrualPointsAllowed, itemLevelRatingEnabled: itemLevelRatingEnabled, restaurantId: restaurantId)
+        if let userInfo = LocationStateSaver.getLocationInfo() {
+            request.userInfo = userInfo
+        }
+        
+        let service = OrderTrackingRepository(
+            networkRequest: NetworkingLayerRequestable(requestTimeOut: 60),
+            baseUrl: AppCommonMethods.serviceBaseUrl,
+            endPoint: .submitOrderRating
+        )
+        
+        return service.submitOrderRatingService(request: request)
+    }
+    
+    func getOrderRating(ratingType: String, contentType: String, isLiveTracking: Bool, orderId: String) -> AnyPublisher<GetOrderRatingResponse, NetworkError> {
+        
+        let request = GetOrderRatingRequest(ratingType: ratingType, contentType: contentType, isLiveTracking: isLiveTracking, orderId: orderId)
+        if let userInfo = LocationStateSaver.getLocationInfo() {
+            request.userInfo = userInfo
+        }
+        
+        let service = OrderTrackingRepository(
+            networkRequest: NetworkingLayerRequestable(requestTimeOut: 60),
+            baseUrl: AppCommonMethods.serviceBaseUrl,
+            endPoint: .getOrderRating
+        )
+        
+        return service.getOrderRatingService(request: request)
+    }
 }

@@ -31,7 +31,10 @@ extension OrderTrackable {
     }
     
     var orderText: String? {
-        response.orderDetails?.orderDescription
+        if let text = response.orderDetails?.orderDescription, !text.isEmpty {
+            return text
+        }
+        return nil
     }
     
     var orderPoint: PointsCollectionViewCell.ViewModel? {
@@ -75,7 +78,7 @@ extension OrderTrackable {
         let endImage = "endPin"
         let endModel = MarkerModel(lat: endLat, lang: endLang, image: endImage)
         
-        let viewModel = MapHeaderCollectionViewCell.ViewModel(startPoint: startModel, endPoint: endModel, userImageURL: "")
+        let viewModel = MapHeaderCollectionViewCell.ViewModel(startPoint: startModel, endPoint: endModel, type: .animation(url: ""))
         return viewModel
     }
     

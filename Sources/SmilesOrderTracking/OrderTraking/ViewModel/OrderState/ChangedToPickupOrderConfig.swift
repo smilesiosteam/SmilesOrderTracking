@@ -39,7 +39,7 @@ struct ChangedToPickupOrderConfig: OrderTrackable, CancelHeaderProtocol {
         viewModel.buttonTitle = OrderTrackingLocalization.orderCancelledLikeToPickupOrder.text
         viewModel.title = OrderTrackingLocalization.orderCancelledBadWeather.text
         let timeOut = response.orderDetails?.orderTimeOut ?? 0
-        viewModel.timerCount = timeOut * 3
+        viewModel.timerCount = timeOut * 60
         return viewModel
     }
 }

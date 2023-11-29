@@ -17,6 +17,8 @@ enum OrderTrackingRequestBuilder {
     case resumeOrder(request: OrderTrackingStatusRequest)
     case pauseOrder(request: OrderTrackingStatusRequest)
     case cancelOrder(request: OrderCancelRequest)
+    case submitOrderRating(request: RateOrderRequest)
+    case getOrderRating(request: GetOrderRatingRequest)
     
     // gave a default timeout but can be different for each.
     var requestTimeOut: Int {
@@ -37,6 +39,10 @@ enum OrderTrackingRequestBuilder {
         case .pauseOrder:
             return .POST
         case .cancelOrder:
+            return .POST
+        case .submitOrderRating:
+            return .POST
+        case .getOrderRating:
             return .POST
         }
     }
@@ -67,6 +73,10 @@ enum OrderTrackingRequestBuilder {
             return request
         case .cancelOrder(let request):
             return request
+        case .submitOrderRating(let request):
+            return request
+        case .getOrderRating(let request):
+            return request
         }
     }
     
@@ -86,6 +96,10 @@ enum OrderTrackingRequestBuilder {
         case .pauseOrder:
             return "\(baseUrl)\(endPoint)"
         case .cancelOrder:
+            return "\(baseUrl)\(endPoint)"
+        case .submitOrderRating:
+            return "\(baseUrl)\(endPoint)"
+        case .getOrderRating:
             return "\(baseUrl)\(endPoint)"
         }
     }

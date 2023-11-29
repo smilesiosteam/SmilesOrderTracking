@@ -10,14 +10,19 @@ import Combine
 
 final class OrderTrackingUseCase {
     
-    var orderModel: OrderTrackingModel = .init()
+    var orderStatus = PassthroughSubject<OrderTrackingModel, Never>()
     @Published private(set) var isShowToast = false
-    func load() {
+    
+    // we passed the status as parameter to navigate to the OrderHasBeenDeliveredConfig status 
+    func fetchOrderStates(with statues: Int? = nil) {
         if let jsonData = jsonString.data(using: .utf8) {
             do {
-                let orderResponse = try JSONDecoder().decode(OrderTrackingStatusResponse.self, from: jsonData)
-                print(orderResponse)
-                orderModel =  self.configOrderStatus(response: orderResponse)
+                var orderResponse = try JSONDecoder().decode(OrderTrackingStatusResponse.self, from: jsonData)
+                let orderStatus = orderResponse.orderDetails?.orderStatus
+                orderResponse.orderDetails?.orderStatus = statues ?? orderStatus
+                
+                let status = self.configOrderStatus(response: orderResponse)
+                self.orderStatus.send(status)
             } catch {
                 print("Error decoding JSON: \(error)")
             }
@@ -26,21 +31,24 @@ final class OrderTrackingUseCase {
     
     func configOrderStatus(response: OrderTrackingStatusResponse) -> OrderTrackingModel {
         guard let status = response.orderDetails?.orderStatus,
-                let value = OrderTrackingType(rawValue: status) else {
+              let value = OrderTrackingType(rawValue: status) else {
             return .init()
         }
         
-        
         switch value {
         case .orderProcessing, .pickupChanged:
-            return ProcessingOrderConfig(response: response).build()
+        return getProcessingOrderModel(response: response)
         case .waitingForTheRestaurant:
             return WaitingOrderConfig(response: response).build()
         case .orderAccepted:
             isShowToast = true
             return AcceptedOrderConfig(response: response).build()
-        case .inTheKitchen, .orderIsReadyForPickup, .orderHasBeenPickedUpPickup, .orderHasBeenPickedUpDelivery:
+        case .inTheKitchen, .orderHasBeenPickedUpDelivery:
             return InTheKitchenOrderConfig(response: response).build()
+        case .orderIsReadyForPickup:
+            return ReadyForPickupOrderConfig(response: response).build()
+        case .orderHasBeenPickedUpPickup:
+            return OrderHasBeenDeliveredConfig(response: response).build()
         case .orderIsOnTheWay:
             return OnTheWayOrderConfig(response: response).build()
         case .orderCancelled:
@@ -58,6 +66,21 @@ final class OrderTrackingUseCase {
         }
         
     }
+    
+    private func getProcessingOrderModel(response: OrderTrackingStatusResponse) -> OrderTrackingModel {
+        var processOrder = ProcessingOrderConfig(response: response)
+        processOrder.hideCancelButton = { [weak self] in
+            guard let self else {
+                return
+            }
+            var orderResponse = response
+            orderResponse.orderDetails?.showCancelButtonTimeout = true
+            orderResponse.orderDetails?.isCancelationAllowed = false
+            let status = self.configOrderStatus(response: orderResponse)
+            self.orderStatus.send(status)
+        }
+        return processOrder.build()
+    }
 
 }
 
@@ -65,7 +88,7 @@ let jsonString = """
 {
   "extTransactionId": "3530191483630",
   "orderDetails": {
-    "orderStatus": 0,
+    "orderStatus": 7,
     "title": "Wow, your order has arrived X min early. Enjoy! Ya Naguib",
     "orderDescription": "Hardee's should accept your order soon.",
     "orderNumber": "SMHD112020230000467215",
@@ -93,8 +116,8 @@ let jsonString = """
     "estimateTime": "20 Nov 2023 04:26 PM",
     "deliveryAdrress": "maama, Annan, Alan, amann, Sheikh Zayed Rd - Za'abeel - Dubai - United Arab Emirates, Al Kifaf",
     "orderTimeOut": 2,
-    "isCancelationAllowed": false,
-    "orderType": "DELIVERY",
+    "isCancelationAllowed": true,
+    "orderType": "PICK_UP",
     "determineStatus": false,
     "earnPoints": 120,
     "addressTitle": "Home",

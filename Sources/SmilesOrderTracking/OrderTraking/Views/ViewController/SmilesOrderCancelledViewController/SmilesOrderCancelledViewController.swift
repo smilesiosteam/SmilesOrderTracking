@@ -51,13 +51,13 @@ public class SmilesOrderCancelledViewController: UIViewController, UICollectionV
         self.rejectionReasons = cancelResponse.rejectionReasons ?? []
         panDismissView.addGestureRecognizer(UIPanGestureRecognizer(target: self, action: #selector(handleDismiss)))
         panDismissView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleTap)))
-        messageText.text = "Your order has been cancelled".localizedString
-        descriptionMessage.text = "Please let us know why you need to cancel your order".localizedString
+        messageText.text = OrderTrackingLocalization.yourOrderCancelled.text
+        descriptionMessage.text = OrderTrackingLocalization.whyCancel.text
         messageText.fontTextStyle = .smilesHeadline2
         descriptionMessage.fontTextStyle = .smilesBody2
         
-        primaryButton.setTitle("SubmitTitleSmall".localizedString, for: .normal)
-        secondaryButton.setTitle("GetSupport".localizedString, for: .normal)
+        primaryButton.setTitle(OrderTrackingLocalization.submit.text, for: .normal)
+        secondaryButton.setTitle(OrderTrackingLocalization.getSupport.text, for: .normal)
         primaryButton.fontTextStyle = .smilesHeadline4
         secondaryButton.fontTextStyle = .smilesHeadline4
         secondaryButton.layer.borderWidth = 2
@@ -210,7 +210,8 @@ extension SmilesOrderCancelledViewController: UICollectionViewDelegateFlowLayout
     
     public func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         setBtnUI(enabled: (collectionView.indexPathsForSelectedItems?.count ?? 0) > 0)
-        if ((rejectionReasons[safe: indexPath.row] ?? "").lowercased().contains("other")){
+        if ((rejectionReasons[safe: indexPath.row] ?? "").lowercased().contains("other")
+        || (rejectionReasons[safe: indexPath.row] ?? "").lowercased().contains("أخرى")){
             reasonsCollectionView.isHidden = true
             textViewContainer.isHidden = false
             UIView.animate(withDuration: 0.5) {

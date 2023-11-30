@@ -19,8 +19,8 @@ protocol OrderTrackingViewDelegate: AnyObject {
 }
 
 extension OrderTrackingViewController: OrderTrackingViewDelegate {
-    func presentCancelFlow(orderId: String) {
-        let vc = ConfirmationPopupViewController(popupData: ConfirmationPopupViewModelData(showCloseButton: false, message: "Cancel order?".localizedString, descriptionMessage: "CancelOrderDescription".localizedString, primaryButtonTitle: "Don't cancel".localizedString, secondaryButtonTitle: "Yes cancel".localizedString, primaryAction: {
+    func presentCancelFlow(orderId: Int) {
+        let vc = ConfirmationPopupViewController(popupData: ConfirmationPopupViewModelData(showCloseButton: false, message: OrderTrackingLocalization.wantCancelOrder.text, descriptionMessage: OrderTrackingLocalization.cancelOrderDescription.text, primaryButtonTitle: OrderTrackingLocalization.dontCancel.text, secondaryButtonTitle:OrderTrackingLocalization.yesCancel.text, primaryAction: {
             self.cancelOrderInput.send(.cancelOrder(ordeId: "\(orderId)", reason: nil))
         }, secondaryAction:{
             self.cancelOrderInput.send(.resumeOrder(ordeId: "\(orderId)"))

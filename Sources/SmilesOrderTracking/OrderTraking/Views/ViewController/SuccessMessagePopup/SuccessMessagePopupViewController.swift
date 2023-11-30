@@ -107,9 +107,9 @@ public class SuccessMessagePopupViewController: UIViewController {
         let vc = SuccessMessagePopupViewController(
             popupData: SuccessPopupViewModelData(
                 showCloseButton: true,
-                message: "Thank you for sending your feedback".localizedString,
-                descriptionMessage: "We’re always working on updating our system. Your feedback helps us to improve customer experience.".localizedString,
-                primaryButtonTitle: "Back to home".localizedString.capitalizingFirstLetter(),
+                message: OrderTrackingLocalization.thankyouForFeedback.text,
+                descriptionMessage: OrderTrackingLocalization.alwaysWrokingToImprove.text,
+                primaryButtonTitle: OrderTrackingLocalization.backToHome.text,
                 primaryAction: {
                     
                 }

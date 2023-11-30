@@ -121,7 +121,7 @@ let jsonString = """
 {
   "extTransactionId": "3530191483630",
   "orderDetails": {
-    "orderStatus": 7,
+    "orderStatus": 0,
     "title": "Wow, your order has arrived X min early. Enjoy! Ya Naguib",
     "orderDescription": "Hardee's should accept your order soon.",
     "orderNumber": "SMHD112020230000467215",

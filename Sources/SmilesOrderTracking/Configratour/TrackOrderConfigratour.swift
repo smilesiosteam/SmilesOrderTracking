@@ -20,9 +20,12 @@ public struct OrderTrackingDependance {
 
 public enum TrackOrderConfigurator {
     
-    public static func getOrderTrackingView(dependance: OrderTrackingDependance) -> UIViewController {
+    public static func getOrderTrackingView(dependance: OrderTrackingDependance, 
+                                            navigationFlow: @escaping (OrderTrackingNavigation)
+                                            -> Void) -> UIViewController {
         let useCase = OrderTrackingUseCase(orderId: dependance.orderId, orderNumber: dependance.orderNUmber)
         let viewModel = OrderTrackingViewModel(useCase: useCase)
+        viewModel.orderNavigation = navigationFlow
         let viewController = OrderTrackingViewController.create()
         viewController.viewModel = viewModel
         return viewController

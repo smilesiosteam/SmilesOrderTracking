@@ -46,7 +46,7 @@ final class OrderCancelledCollectionViewCell: UICollectionViewCell {
     
     // MARK: - Actions
     @IBAction private func orderDetailsButtonTapped(_ sender: UIButton) {
-        delegate?.didTappOrderDetails(orderId: viewModel.orderId)
+        delegate?.didTappOrderDetails(orderId: viewModel.orderId, restaurantId: viewModel.restaurantId)
     }
     
     @IBAction private func callRestaurantButtonTapped(_ sender: UIButton) {
@@ -63,7 +63,8 @@ final class OrderCancelledCollectionViewCell: UICollectionViewCell {
 // MARK: - ViewModel
 extension OrderCancelledCollectionViewCell {
     struct ViewModel {
-        var orderId: Int?
+        var orderId: String = ""
+        var restaurantId = ""
         var restaurantNumber: String?
     }
 }

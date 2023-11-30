@@ -123,7 +123,9 @@ final class OrderTrackingUseCase: OrderTrackingUseCaseProtocol {
             guard let self else {
                 return
             }
-            let status = self.configOrderStatus(response: response)
+            var x = response
+            x.orderDetails?.orderStatus = 1
+            let status = self.configOrderStatus(response: x)
             self.stateSubject.send(.success(model: status))
             let orderId = response.orderDetails?.orderId ?? 0
             self.stateSubject.send(.orderId(id: "\(orderId)"))

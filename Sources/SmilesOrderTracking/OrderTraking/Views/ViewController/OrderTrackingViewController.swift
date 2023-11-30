@@ -13,13 +13,13 @@ import GoogleMaps
 import SmilesLoader
 
 protocol OrderTrackingViewDelegate: AnyObject {
-    func presentCancelFlow(orderId: Int)
+    func presentCancelFlow(orderId: String)
     func presentRateFlow()
     func dismiss()
 }
 
 extension OrderTrackingViewController: OrderTrackingViewDelegate {
-    func presentCancelFlow(orderId: Int) {
+    func presentCancelFlow(orderId: String) {
         let vc = ConfirmationPopupViewController(popupData: ConfirmationPopupViewModelData(showCloseButton: false, message: "Cancel order?".localizedString, descriptionMessage: "CancelOrderDescription".localizedString, primaryButtonTitle: "Don't cancel".localizedString, secondaryButtonTitle: "Yes cancel".localizedString, primaryAction: {
             self.cancelOrderInput.send(.cancelOrder(ordeId: "\(orderId)", reason: nil))
         }, secondaryAction:{

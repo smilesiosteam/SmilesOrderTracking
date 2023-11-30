@@ -19,6 +19,8 @@ final class OrderTrackingViewModel {
         statusSubject.eraseToAnyPublisher()
     }
     
+    var orderNavigation: ((OrderTrackingNavigation) -> Void) = { _ in }
+    
     // MARK: - Init
     init(useCase: OrderTrackingUseCaseProtocol) {
         self.useCase = useCase

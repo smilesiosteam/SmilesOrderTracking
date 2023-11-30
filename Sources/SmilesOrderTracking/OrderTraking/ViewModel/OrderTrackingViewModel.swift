@@ -7,45 +7,60 @@
 
 import Foundation
 import Combine
+
 final class OrderTrackingViewModel {
     
     // MARK: - Properties
     private var cancellables = Set<AnyCancellable>()
-    private let useCase = OrderTrackingUseCase()
-//    var orderStatusModel = OrderTrackingModel()
-    var orderStatusSubject = PassthroughSubject<OrderTrackingModel, Never>()
-//     var firebaseDatabaseManager = FirebaseDatabaseManager()
-    @Published private(set) var isShowToast = false
-    init() {
-//        firebaseDatabaseManager.delegate = self
-//        configProcessingOrder()
-        
-       
-        useCase.$isOrderArrived.sink { [weak self] value in
-            self?.isShowToast = value
-        }.store(in: &cancellables)
-        bindOrderStatus()
+    private let useCase: OrderTrackingUseCaseProtocol
+    private var statusSubject = PassthroughSubject<State, Never>()
+    var orderId = ""
+    var orderStatusPublisher: AnyPublisher<State, Never> {
+        statusSubject.eraseToAnyPublisher()
     }
     
-    func fetchOrderStatus(status: Int? = nil) {
+    // MARK: - Init
+    init(useCase: OrderTrackingUseCaseProtocol) {
+        self.useCase = useCase
+       
+    }
+    
+    func fetchStatus(with status: Int?) {
+        bindUseCase()
         useCase.fetchOrderStates(with: status)
     }
     
-    private func bindOrderStatus() {
-        useCase.orderStatus.sink { result in
-            self.orderStatusSubject.send(result)
+    private func bindUseCase() {
+        statusSubject.send(.showLoader)
+        useCase.statePublisher.sink { [weak self] states in
+            guard let self else {
+                return
+            }
+            self.statusSubject.send(.hideLoader)
+            switch states {
+            case .showError(let message):
+                self.statusSubject.send(.showError(message: message))
+            case .showToastForArrivedOrder(let isShow):
+                self.statusSubject.send(.showToastForArrivedOrder(isShow: isShow))
+            case .showToastForNoLiveTracking(let isShow):
+                self.statusSubject.send(.showToastForNoLiveTracking(isShow: isShow))
+            case .success(let model):
+                self.statusSubject.send(.success(model: model))
+            case .orderId(let id):
+                self.orderId = id
+            }
         }
         .store(in: &cancellables)
     }
 }
 
-// MARK: - FirebaseDatabaseManagerDelegate
-//extension OrderTrackingViewModel: FirebaseDatabaseManagerDelegate {
-//    func orderStatusDidChange(with orderId: String, orderNumber: String, orderStatus: OrderTrackingType, comingFromFirebase: Bool) {
-//        // Todo: Call getOrderStatus api here
-//    }
-//    
-//    func liveLocationDidUpdate(with latitude: Double, longitude: Double) {
-//        // Todo: Update rider location on map
-//    }
-//}
+extension OrderTrackingViewModel {
+    enum State {
+        case showLoader
+        case hideLoader
+        case showError(message: String)
+        case showToastForArrivedOrder(isShow: Bool)
+        case showToastForNoLiveTracking(isShow: Bool)
+        case success(model: OrderTrackingModel)
+    }
+}

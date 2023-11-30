@@ -15,6 +15,7 @@ import SmilesLoader
 protocol OrderTrackingViewDelegate: AnyObject {
     func presentCancelFlow(orderId: Int)
     func presentRateFlow()
+    func dismiss()
 }
 
 extension OrderTrackingViewController: OrderTrackingViewDelegate {
@@ -35,6 +36,10 @@ extension OrderTrackingViewController: OrderTrackingViewDelegate {
         viewController.modalPresentationStyle = .overFullScreen
         self.present(viewController)
     }
+    
+    func dismiss() {
+        self.dismissMe()
+    }
 }
 
 public final class OrderTrackingViewController: UIViewController, Toastable {
@@ -43,9 +48,9 @@ public final class OrderTrackingViewController: UIViewController, Toastable {
     @IBOutlet private weak var collectionView: UICollectionView!
     
     private var cancellables: Set<AnyCancellable> = []
-    private let viewModel = OrderTrackingViewModel()
     private let cancelOrderviewModel = SmilesOrderCancelledViewModel()
     private let cancelOrderInput: PassthroughSubject<SmilesOrderCancelledViewModel.Input, Never> = .init()
+    var viewModel: OrderTrackingViewModel!
     private lazy var dataSource = OrderTrackingDataSource(viewModel: viewModel)
     
     // MARK: - Life Cycle
@@ -53,57 +58,12 @@ public final class OrderTrackingViewController: UIViewController, Toastable {
         super.viewDidLoad()
         configCollectionView()
         dataSource.delegate = self
+        bindCancelFlow()
+        bindStatus()
+        viewModel.fetchStatus(with: nil)
     }
     
-    public override func viewIsAppearing(_ animated: Bool) {
-        super.viewIsAppearing(animated)
-        bindToast()
-        bindOrderStatus()
-        viewModel.fetchOrderStatus()
-        
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-            self.presentToastForNoTracking()
-        }
-    }
-  
-    private func presentToastForNoTracking() {
-        let model = ToastModel()
-        let text = OrderTrackingLocalization.liveTrackingAvailable.text
-        let dismiss = OrderTrackingLocalization.dismiss.text
-        
-        let attributedString = NSMutableAttributedString(string: "\(text) \(dismiss)")
-
-        let textRange = NSRange(location: 0, length: text.count)
-        
-        let textFont = SmilesFontsManager.defaultAppFont.getFont(style: .medium, size: 14)
-        attributedString.addAttribute(.font, value: textFont, range: textRange)
-
-        let dismissRange = NSRange(location: text.count + 1, length: dismiss.count)
-        let dismissFont = SmilesFontsManager.defaultAppFont.getFont(style: .medium, size: 16)
-        attributedString.addAttribute(.font, value: dismissFont, range: dismissRange)
-
-        model.attributedString = attributedString
-        
-        let toastView = showToast(model: model)
-        model.viewDidTapped = {
-            toastView.removeFromSuperview()
-        }
-       
-    }
-    private func bindToast() {
-        viewModel.$isShowToast.sink { [weak self] value in
-            if value  {
-                let icon = UIImage(resource: .sucess)
-                let model = ToastModel()
-                model.title = OrderTrackingLocalization.orderAccepted.text
-                model.imageIcon = icon
-                DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                    self?.showToast(model: model)
-                }
-            }
-        }.store(in: &cancellables)
-        
-        
+    private func bindCancelFlow() {
         cancelOrderviewModel.transform(input: cancelOrderInput.eraseToAnyPublisher())
             .sink { [weak self] event in
                 SmilesLoader.dismiss()
@@ -151,28 +111,6 @@ public final class OrderTrackingViewController: UIViewController, Toastable {
         self.present(vc)
     }
 
-    private func bindOrderStatus() {
-        viewModel.orderStatusSubject.sink { [weak self] status in
-            
-            self?.play()
-                self?.dataSource.updateState(with: status)
-            self?.play()
-                self?.collectionView.reloadData()
-            
-            
-        }.store(in: &cancellables)
-    }
-    func play() {
-        for cell in collectionView.visibleCells {
-            cell.layer.removeAllAnimations()
-        }
-        self.view.subviews.forEach({$0.layer.removeAllAnimations()})
-            self.view.layer.removeAllAnimations()
-            self.view.layoutIfNeeded()
-        
-    }
-    
-
     // MARK: - Functions
     private func configCollectionView() {
         [RestaurantCollectionViewCell.self,
@@ -206,6 +144,68 @@ public final class OrderTrackingViewController: UIViewController, Toastable {
         collectionView.reloadData()
         collectionView.contentInsetAdjustmentBehavior = .never
     }
+    
+    private func bindStatus() {
+        viewModel.orderStatusPublisher.sink { [weak self] states in
+            guard let self else {
+                return
+            }
+            switch states {
+            case .showLoader:
+                SmilesLoader.show(isClearBackground: false)
+            case .hideLoader:
+                SmilesLoader.dismiss()
+            case .showError(let message):
+                self.showAlertWithOkayOnly(message: message)
+            case .showToastForArrivedOrder(let isShow):
+                if isShow {
+                    self.showToastForOrderArrived()
+                }
+            case .showToastForNoLiveTracking(let isShow):
+                if isShow {
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                        self.presentToastForNoTracking()
+                    }
+                }
+            case .success(let model):
+                self.dataSource.updateState(with: model)
+                self.collectionView.reloadData()
+            }
+        }.store(in: &cancellables)
+    }
+    private func showToastForOrderArrived() {
+        let icon = UIImage(resource: .sucess)
+        let model = ToastModel()
+        model.title = OrderTrackingLocalization.orderAccepted.text
+        model.imageIcon = icon
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+            self.showToast(model: model)
+        }
+    }
+    
+    private func presentToastForNoTracking() {
+        let model = ToastModel()
+        let text = OrderTrackingLocalization.liveTrackingAvailable.text
+        let dismiss = OrderTrackingLocalization.dismiss.text
+        
+        let attributedString = NSMutableAttributedString(string: "\(text) \(dismiss)")
+        let textRange = NSRange(location: 0, length: text.count)
+        
+        let textFont = SmilesFontsManager.defaultAppFont.getFont(style: .medium, size: 14)
+        attributedString.addAttribute(.font, value: textFont, range: textRange)
+
+        let dismissRange = NSRange(location: text.count + 1, length: dismiss.count)
+        let dismissFont = SmilesFontsManager.defaultAppFont.getFont(style: .medium, size: 16)
+        attributedString.addAttribute(.font, value: dismissFont, range: dismissRange)
+
+        model.attributedString = attributedString
+        
+        let toastView = showToast(model: model)
+        model.viewDidTapped = {
+            toastView.removeFromSuperview()
+        }
+    }
+    
 }
 
 // MARK: - Create

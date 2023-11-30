@@ -122,7 +122,7 @@ public class ConfirmationPopupViewController: UIViewController {
                     SmilesLoader.dismiss()
                 } receiveValue: {response in
                     SmilesLoader.dismiss()
-                    let feedbackVC = SmilesOrderCancelledViewController(orderId: orderId, cancelResponse: response, onSubmitSuccess: {
+                    let feedbackVC = SmilesOrderCancelledViewController(orderId: orderId, orderNumber: "", cancelResponse: response, onSubmitSuccess: {
                         SuccessMessagePopupViewController.showFeedbackSuccessViewController(from: viewController)
                     }, supportAction: getSupport)
                     viewController.present(feedbackVC, animated: false)

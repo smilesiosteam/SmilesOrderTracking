@@ -113,7 +113,7 @@
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ic2-q8-1F5">
                                     <rect key="frame" x="0.0" y="0.0" width="361" height="90"/>
                                     <subviews>
-                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="success_star" translatesAutoresizingMaskIntoConstraints="NO" id="3l3-X1-Tt6">
+                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="order_cancelled" translatesAutoresizingMaskIntoConstraints="NO" id="3l3-X1-Tt6">
                                             <rect key="frame" x="135.66666666666666" y="0.0" width="90" height="90"/>
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             <constraints>
@@ -256,7 +256,7 @@
     </objects>
     <resources>
         <image name="close_icon_purple" width="32" height="31"/>
-        <image name="success_star" width="90" height="90"/>
+        <image name="order_cancelled" width="90" height="90"/>
         <systemColor name="labelColor">
             <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>

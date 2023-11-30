@@ -8,29 +8,29 @@
 import Foundation
 
 enum RatingStar {
-    case count(Double)
+    case data(Rating?, Double, String)
     
-    private func getRatingState(for stars: Double) -> RatingState {
-        switch stars {
-        case 1.0:
-            return .init(count: 1, text: "Terrible", icon: .ratingStarFilledRedIcon)
-        case 2.0:
-            return .init(count: 2, text: "Bad", icon: .ratingStarFilledRedIcon)
-        case 3.0:
-            return .init(count: 3, text: "Ok", icon: .ratingStarFilledIcon)
-        case 4.0:
-            return .init(count: 4, text: "Good", icon: .ratingStarFilledGreenIcon)
-        case 5.0:
-            return .init(count: 5, text: "Great", icon: .ratingStarFilledGreenIcon)
+    private func getRatingState(for rating: Rating?, star: Double, ratingType: String) -> OrderRatingModel {
+        switch star {
+        case 1:
+            return .init(ratingType: ratingType, ratingFeedback: rating?.ratingFeedback, userRating: 1)
+        case 2:
+            return .init(ratingType: ratingType, ratingFeedback: rating?.ratingFeedback, userRating: 2)
+        case 3:
+            return .init(ratingType: ratingType, ratingFeedback: rating?.ratingFeedback, userRating: 3)
+        case 4:
+            return .init(ratingType: ratingType, ratingFeedback: rating?.ratingFeedback, userRating: 4)
+        case 5:
+            return .init(ratingType: ratingType, ratingFeedback: rating?.ratingFeedback, userRating: 5)
         default:
-            return .init(count: 0, text: "", icon: .ratingStarUnfilledLightIcon)
+            return .init(ratingType: "", ratingFeedback: "", userRating: 0)
         }
     }
     
-    var state: RatingState {
+    var state: OrderRatingModel {
         switch self {
-        case .count(let stars):
-            return getRatingState(for: stars)
+        case .data(let rating, let star, let ratingType):
+            return getRatingState(for: rating, star: star, ratingType: ratingType)
         }
     }
 }

@@ -64,7 +64,7 @@ extension ItemRatingDataSource: UICollectionViewDataSource {
         case ItemRatingSection.itemRatingTitle.section:
             return 1
         case ItemRatingSection.itemRating.section:
-            return 3
+            return viewModel.itemRatingUIModel.orderItems.count
         default:
             return 0
         }
@@ -74,17 +74,27 @@ extension ItemRatingDataSource: UICollectionViewDataSource {
         switch indexPath.section {
         case ItemRatingSection.ratingSuccess.section:
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: String(describing: FoodRatingSuccessCollectionViewCell.self), for: indexPath) as? FoodRatingSuccessCollectionViewCell else { return UICollectionViewCell() }
-            let viewModel = FoodRatingSuccessCollectionViewCell.ViewModel(thankYouText: "Thank you for your rating", pointsText: "You just received 50 Smiles points!", ratingSuccessDescription: "Your review will help other users choose restuarants and help the restuarant maintain quality that is as per the best standards.")
+            let ratingOrderResult = viewModel.itemRatingUIModel.ratingOrderResponse.ratingOrderResult
+            let viewModel = FoodRatingSuccessCollectionViewCell.ViewModel(thankYouText: viewModel.popupTitle, pointsText: ratingOrderResult?.accrualTitle, ratingSuccessDescription: ratingOrderResult?.description)
             cell.updateCell(with: viewModel)
             return cell
         case ItemRatingSection.itemRatingTitle.section:
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: String(describing: ItemRatingTitleCollectionViewCell.self), for: indexPath) as? ItemRatingTitleCollectionViewCell else { return UICollectionViewCell() }
-            cell.updateCell(with: "Get 25 more Smiles points by rating each of your food items!")
+            let ratingOrderResult = viewModel.itemRatingUIModel.ratingOrderResponse.ratingOrderResult
+            cell.updateCell(with: ratingOrderResult?.accrualDescription)
             return cell
         case ItemRatingSection.itemRating.section:
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: String(describing: ItemRatingCollectionViewCell.self), for: indexPath) as? ItemRatingCollectionViewCell else { return UICollectionViewCell() }
-//            let itemToRate = viewModel.itemsToRate[indexPath.item]
-            let viewModel = ItemRatingCollectionViewCell.ViewModel(itemName: "itemToRate.itemName", stars: 3.0)
+            let itemToRate = viewModel.itemRatingUIModel.orderItems[indexPath.item]
+            var viewModel = ItemRatingCollectionViewCell.ViewModel(itemName: itemToRate.itemName, itemId: itemToRate.itemID, rating: itemToRate.userItemRating ?? 0.0, ratingArray: itemToRate.rating, itemImage: itemToRate.itemImage)
+            
+            // TODO: Check flow of this check against old implementation in ThankyouForRatingPresenter
+            if itemToRate.userItemRating ?? 0.0 > 0 {
+                viewModel.enableStarsInteraction = false
+                self.viewModel.doneActionDismiss = true
+            } else {
+                self.viewModel.doneActionDismiss = false
+            }
             cell.updateCell(with: viewModel, delegate: self)
             return cell
         default:
@@ -95,15 +105,15 @@ extension ItemRatingDataSource: UICollectionViewDataSource {
 
 // MARK: - ItemRatingCellActionDelegate
 extension ItemRatingDataSource: ItemRatingCellActionDelegate {
-    func ratingDidSelect(of item: String, with stars: Double) {        
-//        viewModel.itemsToRate = viewModel.itemsToRate.map({
-//            var itemToUpdate = $0
-//            if itemToUpdate.itemName == item {
-//                itemToUpdate.rating = stars
-//            }
-//            
-//            return itemToUpdate
-//        })
-        delegate?.collectionViewShouldReload()
+    func didTapRating(with ratingNumber: Int, ratingType: String?) {
+        
+    }
+    
+    func updateItemData(with itemRating: ItemRatings, orderRating: OrderRatingModel, ratingType: String?) {
+        if let index = viewModel.itemRatings.firstIndex(where: { $0.itemId == itemRating.itemId }) {
+            viewModel.itemRatings[index] = itemRating
+        } else {
+            viewModel.itemRatings.append(itemRating)
+        }
     }
 }

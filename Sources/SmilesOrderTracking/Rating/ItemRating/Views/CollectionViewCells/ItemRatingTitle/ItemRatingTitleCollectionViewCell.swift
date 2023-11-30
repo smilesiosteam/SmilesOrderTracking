@@ -24,7 +24,7 @@ final class ItemRatingTitleCollectionViewCell: UICollectionViewCell {
     }
     
     // MARK: - Methods
-    func updateCell(with message: String) {
+    func updateCell(with message: String?) {
         titleLabel.text = message
     }
 }

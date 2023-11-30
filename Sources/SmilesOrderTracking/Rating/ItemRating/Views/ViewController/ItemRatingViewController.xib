@@ -14,6 +14,7 @@
                 <outlet property="collectionView" destination="EcA-il-UJb" id="6Hk-S1-Ups"/>
                 <outlet property="containerView" destination="m1F-Rm-ul8" id="0gE-XW-iWL"/>
                 <outlet property="doneButton" destination="PRP-zi-0NN" id="KVp-lH-Vsq"/>
+                <outlet property="panGesture" destination="mFA-Nk-A0e" id="mF7-D6-Eip"/>
                 <outlet property="view" destination="e2s-yo-7GF" id="ASG-1u-BtK"/>
             </connections>
         </placeholder>
@@ -64,13 +65,18 @@
             </subviews>
             <viewLayoutGuide key="safeArea" id="jY4-iz-4Cz"/>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <gestureRecognizers/>
             <constraints>
                 <constraint firstAttribute="bottom" secondItem="m1F-Rm-ul8" secondAttribute="bottom" id="Erx-mm-WY6"/>
                 <constraint firstItem="m1F-Rm-ul8" firstAttribute="trailing" secondItem="jY4-iz-4Cz" secondAttribute="trailing" id="JPa-6S-ZNK"/>
                 <constraint firstItem="m1F-Rm-ul8" firstAttribute="leading" secondItem="jY4-iz-4Cz" secondAttribute="leading" id="Y0i-EC-qym"/>
             </constraints>
+            <connections>
+                <outletCollection property="gestureRecognizers" destination="mFA-Nk-A0e" appends="YES" id="t68-Jq-3qN"/>
+            </connections>
             <point key="canvasLocation" x="151.90839694656489" y="11.971830985915494"/>
         </view>
+        <panGestureRecognizer minimumNumberOfTouches="1" id="mFA-Nk-A0e"/>
     </objects>
     <resources>
         <systemColor name="systemBackgroundColor">

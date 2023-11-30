@@ -12,6 +12,7 @@ struct Rating: Codable {
     let ratingFeedback: String?
     let ratingColor: String?
     let ratingImage: String?
+    var count: Int?
 
     enum CodingKeys: String, CodingKey {
         case id

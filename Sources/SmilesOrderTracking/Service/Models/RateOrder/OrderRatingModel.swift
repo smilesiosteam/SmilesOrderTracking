@@ -21,6 +21,12 @@ final class OrderRatingModel: Codable {
     }
     
     // MARK: - Lifecycle
+    init(ratingType: String? = nil, ratingFeedback: String? = nil, userRating: Double? = nil) {
+        self.ratingType = ratingType
+        self.ratingFeedback = ratingFeedback
+        self.userRating = userRating
+    }
+    
     func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encodeIfPresent(self.ratingType, forKey: .ratingType)

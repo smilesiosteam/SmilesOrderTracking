@@ -21,19 +21,19 @@ final class OrderTrackingUseCase {
     // we passed the status as parameter to navigate to the OrderHasBeenDeliveredConfig status
     func fetchOrderStates(with statues: Int? = nil) {
         
-        loadOrderStatus()
-//        if let jsonData = jsonString.data(using: .utf8) {
-//            do {
-//                var orderResponse = try JSONDecoder().decode(OrderTrackingStatusResponse.self, from: jsonData)
-//                let orderStatus = orderResponse.orderDetails?.orderStatus
-//                orderResponse.orderDetails?.orderStatus = statues ?? orderStatus
-//                
-//                let status = self.configOrderStatus(response: orderResponse)
-//                self.orderStatus.send(status)
-//            } catch {
-//                print("Error decoding JSON: \(error)")
-//            }
-//        }
+//        loadOrderStatus()
+        if let jsonData = jsonString.data(using: .utf8) {
+            do {
+                var orderResponse = try JSONDecoder().decode(OrderTrackingStatusResponse.self, from: jsonData)
+                let orderStatus = orderResponse.orderDetails?.orderStatus
+                orderResponse.orderDetails?.orderStatus = statues ?? orderStatus
+                
+                let status = self.configOrderStatus(response: orderResponse)
+                self.orderStatus.send(status)
+            } catch {
+                print("Error decoding JSON: \(error)")
+            }
+        }
     }
     
     func configOrderStatus(response: OrderTrackingStatusResponse) -> OrderTrackingModel {
@@ -121,7 +121,7 @@ let jsonString = """
 {
   "extTransactionId": "3530191483630",
   "orderDetails": {
-    "orderStatus": 0,
+    "orderStatus": 7,
     "title": "Wow, your order has arrived X min early. Enjoy! Ya Naguib",
     "orderDescription": "Hardee's should accept your order soon.",
     "orderNumber": "SMHD112020230000467215",

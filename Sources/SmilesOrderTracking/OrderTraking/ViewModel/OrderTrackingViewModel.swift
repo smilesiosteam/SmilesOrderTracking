@@ -21,7 +21,7 @@ final class OrderTrackingViewModel {
 //        configProcessingOrder()
         
        
-        useCase.$isShowToast.sink { [weak self] value in
+        useCase.$isOrderArrived.sink { [weak self] value in
             self?.isShowToast = value
         }.store(in: &cancellables)
         bindOrderStatus()

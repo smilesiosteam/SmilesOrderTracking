@@ -59,7 +59,7 @@ public final class OrderTrackingViewController: UIViewController, Toastable {
         super.viewIsAppearing(animated)
         bindToast()
         bindOrderStatus()
-//        viewModel.fetchOrderStatus()
+        viewModel.fetchOrderStatus()
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
             self.presentToastForNoTracking()

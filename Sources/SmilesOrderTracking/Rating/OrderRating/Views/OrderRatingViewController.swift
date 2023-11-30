@@ -87,12 +87,16 @@ final public class OrderRatingViewController: UIViewController {
     // MARK: - Properties
     var viewModel: OrderRatingViewModel?
     private var cancellables = Set<AnyCancellable>()
+    private var ratingStarsData: [Rating]?
+    private var selectedRating: OrderRatingModel?
+    private var getOrderRatingResponse: GetOrderRatingResponse?
+    private var orderItems: [OrderItemDetail]?
     
     // MARK: - Lifecycle
     public override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.backgroundColor =  UIColor.black.withAlphaComponent(0.2) //.appRevampFilterTextColor.withAlphaComponent(0.6)
+        view.backgroundColor = .appRevampFilterTextColor.withAlphaComponent(0.6)
         submitButtonState(enabled: false)
         updatePopupState()
         configureUI()
@@ -105,7 +109,9 @@ final public class OrderRatingViewController: UIViewController {
     
     // MARK: - Actions
     @IBAction private func submitButtonTapped(_ sender: UIButton) {
-        viewModel?.submitRating()
+        if let selectedRating {
+            viewModel?.submitRating(with: selectedRating)
+        }
     }
     
     @IBAction private func getSupportButtonTapped(_ sender: UIButton) {
@@ -147,10 +153,7 @@ final public class OrderRatingViewController: UIViewController {
     private func configureStarsState() {
         starsView.didFinishTouchingCosmos = { [weak self] stars in
             guard let self else { return }
-            let ratingState = RatingStar.count(stars).state
-            self.starsView.settings.filledImage = UIImage(resource: ratingState.icon)
-            self.starsTextLabel.text = ratingState.text
-            self.submitButtonState(enabled: true)
+            self.setStarsState(with: stars)
         }
     }
     
@@ -170,15 +173,22 @@ final public class OrderRatingViewController: UIViewController {
     }
     
     private func bindViewModel() {
+        viewModel?.$getOrderRatingResponse.sink { [weak self] value in
+            guard let self else { return }
+            self.getOrderRatingResponse = value
+        }.store(in: &cancellables)
+        
         viewModel?.$rateOrderResponse.sink { [weak self] value in
             guard let self, let value else { return }
+            
             dismiss {
-                let itemRatingUIModel = ItemRatingUIModel(itemWiseRatingEnabled: value.itemLevelRatingEnable ?? false, isAccrualPointsAllowed: value.isAccrualPointsAllowed ?? false, orderItems: [], ratingOrderResponse: value)
-                let itemRatingViewModel = ItemRatingViewModel(itemRatingUIModel: itemRatingUIModel)
-                let itemRatingViewController = ItemRatingViewController.create(with: itemRatingViewModel)
-                itemRatingViewController.modalPresentationStyle = .overFullScreen
-                
-                self.navigationController?.present(itemRatingViewController)
+                if let itemWiseRatingEnabled = value.itemLevelRatingEnable {
+                    if itemWiseRatingEnabled {
+                        self.openItemRatingViewController(with: value)
+                    } else {
+                        self.openFeedbackSuccessViewController(with: value)
+                    }
+                }
             }
         }.store(in: &cancellables)
         
@@ -200,6 +210,40 @@ final public class OrderRatingViewController: UIViewController {
                 self.ratingDescriptionLabel.isHidden = true
             }
         }.store(in: &cancellables)
+        
+        viewModel?.$orderItems.sink { [weak self] value in
+            guard let self else { return }
+            self.orderItems = value
+        }.store(in: &cancellables)
+    }
+    
+    private func setStarsState(with rating: Double) {
+        let starsData = ratingStarsData?[safe: Int(rating) - 1]
+        let orderRatingModel = RatingStar.data(starsData, rating, getOrderRatingResponse?.orderRating?[safe: 0]?.ratingType ?? "").state
+        self.starsView.settings.filledImage = UIImage(url: URL(string: starsData?.ratingImage ?? ""))
+        self.starsTextLabel.text = starsData?.ratingFeedback
+        self.selectedRating = orderRatingModel
+        self.submitButtonState(enabled: true)
+    }
+    
+    private func openItemRatingViewController(with model: RateOrderResponse) {
+        guard let viewModel = self.viewModel else { return }
+        let itemRatingUIModel = ItemRatingUIModel(itemWiseRatingEnabled: model.itemLevelRatingEnable ?? false, isAccrualPointsAllowed: model.isAccrualPointsAllowed ?? false, orderItems: self.orderItems ?? [], ratingOrderResponse: model)
+        let itemRatingViewModel = ItemRatingViewModel(itemRatingUIModel: itemRatingUIModel, serviceHandler: viewModel.serviceHandler)
+        let itemRatingViewController = ItemRatingViewController.create(with: itemRatingViewModel)
+        itemRatingViewController.modalPresentationStyle = .overFullScreen
+        
+        self.present(itemRatingViewController)
+    }
+    
+    private func openFeedbackSuccessViewController(with model: RateOrderResponse) {
+        let ratingOrderResult = model.ratingOrderResult
+        let feedBackSuccessUIModel = FeedbackSuccessUIModel(popupTitle: ratingOrderResult?.title ?? "", description: ratingOrderResult?.description ?? "", boldText: ratingOrderResult?.accrualTitle ?? "")
+        let feedBackSuccessViewModel = FeedbackSuccessViewModel(feedBackSuccessUIModel: feedBackSuccessUIModel)
+        let feedBackSuccessViewController = FeedbackSuccessViewController.create(with: feedBackSuccessViewModel)
+        feedBackSuccessViewController.modalPresentationStyle = .overFullScreen
+        
+        self.present(feedBackSuccessViewController)
     }
 }
 

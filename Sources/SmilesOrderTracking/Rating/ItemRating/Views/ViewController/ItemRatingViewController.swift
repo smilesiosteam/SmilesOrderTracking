@@ -8,16 +8,17 @@
 import UIKit
 import SmilesUtilities
 import SmilesFontsManager
+import Combine
 
 final public class ItemRatingViewController: UIViewController {
     // MARK: - Outlets
-    @IBOutlet weak var containerView: UIView! {
+    @IBOutlet private weak var containerView: UIView! {
         didSet {
             containerView.addMaskedCorner(withMaskedCorner: [.layerMinXMinYCorner, .layerMaxXMinYCorner], cornerRadius: 12.0)
         }
     }
-    @IBOutlet weak var collectionView: UICollectionView!
-    @IBOutlet weak var doneButton: UIButton! {
+    @IBOutlet private weak var collectionView: UICollectionView!
+    @IBOutlet private weak var doneButton: UIButton! {
         didSet {
             doneButton.addMaskedCorner(withMaskedCorner: [.layerMinXMinYCorner, .layerMaxXMaxYCorner, .layerMaxXMinYCorner, .layerMinXMaxYCorner], cornerRadius: 12.0)
             doneButton.setTitle(OrderTrackingLocalization.done.text, for: .normal)
@@ -26,10 +27,12 @@ final public class ItemRatingViewController: UIViewController {
             doneButton.fontTextStyle = .smilesTitle1
         }
     }
+    @IBOutlet private weak var panGesture: UIPanGestureRecognizer!
     
     // MARK: - Properties
     var viewModel: ItemRatingViewModel?
     var dataSource: ItemRatingDataSource?
+    private var cancellables = Set<AnyCancellable>()
     
     // MARK: - Lifecycle
     public override func viewDidLoad() {
@@ -41,11 +44,18 @@ final public class ItemRatingViewController: UIViewController {
         }
         dataSource?.delegate = self
         setupCollectionView()
+        bindViewModel()
+        setupPanGesture()
     }
     
     // MARK: - Actions
     @IBAction private func doneButtonTapped(_ sender: UIButton) {
-        
+        guard let viewModel else { return }
+        if viewModel.itemWiseRating && !viewModel.doneActionDismiss {
+            viewModel.submitRating()
+        } else {
+            dismiss()
+        }
     }
     
     // MARK: - Methods
@@ -62,6 +72,37 @@ final public class ItemRatingViewController: UIViewController {
         collectionView.dataSource = dataSource
         if let dataSource {
             collectionView.collectionViewLayout = dataSource.createCollectionViewLayout()
+        }
+    }
+    
+    private func bindViewModel() {
+        viewModel?.$rateOrderResponse.sink { [weak self] value in
+            guard let self else { return }
+            
+            dismiss {
+                let ratingOrderResult = value?.ratingOrderResult
+                let feedBackSuccessUIModel = FeedbackSuccessUIModel(popupTitle: ratingOrderResult?.title ?? "", description: ratingOrderResult?.description ?? "", boldText: ratingOrderResult?.accrualTitle ?? "")
+                let feedBackSuccessViewModel = FeedbackSuccessViewModel(feedBackSuccessUIModel: feedBackSuccessUIModel)
+                let feedBackSuccessViewController = FeedbackSuccessViewController.create(with: feedBackSuccessViewModel)
+                feedBackSuccessViewController.modalPresentationStyle = .overFullScreen
+                
+                self.present(feedBackSuccessViewController)
+            }
+        }.store(in: &cancellables)
+    }
+    
+    private func setupPanGesture() {
+        panGesture.addTarget(self, action: #selector(handlePanGesture))
+        panGesture.delaysTouchesBegan = false
+        panGesture.delaysTouchesEnded = false
+    }
+    
+    @objc private func handlePanGesture(gesture: UIPanGestureRecognizer) {
+        let translation = gesture.translation(in: view)
+        
+        let isDraggingDown = translation.y > 50
+        if isDraggingDown {
+            dismiss()
         }
     }
 }

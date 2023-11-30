@@ -17,6 +17,7 @@
                 <outlet property="containerView" destination="BD9-wc-ayT" id="hNF-UI-70g"/>
                 <outlet property="feedbackDescriptionLabel" destination="G88-hb-RmX" id="1md-Vj-icJ"/>
                 <outlet property="okayButton" destination="ecf-qq-8qx" id="ugc-oq-qTW"/>
+                <outlet property="panGesture" destination="nRv-iX-lUi" id="cMM-B1-ktk"/>
                 <outlet property="thankYouLabel" destination="aJT-DX-rDl" id="0iV-6X-jaP"/>
                 <outlet property="view" destination="CKq-N9-GmF" id="zj9-V5-7fj"/>
             </connections>
@@ -75,9 +76,6 @@
                                     </connections>
                                 </button>
                             </subviews>
-                            <constraints>
-                                <constraint firstAttribute="bottom" secondItem="ecf-qq-8qx" secondAttribute="bottom" constant="16" id="jjX-xS-NJA"/>
-                            </constraints>
                         </stackView>
                     </subviews>
                     <color key="backgroundColor" systemColor="systemBackgroundColor"/>
@@ -90,6 +88,7 @@
             </subviews>
             <viewLayoutGuide key="safeArea" id="8Gq-SE-fTr"/>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <gestureRecognizers/>
             <constraints>
                 <constraint firstItem="8Gq-SE-fTr" firstAttribute="trailing" secondItem="BD9-wc-ayT" secondAttribute="trailing" id="90i-mm-soH"/>
                 <constraint firstAttribute="bottom" secondItem="BD9-wc-ayT" secondAttribute="bottom" id="9aP-zB-qpI"/>
@@ -97,8 +96,12 @@
                 <constraint firstItem="8Gq-SE-fTr" firstAttribute="bottom" secondItem="BkA-O2-Kxo" secondAttribute="bottom" id="YfP-8A-TRL"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <connections>
+                <outletCollection property="gestureRecognizers" destination="nRv-iX-lUi" appends="YES" id="Blt-CJ-LJX"/>
+            </connections>
             <point key="canvasLocation" x="255.72519083969465" y="66.901408450704224"/>
         </view>
+        <panGestureRecognizer minimumNumberOfTouches="1" id="nRv-iX-lUi"/>
     </objects>
     <resources>
         <systemColor name="systemBackgroundColor">

@@ -8,6 +8,7 @@
 import Foundation
 import SmilesUtilities
 import Combine
+import SmilesLoader
 
 final class OrderRatingViewModel {
     private var cancellables = Set<AnyCancellable>()
@@ -15,12 +16,13 @@ final class OrderRatingViewModel {
     @Published private(set) var popupTitle: String?
     @Published private(set) var ratingTitle: String?
     @Published private(set) var ratingDescription: String?
-    private var serviceHandler: OrderTrackingServiceHandler
+    var serviceHandler: OrderTrackingServiceHandler
     
     @Published private(set) var getOrderRatingResponse: GetOrderRatingResponse?
     @Published private(set) var rateOrderResponse: RateOrderResponse?
     @Published private(set) var ratingStarsData: [Rating]?
-    private(set) var orderItems: [OrderItemDetail]?
+    @Published private(set) var orderItems: [OrderItemDetail]?
+    @Published private(set) var shouldDismiss = false
     
     init(orderRatingUIModel: OrderRatingUIModel, serviceHandler: OrderTrackingServiceHandler) {
         self.orderRatingUIModel = orderRatingUIModel
@@ -28,8 +30,10 @@ final class OrderRatingViewModel {
     }
     
     func getOrderRating() {
+        SmilesLoader.show()
         serviceHandler.getOrderRating(ratingType: orderRatingUIModel.ratingType.asStringOrEmpty(), contentType: orderRatingUIModel.contentType.asStringOrEmpty(), isLiveTracking: orderRatingUIModel.isLiveTracking ?? false, orderId: orderRatingUIModel.orderId.asStringOrEmpty())
             .sink { completion in
+                SmilesLoader.dismiss()
                 switch completion {
                 case .failure(let error):
                     print(error)
@@ -41,13 +45,16 @@ final class OrderRatingViewModel {
                 self.getOrderRatingResponse = response
                 self.orderItems = response.orderItemDetails
                 self.createPopupUI(with: response)
+                SmilesLoader.dismiss()
             }
         .store(in: &cancellables)
     }
     
-    func submitRating() {
-        serviceHandler.submitOrderRating(orderNumber: getOrderRatingResponse?.orderDetails?.orderNumber ?? "", orderId: orderRatingUIModel.orderId ?? "", restaurantName: getOrderRatingResponse?.orderDetails?.restaurantName ?? "", itemRatings: nil, orderRating: [], isAccrualPointsAllowed: getOrderRatingResponse?.isAccrualPointsAllowed ?? false, itemLevelRatingEnabled: getOrderRatingResponse?.itemLevelRatingEnabled ?? false, restaurantId: getOrderRatingResponse?.orderDetails?.restaurantID ?? "")
+    func submitRating(with rating: OrderRatingModel) {
+        SmilesLoader.show()
+        serviceHandler.submitOrderRating(orderNumber: getOrderRatingResponse?.orderDetails?.orderNumber ?? "", orderId: orderRatingUIModel.orderId ?? "", restaurantName: getOrderRatingResponse?.orderDetails?.restaurantName ?? "", itemRatings: nil, orderRating: [rating], isAccrualPointsAllowed: getOrderRatingResponse?.isAccrualPointsAllowed ?? false, itemLevelRatingEnabled: getOrderRatingResponse?.itemLevelRatingEnabled ?? false, restaurantId: getOrderRatingResponse?.orderDetails?.restaurantID ?? "")
             .sink { completion in
+                SmilesLoader.dismiss()
                 switch completion {
                 case .failure(let error):
                     print(error)
@@ -57,6 +64,7 @@ final class OrderRatingViewModel {
             } receiveValue: { [weak self] response in
                 guard let self else { return }
                 self.rateOrderResponse = response
+                SmilesLoader.dismiss()
             }
         .store(in: &cancellables)
     }
@@ -83,17 +91,4 @@ final class OrderRatingViewModel {
             }
         }
     }
-    
-//    mutating private func createPopupUI() {
-//        switch orderRatingUIModel.popupType {
-//        case .rider:
-//            popupTitle = OrderTrackingLocalization.rateYourDeliveryExperience.text
-//            ratingTitle = String(format: OrderTrackingLocalization.howWouldYouRateRiderDelivery.text, orderRatingUIModel.riderName.asStringOrEmpty())
-//            ratingDescription = String(format: OrderTrackingLocalization.riderDeliveredYourOrderInMins.text, orderRatingUIModel.riderName.asStringOrEmpty(), orderRatingUIModel.restaurantName.asStringOrEmpty(), orderRatingUIModel.deliveryTime.asStringOrEmpty())
-//            
-//        case .food:
-//            popupTitle = OrderTrackingLocalization.rateYourFoodExperience.text
-//            ratingTitle = String(format: OrderTrackingLocalization.howWouldYouRateRestaurantFood.text, orderRatingUIModel.restaurantName.asStringOrEmpty())
-//        }
-//    }
 }

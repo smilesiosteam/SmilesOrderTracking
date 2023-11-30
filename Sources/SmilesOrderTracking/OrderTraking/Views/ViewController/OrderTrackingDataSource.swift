@@ -110,25 +110,26 @@ extension OrderTrackingDataSource: UICollectionViewDataSource {
 extension OrderTrackingDataSource: LocationCollectionViewProtocol {
     func didTappPhoneCall(with mobileNumber: String?) {
         print("didTappPhoneCall")
-        viewModel.fetchOrderStatus(status: 3)
+       
     }
     
     func didTappOrderDetails(orderId: Int?) {
         print("didTappOrderDetails")
-        viewModel.fetchOrderStatus(status: 6)
+       
     }
     
     func didTappCancelDetails(orderId: Int?) {
         print("didTappCancelDetails")
+        print(orderId)
         delegate?.presentCancelFlow(orderId: orderId ?? 0)
-        viewModel.fetchOrderStatus(status: 1)
+       
     }
 }
 
 // MARK: - Header Delegate
 extension OrderTrackingDataSource: HeaderCollectionViewProtocol {
     func didTappDismiss() {
-        
+        delegate?.dismiss()
     }
     
     func didTappSupport() {
@@ -164,7 +165,8 @@ extension OrderTrackingDataSource: RatingCellActionDelegate {
 // MARK: - Confirmation Delegate
 extension OrderTrackingDataSource: OrderConfirmationCellActionDelegate {
     func didGetTheOrder(with orderId: Int) {
-        viewModel.fetchOrderStatus(status: OrderTrackingType.orderHasBeenPickedUpPickup.rawValue)
+//        viewModel.fetchOrderStatus(status: OrderTrackingType.orderHasBeenPickedUpPickup.rawValue)
+        
     }
     
     func didNotGetTheOrder(with orderId: Int) {

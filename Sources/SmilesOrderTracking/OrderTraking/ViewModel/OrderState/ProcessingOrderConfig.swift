@@ -21,17 +21,22 @@ struct ProcessingOrderConfig: OrderTrackable, AnimationHeaderProtocol {
             .restaurant(model: orderRestaurant)
         ]
         
-        return .init(header: getAnimationHeader(isShowButtons: false), cells: cells)
+        return .init(header: getAnimationHeader(isShowButtons: true), cells: cells)
     }
     
     private func getOrderLocation() ->  LocationCollectionViewCell.ViewModel {
+//        var location = orderLocation
+//        let isCancelationAllowed = response.orderDetails?.isCancelationAllowed ?? true
+//        location.type = isCancelationAllowed ? .showCancelButton : .hideAllButtons
+//        fireCancelButton(isShowCancelButton: isCancelationAllowed)
+//        // This for hide cancel button after 10 seconds
+//        let showCancelButtonTimeout = response.orderDetails?.showCancelButtonTimeout ?? false
+//        location.type = showCancelButtonTimeout ? .hideAllButtons :  location.type
+//        return location
+        
+        // Demo
         var location = orderLocation
-        let isCancelationAllowed = response.orderDetails?.isCancelationAllowed ?? true
-        location.type = isCancelationAllowed ? .showCancelButton : .hideAllButtons
-        fireCancelButton(isShowCancelButton: isCancelationAllowed)
-        // This for hide cancel button after 10 seconds
-        let showCancelButtonTimeout = response.orderDetails?.showCancelButtonTimeout ?? false
-        location.type = showCancelButtonTimeout ? .hideAllButtons :  location.type
+        location.type = .showCancelButton
         return location
     }
     

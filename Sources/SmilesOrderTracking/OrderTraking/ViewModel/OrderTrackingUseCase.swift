@@ -8,18 +8,33 @@
 import Foundation
 import Combine
 
-//protocol OrderTrackingUseCaseProtocol {
-//    func fetchOrderStates(with statues: Int? = nil)
-//}
+protocol OrderTrackingUseCaseProtocol {
+    func fetchOrderStates(with statues: Int?)
+    var statePublisher: AnyPublisher<OrderTrackingUseCase.State, Never> { get }
+}
 
-final class OrderTrackingUseCase {
+final class OrderTrackingUseCase: OrderTrackingUseCaseProtocol {
+    
+//    var orderStatus = PassthroughSubject<OrderTrackingModel, Never>()
+//    @Published private(set) var isOrderArrived = false
+//    @Published private(set) var isLiveTracking = false
+    
     private var cancellables = Set<AnyCancellable>()
-    var orderStatus = PassthroughSubject<OrderTrackingModel, Never>()
-    @Published private(set) var isOrderArrived = false
-    @Published private(set) var isLiveTracking = false
+    private let orderId: String
+    private let orderNumber: String
+    private var stateSubject = PassthroughSubject<State, Never>()
+    var statePublisher: AnyPublisher<State, Never> {
+        stateSubject.eraseToAnyPublisher()
+    }
+    
+    // MARK: - Init
+    init(orderId: String, orderNumber: String) {
+        self.orderId = orderId
+        self.orderNumber = orderNumber
+    }
     
     // we passed the status as parameter to navigate to the OrderHasBeenDeliveredConfig status
-    func fetchOrderStates(with statues: Int? = nil) {
+    func fetchOrderStates(with statues: Int?) {
         
         loadOrderStatus()
 //        if let jsonData = jsonString.data(using: .utf8) {
@@ -48,7 +63,7 @@ final class OrderTrackingUseCase {
         case .waitingForTheRestaurant:
             return WaitingOrderConfig(response: response).build()
         case .orderAccepted:
-            isOrderArrived = true
+            stateSubject.send(.showToastForArrivedOrder(isShow: true))
             return AcceptedOrderConfig(response: response).build()
         case .inTheKitchen, .orderHasBeenPickedUpDelivery:
             return InTheKitchenOrderConfig(response: response).build()
@@ -58,7 +73,7 @@ final class OrderTrackingUseCase {
             return OrderHasBeenDeliveredConfig(response: response).build()
         case .orderIsOnTheWay:
             let status = OnTheWayOrderConfig(response: response)
-            isLiveTracking = status.isLiveTracking
+            stateSubject.send(.showToastForNoLiveTracking(isShow: status.isLiveTracking))
             return status.build()
         case .orderCancelled:
             return CanceledOrderConfig(response: response).build()
@@ -78,41 +93,55 @@ final class OrderTrackingUseCase {
     
     private func getProcessingOrderModel(response: OrderTrackingStatusResponse) -> OrderTrackingModel {
         var processOrder = ProcessingOrderConfig(response: response)
-        processOrder.hideCancelButton = { [weak self] in
-            guard let self else {
-                return
-            }
-//            var orderResponse = response
-//            orderResponse.orderDetails?.showCancelButtonTimeout = true
-//            orderResponse.orderDetails?.isCancelationAllowed = false
-//            let status = self.configOrderStatus(response: orderResponse)
-//            self.orderStatus.send(status)
-        }
+//        processOrder.hideCancelButton = { [weak self] in
+////            guard let self else {
+////                return
+////            }
+////            var orderResponse = response
+////            orderResponse.orderDetails?.showCancelButtonTimeout = true
+////            orderResponse.orderDetails?.isCancelationAllowed = false
+////            let status = self.configOrderStatus(response: orderResponse)
+////            self.orderStatus.send(status)
+//        }
         return processOrder.build()
     }
     
     private func loadOrderStatus() {
         let handler = OrderTrackingServiceHandler()
-        handler.getOrderTrackingStatus(orderId: "466754", orderStatus: .confirmation, orderNumber: "SMHD112020230000467215").sink { completion in
+        handler.getOrderTrackingStatus(orderId: orderId,
+                                       orderStatus: .confirmation,
+                                       orderNumber: orderNumber)
+        .sink { [weak self] completion in
             switch completion {
                 
             case .finished:
                 print("finished")
             case .failure(let error):
-                
-               
-                print(error)
+                self?.stateSubject.send(.showError(message: error.localizedDescription))
             }
-        } receiveValue: { response in
-            print("====== loadOrderStatus")
-            print(response.orderDetails?.orderDescription)
+        } receiveValue: { [weak self] response in
+            guard let self else {
+                return
+            }
             let status = self.configOrderStatus(response: response)
-            self.orderStatus.send(status)
+            self.stateSubject.send(.success(model: status))
+            let orderId = response.orderDetails?.orderId ?? 0
+            self.stateSubject.send(.orderId(id: "\(orderId)"))
             
         }.store(in: &cancellables)
-
+        
     }
 
+}
+
+extension OrderTrackingUseCase {
+    enum State {
+        case showError(message: String)
+        case showToastForArrivedOrder(isShow: Bool)
+        case showToastForNoLiveTracking(isShow: Bool)
+        case success(model: OrderTrackingModel)
+        case orderId(id: String)
+    }
 }
 
 

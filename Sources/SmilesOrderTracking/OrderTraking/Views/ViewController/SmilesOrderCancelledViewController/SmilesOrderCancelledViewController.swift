@@ -121,7 +121,7 @@ public class SmilesOrderCancelledViewController: UIViewController, UICollectionV
         primaryButton.backgroundColor = enabled ? .appRevampPurpleMainColor : UIColor(white: 0, alpha: 0.1)
     }
     
-    public init(orderId:String, orderNumber:String, cancelResponse:OrderCancelResponse, onSubmitSuccess: @escaping (_:OrderCancelResponse)->Void = {}, supportAction: @escaping ()->Void = {}) {
+    public init(orderId:String, orderNumber:String, cancelResponse:OrderCancelResponse, onSubmitSuccess: @escaping (_:OrderCancelResponse)->Void = {_ in }, supportAction: @escaping ()->Void = {}) {
         self.onSubmitSuccess = onSubmitSuccess
         self.supportAction = supportAction
         self.cancelResponse = cancelResponse

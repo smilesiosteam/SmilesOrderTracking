@@ -42,6 +42,8 @@ enum OrderTrackingLocalization {
     case restaurantCanceledTitle
     case restaurantCanceledButtonTitle
     case pickUpOrderFrom
+    case liveTrackingAvailable
+    case dismiss
     
     // Some items are unavailable
     case unavailableItemsTitle
@@ -120,6 +122,10 @@ enum OrderTrackingLocalization {
             return "Some of the items you ordered are not available. We have replaced them with items of a lower price and created new order."
         case .unavailableItemsButtonTitle:
             return "Continue with new order"
+        case .liveTrackingAvailable:
+            return "Live tracking is not available"
+        case .dismiss:
+            return "Dismiss"
         }
     }
 }

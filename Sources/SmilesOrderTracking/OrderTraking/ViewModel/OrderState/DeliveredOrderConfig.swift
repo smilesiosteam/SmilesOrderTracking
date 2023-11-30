@@ -23,7 +23,7 @@ struct DeliveredOrderConfig: OrderTrackable {
         ]
         
         if let description = orderText {
-            cells.append(.text(model: .init(title: orderText)))
+            cells.append(.text(model: .init(title: description)))
         }
         
         cells.append(.driver(model: orderDriverModel))

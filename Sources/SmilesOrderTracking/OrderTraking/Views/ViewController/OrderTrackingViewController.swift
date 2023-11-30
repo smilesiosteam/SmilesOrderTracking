@@ -59,15 +59,43 @@ public final class OrderTrackingViewController: UIViewController, Toastable {
         super.viewIsAppearing(animated)
         bindToast()
         bindOrderStatus()
-        viewModel.fetchOrderStatus()
+//        viewModel.fetchOrderStatus()
         
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+            self.presentToastForNoTracking()
+        }
+    }
+  
+    private func presentToastForNoTracking() {
+        let model = ToastModel()
+        let text = OrderTrackingLocalization.liveTrackingAvailable.text
+        let dismiss = OrderTrackingLocalization.dismiss.text
+        
+        let attributedString = NSMutableAttributedString(string: "\(text) \(dismiss)")
+
+        let textRange = NSRange(location: 0, length: text.count)
+        
+        let textFont = SmilesFontsManager.defaultAppFont.getFont(style: .medium, size: 14)
+        attributedString.addAttribute(.font, value: textFont, range: textRange)
+
+        let dismissRange = NSRange(location: text.count + 1, length: dismiss.count)
+        let dismissFont = SmilesFontsManager.defaultAppFont.getFont(style: .medium, size: 16)
+        attributedString.addAttribute(.font, value: dismissFont, range: dismissRange)
+
+        model.attributedString = attributedString
+        
+        let toastView = showToast(model: model)
+        model.viewDidTapped = {
+            toastView.removeFromSuperview()
+        }
+       
     }
     private func bindToast() {
         viewModel.$isShowToast.sink { [weak self] value in
             if value  {
                 let icon = UIImage(resource: .sucess)
-                var model = ToastModel()
-                model.title =  OrderTrackingLocalization.orderAccepted.text
+                let model = ToastModel()
+                model.title = OrderTrackingLocalization.orderAccepted.text
                 model.imageIcon = icon
                 DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
                     self?.showToast(model: model)

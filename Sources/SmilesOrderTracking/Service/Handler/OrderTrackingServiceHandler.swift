@@ -12,10 +12,11 @@ import SmilesUtilities
 import SmilesBaseMainRequestManager
 import SmilesLocationHandler
 
-struct OrderTrackingServiceHandler {    
+class OrderTrackingServiceHandler {
     func getOrderTrackingStatus(orderId: String, orderStatus: OrderTrackingType, orderNumber: String, isComingFromFirebase: Bool = false) -> AnyPublisher<OrderTrackingStatusResponse, NetworkError> {
         
         let request = OrderTrackingStatusRequest(orderId: orderId)
+        print(request)
         if isComingFromFirebase {
             var additionalInfo = [BaseMainResponseAdditionalInfo]()
             let orderStatusAdditionalInfo : BaseMainResponseAdditionalInfo = BaseMainResponseAdditionalInfo()

@@ -23,7 +23,7 @@ struct OnTheWayOrderConfig: OrderTrackable {
         ]
         
         if let description = orderText {
-            cells.append(.text(model: .init(title: orderText)))
+            cells.append(.text(model: .init(title: description)))
         }
         
         cells.append( .driver(model: orderDriverModel))
@@ -39,5 +39,9 @@ struct OnTheWayOrderConfig: OrderTrackable {
         
         let header: TrackingHeaderType = .map(model: orderMapModel)
         return .init(header: header, cells: cells)
+    }
+    
+    var isLiveTracking: Bool {
+        response.orderDetails?.liveTracking ?? false
     }
 }

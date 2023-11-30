@@ -14,12 +14,13 @@ final class OrderTrackingStatusRequest: SmilesBaseMainRequest {
     var orderStatus: Int?
     var isChangeType: Bool?
     var isComingFromFirebase = false
-    
+    var isRevampedUI: Bool = true
     // MARK: - CodingKeys
     enum CodingKeys: String, CodingKey {
         case orderId
         case orderStatus
         case isChangeType
+        case isRevampedUI
     }
     
     // MARK: - Lifecycle
@@ -40,5 +41,6 @@ final class OrderTrackingStatusRequest: SmilesBaseMainRequest {
         try container.encodeIfPresent(self.orderId, forKey: .orderId)
         try container.encodeIfPresent(self.orderStatus, forKey: .orderStatus)
         try container.encodeIfPresent(self.isChangeType, forKey: .isChangeType)
+        try container.encodeIfPresent(self.isRevampedUI, forKey: .isRevampedUI)
     }
 }

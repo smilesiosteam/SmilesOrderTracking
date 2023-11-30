@@ -59,6 +59,10 @@ public class ConfirmationPopupViewController: UIViewController {
         setupUI()
     }
     
+    public override func viewDidAppear(_ animated: Bool) {
+        setupUI()
+        super.viewDidAppear(animated)
+    }
     public init(popupData:ConfirmationPopupViewModelData) {
         self.data = popupData
         super.init(nibName: "ConfirmationPopupViewController", bundle: .module)
@@ -111,23 +115,5 @@ public class ConfirmationPopupViewController: UIViewController {
     @IBAction func secondaryAction(_ sender: Any) {
         dismiss(animated: true)
         data.secondaryAction()
-    }
-    
-    public class func showCancelOrderConfirmation(orderId:String, from viewController:UIViewController, getSupport:@escaping()->Void){
-        let vc = ConfirmationPopupViewController(popupData: ConfirmationPopupViewModelData(showCloseButton:false, message: "Cancel order?".localizedString, descriptionMessage: "Are you sure you want to cancel your order? If you cancel now you won’t be charged.".localizedString, primaryButtonTitle: "Don't cancel".localizedString, secondaryButtonTitle: "Yes cancel".localizedString, primaryAction: {
-            SmilesLoader.show()
-            let service = OrderTrackingServiceHandler()
-            _ = service.cancelOrder(orderId: orderId, rejectionReason: nil)
-                .sink {_ in
-                    SmilesLoader.dismiss()
-                } receiveValue: {response in
-                    SmilesLoader.dismiss()
-                    let feedbackVC = SmilesOrderCancelledViewController(orderId: orderId, orderNumber: "", cancelResponse: response, onSubmitSuccess: {_ in 
-                        SuccessMessagePopupViewController.showFeedbackSuccessViewController(from: viewController)
-                    }, supportAction: getSupport)
-                    viewController.present(feedbackVC, animated: false)
-                }
-        }))
-        viewController.present(vc)
     }
 }

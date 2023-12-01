@@ -13,14 +13,14 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="gTV-IL-0wX" customClass="ImageHeaderCollectionViewCell" customModule="SmilesOrderTracking">
-            <rect key="frame" x="0.0" y="0.0" width="520" height="360"/>
+            <rect key="frame" x="0.0" y="0.0" width="520" height="380"/>
             <autoresizingMask key="autoresizingMask"/>
             <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
-                <rect key="frame" x="0.0" y="0.0" width="520" height="360"/>
+                <rect key="frame" x="0.0" y="0.0" width="520" height="380"/>
                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                 <subviews>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="FDi-AV-lGx">
-                        <rect key="frame" x="0.0" y="0.0" width="520" height="340"/>
+                        <rect key="frame" x="0.0" y="0.0" width="520" height="360"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" alignment="top" spacingType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="CwR-c0-MEE">
                                 <rect key="frame" x="16" y="60" width="488" height="40"/>
@@ -66,20 +66,21 @@
                                 </subviews>
                             </stackView>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" image="Delivered" translatesAutoresizingMaskIntoConstraints="NO" id="4Xz-2J-0AY">
-                                <rect key="frame" x="135" y="140" width="250" height="200"/>
+                                <rect key="frame" x="135" y="160" width="250" height="200"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="200" id="UkJ-hI-cjy"/>
                                     <constraint firstAttribute="width" constant="250" id="veU-7z-v2b"/>
                                 </constraints>
                             </imageView>
                         </subviews>
-                        <color key="backgroundColor" red="0.45882352939999999" green="0.25882352939999997" blue="0.36862745099999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="backgroundColor" red="0.6470588235294118" green="0.87058823529411766" blue="0.93725490196078431" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="CwR-c0-MEE" firstAttribute="top" secondItem="FDi-AV-lGx" secondAttribute="top" constant="60" id="A7v-R7-hSX"/>
                             <constraint firstAttribute="trailing" secondItem="CwR-c0-MEE" secondAttribute="trailing" constant="16" id="TMG-m4-HGe"/>
                             <constraint firstItem="4Xz-2J-0AY" firstAttribute="centerX" secondItem="FDi-AV-lGx" secondAttribute="centerX" id="Y94-pf-Qxj"/>
                             <constraint firstItem="CwR-c0-MEE" firstAttribute="leading" secondItem="FDi-AV-lGx" secondAttribute="leading" constant="16" id="dia-NG-rLI"/>
                             <constraint firstAttribute="bottom" secondItem="4Xz-2J-0AY" secondAttribute="bottom" id="fNL-z3-X3g"/>
+                            <constraint firstAttribute="height" constant="360" id="jyu-6R-N6r"/>
                         </constraints>
                     </view>
                 </subviews>

@@ -20,7 +20,7 @@ final class OrderTrackingViewModel {
     }
     
     var orderNavigation: ((OrderTrackingNavigation) -> Void) = { _ in }
-    
+    var navigationDelegate: OrderTrackingNavigationProtocol?
     // MARK: - Init
     init(useCase: OrderTrackingUseCaseProtocol) {
         self.useCase = useCase

@@ -105,7 +105,16 @@ struct OrderDetail: Codable {
     var mapImageIconUrl: String?
     var subTitleImageIconUrl: String?
     var bannerImageUrl: String?
+    
+    var smallImageAnimationUrl: String?
+    var largeImageAnimationUrl: String?
+    var trackingColorCode: String?
+    var earnPointsText: String?
     enum CodingKeys: String, CodingKey {
+        case smallImageAnimationUrl
+        case largeImageAnimationUrl
+        case trackingColorCode
+        case earnPointsText
         case virtualRestaurantIncluded
         case inlineItemTotal
         case virtualOrderTitle
@@ -294,6 +303,10 @@ struct OrderDetail: Codable {
         subTitleImageIconUrl = try values.decodeIfPresent(String.self, forKey: .subTitleImageIconUrl)
         bannerImageUrl = try values.decodeIfPresent(String.self, forKey: .bannerImageUrl)
         
+        smallImageAnimationUrl = try values.decodeIfPresent(String.self, forKey: .smallImageAnimationUrl)
+        largeImageAnimationUrl = try values.decodeIfPresent(String.self, forKey: .largeImageAnimationUrl)
+        trackingColorCode = try values.decodeIfPresent(String.self, forKey: .trackingColorCode)
+        earnPointsText = try values.decodeIfPresent(String.self, forKey: .earnPointsText)
     }
     
     func getIconForStatus(withOrderType orderType: String?) -> String {

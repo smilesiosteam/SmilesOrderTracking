@@ -13,6 +13,8 @@ struct OrderItemDetail: Codable {
     let userItemRating: Double?
     let itemImage: String?
     let rating: [Rating]?
+    var ratingCount = 0.0
+    var ratingFeedback: String?
 
     enum CodingKeys: String, CodingKey {
         case itemName

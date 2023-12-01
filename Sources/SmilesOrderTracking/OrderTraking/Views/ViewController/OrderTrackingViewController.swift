@@ -29,16 +29,37 @@ extension OrderTrackingViewController: OrderTrackingViewDelegate {
     }
     
     func presentRateFlow() {
-        let uiModel = OrderRatingUIModel(ratingType: "food", contentType: "tracking", isLiveTracking: true, orderId: "466715")
+        let uiModel = OrderRatingUIModel(ratingType: "food", contentType: "tracking", isLiveTracking: true, orderId: "466808")
         let serviceHandler = OrderTrackingServiceHandler()
         let model = OrderRatingViewModel(orderRatingUIModel: uiModel, serviceHandler: serviceHandler)
-        let viewController = OrderRatingViewController.create(with: model)
+        let viewController = OrderRatingViewController.create(with: model, delegate: self)
         viewController.modalPresentationStyle = .overFullScreen
         self.present(viewController)
     }
     
     func dismiss() {
         self.dismissMe()
+    }
+}
+
+extension OrderTrackingViewController: OrderRatingViewDelegate {
+    func shouldOpenItemRatingViewController(with model: RateOrderResponse, orderItems: [OrderItemDetail]) {
+        let itemRatingUIModel = ItemRatingUIModel(itemWiseRatingEnabled: model.itemLevelRatingEnable ?? false, isAccrualPointsAllowed: model.isAccrualPointsAllowed ?? false, orderItems: orderItems, ratingOrderResponse: model)
+        let itemRatingViewModel = ItemRatingViewModel(itemRatingUIModel: itemRatingUIModel, serviceHandler: viewModel.serviceHandler)
+        let itemRatingViewController = ItemRatingViewController.create(with: itemRatingViewModel, delegate: self)
+        itemRatingViewController.modalPresentationStyle = .overFullScreen
+        
+        self.present(itemRatingViewController)
+    }
+    
+    func shouldOpenFeedbackSuccessViewController(with model: RateOrderResponse) {
+        let ratingOrderResult = model.ratingOrderResult
+        let feedBackSuccessUIModel = FeedbackSuccessUIModel(popupTitle: ratingOrderResult?.title ?? "", description: ratingOrderResult?.description ?? "", boldText: ratingOrderResult?.accrualTitle ?? "")
+        let feedBackSuccessViewModel = FeedbackSuccessViewModel(feedBackSuccessUIModel: feedBackSuccessUIModel)
+        let feedBackSuccessViewController = FeedbackSuccessViewController.create(with: feedBackSuccessViewModel)
+        feedBackSuccessViewController.modalPresentationStyle = .overFullScreen
+        
+        self.present(feedBackSuccessViewController)
     }
 }
 

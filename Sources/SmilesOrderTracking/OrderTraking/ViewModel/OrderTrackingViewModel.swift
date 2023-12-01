@@ -12,6 +12,8 @@ final class OrderTrackingViewModel {
     
     // MARK: - Properties
     private var cancellables = Set<AnyCancellable>()
+    var serviceHandler = OrderTrackingServiceHandler()
+
     private let useCase: OrderTrackingUseCaseProtocol
     private var statusSubject = PassthroughSubject<State, Never>()
     var orderId = ""

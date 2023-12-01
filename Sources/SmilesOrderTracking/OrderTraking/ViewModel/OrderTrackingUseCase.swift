@@ -36,19 +36,19 @@ final class OrderTrackingUseCase: OrderTrackingUseCaseProtocol {
     // we passed the status as parameter to navigate to the OrderHasBeenDeliveredConfig status
     func fetchOrderStates(with statues: Int?) {
         
-        loadOrderStatus()
-//        if let jsonData = jsonString.data(using: .utf8) {
-//            do {
-//                var orderResponse = try JSONDecoder().decode(OrderTrackingStatusResponse.self, from: jsonData)
-//                let orderStatus = orderResponse.orderDetails?.orderStatus
-//                orderResponse.orderDetails?.orderStatus = statues ?? orderStatus
-//                
-//                let status = self.configOrderStatus(response: orderResponse)
-//                self.orderStatus.send(status)
-//            } catch {
-//                print("Error decoding JSON: \(error)")
-//            }
-//        }
+//        loadOrderStatus()
+        if let jsonData = jsonString.data(using: .utf8) {
+            do {
+                var orderResponse = try JSONDecoder().decode(OrderTrackingStatusResponse.self, from: jsonData)
+                let orderStatus = orderResponse.orderDetails?.orderStatus
+                orderResponse.orderDetails?.orderStatus = statues ?? orderStatus
+                
+                let status = self.configOrderStatus(response: orderResponse)
+                self.orderStatus.send(status)
+            } catch {
+                print("Error decoding JSON: \(error)")
+            }
+        }
     }
     
     func configOrderStatus(response: OrderTrackingStatusResponse) -> OrderTrackingModel {
@@ -152,7 +152,7 @@ let jsonString = """
 {
   "extTransactionId": "3530191483630",
   "orderDetails": {
-    "orderStatus": 0,
+    "orderStatus": 7,
      "smallImageAnimationUrl": "https://www.smilesuae.ae/images/APP/ORDER_TRACKING/ENGLISH/SMALL/Delivering.json",
      "largeImageAnimationUrl": "https://www.smilesuae.ae/images/APP/ORDER_TRACKING/ENGLISH/LARGE/Waiting.json",
      "trackingColorCode": "#a5deef",

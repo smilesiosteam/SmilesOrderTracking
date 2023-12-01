@@ -33,6 +33,7 @@ final public class ItemRatingViewController: UIViewController {
     var viewModel: ItemRatingViewModel?
     var dataSource: ItemRatingDataSource?
     private var cancellables = Set<AnyCancellable>()
+    weak var delegate: OrderRatingViewDelegate?
     
     // MARK: - Lifecycle
     public override func viewDidLoad() {
@@ -69,24 +70,19 @@ final public class ItemRatingViewController: UIViewController {
                 UINib(nibName: String(describing: $0.self), bundle: .module),
                 forCellWithReuseIdentifier: String(describing: $0.self))
         }
-        collectionView.dataSource = dataSource
         if let dataSource {
             collectionView.collectionViewLayout = dataSource.createCollectionViewLayout()
         }
+        collectionView.dataSource = dataSource
+        collectionView.reloadData()
     }
     
     private func bindViewModel() {
         viewModel?.$rateOrderResponse.sink { [weak self] value in
-            guard let self else { return }
+            guard let self, let value else { return }
             
             dismiss {
-                let ratingOrderResult = value?.ratingOrderResult
-                let feedBackSuccessUIModel = FeedbackSuccessUIModel(popupTitle: ratingOrderResult?.title ?? "", description: ratingOrderResult?.description ?? "", boldText: ratingOrderResult?.accrualTitle ?? "")
-                let feedBackSuccessViewModel = FeedbackSuccessViewModel(feedBackSuccessUIModel: feedBackSuccessUIModel)
-                let feedBackSuccessViewController = FeedbackSuccessViewController.create(with: feedBackSuccessViewModel)
-                feedBackSuccessViewController.modalPresentationStyle = .overFullScreen
-                
-                self.present(feedBackSuccessViewController)
+                self.delegate?.shouldOpenFeedbackSuccessViewController(with: value)
             }
         }.store(in: &cancellables)
     }
@@ -109,8 +105,10 @@ final public class ItemRatingViewController: UIViewController {
 
 // MARK: - Create
 extension ItemRatingViewController {
-    static func create(with viewModel: ItemRatingViewModel) -> ItemRatingViewController {
+    static func create(with viewModel: ItemRatingViewModel, delegate: OrderRatingViewDelegate) -> ItemRatingViewController {
         let viewController = ItemRatingViewController(nibName: String(describing: ItemRatingViewController.self), bundle: .module)
+        viewController.viewModel = viewModel
+        viewController.delegate = delegate
         return viewController
     }
 }
@@ -118,6 +116,7 @@ extension ItemRatingViewController {
 // MARK: - ItemRatingDataSourceDelegate
 extension ItemRatingViewController: ItemRatingDataSourceDelegate {
     func collectionViewShouldReload() {
-//        collectionView.reloadData()
+        collectionView.dataSource = dataSource
+        collectionView.reloadSections([ItemRatingSection.itemRating.section])
     }
 }

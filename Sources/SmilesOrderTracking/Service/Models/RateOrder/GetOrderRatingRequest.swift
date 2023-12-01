@@ -7,14 +7,14 @@
 
 import Foundation
 import SmilesUtilities
+import SmilesBaseMainRequestManager
 
-final class GetOrderRatingRequest: Codable {
+final class GetOrderRatingRequest: SmilesBaseMainRequest {
     // MARK: - Properties
     var ratingType: String?
     var contentType: String?
     var isLiveTracking: Bool?
     var orderId: String?
-    var userInfo: AppUserInfo?
     
     // MARK: - CodingKeys
     enum CodingKeys: String, CodingKey {
@@ -26,24 +26,24 @@ final class GetOrderRatingRequest: Codable {
     }
     
     // MARK: - Lifecycle
-    init(ratingType: String? = nil, contentType: String? = nil, isLiveTracking: Bool? = false, orderId: String? = nil, userInfo: AppUserInfo? = nil) {
+    init(ratingType: String? = nil, contentType: String? = nil, isLiveTracking: Bool? = false, orderId: String? = nil) {
+        super.init()
         self.ratingType = ratingType
         self.contentType = contentType
         self.isLiveTracking = isLiveTracking
         self.orderId = orderId
-        self.userInfo = userInfo
     }
     
     required init(from decoder: Decoder) throws {
         fatalError("init(from:) has not been implemented")
     }
     
-    func encode(to encoder: Encoder) throws {
+    override func encode(to encoder: Encoder) throws {
+        try super.encode(to: encoder)
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encodeIfPresent(self.ratingType, forKey: .ratingType)
         try container.encodeIfPresent(self.contentType, forKey: .contentType)
         try container.encodeIfPresent(self.isLiveTracking, forKey: .isLiveTracking)
         try container.encodeIfPresent(self.orderId, forKey: .orderId)
-        try container.encodeIfPresent(self.userInfo, forKey: .userInfo)
     }
 }

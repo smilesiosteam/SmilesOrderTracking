@@ -9,6 +9,7 @@
 import Foundation
 import Combine
 import NetworkingLayer
+import SmilesLoader
 
 class SmilesOrderCancelledViewModel: NSObject {
     let service = OrderTrackingServiceHandler()
@@ -52,16 +53,19 @@ extension SmilesOrderCancelledViewModel {
     }
     
     func cancelOrder(id:String, rejectionReason:String?) {
+        SmilesLoader.show()
         service.cancelOrder(orderId: id, rejectionReason: rejectionReason)
             .sink { [weak self] completion in
                 debugPrint(completion)
                 switch completion {
                 case .failure(let error):
+                    SmilesLoader.dismiss()
                     self?.output.send(.cancelOrderDidFail(error: error))
                 case .finished:
                     debugPrint("nothing much to do here")
                 }
             } receiveValue: { [weak self] response in
+                SmilesLoader.dismiss()
                 debugPrint("got my response here \(response)")
                 self?.output.send(.cancelOrderDidSucceed(response: response))
             }
@@ -69,16 +73,19 @@ extension SmilesOrderCancelledViewModel {
     }
     
     func pauseOrder(id:String) {
+        SmilesLoader.show()
         service.pauseOrder(orderId: id)
             .sink { [weak self] completion in
                 debugPrint(completion)
                 switch completion {
                 case .failure(let error):
+                    SmilesLoader.dismiss()
                     self?.output.send(.pauseOrderDidFail(error: error))
                 case .finished:
                     debugPrint("nothing much to do here")
                 }
             } receiveValue: { [weak self] response in
+                SmilesLoader.dismiss()
                 debugPrint("got my response here \(response)")
                 self?.output.send(.pauseOrderDidSucceed(response: response))
             }
@@ -86,17 +93,20 @@ extension SmilesOrderCancelledViewModel {
     }
     
     func resumeOrder(id:String) {
+        SmilesLoader.show()
         service.resumeOrder(orderId: id)
             .sink { [weak self] completion in
                 debugPrint(completion)
                 switch completion {
                 case .failure(let error):
+                    SmilesLoader.dismiss()
                     self?.output.send(.resumeOrderDidFail(error: error))
                 case .finished:
                     debugPrint("nothing much to do here")
                 }
             } receiveValue: { [weak self] response in
                 debugPrint("got my response here \(response)")
+                SmilesLoader.dismiss()
                 self?.output.send(.resumeOrderDidSucceed(response: response))
             }
         .store(in: &cancellables)

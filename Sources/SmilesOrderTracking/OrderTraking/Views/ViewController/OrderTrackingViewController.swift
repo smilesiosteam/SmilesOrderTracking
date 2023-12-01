@@ -20,11 +20,21 @@ protocol OrderTrackingViewDelegate: AnyObject {
 
 extension OrderTrackingViewController: OrderTrackingViewDelegate {
     func presentCancelFlow(orderId: Int) {
-        let vc = ConfirmationPopupViewController(popupData: ConfirmationPopupViewModelData(showCloseButton: false, message: OrderTrackingLocalization.wantCancelOrder.text, descriptionMessage: OrderTrackingLocalization.cancelOrderDescription.text, primaryButtonTitle: OrderTrackingLocalization.dontCancel.text, secondaryButtonTitle:OrderTrackingLocalization.yesCancel.text, primaryAction: {
-            self.cancelOrderInput.send(.cancelOrder(ordeId: "\(orderId)", reason: nil))
-        }, secondaryAction:{
-            self.cancelOrderInput.send(.resumeOrder(ordeId: "\(orderId)"))
-        }))
+        let vc = ConfirmationPopupViewController(
+            popupData: ConfirmationPopupViewModelData(
+                showCloseButton: false,
+                message: OrderTrackingLocalization.wantCancelOrder.text,
+                descriptionMessage: OrderTrackingLocalization.cancelOrderDescription.text,
+                primaryButtonTitle: OrderTrackingLocalization.dontCancel.text,
+                secondaryButtonTitle:OrderTrackingLocalization.yesCancel.text,
+                primaryAction: {
+                    self.cancelOrderInput.send(.resumeOrder(ordeId: "\(orderId)"))
+                },
+                secondaryAction:{
+                    self.cancelOrderInput.send(.cancelOrder(ordeId: "\(orderId)", reason: nil))
+                }
+            )
+        )
         self.present(vc)
     }
     
@@ -66,7 +76,6 @@ public final class OrderTrackingViewController: UIViewController, Toastable {
     private func bindCancelFlow() {
         cancelOrderviewModel.transform(input: cancelOrderInput.eraseToAnyPublisher())
             .sink { [weak self] event in
-                SmilesLoader.dismiss()
                 switch event {
                 // MARK: -- Success cases
                 case .cancelOrderDidSucceed(let response):

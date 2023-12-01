@@ -9,7 +9,6 @@ import UIKit
 import SmilesUtilities
 import LottieAnimationManager
 import Combine
-import SmilesLoader
 
 public class SmilesOrderCancelledViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate {
 
@@ -81,7 +80,6 @@ public class SmilesOrderCancelledViewController: UIViewController, UICollectionV
         let output = viewModel.transform(input: input.eraseToAnyPublisher())
         output
             .sink { [weak self] event in
-                SmilesLoader.dismiss()
                 switch event {
                 // MARK: -- Success cases
                 case .cancelOrderDidSucceed(let response):
@@ -173,7 +171,6 @@ public class SmilesOrderCancelledViewController: UIViewController, UICollectionV
         dismiss(animated: true)
         
         let reason = textViewContainer.isHidden ? reasonsCollectionView.indexPathsForSelectedItems?.compactMap { self.rejectionReasons[$0.item] }.joined(separator: ",") : textView.text
-        SmilesLoader.show()
         self.input.send(.cancelOrder(ordeId: self.orderId, reason: reason))
     }
     

@@ -7,10 +7,10 @@
 
 import Foundation
 import SmilesLocationHandler
+import SmilesBaseMainRequestManager
 
-final class OrderCancelRequest: Codable {
+final class OrderCancelRequest: SmilesBaseMainRequest {
     // MARK: - Properties
-    var userInfo: SmilesUserInfo?
     var orderId: String?
     var rejectionReason: String?
     
@@ -22,8 +22,8 @@ final class OrderCancelRequest: Codable {
     }
     
     // MARK: - Lifecycle
-    init(userInfo: SmilesUserInfo? = nil, orderId: String? = nil, rejectionReason: String? = nil) {
-        self.userInfo = userInfo
+    init(orderId: String? = nil, rejectionReason: String? = nil) {
+        super.init()
         self.orderId = orderId
         self.rejectionReason = rejectionReason
     }
@@ -32,7 +32,8 @@ final class OrderCancelRequest: Codable {
         fatalError("init(from:) has not been implemented")
     }
     
-    func encode(to encoder: Encoder) throws {
+    override func encode(to encoder: Encoder) throws {
+        try super.encode(to: encoder)
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encodeIfPresent(self.userInfo, forKey: .userInfo)
         try container.encodeIfPresent(self.orderId, forKey: .orderId)

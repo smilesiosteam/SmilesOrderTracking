@@ -102,12 +102,6 @@ final class OrderTrackingServiceHandler: OrderTrackingServiceHandlerProtocol {
     
     func cancelOrder(orderId: String, rejectionReason:String?) -> AnyPublisher<OrderCancelResponse, NetworkError> {
         let request = OrderCancelRequest(orderId: orderId, rejectionReason: rejectionReason)
-        if let userInfo = LocationStateSaver.getLocationInfo() {
-            let requestUserInfo = SmilesUserInfo()
-            requestUserInfo.mambaId = userInfo.mambaId
-            requestUserInfo.locationId = userInfo.locationId
-            request.userInfo = requestUserInfo
-        }
         
         let service = OrderTrackingRepository(
             networkRequest: NetworkingLayerRequestable(requestTimeOut: 60),

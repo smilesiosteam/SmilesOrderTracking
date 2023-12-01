@@ -43,7 +43,7 @@ final class ImageHeaderCollectionViewCell: UICollectionReusableView {
     // MARK: - Functions
     func updateCell(with viewModel: ViewModel, delegate: HeaderCollectionViewProtocol) {
         self.delegate = delegate
-        headerStack.isHidden = !viewModel.isShowSupportHeader
+        headerStack.isHidden =  !viewModel.isShowSupportHeader
         
         switch viewModel.type {
         case .image(let imageName, let backgroundColor):
@@ -56,11 +56,11 @@ final class ImageHeaderCollectionViewCell: UICollectionReusableView {
             
 //            let url1 = URL(string: "https://www.smilesuae.ae/images/APP/ORDER_TRACKING/ENGLISH/SMALL/Delivering.json")
         
-            let url1 = URL(string: "https://www.smilesuae.ae/images/APP/ORDER_TRACKING/ENGLISH/LARGE/Waiting.json")
-//            let url2 = URL(string: "https://www.smilesuae.ae/images/APP/ORDER_TRACKING/ENGLISH/SMALL/Delivering-2.json")
-            LottieAnimationManager.showAnimationFromUrl(FromUrl: url1!, animationBackgroundView: self.containerView, removeFromSuper: false, loopMode: .loop,contentMode: .scaleAspectFill) { (bool) in
-                
-            }
+//            let url1 = URL(string: "https://www.smilesuae.ae/images/APP/ORDER_TRACKING/ENGLISH/LARGE/Waiting.json")
+////            let url2 = URL(string: "https://www.smilesuae.ae/images/APP/ORDER_TRACKING/ENGLISH/SMALL/Delivering-2.json")
+//            LottieAnimationManager.showAnimationFromUrl(FromUrl: url1!, animationBackgroundView: self.containerView, removeFromSuper: false, loopMode: .loop,contentMode: .scaleAspectFill) { (bool) in
+//                
+//            }
         }
     }
     

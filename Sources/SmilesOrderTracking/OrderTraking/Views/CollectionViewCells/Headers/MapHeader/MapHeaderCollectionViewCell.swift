@@ -64,11 +64,11 @@ final class MapHeaderCollectionViewCell: UICollectionReusableView {
             animationView.backgroundColor = .black
             print(url)
 //            let url1 = URL(string: "https://www.smilesuae.ae/images/APP/ORDER_TRACKING/ENGLISH/SMALL/Delivering-2.json")
-            let url1 = URL(string: "https://www.smilesuae.ae/images/APP/ORDER_TRACKING/ENGLISH/SMALL/Delivering.json")
-            
-            LottieAnimationManager.showAnimationFromUrl(FromUrl: url1!, animationBackgroundView: self.animationView, removeFromSuper: false, loopMode: .loop,contentMode: .scaleAspectFill) { (bool) in
-                
-            }
+//            let url1 = URL(string: "https://www.smilesuae.ae/images/APP/ORDER_TRACKING/ENGLISH/SMALL/Delivering.json")
+//            
+//            LottieAnimationManager.showAnimationFromUrl(FromUrl: url1!, animationBackgroundView: self.animationView, removeFromSuper: false, loopMode: .loop,contentMode: .scaleAspectFill) { (bool) in
+//                
+//            }
         }
     }
     

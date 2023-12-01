@@ -49,6 +49,16 @@ enum OrderTrackingLocalization {
     case unavailableItemsTitle
     case unavailableItemsButtonTitle
     
+    case yourOrderCancelled
+    case whyCancel
+    case thankyouForFeedback
+    case alwaysWrokingToImprove
+    case backToHome
+    case wantCancelOrder
+    case cancelOrderDescription
+    case dontCancel
+    case yesCancel
+    
     var text: String {
         switch self {
         case .support:
@@ -126,6 +136,24 @@ enum OrderTrackingLocalization {
             return "Live tracking is not available"
         case .dismiss:
             return "Dismiss"
+        case .yourOrderCancelled:
+            return "Your order has been cancelled".localizedString
+        case .whyCancel:
+            return "Please let us know why you need to cancel your order".localizedString
+        case .thankyouForFeedback:
+            return "Thank you for sending your feedback".localizedString
+        case .alwaysWrokingToImprove:
+            return "always_working_to_improve".localizedString
+        case .backToHome:
+            return "Back to home".localizedString.capitalizingFirstLetter()
+        case .wantCancelOrder:
+            return "Cancel order?".localizedString
+        case .cancelOrderDescription:
+            return "CancelOrderDescription".localizedString
+        case .dontCancel:
+            return "Don't cancel".localizedString
+        case .yesCancel:
+            return "Yes cancel".localizedString
         }
     }
 }

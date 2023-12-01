@@ -13,7 +13,9 @@ protocol CanceledOrderConfigProtocol: OrderTrackable, CancelHeaderProtocol { }
 extension CanceledOrderConfigProtocol {
     func getOrderActionsModel() -> OrderCancelledCollectionViewCell.ViewModel {
         var orderActions = OrderCancelledCollectionViewCell.ViewModel()
-        orderActions.orderId = response.orderDetails?.orderId
+        let orderId = response.orderDetails?.orderId ?? 0
+        orderActions.orderId = "\(orderId)"
+        orderActions.restaurantId = response.orderDetails?.restaurantId ?? ""
         orderActions.restaurantNumber = response.orderDetails?.restaurentNumber
         return orderActions
     }

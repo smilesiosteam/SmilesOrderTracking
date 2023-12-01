@@ -110,25 +110,24 @@ extension OrderTrackingDataSource: UICollectionViewDataSource {
 extension OrderTrackingDataSource: LocationCollectionViewProtocol {
     func didTappPhoneCall(with mobileNumber: String?) {
         print("didTappPhoneCall")
-        viewModel.fetchOrderStatus(status: 3)
+       
     }
     
-    func didTappOrderDetails(orderId: Int?) {
+    func didTappOrderDetails(orderId: String, restaurantId: String) {
         print("didTappOrderDetails")
-        viewModel.fetchOrderStatus(status: 6)
+        viewModel.orderNavigation(.orderDetails(orderId: orderId, restaurantId: restaurantId))
+       
     }
     
-    func didTappCancelDetails(orderId: Int?) {
-        print("didTappCancelDetails")
-        delegate?.presentCancelFlow(orderId: orderId ?? 0)
-        viewModel.fetchOrderStatus(status: 1)
+    func didTappCancelDetails(orderId: String) {
+        delegate?.presentCancelFlow(orderId: orderId)
     }
 }
 
 // MARK: - Header Delegate
 extension OrderTrackingDataSource: HeaderCollectionViewProtocol {
     func didTappDismiss() {
-        
+        delegate?.dismiss()
     }
     
     func didTappSupport() {
@@ -164,7 +163,8 @@ extension OrderTrackingDataSource: RatingCellActionDelegate {
 // MARK: - Confirmation Delegate
 extension OrderTrackingDataSource: OrderConfirmationCellActionDelegate {
     func didGetTheOrder(with orderId: Int) {
-        viewModel.fetchOrderStatus(status: OrderTrackingType.orderHasBeenPickedUpPickup.rawValue)
+//        viewModel.fetchOrderStatus(status: OrderTrackingType.orderHasBeenPickedUpPickup.rawValue)
+        
     }
     
     func didNotGetTheOrder(with orderId: Int) {

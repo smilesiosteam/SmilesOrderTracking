@@ -14,6 +14,7 @@ final class OrderTrackingViewModel {
     private let useCase = OrderTrackingUseCase()
 //    var orderStatusModel = OrderTrackingModel()
     var orderStatusSubject = PassthroughSubject<OrderTrackingModel, Never>()
+    var serviceHandler = OrderTrackingServiceHandler()
 //     var firebaseDatabaseManager = FirebaseDatabaseManager()
     @Published private(set) var isShowToast = false
     init() {
@@ -21,7 +22,7 @@ final class OrderTrackingViewModel {
 //        configProcessingOrder()
         
        
-        useCase.$isShowToast.sink { [weak self] value in
+        useCase.$isOrderArrived.sink { [weak self] value in
             self?.isShowToast = value
         }.store(in: &cancellables)
         bindOrderStatus()

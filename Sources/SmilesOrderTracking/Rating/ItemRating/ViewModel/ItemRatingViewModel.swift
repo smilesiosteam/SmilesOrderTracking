@@ -14,7 +14,7 @@ final public class ItemRatingViewModel: NSObject {
     private var cancellables = Set<AnyCancellable>()
     
     private(set) var serviceHandler: OrderTrackingServiceHandler
-    private(set) var itemRatingUIModel: ItemRatingUIModel
+    var itemRatingUIModel: ItemRatingUIModel
     private(set) var popupTitle: String?
     @Published private(set) var rateOrderResponse: RateOrderResponse?
     var itemRatings = [ItemRatings]()
@@ -31,6 +31,7 @@ final public class ItemRatingViewModel: NSObject {
     
     private func configUI() {
         popupTitle = itemRatingUIModel.ratingOrderResponse.ratingOrderResult?.title
+        itemWiseRating = itemRatingUIModel.itemWiseRatingEnabled
     }
     
     func submitRating() {

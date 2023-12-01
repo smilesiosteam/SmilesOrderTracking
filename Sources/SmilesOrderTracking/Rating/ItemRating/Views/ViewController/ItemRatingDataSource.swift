@@ -23,24 +23,20 @@ final class ItemRatingDataSource: NSObject {
     
     func createCollectionViewLayout() -> UICollectionViewCompositionalLayout {
         UICollectionViewCompositionalLayout { _, layoutEnvironment in
-            // Item
+            // Size
             let layoutSize = NSCollectionLayoutSize(
                 widthDimension: .fractionalWidth(1.0),
                 heightDimension: .estimated(100.0)
             )
             
+            // Item
             let item = NSCollectionLayoutItem(layoutSize: layoutSize)
-//            item.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 0, bottom: 16, trailing: 0)
             
             // Group
             let group = NSCollectionLayoutGroup.horizontal(
-                layoutSize: .init(
-                    widthDimension: .fractionalWidth(1.0),
-                    heightDimension: layoutSize.heightDimension
-                ),
+                layoutSize: layoutSize,
                 subitems: [item]
             )
-//            group.interItemSpacing = .fixed(16.0)
             group.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 0, bottom: 16, trailing: 0)
             
             // Section
@@ -85,8 +81,8 @@ extension ItemRatingDataSource: UICollectionViewDataSource {
             return cell
         case ItemRatingSection.itemRating.section:
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: String(describing: ItemRatingCollectionViewCell.self), for: indexPath) as? ItemRatingCollectionViewCell else { return UICollectionViewCell() }
-            let itemToRate = viewModel.itemRatingUIModel.orderItems[indexPath.item]
-            var viewModel = ItemRatingCollectionViewCell.ViewModel(itemName: itemToRate.itemName, itemId: itemToRate.itemID, rating: itemToRate.userItemRating ?? 0.0, ratingArray: itemToRate.rating, itemImage: itemToRate.itemImage)
+            let itemToRate = viewModel.itemRatingUIModel.orderItems[indexPath.row]
+            var viewModel = ItemRatingCollectionViewCell.ViewModel(itemName: itemToRate.itemName, itemId: itemToRate.itemID, rating: itemToRate.userItemRating ?? 0.0, ratingSubtitle: itemToRate.ratingFeedback, ratingArray: itemToRate.rating, itemImage: itemToRate.itemImage, ratingCount: itemToRate.ratingCount)
             
             // TODO: Check flow of this check against old implementation in ThankyouForRatingPresenter
             if itemToRate.userItemRating ?? 0.0 > 0 {
@@ -110,10 +106,22 @@ extension ItemRatingDataSource: ItemRatingCellActionDelegate {
     }
     
     func updateItemData(with itemRating: ItemRatings, orderRating: OrderRatingModel, ratingType: String?) {
+        viewModel.itemRatingUIModel.orderItems = viewModel.itemRatingUIModel.orderItems.map {
+            var item = $0
+            if $0.itemID == itemRating.itemId {
+                item.ratingCount = itemRating.userRating ?? 0.0
+                item.ratingFeedback = itemRating.ratingFeedback
+            }
+            
+            return item
+        }
+        
         if let index = viewModel.itemRatings.firstIndex(where: { $0.itemId == itemRating.itemId }) {
             viewModel.itemRatings[index] = itemRating
         } else {
             viewModel.itemRatings.append(itemRating)
         }
+        
+        delegate?.collectionViewShouldReload()
     }
 }

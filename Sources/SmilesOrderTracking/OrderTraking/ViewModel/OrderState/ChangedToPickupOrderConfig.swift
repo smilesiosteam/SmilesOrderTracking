@@ -22,7 +22,8 @@ struct ChangedToPickupOrderConfig: OrderTrackable, CancelHeaderProtocol {
     
     private func getOrderActionsModel() -> OrderCancelledCollectionViewCell.ViewModel {
         var orderActions = OrderCancelledCollectionViewCell.ViewModel()
-        orderActions.orderId = response.orderDetails?.orderId
+        let orderId = response.orderDetails?.orderId ?? 0
+        orderActions.orderId = "\(orderId)"
         orderActions.restaurantNumber = response.orderDetails?.restaurentNumber
         return orderActions
     }

@@ -7,8 +7,9 @@
 
 import Foundation
 import SmilesUtilities
+import SmilesBaseMainRequestManager
 
-final class RateOrderRequest: Codable {
+final class RateOrderRequest: SmilesBaseMainRequest {
     // MARK: - Properties
     var orderId: String?
     var orderNumber: String?
@@ -17,7 +18,6 @@ final class RateOrderRequest: Codable {
     var itemRatings: [ItemRatings]?
     var isAccuralPointsAllowed: Bool?
     var itemLevelRatingEnabled: Bool?
-    var userInfo: AppUserInfo?
     var restaurantId: String?
     var userFeedback: String?
     
@@ -30,13 +30,13 @@ final class RateOrderRequest: Codable {
         case itemRatings
         case isAccuralPointsAllowed
         case itemLevelRatingEnabled
-        case userInfo
         case restaurantId
         case userFeedback
     }
     
     // MARK: - Lifecycle
-    init(orderId: String? = nil, orderNumber: String? = nil, restaurantName: String? = nil, orderRatings: [OrderRatingModel]? = nil, itemRatings: [ItemRatings]? = nil, isAccuralPointsAllowed: Bool? = nil, itemLevelRatingEnabled: Bool? = nil, userInfo: AppUserInfo? = nil, restaurantId: String? = nil, userFeedback: String? = nil) {
+    init(orderId: String? = nil, orderNumber: String? = nil, restaurantName: String? = nil, orderRatings: [OrderRatingModel]? = nil, itemRatings: [ItemRatings]? = nil, isAccuralPointsAllowed: Bool? = nil, itemLevelRatingEnabled: Bool? = nil, restaurantId: String? = nil, userFeedback: String? = nil) {
+        super.init()
         self.orderId = orderId
         self.orderNumber = orderNumber
         self.restaurantName = restaurantName
@@ -44,7 +44,6 @@ final class RateOrderRequest: Codable {
         self.itemRatings = itemRatings
         self.isAccuralPointsAllowed = isAccuralPointsAllowed
         self.itemLevelRatingEnabled = itemLevelRatingEnabled
-        self.userInfo = userInfo
         self.restaurantId = restaurantId
         self.userFeedback = userFeedback
     }
@@ -53,7 +52,8 @@ final class RateOrderRequest: Codable {
         fatalError("init(from:) has not been implemented")
     }
     
-    func encode(to encoder: Encoder) throws {
+    override func encode(to encoder: Encoder) throws {
+        try super.encode(to: encoder)
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encodeIfPresent(self.orderId, forKey: .orderId)
         try container.encodeIfPresent(self.orderNumber, forKey: .orderNumber)
@@ -62,7 +62,6 @@ final class RateOrderRequest: Codable {
         try container.encodeIfPresent(self.itemRatings, forKey: .itemRatings)
         try container.encodeIfPresent(self.isAccuralPointsAllowed, forKey: .isAccuralPointsAllowed)
         try container.encodeIfPresent(self.itemLevelRatingEnabled, forKey: .itemLevelRatingEnabled)
-        try container.encodeIfPresent(self.userInfo, forKey: .userInfo)
         try container.encodeIfPresent(self.restaurantId, forKey: .restaurantId)
         try container.encodeIfPresent(self.userFeedback, forKey: .userFeedback)
     }

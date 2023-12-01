@@ -113,16 +113,15 @@ extension OrderTrackingDataSource: LocationCollectionViewProtocol {
        
     }
     
-    func didTappOrderDetails(orderId: Int?) {
+    func didTappOrderDetails(orderId: String, restaurantId: String) {
         print("didTappOrderDetails")
+//        viewModel.orderNavigation(.orderDetails(orderId: orderId, restaurantId: restaurantId))
+        viewModel.navigationDelegate?.navigateToOrderDetails(orderId: orderId, restaurantId: restaurantId)
        
     }
     
-    func didTappCancelDetails(orderId: Int?) {
-        print("didTappCancelDetails")
-        print(orderId)
-        delegate?.presentCancelFlow(orderId: orderId ?? 0)
-       
+    func didTappCancelDetails(orderId: String) {
+        delegate?.presentCancelFlow(orderId: orderId)
     }
 }
 

@@ -8,6 +8,7 @@
 import UIKit
 import GoogleMaps
 import Combine
+import LottieAnimationManager
 
 final class MapHeaderCollectionViewCell: UICollectionReusableView {
     
@@ -53,13 +54,21 @@ final class MapHeaderCollectionViewCell: UICollectionReusableView {
         
         switch type {
         case .image(let imageName):
-            animationView.backgroundColor = .clear
+//            animationView.backgroundColor = .clear
             print(imageName)
             driverImage.image = UIImage(named: imageName, in: .module, with: nil)
             driverImage.isHidden = false
         case .animation(let url):
-            driverImage.isHidden = true
+//            driverImage.isHidden = true
+            animationView.isHidden = false
+            animationView.backgroundColor = .black
             print(url)
+//            let url1 = URL(string: "https://www.smilesuae.ae/images/APP/ORDER_TRACKING/ENGLISH/SMALL/Delivering-2.json")
+//            let url1 = URL(string: "https://www.smilesuae.ae/images/APP/ORDER_TRACKING/ENGLISH/SMALL/Delivering.json")
+//            
+//            LottieAnimationManager.showAnimationFromUrl(FromUrl: url1!, animationBackgroundView: self.animationView, removeFromSuper: false, loopMode: .loop,contentMode: .scaleAspectFill) { (bool) in
+//                
+//            }
         }
     }
     

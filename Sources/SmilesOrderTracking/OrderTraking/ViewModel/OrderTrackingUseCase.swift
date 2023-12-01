@@ -123,6 +123,8 @@ final class OrderTrackingUseCase: OrderTrackingUseCaseProtocol {
             guard let self else {
                 return
             }
+//            var x = response
+//            x.orderDetails?.orderStatus = 3
             let status = self.configOrderStatus(response: response)
             self.stateSubject.send(.success(model: status))
             let orderId = response.orderDetails?.orderId ?? 0
@@ -150,7 +152,12 @@ let jsonString = """
 {
   "extTransactionId": "3530191483630",
   "orderDetails": {
-    "orderStatus": 0,
+    "orderStatus": 7,
+     "smallImageAnimationUrl": "https://www.smilesuae.ae/images/APP/ORDER_TRACKING/ENGLISH/SMALL/Delivering.json",
+     "largeImageAnimationUrl": "https://www.smilesuae.ae/images/APP/ORDER_TRACKING/ENGLISH/LARGE/Waiting.json",
+     "trackingColorCode": "#a5deef",
+     "earnPointsText": "smiles points earned and will be credited soon.",
+
     "title": "Wow, your order has arrived X min early. Enjoy! Ya Naguib",
     "orderDescription": "Hardee's should accept your order soon.",
     "orderNumber": "SMHD112020230000467215",

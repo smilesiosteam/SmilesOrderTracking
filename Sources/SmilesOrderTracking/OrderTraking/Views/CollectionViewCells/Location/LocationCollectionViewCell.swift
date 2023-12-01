@@ -14,8 +14,8 @@ protocol PhoneCallable {
 }
 
 protocol LocationCollectionViewProtocol: AnyObject, PhoneCallable {
-    func didTappOrderDetails(orderId: Int?)
-    func didTappCancelDetails(orderId: Int?)
+    func didTappOrderDetails(orderId: String, restaurantId: String)
+    func didTappCancelDetails(orderId: String)
 }
 
 final class LocationCollectionViewCell: UICollectionViewCell {
@@ -52,7 +52,7 @@ final class LocationCollectionViewCell: UICollectionViewCell {
     }
     
     @IBAction func orderDetailsTapped(_ sender: Any) {
-        delegate?.didTappOrderDetails(orderId: viewModel.orderId)
+        delegate?.didTappOrderDetails(orderId: viewModel.orderId, restaurantId: viewModel.restaurantId)
     }
     
     @IBAction func cancelOrderTapped(_ sender: Any) {
@@ -120,7 +120,8 @@ extension LocationCollectionViewCell {
     struct ViewModel {
         var startAddress: String?
         var endAddress: String?
-        var orderId: Int?
+        var orderId = ""
+        var restaurantId = ""
         var restaurantNumber: String?
         var type: CellType = .showCancelButton
     }

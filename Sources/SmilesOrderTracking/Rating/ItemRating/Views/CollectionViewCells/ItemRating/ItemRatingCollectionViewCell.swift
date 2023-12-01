@@ -9,6 +9,7 @@ import UIKit
 import Cosmos
 import SmilesUtilities
 import SmilesFontsManager
+import SDWebImage
 
 protocol ItemRatingCellActionDelegate: AnyObject {
     func didTapRating(with ratingNumber: Int, ratingType: String?)
@@ -27,11 +28,11 @@ final class ItemRatingCollectionViewCell: UICollectionViewCell {
         }
     }
     @IBOutlet weak var ratingStarView: CosmosView!
+    @IBOutlet weak var ratingTextLabelContainerView: UIView!
     @IBOutlet weak var ratingTextLabel: UILabel! {
         didSet {
             ratingTextLabel.fontTextStyle = .smilesHeadline4
             ratingTextLabel.textColor = .appDarkGrayColor
-            ratingTextLabel.isHidden = true
         }
     }
     
@@ -44,19 +45,8 @@ final class ItemRatingCollectionViewCell: UICollectionViewCell {
     private var viewModel: ViewModel?
     
     // MARK: - Lifecycle
-    override func prepareForReuse() {
-        ratingStarView.prepareForReuse()
-    }
-    
     override func awakeFromNib() {
         super.awakeFromNib()
-        
-        ratingStarView.settings.fillMode = .full
-        ratingStarView.didFinishTouchingCosmos = { [weak self] stars in
-            guard let self else { return }
-            self.configureStarsState(with: stars)
-            self.delegate?.didTapRating(with: Int(stars), ratingType: self.ratingType)
-        }
     }
     
     // MARK: - Methods
@@ -66,12 +56,16 @@ final class ItemRatingCollectionViewCell: UICollectionViewCell {
         
         itemId = viewModel.itemId.asStringOrEmpty()
         itemNameLabel.text = viewModel.itemName
-        ratingTextLabel.text = viewModel.ratingSubtitle
-        ratingStarView.rating = viewModel.rating
+        
         ratingArray = viewModel.ratingArray
         ratingType = viewModel.ratingType
         itemStarImageView.setImageWithUrlString(viewModel.itemImage.asStringOrEmpty())
-        ratingStarView.settings.filledImage = AppCommonMethods.getColorCodedStarImage(for: ratingStarView.rating)
+        
+        let rating = viewModel.rating > 0.0 ? viewModel.rating : viewModel.ratingCount
+        ratingTextLabel.text = viewModel.ratingSubtitle
+        ratingTextLabelContainerView.isHidden = rating > 0.0 ? false : true
+        ratingStarView.rating = rating
+        ratingStarView.settings.filledImage = AppCommonMethods.getColorCodedStarImage(for: rating)
         
         if (viewModel.rating > 0) && !(viewModel.enableStarsInteraction) {
             ratingStarView.rating = viewModel.rating
@@ -79,60 +73,32 @@ final class ItemRatingCollectionViewCell: UICollectionViewCell {
         } else {
             ratingStarView.isUserInteractionEnabled = true
         }
+        
+        ratingStarView.settings.fillMode = .full
+        ratingStarView.didFinishTouchingCosmos = { [weak self] stars in
+            guard let self else { return }
+            self.configureStarsState(with: stars)
+            self.delegate?.didTapRating(with: Int(stars), ratingType: self.ratingType)
+        }
     }
     
     private func configureStarsState(with rating: Double) {
-        self.ratingTextLabel.isHidden = false
+        ratingTextLabelContainerView.isHidden = false
         let ratingObj = self.ratingArray?[safe: Int(rating) - 1]
         self.viewModel?.rating = Double(rating)
-        switch rating {
-        case 1:
-            ratingTextLabel.text = ratingObj?.ratingFeedback
-            ratingStarView.settings.filledImage = UIImage(url: URL(string: ratingObj?.ratingImage ?? ""))
-
-            let itemData = createItemRatingObj(userRating: Double(rating), itemId: ratingObj?.id ?? 0 , ratingFeedback: ratingObj?.ratingFeedback ?? "")
-            let ratingData = createRatingObj(userRating: Double(rating), ratingType: self.ratingType ?? "", ratingFeedback: ratingObj?.ratingFeedback ?? "")
-            
-            self.delegate?.updateItemData(with: itemData, orderRating: ratingData, ratingType: self.ratingType)
-            
-        case 2:
-            ratingTextLabel.text = ratingObj?.ratingFeedback
-            ratingStarView.settings.filledImage = UIImage(url: URL(string: ratingObj?.ratingImage ?? ""))
-
-            let itemData = createItemRatingObj(userRating: Double(rating), itemId: ratingObj?.id ?? 0 , ratingFeedback: ratingObj?.ratingFeedback ?? "")
-            let ratingData = createRatingObj(userRating: Double(rating), ratingType: self.ratingType ?? "", ratingFeedback: ratingObj?.ratingFeedback ?? "")
-
-            self.delegate?.updateItemData(with: itemData, orderRating: ratingData, ratingType: self.ratingType)
-        case 3:
-            ratingTextLabel.text = ratingObj?.ratingFeedback
-            ratingStarView.settings.filledImage = UIImage(url: URL(string: ratingObj?.ratingImage ?? ""))
-
-            let itemData = createItemRatingObj(userRating: Double(rating), itemId: ratingObj?.id ?? 0 , ratingFeedback: ratingObj?.ratingFeedback ?? "")
-            let ratingData = createRatingObj(userRating: Double(rating), ratingType: self.ratingType ?? "", ratingFeedback: ratingObj?.ratingFeedback ?? "")
-
-            self.delegate?.updateItemData(with: itemData, orderRating: ratingData, ratingType: self.ratingType)
-
-        case 4:
-            ratingTextLabel.text = ratingObj?.ratingFeedback
-            ratingStarView.settings.filledImage = UIImage(url: URL(string: ratingObj?.ratingImage ?? ""))
-
-            let itemData = createItemRatingObj(userRating: Double(rating), itemId: ratingObj?.id ?? 0 , ratingFeedback: ratingObj?.ratingFeedback ?? "")
-            let ratingData = createRatingObj(userRating: Double(rating), ratingType: self.ratingType ?? "", ratingFeedback: ratingObj?.ratingFeedback ?? "")
-
-            self.delegate?.updateItemData(with: itemData, orderRating: ratingData, ratingType: self.ratingType)
-
-        case 5:
-            ratingTextLabel.text = ratingObj?.ratingFeedback
-            ratingStarView.settings.filledImage = UIImage(url: URL(string: ratingObj?.ratingImage ?? ""))
-
-            let itemData = createItemRatingObj(userRating: Double(rating), itemId: ratingObj?.id ?? 0 , ratingFeedback: ratingObj?.ratingFeedback ?? "")
-            let ratingData = createRatingObj(userRating: Double(rating), ratingType: self.ratingType ?? "", ratingFeedback: ratingObj?.ratingFeedback ?? "")
-
-            self.delegate?.updateItemData(with: itemData, orderRating: ratingData, ratingType: self.ratingType)
-
-        default:
-            break
+        
+        SDWebImageManager.shared.loadImage(with: URL(string: ratingObj?.ratingImage ?? ""), options: .continueInBackground, progress: nil) { image, data, error, _, _, _ in
+            DispatchQueue.main.async {
+                self.ratingStarView.settings.filledImage = image
+            }
         }
+        
+        ratingTextLabel.text = ratingObj?.ratingFeedback
+        
+        let itemData = createItemRatingObj(userRating: Double(rating), itemId: ratingObj?.id ?? 0 , ratingFeedback: ratingObj?.ratingFeedback ?? "")
+        let ratingData = createRatingObj(userRating: Double(rating), ratingType: self.ratingType ?? "", ratingFeedback: ratingObj?.ratingFeedback ?? "")
+        
+        self.delegate?.updateItemData(with: itemData, orderRating: ratingData, ratingType: self.ratingType)
     }
     
     private func createItemRatingObj(userRating: Double, itemId: Int, ratingFeedback: String) -> ItemRatings {
@@ -164,5 +130,6 @@ extension ItemRatingCollectionViewCell {
         var ratingType: String?
         var userRating: Double?
         var enableStarsInteraction = true
+        var ratingCount = 0.0
     }
 }

@@ -48,14 +48,12 @@ extension CancelHeaderProtocol {
     }
 }
 
-
-protocol AnimationHeaderProtocol: OrderTrackable {
-   
-}
+protocol AnimationHeaderProtocol: OrderTrackable { }
 
 extension AnimationHeaderProtocol {
     func getAnimationHeader(isShowButtons: Bool) -> TrackingHeaderType {
-        var viewModel = ImageHeaderCollectionViewCell.ViewModel(type: .animation(url: ""))
+        let url = URL(string: response.orderDetails?.largeImageAnimationUrl ?? "")
+        var viewModel = ImageHeaderCollectionViewCell.ViewModel(type: .animation(url: url))
         viewModel.isShowSupportHeader = isShowButtons
         let header: TrackingHeaderType = .image(model: viewModel)
         return header

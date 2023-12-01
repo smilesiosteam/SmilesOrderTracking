@@ -46,7 +46,9 @@ struct ConfirmationOrderConfig: OrderTrackable {
         let question = String(format: questionFormat, restaurantName)
         
         viewModel.question = question
-        viewModel.orderId = response.orderDetails?.orderId ?? 0
+        let orderId = response.orderDetails?.orderId ?? 0
+        viewModel.orderId = "\(orderId)"
+        viewModel.orderNumber = response.orderDetails?.orderNumber ?? ""
         return viewModel
     }
     

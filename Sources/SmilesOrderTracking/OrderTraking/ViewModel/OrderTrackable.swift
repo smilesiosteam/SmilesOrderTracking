@@ -81,7 +81,8 @@ extension OrderTrackable {
         let endImage = "endPin"
         let endModel = MarkerModel(lat: endLat, lang: endLang, image: endImage)
         
-        let viewModel = MapHeaderCollectionViewCell.ViewModel(startPoint: startModel, endPoint: endModel, type: .animation(url: ""))
+        let url = URL(string: response.orderDetails?.smallImageAnimationUrl ?? "")
+        let viewModel = MapHeaderCollectionViewCell.ViewModel(startPoint: startModel, endPoint: endModel, type: .animation(url: url))
         return viewModel
     }
     

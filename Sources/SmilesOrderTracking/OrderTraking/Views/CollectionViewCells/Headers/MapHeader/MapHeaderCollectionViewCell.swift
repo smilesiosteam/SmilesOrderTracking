@@ -50,25 +50,17 @@ final class MapHeaderCollectionViewCell: UICollectionReusableView {
     }
     
     private func configCellType(type: CellType) {
-        print("ddddd")
-        
         switch type {
         case .image(let imageName):
-//            animationView.backgroundColor = .clear
-            print(imageName)
+            animationView.backgroundColor = .clear
             driverImage.image = UIImage(named: imageName, in: .module, with: nil)
             driverImage.isHidden = false
         case .animation(let url):
-//            driverImage.isHidden = true
+            driverImage.isHidden = true
             animationView.isHidden = false
-            animationView.backgroundColor = .black
-            print(url)
-//            let url1 = URL(string: "https://www.smilesuae.ae/images/APP/ORDER_TRACKING/ENGLISH/SMALL/Delivering-2.json")
-//            let url1 = URL(string: "https://www.smilesuae.ae/images/APP/ORDER_TRACKING/ENGLISH/SMALL/Delivering.json")
-//            
-//            LottieAnimationManager.showAnimationFromUrl(FromUrl: url1!, animationBackgroundView: self.animationView, removeFromSuper: false, loopMode: .loop,contentMode: .scaleAspectFill) { (bool) in
-//                
-//            }
+            if let url {
+                LottieAnimationManager.showAnimationFromUrl(FromUrl: url, animationBackgroundView: animationView, removeFromSuper: false, loopMode: .loop,contentMode: .scaleAspectFill) { _ in }
+            }
         }
     }
     
@@ -116,6 +108,6 @@ extension MapHeaderCollectionViewCell {
     
     enum CellType {
         case image(imageName: String)
-        case animation(url: String)
+        case animation(url: URL?)
     }
 }

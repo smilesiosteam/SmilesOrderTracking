@@ -52,15 +52,9 @@ final class ImageHeaderCollectionViewCell: UICollectionReusableView {
             headerImage.isHidden = false
         case .animation(let url):
             headerImage.isHidden = true
-            print(url)
-            
-//            let url1 = URL(string: "https://www.smilesuae.ae/images/APP/ORDER_TRACKING/ENGLISH/SMALL/Delivering.json")
-        
-//            let url1 = URL(string: "https://www.smilesuae.ae/images/APP/ORDER_TRACKING/ENGLISH/LARGE/Waiting.json")
-////            let url2 = URL(string: "https://www.smilesuae.ae/images/APP/ORDER_TRACKING/ENGLISH/SMALL/Delivering-2.json")
-//            LottieAnimationManager.showAnimationFromUrl(FromUrl: url1!, animationBackgroundView: self.containerView, removeFromSuper: false, loopMode: .loop,contentMode: .scaleAspectFill) { (bool) in
-//                
-//            }
+            if let url {
+                LottieAnimationManager.showAnimationFromUrl(FromUrl: url, animationBackgroundView: self.containerView, removeFromSuper: false, loopMode: .loop,contentMode: .scaleAspectFill) { _ in }
+            }
         }
     }
     
@@ -84,6 +78,6 @@ extension ImageHeaderCollectionViewCell {
     
     enum CellType {
         case image(imageName: String, backgroundColor: UIColor)
-        case animation(url: String)
+        case animation(url: URL?)
     }
 }

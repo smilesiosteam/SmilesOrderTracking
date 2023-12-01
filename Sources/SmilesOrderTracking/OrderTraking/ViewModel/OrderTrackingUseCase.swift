@@ -23,14 +23,16 @@ final class OrderTrackingUseCase: OrderTrackingUseCaseProtocol {
     private let orderId: String
     private let orderNumber: String
     private var stateSubject = PassthroughSubject<State, Never>()
+    private let services: OrderTrackingServiceHandlerProtocol
     var statePublisher: AnyPublisher<State, Never> {
         stateSubject.eraseToAnyPublisher()
     }
     
     // MARK: - Init
-    init(orderId: String, orderNumber: String) {
+    init(orderId: String, orderNumber: String, services: OrderTrackingServiceHandlerProtocol) {
         self.orderId = orderId
         self.orderNumber = orderNumber
+        self.services = services
     }
     
     // we passed the status as parameter to navigate to the OrderHasBeenDeliveredConfig status
@@ -44,7 +46,7 @@ final class OrderTrackingUseCase: OrderTrackingUseCaseProtocol {
 //                orderResponse.orderDetails?.orderStatus = statues ?? orderStatus
 //                
 //                let status = self.configOrderStatus(response: orderResponse)
-//                self.orderStatus.send(status)
+//                stateSubject.send(.success(model: status))
 //            } catch {
 //                print("Error decoding JSON: \(error)")
 //            }
@@ -110,7 +112,7 @@ final class OrderTrackingUseCase: OrderTrackingUseCaseProtocol {
         let handler = OrderTrackingServiceHandler()
         handler.getOrderTrackingStatus(orderId: orderId,
                                        orderStatus: .confirmation,
-                                       orderNumber: orderNumber)
+                                       orderNumber: orderNumber, isComingFromFirebase: false)
         .sink { [weak self] completion in
             switch completion {
                 
@@ -133,6 +135,9 @@ final class OrderTrackingUseCase: OrderTrackingUseCaseProtocol {
         }.store(in: &cancellables)
         
     }
+    
+    
+   
 
 }
 
@@ -152,7 +157,7 @@ let jsonString = """
 {
   "extTransactionId": "3530191483630",
   "orderDetails": {
-    "orderStatus": 7,
+    "orderStatus": 10,
      "smallImageAnimationUrl": "https://www.smilesuae.ae/images/APP/ORDER_TRACKING/ENGLISH/SMALL/Delivering.json",
      "largeImageAnimationUrl": "https://www.smilesuae.ae/images/APP/ORDER_TRACKING/ENGLISH/LARGE/Waiting.json",
      "trackingColorCode": "#a5deef",
@@ -160,7 +165,7 @@ let jsonString = """
 
     "title": "Wow, your order has arrived X min early. Enjoy! Ya Naguib",
     "orderDescription": "Hardee's should accept your order soon.",
-    "orderNumber": "SMHD112020230000467215",
+    "orderNumber": "SMHD111620230000467198",
     "restaurantName": "Hardee's",
     "deliveryRegion": "Al Kifaf",
     "recipient": "SYMEON STEFANIDIS",
@@ -192,7 +197,7 @@ let jsonString = """
     "addressTitle": "Home",
     "reOrder": true,
     "liveTracking": false,
-    "orderId": 466715,
+    "orderId": 466698,
     "imageUrl": "https://cdn.eateasily.com/restaurants/profile/app/400X300/17316.jpg",
     "iconUrl": "https://cdn.eateasily.com/restaurants/9d237d8a2148c1c2354ff1a2b769f3e2/17338_small.jpg",
     "deliveryLatitude": "25.230654",

@@ -6,11 +6,8 @@
 //
 
 import Foundation
-public enum OrderTrackingNavigation {
-    case orderDetails(orderId: String, restaurantId: String)
-}
-
 
 public protocol OrderTrackingNavigationProtocol: AnyObject {
     func navigateToOrderDetails(orderId: String, restaurantId: String)
+    func openLiveChat(orderId: String, orderNumber: String)
 }

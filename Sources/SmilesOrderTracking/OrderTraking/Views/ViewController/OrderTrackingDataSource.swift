@@ -109,13 +109,10 @@ extension OrderTrackingDataSource: UICollectionViewDataSource {
 // MARK: - Location Delegate
 extension OrderTrackingDataSource: LocationCollectionViewProtocol {
     func didTappPhoneCall(with mobileNumber: String?) {
-        print("didTappPhoneCall")
        
     }
     
     func didTappOrderDetails(orderId: String, restaurantId: String) {
-        print("didTappOrderDetails")
-//        viewModel.orderNavigation(.orderDetails(orderId: orderId, restaurantId: restaurantId))
         viewModel.navigationDelegate?.navigateToOrderDetails(orderId: orderId, restaurantId: restaurantId)
        
     }
@@ -163,13 +160,12 @@ extension OrderTrackingDataSource: RatingCellActionDelegate {
 }
 // MARK: - Confirmation Delegate
 extension OrderTrackingDataSource: OrderConfirmationCellActionDelegate {
-    func didGetTheOrder(with orderId: Int) {
-//        viewModel.fetchOrderStatus(status: OrderTrackingType.orderHasBeenPickedUpPickup.rawValue)
-        
+    func didGetTheOrder(with orderId: String, orderNumber: String) {
+        viewModel.setConfirmationStatus(orderId: orderId, orderStatus: .waitingForTheRestaurant, isUserDeliveredOrder: true, orderNumber: orderNumber)
     }
     
-    func didNotGetTheOrder(with orderId: Int) {
-        print("No")
+    func didNotGetTheOrder(with orderId: String, orderNumber: String) {
+        viewModel.setConfirmationStatus(orderId: orderId, orderStatus: .orderAccepted, isUserDeliveredOrder: false, orderNumber: orderNumber)
     }
 }
 // MARK: - Canceled order Delegate

@@ -12,8 +12,16 @@ import SmilesUtilities
 import SmilesBaseMainRequestManager
 import SmilesLocationHandler
 
-class OrderTrackingServiceHandler {
-    func getOrderTrackingStatus(orderId: String, orderStatus: OrderTrackingType, orderNumber: String, isComingFromFirebase: Bool = false) -> AnyPublisher<OrderTrackingStatusResponse, NetworkError> {
+protocol OrderTrackingServiceHandlerProtocol {
+    func getOrderTrackingStatus(orderId: String, orderStatus: OrderTrackingType, orderNumber: String, isComingFromFirebase: Bool) -> AnyPublisher<OrderTrackingStatusResponse, NetworkError>
+    func setOrderConfirmationStatus(orderId: String, orderStatus: OrderTrackingType) -> AnyPublisher<OrderTrackingStatusResponse, NetworkError>
+    func changeOrderType(orderId: String) -> AnyPublisher<OrderChangeTypeResponse, NetworkError>
+    func cancelOrder(orderId: String, rejectionReason:String?) -> AnyPublisher<OrderCancelResponse, NetworkError>
+    func getOrderRating(ratingType: String, contentType: String, isLiveTracking: Bool, orderId: String) -> AnyPublisher<GetOrderRatingResponse, NetworkError>
+}
+
+final class OrderTrackingServiceHandler: OrderTrackingServiceHandlerProtocol {
+    func getOrderTrackingStatus(orderId: String, orderStatus: OrderTrackingType, orderNumber: String, isComingFromFirebase: Bool) -> AnyPublisher<OrderTrackingStatusResponse, NetworkError> {
         
         let request = OrderTrackingStatusRequest(orderId: orderId)
         print(request)

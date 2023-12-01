@@ -10,8 +10,8 @@ import SmilesFontsManager
 import SmilesUtilities
 
 protocol OrderConfirmationCellActionDelegate: AnyObject {
-    func didGetTheOrder(with orderId: Int)
-    func didNotGetTheOrder(with orderId: Int)
+    func didGetTheOrder(with orderId: String, orderNumber: String)
+    func didNotGetTheOrder(with orderId: String, orderNumber: String)
 }
 
 final class OrderConfirmationCollectionViewCell: UICollectionViewCell {
@@ -59,7 +59,7 @@ final class OrderConfirmationCollectionViewCell: UICollectionViewCell {
     
     // MARK: - Properties
     private weak var delegate: OrderConfirmationCellActionDelegate?
-    private var orderId: Int = 0
+    private var viewModel = ViewModel()
     
     // MARK: - Lifecycle
     override func awakeFromNib() {
@@ -69,11 +69,11 @@ final class OrderConfirmationCollectionViewCell: UICollectionViewCell {
     
     // MARK: - Actions
     @IBAction private func confirmButtonTapped(_ sender: UIButton) {
-        delegate?.didGetTheOrder(with: orderId)
+        delegate?.didGetTheOrder(with: viewModel.orderId, orderNumber: viewModel.orderNumber)
     }
     
     @IBAction private func denyButtonTapped(_ sender: UIButton) {
-        delegate?.didNotGetTheOrder(with: orderId)
+        delegate?.didNotGetTheOrder(with: viewModel.orderId, orderNumber: viewModel.orderNumber)
     }
     
     // MARK: - Methods
@@ -92,6 +92,7 @@ final class OrderConfirmationCollectionViewCell: UICollectionViewCell {
 extension OrderConfirmationCollectionViewCell {
     struct ViewModel {
         var question: String?
-        var orderId: Int = 0
+        var orderId: String = ""
+        var orderNumber: String = ""
     }
 }

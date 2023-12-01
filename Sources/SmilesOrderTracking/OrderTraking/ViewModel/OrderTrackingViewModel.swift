@@ -15,18 +15,19 @@ final class OrderTrackingViewModel {
     var serviceHandler = OrderTrackingServiceHandler()
 
     private let useCase: OrderTrackingUseCaseProtocol
+    private let confirmUseCase: OrderConfirmationUseCaseProtocol
     private var statusSubject = PassthroughSubject<State, Never>()
     var orderId = ""
     var orderStatusPublisher: AnyPublisher<State, Never> {
         statusSubject.eraseToAnyPublisher()
     }
     
-    var orderNavigation: ((OrderTrackingNavigation) -> Void) = { _ in }
     var navigationDelegate: OrderTrackingNavigationProtocol?
+    
     // MARK: - Init
-    init(useCase: OrderTrackingUseCaseProtocol) {
+    init(useCase: OrderTrackingUseCaseProtocol, confirmUseCase: OrderConfirmationUseCaseProtocol) {
         self.useCase = useCase
-       
+        self.confirmUseCase = confirmUseCase
     }
     
     func fetchStatus(with status: Int?) {
@@ -52,6 +53,29 @@ final class OrderTrackingViewModel {
                 self.statusSubject.send(.success(model: model))
             case .orderId(let id):
                 self.orderId = id
+            }
+        }
+        .store(in: &cancellables)
+    }
+    
+    
+    func setConfirmationStatus(orderId: String, orderStatus: OrderTrackingType, isUserDeliveredOrder: Bool, orderNumber: String) {
+        statusSubject.send(.showLoader)
+        confirmUseCase.setOrderConfirmation(orderId: orderId,
+                                            orderStatus: orderStatus,
+                                            isUserDeliveredOrder: isUserDeliveredOrder)
+        .sink { [weak self] state in
+            guard let self else {
+                return
+            }
+            self.statusSubject.send(.hideLoader)
+            switch state {
+            case .showError(message: let message):
+                self.statusSubject.send(.showError(message: message))
+            case .openLiveChat:
+                self.navigationDelegate?.openLiveChat(orderId: orderId, orderNumber: orderNumber)
+            case .callOrderStatus:
+                self.fetchStatus(with: nil)
             }
         }
         .store(in: &cancellables)

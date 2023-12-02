@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Combine
 
 protocol ItemRatingDataSourceDelegate: AnyObject {
     func collectionViewShouldReload()
@@ -13,8 +14,11 @@ protocol ItemRatingDataSourceDelegate: AnyObject {
 
 final class ItemRatingDataSource: NSObject {
     // MARK: - Properties
+    private var cancellables = Set<AnyCancellable>()
     private let viewModel: ItemRatingViewModel
     weak var delegate: ItemRatingDataSourceDelegate?
+    
+    @Published var enableDoneButton = false
     
     // MARK: - Lifecycle
     init(viewModel: ItemRatingViewModel) {
@@ -37,11 +41,12 @@ final class ItemRatingDataSource: NSObject {
                 layoutSize: layoutSize,
                 subitems: [item]
             )
-            group.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 0, bottom: 16, trailing: 0)
+//            group.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 0, bottom: 16, trailing: 0)
             
             // Section
             let section = NSCollectionLayoutSection(group: group)
-            section.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 0, bottom: 23, trailing: 0)
+//            section.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 0, bottom: 23, trailing: 0)
+            section.interGroupSpacing = 16
             
             return section
         }
@@ -72,11 +77,13 @@ extension ItemRatingDataSource: UICollectionViewDataSource {
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: String(describing: FoodRatingSuccessCollectionViewCell.self), for: indexPath) as? FoodRatingSuccessCollectionViewCell else { return UICollectionViewCell() }
             let ratingOrderResult = viewModel.itemRatingUIModel.ratingOrderResponse.ratingOrderResult
             let viewModel = FoodRatingSuccessCollectionViewCell.ViewModel(thankYouText: viewModel.popupTitle, pointsText: ratingOrderResult?.accrualTitle, ratingSuccessDescription: ratingOrderResult?.description)
+            
             cell.updateCell(with: viewModel)
             return cell
         case ItemRatingSection.itemRatingTitle.section:
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: String(describing: ItemRatingTitleCollectionViewCell.self), for: indexPath) as? ItemRatingTitleCollectionViewCell else { return UICollectionViewCell() }
             let ratingOrderResult = viewModel.itemRatingUIModel.ratingOrderResponse.ratingOrderResult
+            
             cell.updateCell(with: ratingOrderResult?.accrualDescription)
             return cell
         case ItemRatingSection.itemRating.section:
@@ -84,13 +91,13 @@ extension ItemRatingDataSource: UICollectionViewDataSource {
             let itemToRate = viewModel.itemRatingUIModel.orderItems[indexPath.row]
             var viewModel = ItemRatingCollectionViewCell.ViewModel(itemName: itemToRate.itemName, itemId: itemToRate.itemID, rating: itemToRate.userItemRating ?? 0.0, ratingSubtitle: itemToRate.ratingFeedback, ratingArray: itemToRate.rating, itemImage: itemToRate.itemImage, ratingCount: itemToRate.ratingCount)
             
-            // TODO: Check flow of this check against old implementation in ThankyouForRatingPresenter
             if itemToRate.userItemRating ?? 0.0 > 0 {
                 viewModel.enableStarsInteraction = false
                 self.viewModel.doneActionDismiss = true
             } else {
                 self.viewModel.doneActionDismiss = false
             }
+            
             cell.updateCell(with: viewModel, delegate: self)
             return cell
         default:
@@ -101,11 +108,11 @@ extension ItemRatingDataSource: UICollectionViewDataSource {
 
 // MARK: - ItemRatingCellActionDelegate
 extension ItemRatingDataSource: ItemRatingCellActionDelegate {
-    func didTapRating(with ratingNumber: Int, ratingType: String?) {
-        
-    }
+    func didTapRating(with ratingNumber: Int, ratingType: String?) {}
     
     func updateItemData(with itemRating: ItemRatings, orderRating: OrderRatingModel, ratingType: String?) {
+        enableDoneButton = true
+        
         viewModel.itemRatingUIModel.orderItems = viewModel.itemRatingUIModel.orderItems.map {
             var item = $0
             if $0.itemID == itemRating.itemId {

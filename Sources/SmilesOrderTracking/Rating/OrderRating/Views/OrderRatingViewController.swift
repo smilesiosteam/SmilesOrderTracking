@@ -239,26 +239,6 @@ final public class OrderRatingViewController: UIViewController {
         model.ratingFeedback = ratingFeedback
         return model
     }
-    
-//    private func openItemRatingViewController(with model: RateOrderResponse) {
-//        guard let viewModel = self.viewModel else { return }
-//        let itemRatingUIModel = ItemRatingUIModel(itemWiseRatingEnabled: model.itemLevelRatingEnable ?? false, isAccrualPointsAllowed: model.isAccrualPointsAllowed ?? false, orderItems: self.orderItems ?? [], ratingOrderResponse: model)
-//        let itemRatingViewModel = ItemRatingViewModel(itemRatingUIModel: itemRatingUIModel, serviceHandler: viewModel.serviceHandler)
-//        let itemRatingViewController = ItemRatingViewController.create(with: itemRatingViewModel)
-//        itemRatingViewController.modalPresentationStyle = .overFullScreen
-//        
-//        self.present(itemRatingViewController)
-//    }
-//    
-//    private func openFeedbackSuccessViewController(with model: RateOrderResponse) {
-//        let ratingOrderResult = model.ratingOrderResult
-//        let feedBackSuccessUIModel = FeedbackSuccessUIModel(popupTitle: ratingOrderResult?.title ?? "", description: ratingOrderResult?.description ?? "", boldText: ratingOrderResult?.accrualTitle ?? "")
-//        let feedBackSuccessViewModel = FeedbackSuccessViewModel(feedBackSuccessUIModel: feedBackSuccessUIModel)
-//        let feedBackSuccessViewController = FeedbackSuccessViewController.create(with: feedBackSuccessViewModel)
-//        feedBackSuccessViewController.modalPresentationStyle = .overFullScreen
-//        
-//        self.present(feedBackSuccessViewController)
-//    }
 }
 
 // MARK: - Create

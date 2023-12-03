@@ -178,12 +178,10 @@ final public class OrderRatingViewController: UIViewController {
             guard let self, let value else { return }
             
             dismiss {
-                if let itemWiseRatingEnabled = value.itemLevelRatingEnable {
-                    if itemWiseRatingEnabled {
-                        self.delegate?.shouldOpenItemRatingViewController(with: value, orderItems: self.orderItems ?? [])
-                    } else {
-                        self.delegate?.shouldOpenFeedbackSuccessViewController(with: value)
-                    }
+                if let itemWiseRatingEnabled = value.itemLevelRatingEnable, itemWiseRatingEnabled {
+                    self.delegate?.shouldOpenItemRatingViewController(with: value, orderItems: self.orderItems ?? [])
+                } else {
+                    self.delegate?.shouldOpenFeedbackSuccessViewController(with: value)
                 }
             }
         }.store(in: &cancellables)
@@ -216,6 +214,11 @@ final public class OrderRatingViewController: UIViewController {
             guard let self else { return }
             self.ratingStarsData = value
         }.store(in: &cancellables)
+        
+        viewModel?.$showErrorMessage.sink { [weak self] value in
+            guard let self else { return }
+            self.showAlertWithOkayOnly(message: value.asStringOrEmpty())
+        }.store(in: &cancellables)
     }
     
     private func setStarsState(with rating: Double) {
@@ -239,26 +242,6 @@ final public class OrderRatingViewController: UIViewController {
         model.ratingFeedback = ratingFeedback
         return model
     }
-    
-//    private func openItemRatingViewController(with model: RateOrderResponse) {
-//        guard let viewModel = self.viewModel else { return }
-//        let itemRatingUIModel = ItemRatingUIModel(itemWiseRatingEnabled: model.itemLevelRatingEnable ?? false, isAccrualPointsAllowed: model.isAccrualPointsAllowed ?? false, orderItems: self.orderItems ?? [], ratingOrderResponse: model)
-//        let itemRatingViewModel = ItemRatingViewModel(itemRatingUIModel: itemRatingUIModel, serviceHandler: viewModel.serviceHandler)
-//        let itemRatingViewController = ItemRatingViewController.create(with: itemRatingViewModel)
-//        itemRatingViewController.modalPresentationStyle = .overFullScreen
-//        
-//        self.present(itemRatingViewController)
-//    }
-//    
-//    private func openFeedbackSuccessViewController(with model: RateOrderResponse) {
-//        let ratingOrderResult = model.ratingOrderResult
-//        let feedBackSuccessUIModel = FeedbackSuccessUIModel(popupTitle: ratingOrderResult?.title ?? "", description: ratingOrderResult?.description ?? "", boldText: ratingOrderResult?.accrualTitle ?? "")
-//        let feedBackSuccessViewModel = FeedbackSuccessViewModel(feedBackSuccessUIModel: feedBackSuccessUIModel)
-//        let feedBackSuccessViewController = FeedbackSuccessViewController.create(with: feedBackSuccessViewModel)
-//        feedBackSuccessViewController.modalPresentationStyle = .overFullScreen
-//        
-//        self.present(feedBackSuccessViewController)
-//    }
 }
 
 // MARK: - Create

@@ -47,6 +47,13 @@ final class ItemRatingCollectionViewCell: UICollectionViewCell {
     // MARK: - Lifecycle
     override func awakeFromNib() {
         super.awakeFromNib()
+        
+        ratingStarView.settings.fillMode = .full
+        ratingStarView.didFinishTouchingCosmos = { [weak self] stars in
+            guard let self else { return }
+            self.configureStarsState(with: stars)
+            self.delegate?.didTapRating(with: Int(stars), ratingType: self.ratingType)
+        }
     }
     
     // MARK: - Methods
@@ -72,13 +79,6 @@ final class ItemRatingCollectionViewCell: UICollectionViewCell {
             ratingStarView.isUserInteractionEnabled = false
         } else {
             ratingStarView.isUserInteractionEnabled = true
-        }
-        
-        ratingStarView.settings.fillMode = .full
-        ratingStarView.didFinishTouchingCosmos = { [weak self] stars in
-            guard let self else { return }
-            self.configureStarsState(with: stars)
-            self.delegate?.didTapRating(with: Int(stars), ratingType: self.ratingType)
         }
     }
     

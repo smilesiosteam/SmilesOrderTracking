@@ -22,16 +22,16 @@
                         <rect key="frame" x="0.0" y="0.0" width="497" height="337"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="aA1-Xv-ZcB">
-                                <rect key="frame" x="16" y="24" width="465" height="313"/>
+                                <rect key="frame" x="16" y="24" width="465" height="290"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Thank you for your rating" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="m6P-Qh-myJ">
-                                        <rect key="frame" x="0.0" y="0.0" width="465" height="30.666666666666668"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="465" height="20.333333333333332"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="z6n-iF-GUq">
-                                        <rect key="frame" x="0.0" y="38.666666666666657" width="465" height="168"/>
+                                        <rect key="frame" x="0.0" y="28.333333333333343" width="465" height="168"/>
                                         <subviews>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Uts-9b-b17">
                                                 <rect key="frame" x="133.66666666666666" y="0.0" width="197.99999999999997" height="168"/>
@@ -50,20 +50,20 @@
                                         </constraints>
                                     </view>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="You just received 50 Smiles points!" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nG5-3R-aBO">
-                                        <rect key="frame" x="0.0" y="214.66666666666666" width="465" height="20.333333333333343"/>
+                                        <rect key="frame" x="0.0" y="204.33333333333334" width="465" height="20.333333333333343"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="es8-IE-vvC">
-                                        <rect key="frame" x="0.0" y="243" width="465" height="61"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" ambiguous="YES" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="es8-IE-vvC">
+                                        <rect key="frame" x="0.0" y="232.66666666666671" width="465" height="48.333333333333343"/>
                                         <string key="text">Your review will help other users choose restuarants and help the restuarant maintain quality that is as per the best standards.</string>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5cR-iq-fhY">
-                                        <rect key="frame" x="0.0" y="312" width="465" height="1"/>
+                                        <rect key="frame" x="0.0" y="289" width="465" height="1"/>
                                         <color key="backgroundColor" systemColor="systemGray2Color"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="1" id="UML-CX-DV5"/>
@@ -77,7 +77,7 @@
                             <constraint firstItem="aA1-Xv-ZcB" firstAttribute="top" secondItem="Rk6-al-HgH" secondAttribute="top" constant="24" id="4Oq-Wy-Pcr"/>
                             <constraint firstAttribute="trailing" secondItem="aA1-Xv-ZcB" secondAttribute="trailing" constant="16" id="Ge0-rg-dAQ"/>
                             <constraint firstItem="aA1-Xv-ZcB" firstAttribute="leading" secondItem="Rk6-al-HgH" secondAttribute="leading" constant="16" id="imo-0B-p9G"/>
-                            <constraint firstAttribute="bottom" secondItem="aA1-Xv-ZcB" secondAttribute="bottom" id="smv-P9-c5h"/>
+                            <constraint firstAttribute="bottom" secondItem="aA1-Xv-ZcB" secondAttribute="bottom" constant="23" id="smv-P9-c5h"/>
                         </constraints>
                     </view>
                 </subviews>

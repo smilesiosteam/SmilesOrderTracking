@@ -46,13 +46,15 @@ final public class ItemRatingViewController: UIViewController {
         dataSource?.delegate = self
         setupCollectionView()
         bindViewModel()
+        bindDataSource()
         setupPanGesture()
+        setupUI()
     }
     
     // MARK: - Actions
     @IBAction private func doneButtonTapped(_ sender: UIButton) {
         guard let viewModel else { return }
-        if viewModel.itemWiseRating && !viewModel.doneActionDismiss {
+        if !viewModel.doneActionDismiss {
             viewModel.submitRating()
         } else {
             dismiss()
@@ -74,7 +76,6 @@ final public class ItemRatingViewController: UIViewController {
             collectionView.collectionViewLayout = dataSource.createCollectionViewLayout()
         }
         collectionView.dataSource = dataSource
-        collectionView.reloadData()
     }
     
     private func bindViewModel() {
@@ -84,6 +85,18 @@ final public class ItemRatingViewController: UIViewController {
             dismiss {
                 self.delegate?.shouldOpenFeedbackSuccessViewController(with: value)
             }
+        }.store(in: &cancellables)
+        
+        viewModel?.$showErrorMessage.sink { [weak self] value in
+            guard let self else { return }
+            self.showAlertWithOkayOnly(message: value.asStringOrEmpty())
+        }.store(in: &cancellables)
+    }
+    
+    private func bindDataSource() {
+        dataSource?.$enableDoneButton.sink { [weak self] value in
+            guard let self else { return }
+            self.doneButtonState(enabled: value)
         }.store(in: &cancellables)
     }
     
@@ -98,7 +111,29 @@ final public class ItemRatingViewController: UIViewController {
         
         let isDraggingDown = translation.y > 50
         if isDraggingDown {
+            NotificationCenter.default.post(name: .ReloadOrderSummary, object: nil, userInfo: nil)
             dismiss()
+        }
+    }
+    
+    private func doneButtonState(enabled: Bool) {
+        if enabled {
+            doneButton.backgroundColor = .appPurpleColor1
+            doneButton.setTitleColor(.white, for: .normal)
+            doneButton.isUserInteractionEnabled = true
+        } else {
+            doneButton.backgroundColor = .appButtonDisabledColor.withAlphaComponent(0.3)
+            doneButton.setTitleColor(.appGreyColor_128.withAlphaComponent(0.5), for: .normal)
+            doneButton.isUserInteractionEnabled = false
+        }
+    }
+    
+    private func setupUI() {
+        guard let viewModel else { return }
+        if viewModel.itemRatingUIModel.orderItems.contains(where: { ($0.userItemRating ?? 0.0) > 0 }) {
+            doneButtonState(enabled: true)
+        } else {
+            doneButtonState(enabled: false)
         }
     }
 }
@@ -115,8 +150,10 @@ extension ItemRatingViewController {
 
 // MARK: - ItemRatingDataSourceDelegate
 extension ItemRatingViewController: ItemRatingDataSourceDelegate {
-    func collectionViewShouldReload() {
-        collectionView.dataSource = dataSource
-        collectionView.reloadSections([ItemRatingSection.itemRating.section])
+    func collectionViewShouldReloadRow(at index: Int) {
+        collectionView.performBatchUpdates(nil)
+        
+        let indexPath = IndexPath(row: index, section: ItemRatingSection.itemRating.section)
+        collectionView.reloadItems(at: [indexPath])
     }
 }

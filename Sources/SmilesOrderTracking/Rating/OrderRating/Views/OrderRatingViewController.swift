@@ -178,12 +178,10 @@ final public class OrderRatingViewController: UIViewController {
             guard let self, let value else { return }
             
             dismiss {
-                if let itemWiseRatingEnabled = value.itemLevelRatingEnable {
-                    if itemWiseRatingEnabled {
-                        self.delegate?.shouldOpenItemRatingViewController(with: value, orderItems: self.orderItems ?? [])
-                    } else {
-                        self.delegate?.shouldOpenFeedbackSuccessViewController(with: value)
-                    }
+                if let itemWiseRatingEnabled = value.itemLevelRatingEnable, itemWiseRatingEnabled {
+                    self.delegate?.shouldOpenItemRatingViewController(with: value, orderItems: self.orderItems ?? [])
+                } else {
+                    self.delegate?.shouldOpenFeedbackSuccessViewController(with: value)
                 }
             }
         }.store(in: &cancellables)
@@ -215,6 +213,11 @@ final public class OrderRatingViewController: UIViewController {
         viewModel?.$ratingStarsData.sink { [weak self] value in
             guard let self else { return }
             self.ratingStarsData = value
+        }.store(in: &cancellables)
+        
+        viewModel?.$showErrorMessage.sink { [weak self] value in
+            guard let self else { return }
+            self.showAlertWithOkayOnly(message: value.asStringOrEmpty())
         }.store(in: &cancellables)
     }
     

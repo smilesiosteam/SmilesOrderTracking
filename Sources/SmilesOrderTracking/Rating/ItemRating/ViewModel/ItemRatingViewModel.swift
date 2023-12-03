@@ -20,6 +20,7 @@ final public class ItemRatingViewModel: NSObject {
     var itemRatings = [ItemRatings]()
     var itemWiseRating = false
     var doneActionDismiss = false
+    @Published private(set) var showErrorMessage: String?
     
     init(itemRatingUIModel: ItemRatingUIModel, serviceHandler: OrderTrackingServiceHandler) {
         self.itemRatingUIModel = itemRatingUIModel
@@ -40,11 +41,13 @@ final public class ItemRatingViewModel: NSObject {
         SmilesLoader.show()
         let ratingOrderResponse = itemRatingUIModel.ratingOrderResponse
         serviceHandler.submitOrderRating(orderNumber: ratingOrderResponse.orderNumber.asStringOrEmpty(), orderId: ratingOrderResponse.orderId.asStringOrEmpty(), restaurantName: ratingOrderResponse.restaurantName.asStringOrEmpty(), itemRatings: itemRatings, orderRating: nil, isAccrualPointsAllowed: ratingOrderResponse.isAccrualPointsAllowed ?? false, itemLevelRatingEnabled: ratingOrderResponse.itemLevelRatingEnable ?? false, restaurantId: ratingOrderResponse.restaurantId)
-            .sink { completion in
+            .sink { [weak self] completion in
+                guard let self else { return }
                 SmilesLoader.dismiss()
+                
                 switch completion {
                 case .failure(let error):
-                    print(error)
+                    self.showErrorMessage = error.errorDescription
                 default:
                     break
                 }

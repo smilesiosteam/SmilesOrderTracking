@@ -9,7 +9,7 @@ import UIKit
 import Combine
 
 protocol ItemRatingDataSourceDelegate: AnyObject {
-    func collectionViewShouldReload()
+    func collectionViewShouldReloadRow(at index: Int)
 }
 
 final class ItemRatingDataSource: NSObject {
@@ -30,7 +30,7 @@ final class ItemRatingDataSource: NSObject {
             // Size
             let layoutSize = NSCollectionLayoutSize(
                 widthDimension: .fractionalWidth(1.0),
-                heightDimension: .estimated(100.0)
+                heightDimension: .estimated(200.0)
             )
             
             // Item
@@ -129,6 +129,8 @@ extension ItemRatingDataSource: ItemRatingCellActionDelegate {
             viewModel.itemRatings.append(itemRating)
         }
         
-        delegate?.collectionViewShouldReload()
+        if let index = viewModel.itemRatingUIModel.orderItems.firstIndex(where: { $0.itemID == itemRating.itemId }) {
+            delegate?.collectionViewShouldReloadRow(at: index)
+        }
     }
 }

@@ -86,6 +86,11 @@ final public class ItemRatingViewController: UIViewController {
                 self.delegate?.shouldOpenFeedbackSuccessViewController(with: value)
             }
         }.store(in: &cancellables)
+        
+        viewModel?.$showErrorMessage.sink { [weak self] value in
+            guard let self else { return }
+            self.showAlertWithOkayOnly(message: value.asStringOrEmpty())
+        }.store(in: &cancellables)
     }
     
     private func bindDataSource() {
@@ -145,7 +150,10 @@ extension ItemRatingViewController {
 
 // MARK: - ItemRatingDataSourceDelegate
 extension ItemRatingViewController: ItemRatingDataSourceDelegate {
-    func collectionViewShouldReload() {
-        collectionView.reloadSections([ItemRatingSection.itemRating.section])
+    func collectionViewShouldReloadRow(at index: Int) {
+        collectionView.performBatchUpdates(nil)
+        
+        let indexPath = IndexPath(row: index, section: ItemRatingSection.itemRating.section)
+        collectionView.reloadItems(at: [indexPath])
     }
 }

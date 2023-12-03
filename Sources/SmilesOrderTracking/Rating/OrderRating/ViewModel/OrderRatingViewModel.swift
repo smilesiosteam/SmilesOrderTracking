@@ -23,6 +23,7 @@ final class OrderRatingViewModel {
     @Published private(set) var ratingStarsData: [Rating]?
     @Published private(set) var orderItems: [OrderItemDetail]?
     @Published private(set) var shouldDismiss = false
+    @Published private(set) var showErrorMessage: String?
     
     init(orderRatingUIModel: OrderRatingUIModel, serviceHandler: OrderTrackingServiceHandler) {
         self.orderRatingUIModel = orderRatingUIModel
@@ -32,11 +33,13 @@ final class OrderRatingViewModel {
     func getOrderRating() {
         SmilesLoader.show()
         serviceHandler.getOrderRating(ratingType: orderRatingUIModel.ratingType.asStringOrEmpty(), contentType: orderRatingUIModel.contentType.asStringOrEmpty(), isLiveTracking: orderRatingUIModel.isLiveTracking ?? false, orderId: orderRatingUIModel.orderId.asStringOrEmpty())
-            .sink { completion in
+            .sink { [weak self] completion in
+                guard let self else { return }
                 SmilesLoader.dismiss()
+                
                 switch completion {
                 case .failure(let error):
-                    print(error)
+                    self.showErrorMessage = error.errorDescription
                 default:
                     break
                 }
@@ -53,11 +56,13 @@ final class OrderRatingViewModel {
     func submitRating(with rating: OrderRatingModel) {
         SmilesLoader.show()
         serviceHandler.submitOrderRating(orderNumber: getOrderRatingResponse?.orderDetails?.orderNumber ?? "", orderId: orderRatingUIModel.orderId ?? "", restaurantName: getOrderRatingResponse?.orderDetails?.restaurantName ?? "", itemRatings: nil, orderRating: [rating], isAccrualPointsAllowed: getOrderRatingResponse?.isAccrualPointsAllowed ?? false, itemLevelRatingEnabled: getOrderRatingResponse?.itemLevelRatingEnabled ?? false, restaurantId: getOrderRatingResponse?.orderDetails?.restaurantID ?? "")
-            .sink { completion in
+            .sink { [weak self] completion in
+                guard let self else { return }
                 SmilesLoader.dismiss()
+                
                 switch completion {
                 case .failure(let error):
-                    print(error)
+                    self.showErrorMessage = error.errorDescription
                 default:
                     break
                 }

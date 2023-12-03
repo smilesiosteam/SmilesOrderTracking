@@ -8,7 +8,7 @@
 import UIKit
 
 protocol OrderCancelledTimerCellActionDelegate: AnyObject {
-    func likeToPickupOrderDidTap()
+    func likeToPickupOrderDidTap(orderId: String, orderNumber: String, restaurantAddress: String)
 }
 
 final class OrderCancelledTimerCollectionViewCell: UICollectionViewCell {
@@ -48,7 +48,7 @@ final class OrderCancelledTimerCollectionViewCell: UICollectionViewCell {
    private weak var delegate: OrderCancelledTimerCellActionDelegate?
     private var timer: Timer?
     private var count = 900
-    
+    private var viewModel =  ViewModel()
     // MARK: - Lifecycle
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -62,12 +62,13 @@ final class OrderCancelledTimerCollectionViewCell: UICollectionViewCell {
     
     // MARK: - Actions
     @IBAction private func actionButtonTapped(_ sender: UIButton) {
-        delegate?.likeToPickupOrderDidTap()
+        delegate?.likeToPickupOrderDidTap(orderId: viewModel.orderId, orderNumber: viewModel.orderNumber, restaurantAddress: viewModel.restaurantAddress)
     }
     
     // MARK: - Methods
     func updateCell(with viewModel: ViewModel, delegate: OrderCancelledTimerCellActionDelegate) {
         self.delegate = delegate
+        self.viewModel = viewModel
         actionButton.setTitle(viewModel.buttonTitle, for: .normal)
         textLabel.text = viewModel.title
        
@@ -116,5 +117,8 @@ extension OrderCancelledTimerCollectionViewCell {
         var timerCount: Int? = nil
         var title: String?
         var buttonTitle: String?
+        var orderId: String = ""
+        var orderNumber: String = ""
+        var restaurantAddress: String = ""
     }
 }

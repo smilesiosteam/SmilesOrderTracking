@@ -13,6 +13,7 @@ import GoogleMaps
 import SmilesLoader
 
 protocol OrderTrackingViewDelegate: AnyObject {
+    func presentConfirmationPickup(location: String, didTappedContinue: (()-> Void)?)
     func presentCancelFlow(orderId: String)
     func presentRateFlow()
     func dismiss()
@@ -50,6 +51,12 @@ extension OrderTrackingViewController: OrderTrackingViewDelegate {
     func dismiss() {
         self.dismissMe()
     }
+    
+    func presentConfirmationPickup(location: String, didTappedContinue: (()-> Void)?) {
+        let viewController = TrackOrderConfigurator.getConfirmationPopup(locationText: location, didTappedContinue: didTappedContinue)
+        present(viewController)
+    }
+    
 }
 
 extension OrderTrackingViewController: OrderRatingViewDelegate {
@@ -91,9 +98,13 @@ public final class OrderTrackingViewController: UIViewController, Toastable {
         dataSource.delegate = self
         bindCancelFlow()
         bindStatus()
-        viewModel.fetchStatus(with: nil)
+       
     }
     
+    public override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        viewModel.fetchStatus()
+    }
     private func bindCancelFlow() {
         cancelOrderviewModel.transform(input: cancelOrderInput.eraseToAnyPublisher())
             .sink { [weak self] event in
@@ -186,7 +197,10 @@ public final class OrderTrackingViewController: UIViewController, Toastable {
             case .hideLoader:
                 SmilesLoader.dismiss()
             case .showError(let message):
-                self.showAlertWithOkayOnly(message: message)
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                    self.showAlertWithOkayOnly(message: message)
+                }
+                
             case .showToastForArrivedOrder(let isShow):
                 if isShow {
                     self.showToastForOrderArrived()

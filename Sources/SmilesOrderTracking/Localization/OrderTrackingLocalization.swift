@@ -59,6 +59,12 @@ enum OrderTrackingLocalization {
     case dontCancel
     case yesCancel
     
+    // Pickup Confirmation
+    case confirmOrderPickup
+    case refundInfo
+    case continueText
+    case cancelText
+    
     var text: String {
         switch self {
         case .support:
@@ -154,6 +160,14 @@ enum OrderTrackingLocalization {
             return "Don't cancel".localizedString
         case .yesCancel:
             return "Yes cancel".localizedString
+        case .confirmOrderPickup:
+            return "ConfirmOrderPickup".localizedString
+        case .refundInfo:
+            return "RefundInfo".localizedString
+        case .continueText:
+            return "ContinueText".localizedString
+        case .cancelText:
+            return "CancelText".localizedString
         }
     }
 }

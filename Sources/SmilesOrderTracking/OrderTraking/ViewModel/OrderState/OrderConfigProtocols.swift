@@ -30,7 +30,11 @@ extension CanceledOrderConfigProtocol {
     func getOrderCancelledModel(title: String, buttonTitle: String) -> OrderCancelledTimerCollectionViewCell.ViewModel {
         var viewModel = OrderCancelledTimerCollectionViewCell.ViewModel()
         viewModel.buttonTitle = buttonTitle
+        let orderId = response.orderDetails?.orderId ?? 0
+        viewModel.orderId = "\(orderId)"
+        viewModel.orderNumber = response.orderDetails?.orderNumber ?? ""
         viewModel.title = title
+        viewModel.restaurantAddress = response.orderDetails?.restaurantAddress ?? ""
         return viewModel
     }
 }

@@ -39,8 +39,12 @@ struct ChangedToPickupOrderConfig: OrderTrackable, CancelHeaderProtocol {
         var viewModel = OrderCancelledTimerCollectionViewCell.ViewModel()
         viewModel.buttonTitle = OrderTrackingLocalization.orderCancelledLikeToPickupOrder.text
         viewModel.title = OrderTrackingLocalization.orderCancelledBadWeather.text
-        let timeOut = response.orderDetails?.orderTimeOut ?? 0
+        let orderId = response.orderDetails?.orderId ?? 0
+        viewModel.orderId = "\(orderId)"
+        viewModel.orderNumber = response.orderDetails?.orderNumber ?? ""
+        let timeOut = response.orderDetails?.changeTypeTimer ?? 0
         viewModel.timerCount = timeOut * 60
+        viewModel.restaurantAddress = response.orderDetails?.restaurantAddress ?? ""
         return viewModel
     }
 }

@@ -170,7 +170,12 @@ extension OrderTrackingDataSource: OrderConfirmationCellActionDelegate {
 }
 // MARK: - Canceled order Delegate
 extension OrderTrackingDataSource: OrderCancelledTimerCellActionDelegate {
-    func likeToPickupOrderDidTap() {
-        print("likeToPickupOrderDidTap")
+    func likeToPickupOrderDidTap(orderId: String, orderNumber: String, restaurantAddress: String) {
+        
+        let didTappedContinue: (()-> Void) = { [weak self] in
+            self?.viewModel.changeType(orderId: orderId, orderNumber: orderNumber)
+        }
+        delegate?.presentConfirmationPickup(location: restaurantAddress, didTappedContinue: didTappedContinue)
+        
     }
 }

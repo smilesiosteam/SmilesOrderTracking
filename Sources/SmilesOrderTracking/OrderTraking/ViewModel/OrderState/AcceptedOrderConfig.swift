@@ -16,9 +16,6 @@ struct AcceptedOrderConfig: OrderTrackable {
             .progressBar(model: getProgressBarModel())
         ]
         
-        if let description = orderText {
-            cells.append(.text(model: .init(title: orderText)))
-        }
         if orderType == .pickup {
             cells.append(.driver(model: getDriverModel()))
         }
@@ -54,6 +51,7 @@ struct AcceptedOrderConfig: OrderTrackable {
         viewModel.title = OrderTrackingLocalization.pickUpOrderFrom.text
         viewModel.subTitle = response.orderDetails?.restaurantAddress
         viewModel.cellType = .pickup
+        viewModel.placeName = response.orderDetails?.restaurantName ?? ""
         return viewModel
     }
 }

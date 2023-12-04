@@ -26,10 +26,18 @@ public enum TrackOrderConfigurator {
                                            orderNumber: dependance.orderNUmber,
                                            services: service)
         let orderConfirmationUseCase = OrderConfirmationUseCase(services: service)
-        let viewModel = OrderTrackingViewModel(useCase: useCase, confirmUseCase: orderConfirmationUseCase)
+        let changeTypeUseCase = ChangeTypeUseCase(services: service)
+        let viewModel = OrderTrackingViewModel(useCase: useCase, confirmUseCase: orderConfirmationUseCase, changeTypeUseCase: changeTypeUseCase)
         viewModel.navigationDelegate = navigationDelegate
         let viewController = OrderTrackingViewController.create()
         viewController.viewModel = viewModel
+        return viewController
+    }
+    
+    static func getConfirmationPopup(locationText: String, didTappedContinue: (()-> Void)?) -> UIViewController {
+        let viewController = PickupConfirmationViewController.create()
+        viewController.locationText = locationText
+        viewController.didTappedContinue = didTappedContinue
         return viewController
     }
     

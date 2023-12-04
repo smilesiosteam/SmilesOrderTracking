@@ -9,7 +9,8 @@ import UIKit
 import GoogleMaps
 import Combine
 import LottieAnimationManager
-
+import Lottie
+import SmilesUtilities
 final class MapHeaderCollectionViewCell: UICollectionReusableView {
     
     // MARK: - Outlets
@@ -18,6 +19,7 @@ final class MapHeaderCollectionViewCell: UICollectionReusableView {
     @IBOutlet private weak var dismissButton: UIButton!
     @IBOutlet private weak var animationView: UIView!
     @IBOutlet private weak var supportButton: UIButton!
+    @IBOutlet private weak var headerStack: UIStackView!
     
     // MARK: - Properties
     private weak var delegate: HeaderCollectionViewProtocol?
@@ -49,6 +51,10 @@ final class MapHeaderCollectionViewCell: UICollectionReusableView {
         mapView.addMarker(model: viewModel.endPoint)
     }
     
+    func configHeader(isHidden: Bool) {
+        headerStack.isHidden = isHidden
+    }
+    
     private func configCellType(type: CellType) {
         switch type {
         case .image(let imageName):
@@ -64,15 +70,20 @@ final class MapHeaderCollectionViewCell: UICollectionReusableView {
         }
     }
     
+    
+    
     private func configControllers() {
         dismissButton.layer.cornerRadius = 20
         supportButton.layer.cornerRadius = 20
         driverImage.layer.cornerRadius = 50
         animationView.layer.cornerRadius = 50
+        animationView.layer.borderWidth = 5
+        animationView.layer.borderColor = UIColor.white.cgColor
         supportButton.setTitle(OrderTrackingLocalization.support.text, for: .normal)
         [supportButton, dismissButton].forEach({
             $0.fontTextStyle = .smilesTitle1
             $0.setTitleColor(.appRevampPurpleMainColor, for: .normal)
+            $0.addShadowToSelf(offset: CGSize(width: 0, height: 0), color: UIColor(red: 0/255, green: 0/255, blue: 0/255, alpha: 0.2), radius: 1.0, opacity: 1)
         })
     }
     
@@ -94,7 +105,6 @@ final class MapHeaderCollectionViewCell: UICollectionReusableView {
         DispatchQueue.main.asyncAfter(deadline: DispatchTime(uptimeNanoseconds: UInt64(0.3))) {
             self.mapView.animate(with: GMSCameraUpdate.fit(bounds, withPadding: 100.0))
         }
-        
     }
 }
 

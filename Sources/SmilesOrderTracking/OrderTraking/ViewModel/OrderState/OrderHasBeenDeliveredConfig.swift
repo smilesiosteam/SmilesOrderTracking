@@ -23,10 +23,6 @@ struct OrderHasBeenDeliveredConfig: OrderTrackable {
             .progressBar(model: progressBar)
         ]
         
-        if let description = orderText {
-            cells.append(.text(model: .init(title: orderText)))
-        }
-        
         cells.append(.location(model: location))
         
         if let orderRateModel {

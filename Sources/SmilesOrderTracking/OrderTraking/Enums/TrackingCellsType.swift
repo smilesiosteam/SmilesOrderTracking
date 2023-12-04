@@ -18,7 +18,7 @@ enum TrackingCellType {
     case rating(model: RatingCollectionViewCell.ViewModel)
     case confirmation(model: OrderConfirmationCollectionViewCell.ViewModel)
     case orderActions(model: OrderCancelledCollectionViewCell.ViewModel)
-    case cashVoucher(model: CashCollectionViewCell.ViewModel)
+//    case cashVoucher(model: CashCollectionViewCell.ViewModel)
     case orderCancelled(model: OrderCancelledTimerCollectionViewCell.ViewModel)
 }
 
@@ -28,6 +28,6 @@ enum TrackingHeaderType {
 }
 
 struct OrderTrackingModel {
-    var header: TrackingHeaderType = .image(model: .init(type: .animation(url: nil)))
+    var header: TrackingHeaderType = .image(model: .init(type: .image(imageName: "", backgroundColor: .white)))
     var cells: [TrackingCellType] = []
 }

@@ -13,9 +13,7 @@ struct InTheKitchenOrderConfig: OrderTrackable {
     func build() -> OrderTrackingModel {
      
         var cells: [TrackingCellType] = [.progressBar(model: getProgressBarModel())]
-        if let description = orderText {
-            cells.append(.text(model: .init(title: description)))
-        }
+        
         if orderType == .pickup {
             cells.append(.driver(model: getDriverModel()))
         }
@@ -49,6 +47,7 @@ struct InTheKitchenOrderConfig: OrderTrackable {
         viewModel.title = OrderTrackingLocalization.pickUpOrderFrom.text
         viewModel.subTitle = response.orderDetails?.restaurantAddress
         viewModel.cellType = .pickup
+        viewModel.placeName = response.orderDetails?.restaurantName ?? ""
         return viewModel
     }
 }

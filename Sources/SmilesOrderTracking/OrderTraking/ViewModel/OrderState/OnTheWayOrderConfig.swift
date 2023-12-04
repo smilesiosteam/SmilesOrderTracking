@@ -22,11 +22,18 @@ struct OnTheWayOrderConfig: OrderTrackable {
             .progressBar(model: progressBar)
         ]
         
-        if let description = orderText {
-            cells.append(.text(model: .init(title: description)))
+        // If the order will be delayed
+        if let deliveryDelayTitle = response.orderDetails?.delayAlert?.title,
+            !deliveryDelayTitle.isEmpty {
+            let text = "\(deliveryDelayTitle) \n \(response.orderDetails?.delayAlert?.description ?? "")"
+            cells.append(.text(model: .init(title: text)))
         }
         
-        cells.append( .driver(model: orderDriverModel))
+        // Will add driver cell in case isLiveTracking is true only
+        if isLiveTracking {
+            cells.append( .driver(model: orderDriverModel))
+        }
+        
         cells.append(.location(model: location))
         
         if let orderPoint {

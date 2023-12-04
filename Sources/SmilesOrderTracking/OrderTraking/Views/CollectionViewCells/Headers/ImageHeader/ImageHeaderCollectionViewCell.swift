@@ -9,6 +9,7 @@ import UIKit
 import SmilesFontsManager
 import SmilesUtilities
 import LottieAnimationManager
+import Lottie
 
 protocol HeaderCollectionViewProtocol: AnyObject {
     func didTappDismiss()
@@ -43,6 +44,8 @@ final class ImageHeaderCollectionViewCell: UICollectionReusableView {
     // MARK: - Functions
     func updateCell(with viewModel: ViewModel, delegate: HeaderCollectionViewProtocol) {
         self.delegate = delegate
+        print(viewModel.isShowSupportHeader)
+        
         headerStack.isHidden =  !viewModel.isShowSupportHeader
         
         switch viewModel.type {
@@ -50,12 +53,20 @@ final class ImageHeaderCollectionViewCell: UICollectionReusableView {
             headerImage.image = UIImage(named: imageName, in: .module, with: nil)
             containerView.backgroundColor = backgroundColor
             headerImage.isHidden = false
-        case .animation(let url):
+        case .animation(let url, let backgroundColor):
             headerImage.isHidden = true
+            containerView.backgroundColor = UIColor(hex: backgroundColor)
             if let url {
-                LottieAnimationManager.showAnimationFromUrl(FromUrl: url, animationBackgroundView: self.containerView, removeFromSuper: false, loopMode: .loop,contentMode: .scaleAspectFill) { _ in }
+                LottieAnimationManager.showAnimationFromUrl(FromUrl: url, animationBackgroundView: containerView, removeFromSuper: false, loopMode: .loop,contentMode: .scaleAspectFill) { _ in }
             }
         }
+    }
+    
+    func processAnimation(stop: Bool) {
+        if let animationView = containerView.subviews.first(where: { $0 is LottieAnimationView }) as?  LottieAnimationView {
+            stop ? animationView.pause() : animationView.play()
+        }
+        
     }
     
     private func configControllers() {
@@ -66,6 +77,10 @@ final class ImageHeaderCollectionViewCell: UICollectionReusableView {
             $0.fontTextStyle = .smilesTitle1
             $0.setTitleColor(.appRevampPurpleMainColor, for: .normal)
         })
+    }
+    
+    func configHeader(isHidden: Bool) {
+        headerStack.isHidden = isHidden
     }
 }
 
@@ -78,6 +93,6 @@ extension ImageHeaderCollectionViewCell {
     
     enum CellType {
         case image(imageName: String, backgroundColor: UIColor)
-        case animation(url: URL?)
+        case animation(url: URL?, backgroundColor: String)
     }
 }

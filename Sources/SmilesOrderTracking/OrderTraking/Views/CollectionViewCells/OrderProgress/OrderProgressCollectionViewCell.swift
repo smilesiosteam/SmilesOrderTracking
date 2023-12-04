@@ -18,6 +18,7 @@ final class OrderProgressCollectionViewCell: UICollectionViewCell {
     @IBOutlet private weak var thirdStepView: UIView!
     @IBOutlet private weak var fourthStepView: UIView!
     private var fillAnimator: UIViewPropertyAnimator?
+    
     // MARK: - Properties
     private var leadingConstraint: NSLayoutConstraint!
     private let animatedView = UIView()
@@ -25,41 +26,17 @@ final class OrderProgressCollectionViewCell: UICollectionViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         configControllers()
-        self.contentView.layer.removeAllAnimations()
-        self.layer.removeAllAnimations()
-        self.contentView.layoutIfNeeded()
-        layoutIfNeeded()
     }
-    private var isAnimationInProgress = false
+    
     override func prepareForReuse() {
         super.prepareForReuse()
         fillAnimator?.stopAnimation(true)
         fillAnimator = nil
-//        play()
-        
-        
     }
     
-    private func play() {
-        
-        self.contentView.layer.removeAllAnimations()
-        self.layer.removeAllAnimations()
-        self.contentView.layoutIfNeeded()
-        layer.sublayers?.forEach { $0.removeAllAnimations() }
-        contentView.layer.sublayers?.forEach { $0.removeAllAnimations() }
-        
-        
-        contentView.layer.removeAllAnimations()
-            animatedView.layer.removeAllAnimations()
-            leadingConstraint.constant = 0
-            animatedView.backgroundColor = .clear
-        animatedView.removeFromSuperview()
-        
-        [firstStepView, secondStepView, thirdStepView, fourthStepView].forEach({
-            $0?.layer.removeAllAnimations()
-        })
-        contentView.layoutIfNeeded()
-        layoutIfNeeded()
+    
+    func processAnimation(stop: Bool) {
+        stop ? fillAnimator?.pauseAnimation() : fillAnimator?.startAnimation()
     }
     // MARK: - Functions
     func updateCell(with viewModel: ViewModel) {

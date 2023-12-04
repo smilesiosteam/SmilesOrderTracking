@@ -10,7 +10,7 @@ import SmilesFontsManager
 
 // MARK: - Protocol
 protocol DriverCellActionDelegate: AnyObject, PhoneCallable {
-    func opneMap(lat: Double, lng: Double)
+    func opneMap(lat: Double, lng: Double, placeName: String)
 }
 
 final class DriverCollectionViewCell: UICollectionViewCell {
@@ -41,7 +41,9 @@ final class DriverCollectionViewCell: UICollectionViewCell {
         case .delivery:
             delegate?.didTappPhoneCall(with: viewModel.driverMobileNumber)
         case .pickup:
-            delegate?.opneMap(lat: viewModel.lat, lng: viewModel.lng)
+            print(viewModel.lat)
+            print(viewModel.lng)
+            delegate?.opneMap(lat: viewModel.lat, lng: viewModel.lng, placeName: viewModel.placeName)
         }
     }
     
@@ -72,6 +74,7 @@ extension DriverCollectionViewCell {
         var driverMobileNumber: String?
         var lat: Double = 0.0
         var lng: Double = 0.0
+        var placeName = ""
         var cellType: OrderTrackingCellType = .delivery
     }
 }

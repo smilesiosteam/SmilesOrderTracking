@@ -55,7 +55,7 @@ struct ConfirmationOrderConfig: OrderTrackable {
     private func getHeader() -> TrackingHeaderType{
         let color = UIColor.black.withAlphaComponent(0.8)
         let image = "Confirmation"
-        let header: TrackingHeaderType = .image(model: .init(type: .image(imageName: image, backgroundColor: color)))
+        let header: TrackingHeaderType = .image(model: .init(isShowSupportHeader: true, type: .image(imageName: image, backgroundColor: color)))
         return header
     }
 }

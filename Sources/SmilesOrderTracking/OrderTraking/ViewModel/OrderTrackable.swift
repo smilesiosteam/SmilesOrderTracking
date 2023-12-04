@@ -54,6 +54,7 @@ extension OrderTrackable {
         if let bannerImageUrl = response.orderDetails?.bannerImageUrl {
             var viewModel = FreeDeliveryCollectionViewCell.ViewModel()
             viewModel.imageURL = bannerImageUrl
+            viewModel.redirectUrl = response.orderDetails?.subscriptionBanner?.redirectionUrl ?? ""
             return viewModel
         }
         return nil

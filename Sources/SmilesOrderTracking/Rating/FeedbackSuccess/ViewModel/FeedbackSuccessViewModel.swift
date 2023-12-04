@@ -8,6 +8,7 @@
 import UIKit
 import Combine
 import SmilesFontsManager
+import SmilesUtilities
 
 final class FeedbackSuccessViewModel {
     private(set) var feedBackSuccessUIModel: FeedbackSuccessUIModel
@@ -21,8 +22,9 @@ final class FeedbackSuccessViewModel {
     func createUI() {
         popupTitle = feedBackSuccessUIModel.popupTitle
         let attributedString = NSMutableAttributedString()
-        attributedString.append(NSAttributedString(string: feedBackSuccessUIModel.boldText, attributes: [.font: UIFont.preferredFont(forTextStyle: .smilesBody3), .foregroundColor: UIColor.appDarkGrayColor]))
-        attributedString.append(NSAttributedString(string: feedBackSuccessUIModel.description, attributes: [.font: UIFont.preferredFont(forTextStyle: .smilesBody3), .foregroundColor: UIColor.appGreyColor_128]))
+        let font = UIFont.circularXXTTBookFont(size: 14)
+        attributedString.append(NSAttributedString(string: feedBackSuccessUIModel.boldText, attributes: [.font: font, .foregroundColor: UIColor.appDarkGrayColor]))
+        attributedString.append(NSAttributedString(string: feedBackSuccessUIModel.description, attributes: [.font: font, .foregroundColor: UIColor.appGreyColor_128]))
         description = attributedString
     }
 }

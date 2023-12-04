@@ -22,10 +22,10 @@
                         <rect key="frame" x="0.0" y="0.0" width="397" height="99"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="arS-yf-cZc">
-                                <rect key="frame" x="16" y="0.0" width="365" height="78"/>
+                                <rect key="frame" x="16" y="0.0" width="365" height="99"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Get 25 more Smiles points by rating each of your food items!" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RuV-7t-gqU">
-                                        <rect key="frame" x="0.0" y="0.0" width="365" height="78"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="365" height="99"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
@@ -37,7 +37,7 @@
                         <constraints>
                             <constraint firstAttribute="trailing" secondItem="arS-yf-cZc" secondAttribute="trailing" constant="16" id="8ae-Di-7Yk"/>
                             <constraint firstItem="arS-yf-cZc" firstAttribute="top" secondItem="GZ9-XA-WXB" secondAttribute="top" id="Edh-h2-t6O"/>
-                            <constraint firstAttribute="bottom" secondItem="arS-yf-cZc" secondAttribute="bottom" constant="21" id="pbf-W8-cB2"/>
+                            <constraint firstAttribute="bottom" secondItem="arS-yf-cZc" secondAttribute="bottom" id="pbf-W8-cB2"/>
                             <constraint firstItem="arS-yf-cZc" firstAttribute="leading" secondItem="GZ9-XA-WXB" secondAttribute="leading" constant="16" id="xdd-fn-fRU"/>
                         </constraints>
                     </view>

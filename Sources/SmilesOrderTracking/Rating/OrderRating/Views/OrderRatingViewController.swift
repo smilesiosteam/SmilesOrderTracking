@@ -15,6 +15,7 @@ import SDWebImage
 protocol OrderRatingViewDelegate: AnyObject {
     func shouldOpenItemRatingViewController(with model: RateOrderResponse, orderItems: [OrderItemDetail])
     func shouldOpenFeedbackSuccessViewController(with model: RateOrderResponse)
+    func shouldOpenGetSupport()
 }
 
 final public class OrderRatingViewController: UIViewController {
@@ -121,7 +122,7 @@ final public class OrderRatingViewController: UIViewController {
     }
     
     @IBAction private func getSupportButtonTapped(_ sender: UIButton) {
-        
+        delegate?.shouldOpenGetSupport()
     }
     
     // MARK: - Methods

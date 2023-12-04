@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="22155" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_12" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22131"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="collection view cell content view" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="SeparatorLineCollectionViewCell" id="leX-LA-vp8" customClass="SeparatorLineCollectionViewCell" customModule="SmilesOrderTracking">
+            <rect key="frame" x="0.0" y="0.0" width="339" height="49"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <collectionViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" ambiguous="YES" insetsLayoutMarginsFromSafeArea="NO" id="RZ7-Zp-rpB">
+                <rect key="frame" x="0.0" y="0.0" width="339" height="49"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="aRZ-Uv-elE">
+                        <rect key="frame" x="16" y="0.0" width="307" height="1"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="1" id="o2E-L0-sk4"/>
+                        </constraints>
+                    </view>
+                </subviews>
+                <constraints>
+                    <constraint firstAttribute="bottom" secondItem="aRZ-Uv-elE" secondAttribute="bottom" id="7G3-8z-VC6"/>
+                    <constraint firstItem="aRZ-Uv-elE" firstAttribute="top" secondItem="RZ7-Zp-rpB" secondAttribute="top" id="O54-vq-qvS"/>
+                    <constraint firstItem="aRZ-Uv-elE" firstAttribute="leading" secondItem="RZ7-Zp-rpB" secondAttribute="leading" constant="16" id="PD9-6b-e44"/>
+                    <constraint firstAttribute="trailing" secondItem="aRZ-Uv-elE" secondAttribute="trailing" constant="16" id="s7k-Lk-sVQ"/>
+                </constraints>
+            </collectionViewCellContentView>
+            <size key="customSize" width="339" height="49"/>
+            <connections>
+                <outlet property="separatorView" destination="aRZ-Uv-elE" id="oGR-Ri-SCt"/>
+            </connections>
+            <point key="canvasLocation" x="486.25954198473278" y="39.08450704225352"/>
+        </collectionViewCell>
+    </objects>
+    <resources>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+    </resources>
+</document>

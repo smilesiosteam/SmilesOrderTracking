@@ -49,7 +49,11 @@ final class FoodRatingSuccessCollectionViewCell: UICollectionViewCell {
     // MARK: - Methods
     func updateCell(with viewModel: ViewModel) {
         thankYouLabel.text = viewModel.thankYouText
-        pointsLabel.text = viewModel.pointsText
+        if let pointsText = viewModel.pointsText, !pointsText.isEmpty {
+            pointsLabel.text = pointsText
+        } else {
+            pointsLabel.isHidden = true
+        }
         ratingSuccessDescriptionLabel.text = viewModel.ratingSuccessDescription
         
         configureAnimation()

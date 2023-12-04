@@ -58,6 +58,7 @@ enum OrderTrackingLocalization {
     case cancelOrderDescription
     case dontCancel
     case yesCancel
+    case describeYourExperience
     
     var text: String {
         switch self {
@@ -154,6 +155,8 @@ enum OrderTrackingLocalization {
             return "Don't cancel".localizedString
         case .yesCancel:
             return "Yes cancel".localizedString
+        case .describeYourExperience:
+            return "Describe your experience (optional)".localizedString
         }
     }
 }

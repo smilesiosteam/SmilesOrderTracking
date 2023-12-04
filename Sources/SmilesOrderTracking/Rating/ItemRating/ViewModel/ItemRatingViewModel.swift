@@ -13,7 +13,6 @@ import SmilesUtilities
 final public class ItemRatingViewModel: NSObject {
     private var cancellables = Set<AnyCancellable>()
     
-    private(set) var serviceHandler: OrderTrackingServiceHandler
     var itemRatingUIModel: ItemRatingUIModel
     private(set) var popupTitle: String?
     @Published private(set) var rateOrderResponse: RateOrderResponse?
@@ -22,9 +21,8 @@ final public class ItemRatingViewModel: NSObject {
     var doneActionDismiss = false
     @Published private(set) var showErrorMessage: String?
     
-    init(itemRatingUIModel: ItemRatingUIModel, serviceHandler: OrderTrackingServiceHandler) {
+    init(itemRatingUIModel: ItemRatingUIModel) {
         self.itemRatingUIModel = itemRatingUIModel
-        self.serviceHandler = serviceHandler
         super.init()
         
         configUI()
@@ -36,6 +34,7 @@ final public class ItemRatingViewModel: NSObject {
     }
     
     func submitRating() {
+        let serviceHandler = OrderTrackingServiceHandler()
         NotificationCenter.default.post(name: .ReloadOrderSummary, object: nil, userInfo: nil)
         
         SmilesLoader.show()

@@ -27,7 +27,8 @@ let package = Package(
         .package(url: "https://github.com/evgenyneu/Cosmos.git", .upToNextMajor(from: "23.0.0")),
         .package(url: "https://github.com/smilesiosteam/LottieAnimationManager.git", branch: "main"),
         .package(url: "https://github.com/smilesiosteam/SmilesLoader.git", branch: "main"),
-        .package(url: "https://github.com/SDWebImage/SDWebImage.git", from: "5.1.0")
+        .package(url: "https://github.com/SDWebImage/SDWebImage.git", from: "5.1.0"),
+        .package(url: "https://github.com/sabarics/PlaceholderUITextView.git", branch: "master")
     ],
     targets: [
         // Targets are the basic building blocks of a package, defining a module or a test suite.
@@ -45,7 +46,8 @@ let package = Package(
                 .product(name: "Cosmos", package: "Cosmos"),
                 .product(name: "LottieAnimationManager", package: "LottieAnimationManager"),
                 .product(name: "SmilesLoader", package: "SmilesLoader"),
-                .product(name: "SDWebImage", package: "SDWebImage")
+                .product(name: "SDWebImage", package: "SDWebImage"),
+                .product(name: "PlaceholderUITextView", package: "PlaceholderUITextView")
             ],
             resources: [.process("Resources")]
         ),

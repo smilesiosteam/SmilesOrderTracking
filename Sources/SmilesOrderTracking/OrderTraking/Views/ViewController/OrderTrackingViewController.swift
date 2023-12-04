@@ -39,9 +39,8 @@ extension OrderTrackingViewController: OrderTrackingViewDelegate {
     }
     
     func presentRateFlow() {
-        let uiModel = OrderRatingUIModel(ratingType: "food", contentType: "tracking", isLiveTracking: true, orderId: "466832")
-        let serviceHandler = OrderTrackingServiceHandler()
-        let model = OrderRatingViewModel(orderRatingUIModel: uiModel, serviceHandler: serviceHandler)
+        let uiModel = OrderRatingUIModel(ratingType: "food", contentType: "tracking", isLiveTracking: true, orderId: "466843")
+        let model = OrderRatingViewModel(orderRatingUIModel: uiModel)
         let viewController = OrderRatingViewController.create(with: model, delegate: self)
         viewController.modalPresentationStyle = .overFullScreen
         self.present(viewController)
@@ -55,7 +54,7 @@ extension OrderTrackingViewController: OrderTrackingViewDelegate {
 extension OrderTrackingViewController: OrderRatingViewDelegate {
     func shouldOpenItemRatingViewController(with model: RateOrderResponse, orderItems: [OrderItemDetail]) {
         let itemRatingUIModel = ItemRatingUIModel(itemWiseRatingEnabled: model.itemLevelRatingEnable ?? false, isAccrualPointsAllowed: model.isAccrualPointsAllowed ?? false, orderItems: orderItems, ratingOrderResponse: model)
-        let itemRatingViewModel = ItemRatingViewModel(itemRatingUIModel: itemRatingUIModel, serviceHandler: viewModel.serviceHandler)
+        let itemRatingViewModel = ItemRatingViewModel(itemRatingUIModel: itemRatingUIModel)
         let itemRatingViewController = ItemRatingViewController.create(with: itemRatingViewModel, delegate: self)
         itemRatingViewController.modalPresentationStyle = .overFullScreen
         
@@ -70,6 +69,10 @@ extension OrderTrackingViewController: OrderRatingViewDelegate {
         feedBackSuccessViewController.modalPresentationStyle = .overFullScreen
         
         self.present(feedBackSuccessViewController)
+    }
+    
+    func shouldOpenGetSupport() {
+        // Open LivechatWKWebviewController
     }
 }
 

@@ -19,10 +19,14 @@ final class ItemRatingDataSource: NSObject {
     weak var delegate: ItemRatingDataSourceDelegate?
     
     @Published var enableDoneButton = false
+    private var sections = [ItemRatingSection]()
     
     // MARK: - Lifecycle
     init(viewModel: ItemRatingViewModel) {
         self.viewModel = viewModel
+        
+        super.init()
+        createSections()
     }
     
     func createCollectionViewLayout() -> UICollectionViewCompositionalLayout {
@@ -45,48 +49,58 @@ final class ItemRatingDataSource: NSObject {
             
             // Section
             let section = NSCollectionLayoutSection(group: group)
-//            section.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 0, bottom: 23, trailing: 0)
+            section.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 0, bottom: 16, trailing: 0)
             section.interGroupSpacing = 16
             
             return section
         }
     }
+    
+    private func createSections() {
+        sections.append(.ratingSuccess)
+        if let accrualDescription = viewModel.itemRatingUIModel.ratingOrderResponse.ratingOrderResult?.accrualDescription, !accrualDescription.isEmpty {
+            sections.append(.itemRatingTitle)
+        }
+        sections.append(.itemRating)
+    }
+    
+    private func getSection(forSection: Int) -> ItemRatingSection {
+        return sections[forSection]
+    }
 }
 
 extension ItemRatingDataSource: UICollectionViewDataSource {
     func numberOfSections(in collectionView: UICollectionView) -> Int {
-        ItemRatingSection.allCases.count
+        sections.count
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        switch section {
-        case ItemRatingSection.ratingSuccess.section:
+        switch getSection(forSection: section) {
+        case .ratingSuccess:
             return 1
-        case ItemRatingSection.itemRatingTitle.section:
+        case .itemRatingTitle:
             return 1
-        case ItemRatingSection.itemRating.section:
+        case .itemRating:
             return viewModel.itemRatingUIModel.orderItems.count
-        default:
-            return 0
         }
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        switch indexPath.section {
-        case ItemRatingSection.ratingSuccess.section:
+        switch getSection(forSection: indexPath.section) {
+        case .ratingSuccess:
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: String(describing: FoodRatingSuccessCollectionViewCell.self), for: indexPath) as? FoodRatingSuccessCollectionViewCell else { return UICollectionViewCell() }
             let ratingOrderResult = viewModel.itemRatingUIModel.ratingOrderResponse.ratingOrderResult
             let viewModel = FoodRatingSuccessCollectionViewCell.ViewModel(thankYouText: viewModel.popupTitle, pointsText: ratingOrderResult?.accrualTitle, ratingSuccessDescription: ratingOrderResult?.description)
             
             cell.updateCell(with: viewModel)
             return cell
-        case ItemRatingSection.itemRatingTitle.section:
+        case .itemRatingTitle:
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: String(describing: ItemRatingTitleCollectionViewCell.self), for: indexPath) as? ItemRatingTitleCollectionViewCell else { return UICollectionViewCell() }
             let ratingOrderResult = viewModel.itemRatingUIModel.ratingOrderResponse.ratingOrderResult
             
             cell.updateCell(with: ratingOrderResult?.accrualDescription)
             return cell
-        case ItemRatingSection.itemRating.section:
+        case .itemRating:
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: String(describing: ItemRatingCollectionViewCell.self), for: indexPath) as? ItemRatingCollectionViewCell else { return UICollectionViewCell() }
             let itemToRate = viewModel.itemRatingUIModel.orderItems[indexPath.row]
             var viewModel = ItemRatingCollectionViewCell.ViewModel(itemName: itemToRate.itemName, itemId: itemToRate.itemID, rating: itemToRate.userItemRating ?? 0.0, ratingSubtitle: itemToRate.ratingFeedback, ratingArray: itemToRate.rating, itemImage: itemToRate.itemImage, ratingCount: itemToRate.ratingCount)
@@ -100,8 +114,6 @@ extension ItemRatingDataSource: UICollectionViewDataSource {
             
             cell.updateCell(with: viewModel, delegate: self)
             return cell
-        default:
-            return UICollectionViewCell()
         }
     }
 }

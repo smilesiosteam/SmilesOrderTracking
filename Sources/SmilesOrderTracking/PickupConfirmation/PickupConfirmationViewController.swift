@@ -24,7 +24,7 @@ final class PickupConfirmationViewController: UIViewController {
     }
     @IBOutlet private weak var locationLabel: UILabel! {
         didSet {
-            locationLabel.fontTextStyle = .smilesLabel3
+            locationLabel.fontTextStyle = .smilesLabel2
         }
     }
     @IBOutlet private weak var descriptionLabel: UILabel! {

@@ -11,12 +11,12 @@ struct CanceledOrderConfig: CanceledOrderConfigProtocol {
     var response: OrderTrackingStatusResponse
     
     func build() -> OrderTrackingModel {
+        var orderCancelledModel = getOrderCancelledModel(buttonTitle: OrderTrackingLocalization.restaurantCanceledButtonTitle.text)
+        orderCancelledModel.type = .cancelled
         let cells: [TrackingCellType] = [
             .text(model: getTextModel()),
-            .orderCancelled(
-                model: getOrderCancelledModel(title: OrderTrackingLocalization.restaurantCanceledTitle.text,
-                                              buttonTitle: OrderTrackingLocalization.restaurantCanceledButtonTitle.text)),
-            .cashVoucher(model: .init()),
+            .orderCancelled(model: orderCancelledModel),
+//            .cashVoucher(model: .init()),
             .orderActions(model: getOrderActionsModel())
         ]
         

@@ -10,7 +10,7 @@ import SmilesUtilities
 import SmilesFontsManager
 
 protocol FreeDeliveryCollectionViewProtocol: AnyObject {
-    func didTappSubscribeNow()
+    func didTappSubscribe(with url: String)
 }
 
 final class FreeDeliveryCollectionViewCell: UICollectionViewCell {
@@ -24,12 +24,13 @@ final class FreeDeliveryCollectionViewCell: UICollectionViewCell {
     
     // MARK: - Button Actions
     @IBAction func subscribeTapped(_ sender: Any) {
-        delegate?.didTappSubscribeNow()
+        delegate?.didTappSubscribe(with: viewModel.redirectUrl)
     }
     
     // MARK: - Functions
     func updateCell(with viewModel: ViewModel, delegate: FreeDeliveryCollectionViewProtocol) {
         self.delegate = delegate
+        self.viewModel = viewModel
         subscriptionImage.setImageWithUrlString(viewModel.imageURL ?? "")
     }
 }
@@ -37,5 +38,6 @@ final class FreeDeliveryCollectionViewCell: UICollectionViewCell {
 extension FreeDeliveryCollectionViewCell {
     struct ViewModel {
         var imageURL: String?
+        var redirectUrl: String = ""
     }
 }

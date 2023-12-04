@@ -17,6 +17,8 @@ protocol OrderTrackingViewDelegate: AnyObject {
     func presentCancelFlow(orderId: String)
     func presentRateFlow()
     func dismiss()
+    func phoneCall(with number: String)
+    func openMaps(lat: Double, lng: Double, placeName: String)
 }
 
 extension OrderTrackingViewController: OrderTrackingViewDelegate {
@@ -57,6 +59,14 @@ extension OrderTrackingViewController: OrderTrackingViewDelegate {
         present(viewController)
     }
     
+    func phoneCall(with number: String) {
+        makePhoneCall(phoneNumber: number)
+    }
+    
+    func openMaps(lat: Double, lng: Double, placeName: String) {
+        presentAlertForMaps(lat: lat, lang: lng, locationName: placeName)
+    }
+    
 }
 
 extension OrderTrackingViewController: OrderRatingViewDelegate {
@@ -80,7 +90,7 @@ extension OrderTrackingViewController: OrderRatingViewDelegate {
     }
 }
 
-public final class OrderTrackingViewController: UIViewController, Toastable {
+public final class OrderTrackingViewController: UIViewController, Toastable, MapsNavigationProtocol {
     
     // MARK: - Outlets
     @IBOutlet private weak var collectionView: UICollectionView!
@@ -90,7 +100,7 @@ public final class OrderTrackingViewController: UIViewController, Toastable {
     private let cancelOrderInput: PassthroughSubject<SmilesOrderCancelledViewModel.Input, Never> = .init()
     var viewModel: OrderTrackingViewModel!
     private lazy var dataSource = OrderTrackingDataSource(viewModel: viewModel)
-    
+    private var floatingView: FloatingView!
     // MARK: - Life Cycle
     public override func viewDidLoad() {
         super.viewDidLoad()
@@ -98,18 +108,24 @@ public final class OrderTrackingViewController: UIViewController, Toastable {
         dataSource.delegate = self
         bindCancelFlow()
         bindStatus()
-       
+        
+    }
+    
+    public override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        setupFloatingView()
     }
     
     public override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         viewModel.fetchStatus()
     }
+    
     private func bindCancelFlow() {
         cancelOrderviewModel.transform(input: cancelOrderInput.eraseToAnyPublisher())
             .sink { [weak self] event in
                 switch event {
-                // MARK: -- Success cases
+                    // MARK: -- Success cases
                 case .cancelOrderDidSucceed(let response):
                     self?.navigateToOrderCancelledScreen(response: response)
                 case .pauseOrderDidSucceed:
@@ -118,7 +134,7 @@ public final class OrderTrackingViewController: UIViewController, Toastable {
                 case .resumeOrderDidSucceed:
                     //resume animations
                     break
-                //MARK: -- Failure cases
+                    //MARK: -- Failure cases
                 case .cancelOrderDidFail(let error):
                     debugPrint(error)
                 case .pauseOrderDidFail(let error):
@@ -129,7 +145,7 @@ public final class OrderTrackingViewController: UIViewController, Toastable {
             }.store(in: &cancellables)
     }
     
-
+    
     private func navigateToThanksForFeedback(response:OrderCancelResponse) {
         let vc = SuccessMessagePopupViewController(popupData: SuccessPopupViewModelData(message: response.title ?? "", descriptionMessage: response.description ?? "", primaryButtonTitle: "Back to home".localizedString, primaryAction: {
             // TODO: - for ahmed move to food home
@@ -144,14 +160,14 @@ public final class OrderTrackingViewController: UIViewController, Toastable {
                 self.navigateToThanksForFeedback(response: feedBacksubmittedResponse)
             }else{
                 // TODO: - for ahmed: move to restaurant details vc
-//                self.router?.popToViewRestaurantDetailVC()
+                //                self.router?.popToViewRestaurantDetailVC()
             }
         }) {
             //support
         }
         self.present(vc)
     }
-
+    
     // MARK: - Functions
     private func configCollectionView() {
         [RestaurantCollectionViewCell.self,
@@ -182,6 +198,7 @@ public final class OrderTrackingViewController: UIViewController, Toastable {
         
         collectionView.collectionViewLayout = OrderTrackingLayout.createLayout()
         collectionView.dataSource = dataSource
+        collectionView.delegate = self
         collectionView.reloadData()
         collectionView.contentInsetAdjustmentBehavior = .never
     }
@@ -205,8 +222,8 @@ public final class OrderTrackingViewController: UIViewController, Toastable {
                 if isShow {
                     self.showToastForOrderArrived()
                 }
-            case .showToastForNoLiveTracking(let isShow):
-                if isShow {
+            case .showToastForNoLiveTracking(let isLiveTracking):
+                if !isLiveTracking {
                     DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
                         self.presentToastForNoTracking()
                     }
@@ -237,11 +254,11 @@ public final class OrderTrackingViewController: UIViewController, Toastable {
         
         let textFont = SmilesFontsManager.defaultAppFont.getFont(style: .medium, size: 14)
         attributedString.addAttribute(.font, value: textFont, range: textRange)
-
+        
         let dismissRange = NSRange(location: text.count + 1, length: dismiss.count)
         let dismissFont = SmilesFontsManager.defaultAppFont.getFont(style: .medium, size: 16)
         attributedString.addAttribute(.font, value: dismissFont, range: dismissRange)
-
+        
         model.attributedString = attributedString
         
         let toastView = showToast(model: model)
@@ -250,6 +267,99 @@ public final class OrderTrackingViewController: UIViewController, Toastable {
         }
     }
     
+    private func processAnimation(stop: Bool) {
+        guard let collectionView = collectionView else {
+            return
+        }
+        
+        // Process the animation for header view
+        let headerView = getImageHeader()
+        headerView?.processAnimation(stop: stop)
+        
+        // Process animation for status bar view
+        if let cell = collectionView.cellForItem(at: IndexPath(row: 0, section: 0)) as? OrderProgressCollectionViewCell {
+            cell.processAnimation(stop: stop)
+        }
+    }
+    
+    private func getImageHeader() -> ImageHeaderCollectionViewCell? {
+        guard let indexPath = collectionView.indexPathsForVisibleSupplementaryElements(ofKind: OrderConstans.headerName.rawValue).first,
+              let headerView = collectionView.supplementaryView(forElementKind: OrderConstans.headerName.rawValue, at: indexPath) as? ImageHeaderCollectionViewCell else {
+            return nil
+        }
+        return headerView
+    }
+    
+    private func getMapHeader() -> MapHeaderCollectionViewCell? {
+        guard let indexPath = collectionView.indexPathsForVisibleSupplementaryElements(ofKind: OrderConstans.headerName.rawValue).first,
+              let headerView = collectionView.supplementaryView(forElementKind: OrderConstans.headerName.rawValue, at: indexPath) as? MapHeaderCollectionViewCell else {
+            return nil
+        }
+        return headerView
+    }
+    
+    private func configHeaderButtons(isHidden: Bool) {
+        let mapHeader = getMapHeader()
+        let imageHeader = getImageHeader()
+        mapHeader?.configHeader(isHidden: isHidden)
+        imageHeader?.configHeader(isHidden: isHidden)
+    }
+    
+    
+    // MARK: - Floating view
+    // Show and hide the view in the top when scroll collection view
+    private func setupFloatingView() {
+        floatingView = FloatingView(frame: CGRect(x: 0, y: 0, width: view.bounds.width, height: 100))
+        floatingView.backgroundColor = .appRevampPurpleMainColor
+        floatingView.alpha = 0
+        view.addSubview(floatingView)
+        
+        floatingView.didLeadingButton = { [weak self] in
+            self?.dismissMe()
+        }
+        
+        floatingView.didTrailingButton = { [weak self] in
+            print("didTrailingButton")
+        }
+    }
+    
+    private func showFloatingView() {
+        configHeaderButtons(isHidden: true)
+        if floatingView.alpha == 0 {
+            UIView.animate(withDuration: 0.3) {
+                self.floatingView.alpha = 1
+            }
+        }
+    }
+    
+    private func hideFloatingView() {
+        configHeaderButtons(isHidden: false)
+        if floatingView.alpha == 1 {
+            UIView.animate(withDuration: 0.3) {
+                self.floatingView.alpha = 0
+            }
+        }
+        
+    }
+    
+}
+
+// MARK: - UICollectionViewDelegate
+extension OrderTrackingViewController: UICollectionViewDelegate {
+    public func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        let scrollOffset = scrollView.contentOffset.y
+        
+        // Adjust the threshold value based on your specific needs
+        let threshold: CGFloat = 10
+        
+        // Check the scrolling direction
+        if scrollOffset > threshold {
+            showFloatingView()
+        } else {
+            
+            hideFloatingView()
+        }
+    }
 }
 
 // MARK: - Create

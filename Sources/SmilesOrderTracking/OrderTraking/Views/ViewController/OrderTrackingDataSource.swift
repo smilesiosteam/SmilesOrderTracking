@@ -77,10 +77,10 @@ extension OrderTrackingDataSource: UICollectionViewDataSource {
             let cell = collectionView.dequeueReusableCell(withClass: OrderCancelledCollectionViewCell.self, for: indexPath)
             cell.updateCell(with: model, delegate: self)
             return cell
-        case .cashVoucher(model: let model):
-            let cell = collectionView.dequeueReusableCell(withClass: CashCollectionViewCell.self, for: indexPath)
-            cell.updateCell(with: model)
-            return cell
+//        case .cashVoucher(model: let model):
+//            let cell = collectionView.dequeueReusableCell(withClass: CashCollectionViewCell.self, for: indexPath)
+//            cell.updateCell(with: model)
+//            return cell
         case .orderCancelled(model: let model):
             let cell = collectionView.dequeueReusableCell(withClass: OrderCancelledTimerCollectionViewCell.self, for: indexPath)
             cell.updateCell(with: model, delegate: self)
@@ -109,7 +109,7 @@ extension OrderTrackingDataSource: UICollectionViewDataSource {
 // MARK: - Location Delegate
 extension OrderTrackingDataSource: LocationCollectionViewProtocol {
     func didTappPhoneCall(with mobileNumber: String?) {
-       
+        delegate?.phoneCall(with: mobileNumber ?? "")
     }
     
     func didTappOrderDetails(orderId: String, restaurantId: String) {
@@ -135,15 +135,15 @@ extension OrderTrackingDataSource: HeaderCollectionViewProtocol {
 
 // MARK: - Subscription Delegate
 extension OrderTrackingDataSource: FreeDeliveryCollectionViewProtocol {
-    func didTappSubscribeNow() {
-        print("didTappSubscribeNow")
+    func didTappSubscribe(with url: String) {
+        viewModel.navigationDelegate?.navigateToSubscriptionPage(url: url)
     }
 }
 
 // MARK: - Driver Delegate
 extension OrderTrackingDataSource: DriverCellActionDelegate {
-    func opneMap(lat: Double, lng: Double) {
-        
+    func opneMap(lat: Double, lng: Double, placeName: String) {
+        delegate?.openMaps(lat: lat, lng: lng, placeName: placeName)
     }
 }
 
@@ -170,6 +170,10 @@ extension OrderTrackingDataSource: OrderConfirmationCellActionDelegate {
 }
 // MARK: - Canceled order Delegate
 extension OrderTrackingDataSource: OrderCancelledTimerCellActionDelegate {
+    func navigateAvailableRestaurant() {
+        viewModel.navigationDelegate?.navigateAvailableRestaurant()
+    }
+    
     func likeToPickupOrderDidTap(orderId: String, orderNumber: String, restaurantAddress: String) {
         
         let didTappedContinue: (()-> Void) = { [weak self] in

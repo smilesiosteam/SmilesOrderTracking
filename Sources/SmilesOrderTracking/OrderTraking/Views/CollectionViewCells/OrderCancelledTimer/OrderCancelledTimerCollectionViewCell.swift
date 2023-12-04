@@ -9,6 +9,7 @@ import UIKit
 
 protocol OrderCancelledTimerCellActionDelegate: AnyObject {
     func likeToPickupOrderDidTap(orderId: String, orderNumber: String, restaurantAddress: String)
+    func navigateAvailableRestaurant()
 }
 
 final class OrderCancelledTimerCollectionViewCell: UICollectionViewCell {
@@ -62,7 +63,15 @@ final class OrderCancelledTimerCollectionViewCell: UICollectionViewCell {
     
     // MARK: - Actions
     @IBAction private func actionButtonTapped(_ sender: UIButton) {
-        delegate?.likeToPickupOrderDidTap(orderId: viewModel.orderId, orderNumber: viewModel.orderNumber, restaurantAddress: viewModel.restaurantAddress)
+        switch viewModel.type {
+        case .cancelled:
+            delegate?.navigateAvailableRestaurant()
+        case .changedToPickup:
+            delegate?.likeToPickupOrderDidTap(orderId: viewModel.orderId, orderNumber: viewModel.orderNumber, restaurantAddress: viewModel.restaurantAddress)
+        case .someItemsUnavailable:
+            delegate?.navigateAvailableRestaurant()
+        }
+        
     }
     
     // MARK: - Methods
@@ -96,7 +105,7 @@ final class OrderCancelledTimerCollectionViewCell: UICollectionViewCell {
             timer?.invalidate()
             timer = nil
             timeLabel.text = "00:00" + " " + OrderTrackingLocalization.minText.text
-            textLabel.text = OrderTrackingLocalization.orderCancelledTimeFinished.text
+//            textLabel.text = OrderTrackingLocalization.orderCancelledTimeFinished.text
             mainStackView.spacing = 8
             bottomConstraint.constant = 9
             topConstraint.constant = 9
@@ -120,5 +129,12 @@ extension OrderCancelledTimerCollectionViewCell {
         var orderId: String = ""
         var orderNumber: String = ""
         var restaurantAddress: String = ""
+        var type: CellType = .changedToPickup
+    }
+    
+    enum CellType {
+        case cancelled
+        case changedToPickup
+        case someItemsUnavailable
     }
 }

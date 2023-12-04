@@ -101,6 +101,7 @@
                 <outlet property="animationView" destination="gR6-cV-Wj8" id="DjA-QH-HcR"/>
                 <outlet property="dismissButton" destination="u8L-fj-VdJ" id="ztD-Y0-kSL"/>
                 <outlet property="driverImage" destination="ITG-f2-BDO" id="T08-fj-OWc"/>
+                <outlet property="headerStack" destination="wHE-Br-azS" id="HNV-Vs-lhd"/>
                 <outlet property="mapView" destination="Tcp-Bw-59I" id="yk8-zX-yMM"/>
                 <outlet property="supportButton" destination="MO1-09-one" id="CNl-oH-GLo"/>
             </connections>

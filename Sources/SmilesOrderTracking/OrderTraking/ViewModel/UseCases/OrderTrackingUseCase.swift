@@ -15,10 +15,6 @@ protocol OrderTrackingUseCaseProtocol {
 
 final class OrderTrackingUseCase: OrderTrackingUseCaseProtocol {
     
-//    var orderStatus = PassthroughSubject<OrderTrackingModel, Never>()
-//    @Published private(set) var isOrderArrived = false
-//    @Published private(set) var isLiveTracking = false
-    
     private var cancellables = Set<AnyCancellable>()
     private let orderId: String
     private let orderNumber: String
@@ -38,18 +34,18 @@ final class OrderTrackingUseCase: OrderTrackingUseCaseProtocol {
     // we passed the status as parameter to navigate to the OrderHasBeenDeliveredConfig status
     func fetchOrderStates() {
         
-        loadOrderStatus()
-//        if let jsonData = jsonString.data(using: .utf8) {
-//            do {
-//                let orderResponse = try JSONDecoder().decode(OrderTrackingStatusResponse.self, from: jsonData)
-//                _ = orderResponse.orderDetails?.orderStatus
-//                
-//                let status = self.configOrderStatus(response: orderResponse)
-//                stateSubject.send(.success(model: status))
-//            } catch {
-//                print("Error decoding JSON: \(error)")
-//            }
-//        }
+        //        loadOrderStatus()
+        if let jsonData = jsonString.data(using: .utf8) {
+            do {
+                let orderResponse = try JSONDecoder().decode(OrderTrackingStatusResponse.self, from: jsonData)
+                _ = orderResponse.orderDetails?.orderStatus
+                
+                let status = self.configOrderStatus(response: orderResponse)
+                stateSubject.send(.success(model: status))
+            } catch {
+                print("Error decoding JSON: \(error)")
+            }
+        }
     }
     
     func configOrderStatus(response: OrderTrackingStatusResponse) -> OrderTrackingModel {
@@ -60,7 +56,7 @@ final class OrderTrackingUseCase: OrderTrackingUseCaseProtocol {
         
         switch value {
         case .orderProcessing, .pickupChanged:
-        return getProcessingOrderModel(response: response)
+            return getProcessingOrderModel(response: response)
         case .waitingForTheRestaurant:
             return WaitingOrderConfig(response: response).build()
         case .orderAccepted:
@@ -94,16 +90,16 @@ final class OrderTrackingUseCase: OrderTrackingUseCaseProtocol {
     
     private func getProcessingOrderModel(response: OrderTrackingStatusResponse) -> OrderTrackingModel {
         var processOrder = ProcessingOrderConfig(response: response)
-//        processOrder.hideCancelButton = { [weak self] in
-////            guard let self else {
-////                return
-////            }
-////            var orderResponse = response
-////            orderResponse.orderDetails?.showCancelButtonTimeout = true
-////            orderResponse.orderDetails?.isCancelationAllowed = false
-////            let status = self.configOrderStatus(response: orderResponse)
-////            self.orderStatus.send(status)
-//        }
+        //        processOrder.hideCancelButton = { [weak self] in
+        ////            guard let self else {
+        ////                return
+        ////            }
+        ////            var orderResponse = response
+        ////            orderResponse.orderDetails?.showCancelButtonTimeout = true
+        ////            orderResponse.orderDetails?.isCancelationAllowed = false
+        ////            let status = self.configOrderStatus(response: orderResponse)
+        ////            self.orderStatus.send(status)
+        //        }
         return processOrder.build()
     }
     var xx = false
@@ -126,7 +122,7 @@ final class OrderTrackingUseCase: OrderTrackingUseCaseProtocol {
             }
             var x = response
             x.orderDetails?.orderStatus = 10
-            let status = self.configOrderStatus(response: self.xx ? response : x)
+            let status = self.configOrderStatus(response: self.xx ? response : response)
             self.stateSubject.send(.success(model: status))
             let orderId = response.orderDetails?.orderId ?? 0
             self.stateSubject.send(.orderId(id: "\(orderId)"))
@@ -134,7 +130,7 @@ final class OrderTrackingUseCase: OrderTrackingUseCaseProtocol {
         }.store(in: &cancellables)
         
     }
-
+    
 }
 
 extension OrderTrackingUseCase {
@@ -153,7 +149,7 @@ let jsonString = """
 {
   "extTransactionId": "3530191483630",
   "orderDetails": {
-    "orderStatus": 9,
+    "orderStatus": 11,
      "smallImageAnimationUrl": "https://www.smilesuae.ae/images/APP/ORDER_TRACKING/ENGLISH/SMALL/Delivering.json",
      "largeImageAnimationUrl": "https://www.smilesuae.ae/images/APP/ORDER_TRACKING/ENGLISH/LARGE/Waiting.json",
      "trackingColorCode": "#a5deef",
@@ -187,7 +183,7 @@ let jsonString = """
     "deliveryAdrress": "maama, Annan, Alan, amann, Sheikh Zayed Rd - Za'abeel - Dubai - United Arab Emirates, Al Kifaf",
     "orderTimeOut": 2,
     "isCancelationAllowed": true,
-    "orderType": "PICK_UP",
+    "orderType": "DELIVERY",
     "determineStatus": false,
     "earnPoints": 120,
     "addressTitle": "Home",
@@ -204,7 +200,12 @@ let jsonString = """
         },
     "deliveryLongitude": "55.291472",
     "trackingType": "no",
+    "delayAlert": {
+         "title": "A slight delay in your order",
+         "description": "description description description description"
+     },
     "paymentType": "cashOnDelivery",
+   "changeTypeTimer": 2,
     "paidAedAmount": "65",
     "isFirstOrder": false,
     "statusText": "Order Received",

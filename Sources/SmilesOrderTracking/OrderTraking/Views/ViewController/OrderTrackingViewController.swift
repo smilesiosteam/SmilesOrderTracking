@@ -19,6 +19,7 @@ protocol OrderTrackingViewDelegate: AnyObject {
     func dismiss()
     func phoneCall(with number: String)
     func openMaps(lat: Double, lng: Double, placeName: String)
+    func timerIs(on: Bool)
 }
 
 extension OrderTrackingViewController: OrderTrackingViewDelegate {
@@ -67,6 +68,15 @@ extension OrderTrackingViewController: OrderTrackingViewDelegate {
         presentAlertForMaps(lat: lat, lang: lng, locationName: placeName)
     }
     
+    func timerIs(on: Bool) {
+        timerIsOn = on
+        if !on {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1) { [weak self] in
+                self?.viewModel.fetchStatus()
+            }
+            
+        }
+    }
 }
 
 extension OrderTrackingViewController: OrderRatingViewDelegate {
@@ -101,6 +111,7 @@ public final class OrderTrackingViewController: UIViewController, Toastable, Map
     var viewModel: OrderTrackingViewModel!
     private lazy var dataSource = OrderTrackingDataSource(viewModel: viewModel)
     private var floatingView: FloatingView!
+   private var timerIsOn = false
     // MARK: - Life Cycle
     public override func viewDidLoad() {
         super.viewDidLoad()
@@ -108,6 +119,9 @@ public final class OrderTrackingViewController: UIViewController, Toastable, Map
         dataSource.delegate = self
         bindCancelFlow()
         bindStatus()
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(applicationDidBecomeActive), 
+                                               name: UIApplication.willEnterForegroundNotification, object: nil)
         
     }
     
@@ -118,7 +132,21 @@ public final class OrderTrackingViewController: UIViewController, Toastable, Map
     
     public override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        viewModel.fetchStatus()
+        navigationController?.setNavigationBarHidden(true, animated: false)
+        if !timerIsOn {
+            viewModel.fetchStatus()
+        }
+    }
+    
+    public override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        navigationController?.setNavigationBarHidden(false, animated: animated)
+    }
+    
+    @objc private func applicationDidBecomeActive(notification: NSNotification) {
+        if !timerIsOn {
+            viewModel.fetchStatus()
+        }
     }
     
     private func bindCancelFlow() {
@@ -231,6 +259,8 @@ public final class OrderTrackingViewController: UIViewController, Toastable, Map
             case .success(let model):
                 self.dataSource.updateState(with: model)
                 self.collectionView.reloadData()
+            case .timerIsOff:
+                self.timerIsOn = false
             }
         }.store(in: &cancellables)
     }

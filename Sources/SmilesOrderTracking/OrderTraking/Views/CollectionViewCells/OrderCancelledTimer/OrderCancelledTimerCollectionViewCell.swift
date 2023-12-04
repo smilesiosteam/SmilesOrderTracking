@@ -7,7 +7,11 @@
 
 import UIKit
 
-protocol OrderCancelledTimerCellActionDelegate: AnyObject {
+protocol TimerProtocol: AnyObject {
+    func timerIs(on: Bool)
+}
+
+protocol OrderCancelledTimerCellActionDelegate: TimerProtocol {
     func likeToPickupOrderDidTap(orderId: String, orderNumber: String, restaurantAddress: String)
     func navigateAvailableRestaurant()
 }
@@ -33,9 +37,7 @@ final class OrderCancelledTimerCollectionViewCell: UICollectionViewCell {
     @IBOutlet private weak var actionButton: UIButton! {
         didSet {
             actionButton.addMaskedCorner(withMaskedCorner: [.layerMaxXMaxYCorner, .layerMaxXMinYCorner, .layerMinXMaxYCorner, .layerMinXMinYCorner], cornerRadius: actionButton.bounds.height / 2)
-            actionButton.fontTextStyle = .smilesHeadline4
-            actionButton.setTitleColor(.white, for: .normal)
-            actionButton.backgroundColor = .appRevampPurpleMainColor
+            enableButton()
         }
     }
     @IBOutlet private weak var timeLabel: UILabel! {
@@ -50,15 +52,13 @@ final class OrderCancelledTimerCollectionViewCell: UICollectionViewCell {
     private var timer: Timer?
     private var count = 900
     private var viewModel =  ViewModel()
-    // MARK: - Lifecycle
-    override func awakeFromNib() {
-        super.awakeFromNib()
-    }
     
+    // MARK: - Lifecycle
     override func prepareForReuse() {
         super.prepareForReuse()
         self.timer?.invalidate()
         self.timer = nil
+        enableButton() 
     }
     
     // MARK: - Actions
@@ -97,6 +97,7 @@ final class OrderCancelledTimerCollectionViewCell: UICollectionViewCell {
     
     @objc private func updateTimer() {
         if count > 0 {
+            delegate?.timerIs(on: true)
             let minutes = Int(count) / 60 % 60
             let seconds = Int(count) % 60
             timeLabel.text = String(format: "%02d:%02d", minutes, seconds) + " " + OrderTrackingLocalization.minText.text
@@ -110,6 +111,7 @@ final class OrderCancelledTimerCollectionViewCell: UICollectionViewCell {
             bottomConstraint.constant = 9
             topConstraint.constant = 9
             disableButton()
+            delegate?.timerIs(on: false)
         }
     }
     
@@ -117,6 +119,13 @@ final class OrderCancelledTimerCollectionViewCell: UICollectionViewCell {
         actionButton.setTitleColor(.black.withAlphaComponent(0.5), for: .normal)
         actionButton.backgroundColor = .black.withAlphaComponent(0.1)
         actionButton.isUserInteractionEnabled = false
+    }
+    
+    private func enableButton() {
+        actionButton.fontTextStyle = .smilesHeadline4
+        actionButton.setTitleColor(.white, for: .normal)
+        actionButton.backgroundColor = .appRevampPurpleMainColor
+        actionButton.isUserInteractionEnabled = true
     }
 }
 

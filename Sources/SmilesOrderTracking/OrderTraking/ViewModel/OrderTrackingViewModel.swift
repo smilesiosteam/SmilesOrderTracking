@@ -99,6 +99,7 @@ final class OrderTrackingViewModel {
                 case .showError(message: let message):
                     self.statusSubject.send(.hideLoader)
                     self.statusSubject.send(.showError(message: message))
+                    self.statusSubject.send(.timerIsOff)
                 case .navigateToOrderConfirmation(orderId: let orderId, orderNumber: let orderNumber):
                     self.statusSubject.send(.hideLoader)
                     self.navigationDelegate?.navigationToOrderConfirmation(orderId: orderId, orderNumber: orderNumber)
@@ -118,5 +119,6 @@ extension OrderTrackingViewModel {
         case showToastForArrivedOrder(isShow: Bool)
         case showToastForNoLiveTracking(isShow: Bool)
         case success(model: OrderTrackingModel)
+        case timerIsOff
     }
 }

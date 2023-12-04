@@ -149,7 +149,7 @@ let jsonString = """
 {
   "extTransactionId": "3530191483630",
   "orderDetails": {
-    "orderStatus": 11,
+    "orderStatus": 9,
      "smallImageAnimationUrl": "https://www.smilesuae.ae/images/APP/ORDER_TRACKING/ENGLISH/SMALL/Delivering.json",
      "largeImageAnimationUrl": "https://www.smilesuae.ae/images/APP/ORDER_TRACKING/ENGLISH/LARGE/Waiting.json",
      "trackingColorCode": "#a5deef",
@@ -205,7 +205,7 @@ let jsonString = """
          "description": "description description description description"
      },
     "paymentType": "cashOnDelivery",
-   "changeTypeTimer": 2,
+   "changeTypeTimer": 1,
     "paidAedAmount": "65",
     "isFirstOrder": false,
     "statusText": "Order Received",

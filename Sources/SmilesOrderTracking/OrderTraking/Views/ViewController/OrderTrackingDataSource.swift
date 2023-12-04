@@ -182,4 +182,8 @@ extension OrderTrackingDataSource: OrderCancelledTimerCellActionDelegate {
         delegate?.presentConfirmationPickup(location: restaurantAddress, didTappedContinue: didTappedContinue)
         
     }
+    
+    func timerIs(on: Bool) {
+        delegate?.timerIs(on: on)
+    }
 }

@@ -85,7 +85,7 @@ final public class RateYourOrderViewController: UIViewController {
     }
     
     @IBAction private func getSupportTapped(_ sender: UIButton) {
-        delegate?.shouldOpenGetSupport()
+        viewModel?.getLiveChatUrl()
     }
     
     // MARK: - Methods
@@ -149,6 +149,14 @@ final public class RateYourOrderViewController: UIViewController {
         viewModel?.$showErrorMessage.sink { [weak self] value in
             guard let self else { return }
             self.showAlertWithOkayOnly(message: value.asStringOrEmpty())
+        }.store(in: &cancellables)
+        
+        viewModel?.$liveChatUrl.sink { [weak self] value in
+            guard let self, let value else { return }
+            
+            dismiss {
+                self.delegate?.shouldOpenGetSupport(with: value)
+            }
         }.store(in: &cancellables)
     }
     

@@ -12,11 +12,13 @@ public struct OrderTrackingDependance {
     public var orderId: String
     public var orderNUmber: String
     public var checkForVoucher: Bool
+    public var chatbotType: String
     
-    public init(orderId: String, orderNUmber: String, checkForVoucher: Bool = false) {
+    public init(orderId: String, orderNUmber: String, checkForVoucher: Bool = false, chatbotType: String) {
         self.orderId = orderId
         self.orderNUmber = orderNUmber
         self.checkForVoucher = checkForVoucher
+        self.chatbotType = chatbotType
     }
 }
 
@@ -34,6 +36,7 @@ public enum TrackOrderConfigurator {
         viewModel.navigationDelegate = navigationDelegate
         viewModel.orderId = dependance.orderId
         viewModel.checkForVoucher = dependance.checkForVoucher
+        viewModel.chatbotType = dependance.chatbotType
         let viewController = OrderTrackingViewController.create()
         viewController.viewModel = viewModel
         return viewController

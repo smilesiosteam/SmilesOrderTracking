@@ -15,7 +15,7 @@ import SDWebImage
 protocol OrderRatingViewDelegate: AnyObject {
     func shouldOpenItemRatingViewController(with model: RateOrderResponse, orderItems: [OrderItemDetail])
     func shouldOpenFeedbackSuccessViewController(with model: RateOrderResponse)
-    func shouldOpenGetSupport()
+    func shouldOpenGetSupport(with url: String)
 }
 
 final public class OrderRatingViewController: UIViewController {
@@ -122,7 +122,7 @@ final public class OrderRatingViewController: UIViewController {
     }
     
     @IBAction private func getSupportButtonTapped(_ sender: UIButton) {
-        delegate?.shouldOpenGetSupport()
+        viewModel?.getLiveChatUrl()
     }
     
     // MARK: - Methods
@@ -219,6 +219,14 @@ final public class OrderRatingViewController: UIViewController {
         viewModel?.$showErrorMessage.sink { [weak self] value in
             guard let self else { return }
             self.showAlertWithOkayOnly(message: value.asStringOrEmpty())
+        }.store(in: &cancellables)
+        
+        viewModel?.$liveChatUrl.sink { [weak self] value in
+            guard let self, let value else { return }
+            
+            dismiss {
+                self.delegate?.shouldOpenGetSupport(with: value)
+            }
         }.store(in: &cancellables)
     }
     

@@ -9,8 +9,10 @@ import Foundation
 
 struct RateYourOrderUIModel {
     var ratingOrderResponse: GetOrderRatingResponse
+    public var chatbotType: String
     
-    init(ratingOrderResponse: GetOrderRatingResponse) {
+    init(ratingOrderResponse: GetOrderRatingResponse, chatbotType: String) {
         self.ratingOrderResponse = ratingOrderResponse
+        self.chatbotType = chatbotType
     }
 }

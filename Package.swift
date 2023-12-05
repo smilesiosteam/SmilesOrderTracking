@@ -29,7 +29,8 @@ let package = Package(
         .package(url: "https://github.com/smilesiosteam/SmilesLoader.git", branch: "main"),
         .package(url: "https://github.com/SDWebImage/SDWebImage.git", from: "5.1.0"),
         .package(url: "https://github.com/sabarics/PlaceholderUITextView.git", branch: "master"),
-        .package(url: "https://github.com/smilesiosteam/SmilesScratchHandler.git", branch: "main")
+        .package(url: "https://github.com/smilesiosteam/SmilesScratchHandler.git", branch: "main"),
+        .package(url: "https://github.com/smilesiosteam/SmilesSharedServices.git", branch: "main")
     ],
     targets: [
         // Targets are the basic building blocks of a package, defining a module or a test suite.
@@ -49,7 +50,8 @@ let package = Package(
                 .product(name: "SmilesLoader", package: "SmilesLoader"),
                 .product(name: "SDWebImage", package: "SDWebImage"),
                 .product(name: "PlaceholderUITextView", package: "PlaceholderUITextView"),
-                .product(name: "SmilesScratchHandler", package: "SmilesScratchHandler")
+                .product(name: "SmilesScratchHandler", package: "SmilesScratchHandler"),
+                .product(name: "SmilesSharedServices", package: "SmilesSharedServices")
             ],
             resources: [.process("Resources")]
         ),

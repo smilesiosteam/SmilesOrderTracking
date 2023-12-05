@@ -22,6 +22,7 @@ final class OrderTrackingViewModel {
     private let scratchAndWinUseCase: ScratchAndWinUseCaseProtocol
     var orderId = ""
     var checkForVoucher = false
+    var chatbotType = ""
     var orderStatusPublisher: AnyPublisher<State, Never> {
         statusSubject.eraseToAnyPublisher()
     }
@@ -123,7 +124,6 @@ final class OrderTrackingViewModel {
         useCase.resumeTimer()
     }
     func setupScratchAndWin(orderId: String, isVoucherScratched: Bool) {
-        statusSubject.send(.showLoader)
         scratchAndWinUseCase.statePublisher.sink { [weak self] state in
             guard let self else { return }
             switch state {
@@ -136,6 +136,7 @@ final class OrderTrackingViewModel {
             }
         }.store(in: &cancellables)
         
+        statusSubject.send(.showLoader)
         scratchAndWinUseCase.configureScratchAndWin(with: orderId, isVoucherScratched: isVoucherScratched)
     }
 }

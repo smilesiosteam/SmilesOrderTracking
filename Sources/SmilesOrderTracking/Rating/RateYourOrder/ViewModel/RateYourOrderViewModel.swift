@@ -13,6 +13,7 @@ final public class RateYourOrderViewModel: NSObject {
     private var cancellables = Set<AnyCancellable>()
     
     var rateYourOrderUIModel: RateYourOrderUIModel
+    private(set) var liveChatUseCase: LiveChatUseCaseProtocol
     private(set) var popupTitle: String?
     @Published private(set) var rateOrderResponse: RateOrderResponse?
     var itemRatings = [ItemRatings]()
@@ -25,9 +26,11 @@ final public class RateYourOrderViewModel: NSObject {
     var parityCheckNumber = 0
     var userFeedbackText: String?
     var orderRatingModels = [OrderRatingModel]()
+    @Published private(set) var liveChatUrl: String?
     
-    init(rateYourOrderUIModel: RateYourOrderUIModel) {
+    init(rateYourOrderUIModel: RateYourOrderUIModel, liveChatUseCase: LiveChatUseCaseProtocol = LiveChatUseCase()) {
         self.rateYourOrderUIModel = rateYourOrderUIModel
+        self.liveChatUseCase = liveChatUseCase
         super.init()
         
         configUI()
@@ -59,5 +62,26 @@ final public class RateYourOrderViewModel: NSObject {
                 SmilesLoader.dismiss()
             }
         .store(in: &cancellables)
+    }
+    
+    func getLiveChatUrl() {
+        SmilesLoader.show()
+        
+        liveChatUseCase.statePublisher.sink { [weak self] state in
+            guard let self else { return }
+            switch state {
+            case .showError(let message):
+                SmilesLoader.dismiss()
+                self.showErrorMessage = message
+            case .navigateToLiveChatWebview(let url):
+                SmilesLoader.dismiss()
+                self.liveChatUrl = url
+            }
+        }.store(in: &cancellables)
+        
+        let orderDetails = rateYourOrderUIModel.ratingOrderResponse.orderDetails
+        if let orderId = orderDetails?.orderId, let orderNumber = orderDetails?.orderNumber {
+            liveChatUseCase.getLiveChatUrl(with: "\(orderId)", chatbotType: rateYourOrderUIModel.chatbotType, orderNumber: orderNumber)
+        }
     }
 }

@@ -49,7 +49,7 @@ extension OrderTrackingViewController: OrderTrackingViewDelegate {
     }
     
     func presentRateFlow() {
-        let uiModel = OrderRatingUIModel(ratingType: "food", contentType: "tracking", isLiveTracking: true, orderId: "466843")
+        let uiModel = OrderRatingUIModel(ratingType: "food", contentType: "tracking", isLiveTracking: true, orderId: "466854", chatbotType: viewModel.chatbotType)
         let model = OrderRatingViewModel(orderRatingUIModel: uiModel)
         let viewController = OrderRatingViewController.create(with: model, delegate: self)
         viewController.modalPresentationStyle = .overFullScreen
@@ -106,8 +106,8 @@ extension OrderTrackingViewController: OrderRatingViewDelegate {
         self.present(feedBackSuccessViewController)
     }
     
-    func shouldOpenGetSupport() {
-        // Open LivechatWKWebviewController
+    func shouldOpenGetSupport(with url: String) {
+        viewModel.navigationDelegate?.navigateToLiveChatWebview(url: url)
     }
 }
 

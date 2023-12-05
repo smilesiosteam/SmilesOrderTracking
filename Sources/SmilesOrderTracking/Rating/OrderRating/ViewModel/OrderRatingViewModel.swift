@@ -13,6 +13,7 @@ import SmilesLoader
 final class OrderRatingViewModel {
     private var cancellables = Set<AnyCancellable>()
     private(set) var orderRatingUIModel: OrderRatingUIModel
+    private(set) var liveChatUseCase: LiveChatUseCaseProtocol
     @Published private(set) var popupTitle: String?
     @Published private(set) var ratingTitle: String?
     @Published private(set) var ratingDescription: String?
@@ -24,9 +25,11 @@ final class OrderRatingViewModel {
     @Published private(set) var orderItems: [OrderItemDetail]?
     @Published private(set) var shouldDismiss = false
     @Published private(set) var showErrorMessage: String?
+    @Published private(set) var liveChatUrl: String?
     
-    init(orderRatingUIModel: OrderRatingUIModel) {
+    init(orderRatingUIModel: OrderRatingUIModel, liveChatUseCase: LiveChatUseCaseProtocol = LiveChatUseCase()) {
         self.orderRatingUIModel = orderRatingUIModel
+        self.liveChatUseCase = liveChatUseCase
     }
     
     func getOrderRating() {
@@ -71,6 +74,26 @@ final class OrderRatingViewModel {
                 SmilesLoader.dismiss()
             }
         .store(in: &cancellables)
+    }
+    
+    func getLiveChatUrl() {
+        liveChatUseCase.statePublisher.sink { [weak self] state in
+            guard let self else { return }
+            switch state {
+            case .showError(let message):
+                SmilesLoader.dismiss()
+                self.showErrorMessage = message
+            case .navigateToLiveChatWebview(let url):
+                SmilesLoader.dismiss()
+                self.liveChatUrl = url
+            }
+        }.store(in: &cancellables)
+        
+        let orderDetails = getOrderRatingResponse?.orderDetails
+        if let orderId = orderDetails?.orderId, let orderNumber = orderDetails?.orderNumber {
+            SmilesLoader.show()
+            liveChatUseCase.getLiveChatUrl(with: "\(orderId)", chatbotType: orderRatingUIModel.chatbotType.asStringOrEmpty(), orderNumber: orderNumber)
+        }
     }
     
     private func createPopupUI(with getOrderRatingResponse: GetOrderRatingResponse) {

@@ -112,9 +112,9 @@ final class OrderTrackingServiceHandler: OrderTrackingServiceHandlerProtocol {
         return service.cancelOrderService(request: request)
     }
     
-    func submitOrderRating(orderNumber: String, orderId: String, restaurantName: String, itemRatings: [ItemRatings]?, orderRating: [OrderRatingModel]?, isAccrualPointsAllowed: Bool, itemLevelRatingEnabled: Bool, restaurantId: String?) -> AnyPublisher<RateOrderResponse, NetworkError> {
+    func submitOrderRating(orderNumber: String, orderId: String, restaurantName: String, itemRatings: [ItemRatings]?, orderRating: [OrderRatingModel]?, isAccrualPointsAllowed: Bool, itemLevelRatingEnabled: Bool, restaurantId: String?, userFeedback: String? = nil) -> AnyPublisher<RateOrderResponse, NetworkError> {
         
-        let request = RateOrderRequest(orderId: orderId, orderNumber: orderNumber, restaurantName: restaurantName, orderRatings: orderRating, itemRatings: itemRatings, isAccuralPointsAllowed: isAccrualPointsAllowed, itemLevelRatingEnabled: itemLevelRatingEnabled, restaurantId: restaurantId)
+        let request = RateOrderRequest(orderId: orderId, orderNumber: orderNumber, restaurantName: restaurantName, orderRatings: orderRating, itemRatings: itemRatings, isAccuralPointsAllowed: isAccrualPointsAllowed, itemLevelRatingEnabled: itemLevelRatingEnabled, restaurantId: restaurantId, userFeedback: userFeedback)
         
         let service = OrderTrackingRepository(
             networkRequest: NetworkingLayerRequestable(requestTimeOut: 60),

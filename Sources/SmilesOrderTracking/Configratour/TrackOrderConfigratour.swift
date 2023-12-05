@@ -11,10 +11,12 @@ import UIKit
 public struct OrderTrackingDependance {
     public var orderId: String
     public var orderNUmber: String
+    public var checkForVoucher: Bool
     
-    public init(orderId: String, orderNUmber: String) {
+    public init(orderId: String, orderNUmber: String, checkForVoucher: Bool = false) {
         self.orderId = orderId
         self.orderNUmber = orderNUmber
+        self.checkForVoucher = checkForVoucher
     }
 }
 
@@ -27,8 +29,11 @@ public enum TrackOrderConfigurator {
                                            services: service)
         let orderConfirmationUseCase = OrderConfirmationUseCase(services: service)
         let changeTypeUseCase = ChangeTypeUseCase(services: service)
-        let viewModel = OrderTrackingViewModel(useCase: useCase, confirmUseCase: orderConfirmationUseCase, changeTypeUseCase: changeTypeUseCase)
+        let scratchAndWinUseCase = ScratchAndWinUseCase()
+        let viewModel = OrderTrackingViewModel(useCase: useCase, confirmUseCase: orderConfirmationUseCase, changeTypeUseCase: changeTypeUseCase, scratchAndWinUseCase: scratchAndWinUseCase)
         viewModel.navigationDelegate = navigationDelegate
+        viewModel.orderId = dependance.orderId
+        viewModel.checkForVoucher = dependance.checkForVoucher
         let viewController = OrderTrackingViewController.create()
         viewController.viewModel = viewModel
         return viewController

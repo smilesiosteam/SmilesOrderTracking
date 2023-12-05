@@ -11,6 +11,7 @@ import SmilesFontsManager
 import Combine
 import GoogleMaps
 import SmilesLoader
+import SmilesScratchHandler
 
 protocol OrderTrackingViewDelegate: AnyObject {
     func presentConfirmationPickup(location: String, didTappedContinue: (()-> Void)?)
@@ -48,9 +49,8 @@ extension OrderTrackingViewController: OrderTrackingViewDelegate {
     }
     
     func presentRateFlow() {
-        let uiModel = OrderRatingUIModel(ratingType: "food", contentType: "tracking", isLiveTracking: true, orderId: "466832")
-        let serviceHandler = OrderTrackingServiceHandler()
-        let model = OrderRatingViewModel(orderRatingUIModel: uiModel, serviceHandler: serviceHandler)
+        let uiModel = OrderRatingUIModel(ratingType: "food", contentType: "tracking", isLiveTracking: true, orderId: "466843")
+        let model = OrderRatingViewModel(orderRatingUIModel: uiModel)
         let viewController = OrderRatingViewController.create(with: model, delegate: self)
         viewController.modalPresentationStyle = .overFullScreen
         self.present(viewController)
@@ -89,7 +89,7 @@ extension OrderTrackingViewController: OrderTrackingViewDelegate {
 extension OrderTrackingViewController: OrderRatingViewDelegate {
     func shouldOpenItemRatingViewController(with model: RateOrderResponse, orderItems: [OrderItemDetail]) {
         let itemRatingUIModel = ItemRatingUIModel(itemWiseRatingEnabled: model.itemLevelRatingEnable ?? false, isAccrualPointsAllowed: model.isAccrualPointsAllowed ?? false, orderItems: orderItems, ratingOrderResponse: model)
-        let itemRatingViewModel = ItemRatingViewModel(itemRatingUIModel: itemRatingUIModel, serviceHandler: viewModel.serviceHandler)
+        let itemRatingViewModel = ItemRatingViewModel(itemRatingUIModel: itemRatingUIModel)
         let itemRatingViewController = ItemRatingViewController.create(with: itemRatingViewModel, delegate: self)
         itemRatingViewController.modalPresentationStyle = .overFullScreen
         
@@ -104,6 +104,10 @@ extension OrderTrackingViewController: OrderRatingViewDelegate {
         feedBackSuccessViewController.modalPresentationStyle = .overFullScreen
         
         self.present(feedBackSuccessViewController)
+    }
+    
+    func shouldOpenGetSupport() {
+        // Open LivechatWKWebviewController
     }
 }
 
@@ -120,6 +124,8 @@ public final class OrderTrackingViewController: UIViewController, Toastable, Map
     private lazy var dataSource = OrderTrackingDataSource(viewModel: viewModel)
     private var floatingView: FloatingView!
     private var timerIsOn = false
+    private var isFirstTime = true
+    
     private lazy var collectionViewDataSource = OrderTrackingLayout()
     var isHeaderVisible = true
     var lastContentOffset: CGFloat = 0
@@ -146,6 +152,10 @@ public final class OrderTrackingViewController: UIViewController, Toastable, Map
         navigationController?.setNavigationBarHidden(true, animated: false)
         if !timerIsOn {
             viewModel.fetchStatus()
+            if viewModel.checkForVoucher && isFirstTime {
+                viewModel.setupScratchAndWin(orderId: viewModel.orderId, isVoucherScratched: false)
+                isFirstTime = false
+            }
         }
     }
     
@@ -276,6 +286,8 @@ public final class OrderTrackingViewController: UIViewController, Toastable, Map
                 self.collectionView.reloadData()
             case .timerIsOff:
                 self.timerIsOn = false
+            case .presentScratchAndWin(let response):
+                self.presentScratchAndWinVC(response: response)
             }
         }.store(in: &cancellables)
     }
@@ -395,6 +407,15 @@ public final class OrderTrackingViewController: UIViewController, Toastable, Map
             
         }
     }
+    
+    private func presentScratchAndWinVC(response: ScratchAndWinResponse) {
+        
+        let scratchVC = SmilesScratchViewController(scratchObj: response, orderId: viewModel.orderId)
+        scratchVC.modalPresentationStyle = .overCurrentContext
+        scratchVC.modalTransitionStyle = .crossDissolve
+        scratchVC.delegate = self
+        present(scratchVC)
+    }
 }
 
 // MARK: - UICollectionViewDelegate
@@ -435,7 +456,12 @@ extension OrderTrackingViewController {
     }
 }
 
-
+// MARK: - ScratchAndWinDelegate
+extension OrderTrackingViewController: ScratchAndWinDelegate {
+    public func viewVoucherPressed(voucherCode: String) {
+        viewModel.navigationDelegate?.navigateToVouchersRevamp(voucherCode: voucherCode)
+    }
+}
 
 
 //    func updateMapWithLocation(newLocation: CLLocation) {

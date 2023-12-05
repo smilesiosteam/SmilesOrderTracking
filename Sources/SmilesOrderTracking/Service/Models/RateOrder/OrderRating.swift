@@ -15,6 +15,8 @@ struct OrderRating: Codable {
     var image: String?
     var rating: [Rating]?
     var description: String?
+    var ratingCount = 0.0
+    var ratingFeedback: String?
 
     enum CodingKeys: String, CodingKey {
         case ratingType

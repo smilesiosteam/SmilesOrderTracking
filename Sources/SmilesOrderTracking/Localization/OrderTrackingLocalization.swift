@@ -58,6 +58,7 @@ enum OrderTrackingLocalization {
     case cancelOrderDescription
     case dontCancel
     case yesCancel
+    case describeYourExperience
     
     // Pickup Confirmation
     case confirmOrderPickup
@@ -168,6 +169,8 @@ enum OrderTrackingLocalization {
             return "Don't cancel".localizedString
         case .yesCancel:
             return "Yes cancel".localizedString
+        case .describeYourExperience:
+            return "Describe your experience (optional)".localizedString
         case .confirmOrderPickup:
             return "ConfirmOrderPickup".localizedString
         case .refundInfo:

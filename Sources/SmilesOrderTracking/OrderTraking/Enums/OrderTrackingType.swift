@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum OrderTrackingType: Int {
+public enum OrderTrackingType: Int {
     case orderProcessing = 0
     case waitingForTheRestaurant = 1
     case orderAccepted = 2

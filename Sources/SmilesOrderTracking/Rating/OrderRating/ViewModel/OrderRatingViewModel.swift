@@ -16,7 +16,7 @@ final class OrderRatingViewModel {
     @Published private(set) var popupTitle: String?
     @Published private(set) var ratingTitle: String?
     @Published private(set) var ratingDescription: String?
-    var serviceHandler: OrderTrackingServiceHandler
+    private let serviceHandler = OrderTrackingServiceHandler()
     
     @Published private(set) var getOrderRatingResponse: GetOrderRatingResponse?
     @Published private(set) var rateOrderResponse: RateOrderResponse?
@@ -25,9 +25,8 @@ final class OrderRatingViewModel {
     @Published private(set) var shouldDismiss = false
     @Published private(set) var showErrorMessage: String?
     
-    init(orderRatingUIModel: OrderRatingUIModel, serviceHandler: OrderTrackingServiceHandler) {
+    init(orderRatingUIModel: OrderRatingUIModel) {
         self.orderRatingUIModel = orderRatingUIModel
-        self.serviceHandler = serviceHandler
     }
     
     func getOrderRating() {

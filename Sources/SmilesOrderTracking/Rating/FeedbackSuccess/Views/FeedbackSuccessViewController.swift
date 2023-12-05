@@ -57,6 +57,8 @@ final public class FeedbackSuccessViewController: UIViewController {
         configureAnimation()
         bindViewModel()
         setupPanGesture()
+        
+        viewModel?.createUI()
     }
     
     // MARK: - Actions

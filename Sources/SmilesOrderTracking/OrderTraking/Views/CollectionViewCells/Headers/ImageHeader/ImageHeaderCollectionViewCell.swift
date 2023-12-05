@@ -30,6 +30,7 @@ final class ImageHeaderCollectionViewCell: UICollectionReusableView {
     override func awakeFromNib() {
         super.awakeFromNib()
         configControllers()
+        containerView.backgroundColor = .purple
     }
     
     // MARK: - Button Actions
@@ -54,8 +55,10 @@ final class ImageHeaderCollectionViewCell: UICollectionReusableView {
             containerView.backgroundColor = backgroundColor
             headerImage.isHidden = false
         case .animation(let url, let backgroundColor):
+            
             headerImage.isHidden = true
             containerView.backgroundColor = UIColor(hex: backgroundColor)
+            containerView.backgroundColor = .white
             if let url {
                 LottieAnimationManager.showAnimationFromUrl(FromUrl: url, animationBackgroundView: containerView, removeFromSuper: false, loopMode: .loop,contentMode: .scaleAspectFill) { _ in }
             }

@@ -23,10 +23,8 @@ struct OnTheWayOrderConfig: OrderTrackable {
         ]
         
         // If the order will be delayed
-        if let deliveryDelayTitle = response.orderDetails?.delayAlert?.title,
-            !deliveryDelayTitle.isEmpty {
-            let text = "\(deliveryDelayTitle) \n \(response.orderDetails?.delayAlert?.description ?? "")"
-            cells.append(.text(model: .init(title: text)))
+        if let delayText = response.orderDetails?.delayStatusText, !delayText.isEmpty {
+            cells.append(.text(model: .init(title: delayText)))
         }
         
         // Will add driver cell in case isLiveTracking is true only

@@ -24,6 +24,11 @@ protocol OrderTrackingViewDelegate: AnyObject {
 
 extension OrderTrackingViewController: OrderTrackingViewDelegate {
     func presentCancelFlow(orderId: String) {
+        
+        let c = isHeaderVisible ? false : true
+        isHeaderVisible = c
+        animateHeaderVisibility(show: c)
+        return
         let vc = ConfirmationPopupViewController(
             popupData: ConfirmationPopupViewModelData(
                 showCloseButton: false,
@@ -53,6 +58,8 @@ extension OrderTrackingViewController: OrderTrackingViewDelegate {
     
     func dismiss() {
         self.dismissMe()
+        let c = isHeaderVisible ? false : true
+        animateHeaderVisibility(show: c)
     }
     
     func presentConfirmationPickup(location: String, didTappedContinue: (()-> Void)?) {
@@ -105,13 +112,17 @@ public final class OrderTrackingViewController: UIViewController, Toastable, Map
     // MARK: - Outlets
     @IBOutlet private weak var collectionView: UICollectionView!
     
+    @IBOutlet weak var topConstraint: NSLayoutConstraint!
     private var cancellables: Set<AnyCancellable> = []
     private let cancelOrderviewModel = SmilesOrderCancelledViewModel()
     private let cancelOrderInput: PassthroughSubject<SmilesOrderCancelledViewModel.Input, Never> = .init()
     var viewModel: OrderTrackingViewModel!
     private lazy var dataSource = OrderTrackingDataSource(viewModel: viewModel)
     private var floatingView: FloatingView!
-   private var timerIsOn = false
+    private var timerIsOn = false
+    private lazy var collectionViewDataSource = OrderTrackingLayout()
+    var isHeaderVisible = true
+    var lastContentOffset: CGFloat = 0
     // MARK: - Life Cycle
     public override func viewDidLoad() {
         super.viewDidLoad()
@@ -120,7 +131,7 @@ public final class OrderTrackingViewController: UIViewController, Toastable, Map
         bindCancelFlow()
         bindStatus()
         
-        NotificationCenter.default.addObserver(self, selector: #selector(applicationDidBecomeActive), 
+        NotificationCenter.default.addObserver(self, selector: #selector(applicationDidBecomeActive),
                                                name: UIApplication.willEnterForegroundNotification, object: nil)
         
     }
@@ -149,6 +160,8 @@ public final class OrderTrackingViewController: UIViewController, Toastable, Map
         }
     }
     
+    
+    
     private func bindCancelFlow() {
         cancelOrderviewModel.transform(input: cancelOrderInput.eraseToAnyPublisher())
             .sink { [weak self] event in
@@ -158,9 +171,11 @@ public final class OrderTrackingViewController: UIViewController, Toastable, Map
                     self?.navigateToOrderCancelledScreen(response: response)
                 case .pauseOrderDidSucceed:
                     //puase animations
+                    self?.processAnimation(stop: true)
                     break
                 case .resumeOrderDidSucceed:
                     //resume animations
+                    self?.processAnimation(stop: false)
                     break
                     //MARK: -- Failure cases
                 case .cancelOrderDidFail(let error):
@@ -224,7 +239,7 @@ public final class OrderTrackingViewController: UIViewController, Toastable, Map
                 withReuseIdentifier: String(describing: $0.self))
         })
         
-        collectionView.collectionViewLayout = OrderTrackingLayout.createLayout()
+        collectionView.collectionViewLayout = collectionViewDataSource.createLayout()
         collectionView.dataSource = dataSource
         collectionView.delegate = self
         collectionView.reloadData()
@@ -305,10 +320,15 @@ public final class OrderTrackingViewController: UIViewController, Toastable, Map
         // Process the animation for header view
         let headerView = getImageHeader()
         headerView?.processAnimation(stop: stop)
-        
+        stop ? viewModel.pauseTimer() : viewModel.resumeTimer()
         // Process animation for status bar view
         if let cell = collectionView.cellForItem(at: IndexPath(row: 0, section: 0)) as? OrderProgressCollectionViewCell {
-            cell.processAnimation(stop: stop)
+            if stop == false {
+                collectionView.reloadItems(at: [IndexPath(row: 0, section: 0)])
+            } else {
+                cell.processAnimation(stop: stop)
+            }
+            
         }
     }
     
@@ -340,7 +360,7 @@ public final class OrderTrackingViewController: UIViewController, Toastable, Map
     // Show and hide the view in the top when scroll collection view
     private func setupFloatingView() {
         floatingView = FloatingView(frame: CGRect(x: 0, y: 0, width: view.bounds.width, height: 100))
-        floatingView.backgroundColor = .appRevampPurpleMainColor
+        floatingView.backgroundColor = .white
         floatingView.alpha = 0
         view.addSubview(floatingView)
         
@@ -356,8 +376,10 @@ public final class OrderTrackingViewController: UIViewController, Toastable, Map
     private func showFloatingView() {
         configHeaderButtons(isHidden: true)
         if floatingView.alpha == 0 {
-            UIView.animate(withDuration: 0.3) {
-                self.floatingView.alpha = 1
+            UIView.animate(withDuration: 0.3) { self.floatingView.alpha = 1 }
+            DispatchQueue.main.async {
+                self.animateHeaderVisibility(show: false)
+                self.topConstraint.constant = 120
             }
         }
     }
@@ -365,18 +387,20 @@ public final class OrderTrackingViewController: UIViewController, Toastable, Map
     private func hideFloatingView() {
         configHeaderButtons(isHidden: false)
         if floatingView.alpha == 1 {
-            UIView.animate(withDuration: 0.3) {
-                self.floatingView.alpha = 0
+            UIView.animate(withDuration: 0.3) { self.floatingView.alpha = 0 }
+            DispatchQueue.main.async {
+                self.animateHeaderVisibility(show: true)
+                self.topConstraint.constant = 0
             }
+            
         }
-        
     }
-    
 }
 
 // MARK: - UICollectionViewDelegate
-extension OrderTrackingViewController: UICollectionViewDelegate {
-    public func scrollViewDidScroll(_ scrollView: UIScrollView) {
+extension OrderTrackingViewController: UICollectionViewDelegate, UIScrollViewDelegate {
+    
+    public func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
         let scrollOffset = scrollView.contentOffset.y
         
         // Adjust the threshold value based on your specific needs
@@ -389,6 +413,17 @@ extension OrderTrackingViewController: UICollectionViewDelegate {
             
             hideFloatingView()
         }
+    }
+    
+    private func animateHeaderVisibility(show: Bool) {
+        let animator = UIViewPropertyAnimator(duration: 0.3, curve: .easeInOut) {
+            self.collectionViewDataSource.isShowHeader = show
+            self.collectionView.collectionViewLayout.invalidateLayout()
+        }
+        
+        collectionView.performBatchUpdates({
+            animator.startAnimation()
+        }, completion: { _ in })
     }
 }
 

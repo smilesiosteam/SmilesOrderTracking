@@ -110,7 +110,9 @@ struct OrderDetail: Codable {
     var largeImageAnimationUrl: String?
     var trackingColorCode: String?
     var earnPointsText: String?
+    var delayStatusText: String?
     enum CodingKeys: String, CodingKey {
+        case delayStatusText
         case smallImageAnimationUrl
         case largeImageAnimationUrl
         case trackingColorCode
@@ -307,6 +309,8 @@ struct OrderDetail: Codable {
         largeImageAnimationUrl = try values.decodeIfPresent(String.self, forKey: .largeImageAnimationUrl)
         trackingColorCode = try values.decodeIfPresent(String.self, forKey: .trackingColorCode)
         earnPointsText = try values.decodeIfPresent(String.self, forKey: .earnPointsText)
+        delayStatusText = try values.decodeIfPresent(String.self, forKey: .delayStatusText)
+        
     }
     
     func getIconForStatus(withOrderType orderType: String?) -> String {

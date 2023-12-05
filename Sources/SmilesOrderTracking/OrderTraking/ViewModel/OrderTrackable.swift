@@ -44,7 +44,7 @@ extension OrderTrackable {
         if let point = response.orderDetails?.earnPoints, point > 0 {
             var viewModel = PointsCollectionViewCell.ViewModel()
             viewModel.numberOfPoints = point
-            viewModel.text = OrderTrackingLocalization.points.text
+            viewModel.text = response.orderDetails?.earnPointsText
             return viewModel
         }
         return nil
@@ -95,6 +95,7 @@ extension OrderTrackable {
         viewModel.lng = Double(orderDetails?.longitude ?? "") ?? 0.0
         viewModel.subTitle = orderDetails?.driverStatusText
         viewModel.cellType = .delivery
+        viewModel.driverMobileNumber = response.orderDetails?.partnerNumber
         return viewModel
     }
     

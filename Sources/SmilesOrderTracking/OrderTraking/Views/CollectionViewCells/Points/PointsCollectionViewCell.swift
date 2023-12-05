@@ -23,7 +23,7 @@ final class PointsCollectionViewCell: UICollectionViewCell {
     // MARK: - Functions
     func updateCell(with viewModel: ViewModel) {
         
-        let text = OrderTrackingLocalization.points.text
+        let text = viewModel.text ?? ""
         let combinedText = "\(viewModel.numberOfPoints) \(text)"
         let attributedString = NSMutableAttributedString(string: combinedText)
         

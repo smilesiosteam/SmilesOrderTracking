@@ -22,7 +22,7 @@ final class OrderProgressCollectionViewCell: UICollectionViewCell {
     // MARK: - Properties
     private var leadingConstraint: NSLayoutConstraint!
     private let animatedView = UIView()
-    
+    private var viewModel: ViewModel = .init()
     override func awakeFromNib() {
         super.awakeFromNib()
         configControllers()
@@ -36,11 +36,13 @@ final class OrderProgressCollectionViewCell: UICollectionViewCell {
     
     
     func processAnimation(stop: Bool) {
-        stop ? fillAnimator?.pauseAnimation() : fillAnimator?.startAnimation()
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+            self.fillAnimator?.stopAnimation(true)
+        }
     }
     // MARK: - Functions
     func updateCell(with viewModel: ViewModel) {
-        
+        self.viewModel = viewModel
         self.setProgressBar(step: viewModel.step)
         
         

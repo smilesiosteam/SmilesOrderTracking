@@ -106,7 +106,7 @@ final class OrderCancelledTimerCollectionViewCell: UICollectionViewCell {
             timer?.invalidate()
             timer = nil
             timeLabel.text = "00:00" + " " + OrderTrackingLocalization.minText.text
-//            textLabel.text = OrderTrackingLocalization.orderCancelledTimeFinished.text
+            textLabel.text = OrderTrackingLocalization.orderCancelledTimeFinished.text
             mainStackView.spacing = 8
             bottomConstraint.constant = 9
             topConstraint.constant = 9

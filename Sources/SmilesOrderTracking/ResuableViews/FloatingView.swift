@@ -17,7 +17,6 @@ final class FloatingView: UIView {
     private let leadingButton: UIButton = {
         let button = UIButton()
         button.setTitle("X", for: .normal)
-        button.backgroundColor = .white
         button.translatesAutoresizingMaskIntoConstraints = false
         button.fontTextStyle = .smilesTitle1
         button.layer.cornerRadius = 20
@@ -27,15 +26,21 @@ final class FloatingView: UIView {
 
    private let trailingButton: UIButton = {
         let button = UIButton()
-        button.setTitle("Suppot", for: .normal)
-        button.backgroundColor = .white
+        button.setTitle(OrderTrackingLocalization.support.text, for: .normal)
         button.translatesAutoresizingMaskIntoConstraints = false
         button.layer.cornerRadius = 20
         button.fontTextStyle = .smilesTitle1
         button.setTitleColor(.appRevampPurpleMainColor, for: .normal)
         return button
     }()
-
+    
+    private let lineView: UIView = {
+         let view = UIView()
+        view.backgroundColor = .lightGray.withAlphaComponent(0.4)
+        view.translatesAutoresizingMaskIntoConstraints = false
+         return view
+     }()
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupUI()
@@ -51,19 +56,24 @@ final class FloatingView: UIView {
     private func setupUI() {
         addSubview(leadingButton)
         addSubview(trailingButton)
-
+        addSubview(lineView)
+        
         NSLayoutConstraint.activate([
             // Leading button constraints
             leadingButton.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16),
             leadingButton.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -5),
-            leadingButton.widthAnchor.constraint(equalToConstant: 40),
             leadingButton.heightAnchor.constraint(equalToConstant: 40),
 
             // Trailing button constraints
             trailingButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16),
             trailingButton.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -5),
-            trailingButton.widthAnchor.constraint(equalToConstant: 90),
-            trailingButton.heightAnchor.constraint(equalToConstant: 40)
+            trailingButton.heightAnchor.constraint(equalToConstant: 40),
+            
+            // Line view
+            lineView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 0),
+            lineView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: 0),
+            lineView.heightAnchor.constraint(equalToConstant: 1),
+            lineView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: 0)
         ])
     }
     

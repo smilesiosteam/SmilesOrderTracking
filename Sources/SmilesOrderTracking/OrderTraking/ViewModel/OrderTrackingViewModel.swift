@@ -109,6 +109,14 @@ final class OrderTrackingViewModel {
             }
             .store(in: &cancellables)
     }
+    
+    func pauseTimer() {
+        useCase.pauseTimer()
+    }
+    
+    func resumeTimer() {
+        useCase.resumeTimer()
+    }
 }
 
 extension OrderTrackingViewModel {

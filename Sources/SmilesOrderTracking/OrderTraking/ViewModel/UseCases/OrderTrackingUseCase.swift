@@ -10,6 +10,8 @@ import Combine
 
 protocol OrderTrackingUseCaseProtocol {
     func fetchOrderStates()
+    func pauseTimer()
+    func resumeTimer()
     var statePublisher: AnyPublisher<OrderTrackingUseCase.State, Never> { get }
 }
 
@@ -20,6 +22,12 @@ final class OrderTrackingUseCase: OrderTrackingUseCaseProtocol {
     private let orderNumber: String
     private var stateSubject = PassthroughSubject<State, Never>()
     private let services: OrderTrackingServiceHandlerProtocol
+    private var timer: Timer?
+    private var isTimerRunning = false
+    private var elapsedTime: TimeInterval = 0
+    private let hideCancelOrderAfter: TimeInterval = 10 // Hide the cancel button after 10s
+    private var statusResponse: OrderTrackingStatusResponse?
+    
     var statePublisher: AnyPublisher<State, Never> {
         stateSubject.eraseToAnyPublisher()
     }
@@ -31,6 +39,10 @@ final class OrderTrackingUseCase: OrderTrackingUseCaseProtocol {
         self.services = services
     }
     
+    deinit {
+        stopTimer()
+    }
+    
     // we passed the status as parameter to navigate to the OrderHasBeenDeliveredConfig status
     func fetchOrderStates() {
         
@@ -39,7 +51,7 @@ final class OrderTrackingUseCase: OrderTrackingUseCaseProtocol {
             do {
                 let orderResponse = try JSONDecoder().decode(OrderTrackingStatusResponse.self, from: jsonData)
                 _ = orderResponse.orderDetails?.orderStatus
-                
+                statusResponse =  orderResponse
                 let status = self.configOrderStatus(response: orderResponse)
                 stateSubject.send(.success(model: status))
             } catch {
@@ -48,7 +60,8 @@ final class OrderTrackingUseCase: OrderTrackingUseCaseProtocol {
         }
     }
     
-    func configOrderStatus(response: OrderTrackingStatusResponse) -> OrderTrackingModel {
+    private func configOrderStatus(response: OrderTrackingStatusResponse) -> OrderTrackingModel {
+        stopTimer()  // Stop timer when the status is changed
         guard let status = response.orderDetails?.orderStatus,
               let value = OrderTrackingType(rawValue: status) else {
             return .init()
@@ -83,26 +96,20 @@ final class OrderTrackingUseCase: OrderTrackingUseCaseProtocol {
         case .orderNearYourLocation:
             return NearOfLocationConfig(response: response).build()
         case .delivered:
-            return DeliveredOrderConfig(response: response).build()
+            return OrderHasBeenDeliveredConfig(response: response).build()
         }
-        
     }
     
     private func getProcessingOrderModel(response: OrderTrackingStatusResponse) -> OrderTrackingModel {
-        var processOrder = ProcessingOrderConfig(response: response)
-        //        processOrder.hideCancelButton = { [weak self] in
-        ////            guard let self else {
-        ////                return
-        ////            }
-        ////            var orderResponse = response
-        ////            orderResponse.orderDetails?.showCancelButtonTimeout = true
-        ////            orderResponse.orderDetails?.isCancelationAllowed = false
-        ////            let status = self.configOrderStatus(response: orderResponse)
-        ////            self.orderStatus.send(status)
-        //        }
+        let processOrder = ProcessingOrderConfig(response: response)
+        
+        if processOrder.isCancelationAllowed {
+            startTimer()
+        }
+        
         return processOrder.build()
     }
-    var xx = false
+    
     private func loadOrderStatus() {
         let handler = OrderTrackingServiceHandler()
         handler.getOrderTrackingStatus(orderId: orderId,
@@ -120,17 +127,68 @@ final class OrderTrackingUseCase: OrderTrackingUseCaseProtocol {
             guard let self else {
                 return
             }
-            var x = response
-            x.orderDetails?.orderStatus = 10
-            let status = self.configOrderStatus(response: self.xx ? response : response)
+            
+            self.statusResponse = response
+            let status = self.configOrderStatus(response: response)
             self.stateSubject.send(.success(model: status))
             let orderId = response.orderDetails?.orderId ?? 0
             self.stateSubject.send(.orderId(id: "\(orderId)"))
-            self.xx = true
         }.store(in: &cancellables)
-        
     }
     
+    private func startTimer() {
+        if timer == nil {
+            timer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(timerTick), userInfo: nil, repeats: true)
+            isTimerRunning = true
+        }
+    }
+    
+    
+    @objc private func timerTick() {
+        elapsedTime += 1
+        print("Timer: \(elapsedTime) seconds")
+        
+        // Check if 10 seconds have passed
+        if elapsedTime >= hideCancelOrderAfter {
+            stopTimer()
+//            hideCancelButton()
+        }
+    }
+    
+    func pauseTimer() {
+        if isTimerRunning {
+            timer?.invalidate()
+            timer = nil
+            isTimerRunning = false
+            print("Timer paused")
+        }
+    }
+    
+    func resumeTimer() {
+        if !isTimerRunning {
+            startTimer()
+            print("Timer resumed")
+        }
+    }
+    
+    private func stopTimer() {
+        timer?.invalidate()
+        timer = nil
+        elapsedTime = 0
+        isTimerRunning = false
+        print("Timer stopped")
+    }
+    
+    private func hideCancelButton() {
+        guard let statusResponse else {
+            return
+        }
+        var orderResponse = statusResponse
+        orderResponse.orderDetails?.showCancelButtonTimeout = true
+        orderResponse.orderDetails?.isCancelationAllowed = false
+        let status = self.configOrderStatus(response: orderResponse)
+        stateSubject.send(.success(model: status))
+    }
 }
 
 extension OrderTrackingUseCase {
@@ -149,12 +207,12 @@ let jsonString = """
 {
   "extTransactionId": "3530191483630",
   "orderDetails": {
-    "orderStatus": 9,
+    "orderStatus": 0,
      "smallImageAnimationUrl": "https://www.smilesuae.ae/images/APP/ORDER_TRACKING/ENGLISH/SMALL/Delivering.json",
      "largeImageAnimationUrl": "https://www.smilesuae.ae/images/APP/ORDER_TRACKING/ENGLISH/LARGE/Waiting.json",
      "trackingColorCode": "#a5deef",
      "earnPointsText": "smiles points earned and will be credited soon.",
-
+   "partnerNumber": "010300349340340",
     "title": "Wow, your order has arrived X min early. Enjoy! Ya Naguib",
     "orderDescription": "Hardee's should accept your order soon.",
     "orderNumber": "SMHD111620230000467198",
@@ -188,7 +246,7 @@ let jsonString = """
     "earnPoints": 120,
     "addressTitle": "Home",
     "reOrder": true,
-    "liveTracking": false,
+    "liveTracking": true,
     "orderId": 466698,
     "imageUrl": "https://cdn.eateasily.com/restaurants/profile/app/400X300/17316.jpg",
     "iconUrl": "https://cdn.eateasily.com/restaurants/9d237d8a2148c1c2354ff1a2b769f3e2/17338_small.jpg",
@@ -224,6 +282,8 @@ let jsonString = """
     "mapImageIconUrl": "https://www.smilesuae.ae/images/APP/ORDER_TRACKING/IMAGES/mapIcon.png",
     "subTitleImageIconUrl": "https://www.smilesuae.ae/images/APP/ORDER_TRACKING/IMAGES/SubTitleimageIcon.png",
     "bannerImageUrl": "https://www.smilesuae.ae/images/APP/BANNERS/ENGLISH/BOTTOM/OrderTrackingULFD_V2.png",
+
+ "delayStatusText": "delayStatusText delayStatusText delayStatusText ",
 
   },
 "orderRatings": [

@@ -21,8 +21,8 @@ enum OrderTrackingLocalization {
     case yesTitle
     case noTitle
     case haveYouReceivedOrderFrom
-    case points
-//    case orderCancelledTimeFinished
+//    case points
+    case orderCancelledTimeFinished
 //    case orderCancelledBadWeather
     case orderCancelledLikeToPickupOrder
     case minText
@@ -99,10 +99,10 @@ enum OrderTrackingLocalization {
             return "No".localizedString
         case .haveYouReceivedOrderFrom:
             return "Have you received".localizedString
-        case .points:
-            return "smiles points earned and will be credited soon."
-//        case .orderCancelledTimeFinished:
-//            return "Oops, looks like you’ve run out of time to convert your order to a pick-up order! You can try placing the order again."
+//        case .points:
+//            return "smiles points earned and will be credited soon."
+        case .orderCancelledTimeFinished:
+            return "Oops, looks like you’ve run out of time to convert your order to a pick-up order! You can try placing the order again."
 //        case .orderCancelledBadWeather:
 //            return "Sorry, the restaurant is not able to deliver your order due to bad weather."
         case .orderCancelledLikeToPickupOrder:

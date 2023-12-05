@@ -9,14 +9,19 @@ import Foundation
 
 struct ProcessingOrderConfig: OrderTrackable, AnimationHeaderProtocol {
     var response: OrderTrackingStatusResponse
-    var hideCancelButton: () -> Void = {}
+    
     func build() -> OrderTrackingModel {
         var progressBar = orderProgressBar
         progressBar.step = .first
-        
+        var text: String?
+        if let delayText = response.orderDetails?.delayStatusText, !delayText.isEmpty {
+            text = delayText
+        } else {
+            text = orderText
+        }
         let cells: [TrackingCellType] = [
             .progressBar(model: progressBar),
-            .text(model: .init(title: orderText)),
+            .text(model: .init(title: text)),
             .location(model: getOrderLocation()),
             .restaurant(model: orderRestaurant)
         ]
@@ -24,29 +29,16 @@ struct ProcessingOrderConfig: OrderTrackable, AnimationHeaderProtocol {
         return .init(header: getAnimationHeader(isShowButtons: true), cells: cells)
     }
     
-    private func getOrderLocation() ->  LocationCollectionViewCell.ViewModel {
-//        var location = orderLocation
-//        let isCancelationAllowed = response.orderDetails?.isCancelationAllowed ?? true
-//        location.type = isCancelationAllowed ? .showCancelButton : .hideAllButtons
-//        fireCancelButton(isShowCancelButton: isCancelationAllowed)
-//        // This for hide cancel button after 10 seconds
-//        let showCancelButtonTimeout = response.orderDetails?.showCancelButtonTimeout ?? false
-//        location.type = showCancelButtonTimeout ? .hideAllButtons :  location.type
-//        return location
-        
-        // Demo
+    private func getOrderLocation() -> LocationCollectionViewCell.ViewModel {
         var location = orderLocation
-        location.type = .showCancelButton
+        location.type = isCancelationAllowed ? .showCancelButton : .hideAllButtons
+
+        let showCancelButtonTimeout = response.orderDetails?.showCancelButtonTimeout ?? false
+        location.type = showCancelButtonTimeout ? .hideAllButtons : location.type
         return location
     }
     
-    private func fireCancelButton(isShowCancelButton: Bool) {
-        
-        guard isShowCancelButton else {
-            return
-        }
-        DispatchQueue.main.asyncAfter(deadline: .now() + 10) {
-            self.hideCancelButton()
-        }
+    var isCancelationAllowed: Bool {
+        response.orderDetails?.isCancelationAllowed ?? true
     }
 }

@@ -1,6 +1,6 @@
 //
 //  File.swift
-//  
+//
 //
 //  Created by Ahmed Naguib on 22/11/2023.
 //
@@ -11,8 +11,13 @@ struct InTheKitchenOrderConfig: OrderTrackable {
     var response: OrderTrackingStatusResponse
     
     func build() -> OrderTrackingModel {
-     
+        
         var cells: [TrackingCellType] = [.progressBar(model: getProgressBarModel())]
+        
+      
+        if let delayText = response.orderDetails?.delayStatusText, !delayText.isEmpty {
+            cells.append(.text(model: .init(title: delayText)))
+        }
         
         if orderType == .pickup {
             cells.append(.driver(model: getDriverModel()))

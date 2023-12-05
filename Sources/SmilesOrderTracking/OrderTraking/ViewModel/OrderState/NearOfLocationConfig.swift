@@ -23,10 +23,6 @@ struct NearOfLocationConfig: OrderTrackable {
             .progressBar(model: progressBar)
         ]
         
-        if let description = orderText {
-            cells.append(.text(model: .init(title: orderText)))
-        }
-        
         cells.append(.driver(model: orderDriverModel))
         cells.append(.location(model: location))
         

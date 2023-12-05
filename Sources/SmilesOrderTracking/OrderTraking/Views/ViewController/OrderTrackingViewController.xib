@@ -12,6 +12,7 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="OrderTrackingViewController" customModuleProvider="target">
             <connections>
                 <outlet property="collectionView" destination="Lwu-e1-OC2" id="pDs-Fy-cTw"/>
+                <outlet property="topConstraint" destination="16n-1k-Luw" id="zUc-vT-430"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>

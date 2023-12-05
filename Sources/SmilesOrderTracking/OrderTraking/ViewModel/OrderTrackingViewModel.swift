@@ -7,6 +7,7 @@
 
 import Foundation
 import Combine
+import SmilesScratchHandler
 
 final class OrderTrackingViewModel {
     
@@ -18,7 +19,9 @@ final class OrderTrackingViewModel {
     private let confirmUseCase: OrderConfirmationUseCaseProtocol
     private var statusSubject = PassthroughSubject<State, Never>()
     private let changeTypeUseCase: ChangeTypeUseCaseProtocol
+    private let scratchAndWinUseCase: ScratchAndWinUseCaseProtocol
     var orderId = ""
+    var checkForVoucher = false
     var orderStatusPublisher: AnyPublisher<State, Never> {
         statusSubject.eraseToAnyPublisher()
     }
@@ -28,10 +31,12 @@ final class OrderTrackingViewModel {
     // MARK: - Init
     init(useCase: OrderTrackingUseCaseProtocol, 
          confirmUseCase: OrderConfirmationUseCaseProtocol,
-         changeTypeUseCase: ChangeTypeUseCaseProtocol) {
+         changeTypeUseCase: ChangeTypeUseCaseProtocol,
+         scratchAndWinUseCase: ScratchAndWinUseCaseProtocol) {
         self.useCase = useCase
         self.confirmUseCase = confirmUseCase
         self.changeTypeUseCase = changeTypeUseCase
+        self.scratchAndWinUseCase = scratchAndWinUseCase
     }
     
     func fetchStatus() {
@@ -109,6 +114,23 @@ final class OrderTrackingViewModel {
             }
             .store(in: &cancellables)
     }
+    
+    func setupScratchAndWin(orderId: String, isVoucherScratched: Bool) {
+        statusSubject.send(.showLoader)
+        scratchAndWinUseCase.statePublisher.sink { [weak self] state in
+            guard let self else { return }
+            switch state {
+            case .showError(let message):
+                self.statusSubject.send(.hideLoader)
+                self.statusSubject.send(.showError(message: message))
+            case .presentScratchAndWin(let response):
+                self.statusSubject.send(.hideLoader)
+                self.statusSubject.send(.presentScratchAndWin(response: response))
+            }
+        }.store(in: &cancellables)
+        
+        scratchAndWinUseCase.configureScratchAndWin(with: orderId, isVoucherScratched: isVoucherScratched)
+    }
 }
 
 extension OrderTrackingViewModel {
@@ -120,5 +142,6 @@ extension OrderTrackingViewModel {
         case showToastForNoLiveTracking(isShow: Bool)
         case success(model: OrderTrackingModel)
         case timerIsOff
+        case presentScratchAndWin(response: ScratchAndWinResponse)
     }
 }

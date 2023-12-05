@@ -11,6 +11,7 @@ import SmilesFontsManager
 import Combine
 import GoogleMaps
 import SmilesLoader
+import SmilesScratchHandler
 
 protocol OrderTrackingViewDelegate: AnyObject {
     func presentConfirmationPickup(location: String, didTappedContinue: (()-> Void)?)
@@ -114,7 +115,9 @@ public final class OrderTrackingViewController: UIViewController, Toastable, Map
     var viewModel: OrderTrackingViewModel!
     private lazy var dataSource = OrderTrackingDataSource(viewModel: viewModel)
     private var floatingView: FloatingView!
-   private var timerIsOn = false
+    private var timerIsOn = false
+    private var isFirstTime = true
+    
     // MARK: - Life Cycle
     public override func viewDidLoad() {
         super.viewDidLoad()
@@ -138,6 +141,10 @@ public final class OrderTrackingViewController: UIViewController, Toastable, Map
         navigationController?.setNavigationBarHidden(true, animated: false)
         if !timerIsOn {
             viewModel.fetchStatus()
+            if viewModel.checkForVoucher && isFirstTime {
+                viewModel.setupScratchAndWin(orderId: viewModel.orderId, isVoucherScratched: false)
+                isFirstTime = false
+            }
         }
     }
     
@@ -264,6 +271,8 @@ public final class OrderTrackingViewController: UIViewController, Toastable, Map
                 self.collectionView.reloadData()
             case .timerIsOff:
                 self.timerIsOn = false
+            case .presentScratchAndWin(let response):
+                self.presentScratchAndWinVC(response: response)
             }
         }.store(in: &cancellables)
     }
@@ -375,6 +384,14 @@ public final class OrderTrackingViewController: UIViewController, Toastable, Map
         
     }
     
+    private func presentScratchAndWinVC(response: ScratchAndWinResponse) {
+        
+        let scratchVC = SmilesScratchViewController(scratchObj: response, orderId: viewModel.orderId)
+        scratchVC.modalPresentationStyle = .overCurrentContext
+        scratchVC.modalTransitionStyle = .crossDissolve
+        scratchVC.delegate = self
+        present(scratchVC)
+    }
 }
 
 // MARK: - UICollectionViewDelegate
@@ -403,7 +420,12 @@ extension OrderTrackingViewController {
     }
 }
 
-
+// MARK: - ScratchAndWinDelegate
+extension OrderTrackingViewController: ScratchAndWinDelegate {
+    public func viewVoucherPressed(voucherCode: String) {
+        viewModel.navigationDelegate?.navigateToVouchersRevamp(voucherCode: voucherCode)
+    }
+}
 
 
 //    func updateMapWithLocation(newLocation: CLLocation) {

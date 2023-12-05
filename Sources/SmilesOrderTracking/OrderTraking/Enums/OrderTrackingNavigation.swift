@@ -13,4 +13,5 @@ public protocol OrderTrackingNavigationProtocol: AnyObject {
     func navigationToOrderConfirmation(orderId: String, orderNumber: String)
     func navigateToSubscriptionPage(url: String)
     func navigateAvailableRestaurant()
+    func navigateToVouchersRevamp(voucherCode: String)
 }

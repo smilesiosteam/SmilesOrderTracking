@@ -55,9 +55,8 @@ extension OrderTrackingViewController: OrderTrackingViewDelegate {
     }
     
     func dismiss() {
+        viewModel.navigationDelegate?.closeTracking()
         self.dismissMe()
-        let c = isHeaderVisible ? false : true
-        animateHeaderVisibility(show: c)
     }
     
     func presentConfirmationPickup(location: String, didTappedContinue: (()-> Void)?) {
@@ -154,6 +153,10 @@ public final class OrderTrackingViewController: UIViewController, Toastable, Map
                 viewModel.setupScratchAndWin(orderId: viewModel.orderId, isVoucherScratched: false)
                 isFirstTime = false
             }
+        }
+        
+        if isBeingDismissed {
+            viewModel.navigationDelegate?.closeTracking()
         }
     }
     

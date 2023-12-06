@@ -67,6 +67,8 @@ final class OrderTrackingViewModel {
                 self.statusSubject.send(.success(model: model))
             case .orderId(let id):
                 self.orderId = id
+            case .trackDriverLocation(liveTrackingId: let liveTrackingId):
+                self.navigationDelegate?.liveLocation(liveTrackingId: liveTrackingId)
             }
         }
         .store(in: &cancellables)

@@ -152,12 +152,15 @@ extension OrderTrackingDataSource: DriverCellActionDelegate {
 // MARK: - Rating Delegate
 extension OrderTrackingDataSource: RatingCellActionDelegate {
     func rateOrderDidTap(orderId: Int) {
-        print("rateOrderDidTap")
+        print("orderId = \(orderId)")
+        let type = RatingCollectionViewCell.RateType.food.rawValue
+        delegate?.presentRateFlow(orderId: "\(orderId)", type: type)
     }
     
     func rateDeliveryDidTap(orderId: Int) {
-        print("rateDeliveryDidTap")
-        delegate?.presentRateFlow()
+        print("orderId = \(orderId)")
+        let type = RatingCollectionViewCell.RateType.delivery.rawValue
+        delegate?.presentRateFlow(orderId: "\(orderId)", type: type)
     }
 }
 // MARK: - Confirmation Delegate

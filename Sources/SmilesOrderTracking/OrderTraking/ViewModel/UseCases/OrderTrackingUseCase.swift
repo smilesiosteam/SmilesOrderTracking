@@ -43,21 +43,19 @@ final class OrderTrackingUseCase: OrderTrackingUseCaseProtocol {
         stopTimer()
     }
     
-    // we passed the status as parameter to navigate to the OrderHasBeenDeliveredConfig status
     func fetchOrderStates() {
-        
-        //        loadOrderStatus()
-        if let jsonData = jsonString.data(using: .utf8) {
-            do {
-                let orderResponse = try JSONDecoder().decode(OrderTrackingStatusResponse.self, from: jsonData)
-                _ = orderResponse.orderDetails?.orderStatus
-                statusResponse =  orderResponse
-                let status = self.configOrderStatus(response: orderResponse)
-                stateSubject.send(.success(model: status))
-            } catch {
-                print("Error decoding JSON: \(error)")
-            }
-        }
+        loadOrderStatus()
+//        if let jsonData = jsonString.data(using: .utf8) {
+//            do {
+//                let orderResponse = try JSONDecoder().decode(OrderTrackingStatusResponse.self, from: jsonData)
+//                _ = orderResponse.orderDetails?.orderStatus
+//                statusResponse =  orderResponse
+//                let status = self.configOrderStatus(response: orderResponse)
+//                stateSubject.send(.success(model: status))
+//            } catch {
+//                print("Error decoding JSON: \(error)")
+//            }
+//        }
     }
     
     private func configOrderStatus(response: OrderTrackingStatusResponse) -> OrderTrackingModel {

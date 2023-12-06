@@ -52,7 +52,7 @@ final public class RateYourOrderViewModel: NSObject {
                 
                 switch completion {
                 case .failure(let error):
-                    self.showErrorMessage = error.errorDescription
+                    self.showErrorMessage = error.localizedDescription
                 default:
                     break
                 }

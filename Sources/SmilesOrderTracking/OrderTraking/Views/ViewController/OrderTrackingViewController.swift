@@ -16,7 +16,7 @@ import SmilesScratchHandler
 protocol OrderTrackingViewDelegate: AnyObject {
     func presentConfirmationPickup(location: String, didTappedContinue: (()-> Void)?)
     func presentCancelFlow(orderId: String)
-    func presentRateFlow()
+    func presentRateFlow(orderId: String, type: String)
     func dismiss()
     func phoneCall(with number: String)
     func openMaps(lat: Double, lng: Double, placeName: String)
@@ -32,19 +32,22 @@ extension OrderTrackingViewController: OrderTrackingViewDelegate {
                 descriptionMessage: OrderTrackingLocalization.cancelOrderDescription.text,
                 primaryButtonTitle: OrderTrackingLocalization.dontCancel.text,
                 secondaryButtonTitle:OrderTrackingLocalization.yesCancel.text,
-                primaryAction: {
-                    self.cancelOrderInput.send(.resumeOrder(ordeId: "\(orderId)"))
+                primaryAction: { [weak self] in
+                    self?.cancelOrderInput.send(.resumeOrder(ordeId: "\(orderId)"))
                 },
-                secondaryAction:{
-                    self.cancelOrderInput.send(.cancelOrder(ordeId: "\(orderId)", reason: nil))
+                secondaryAction:{ [weak self] in
+                    self?.cancelOrderInput.send(.cancelOrder(ordeId: "\(orderId)", reason: nil))
                 }
             )
         )
-        self.present(vc)
+        
+         present(vc) {
+            self.processAnimation(stop: true)
+        }
     }
     
-    func presentRateFlow() {
-        let uiModel = OrderRatingUIModel(ratingType: "food", contentType: "tracking", isLiveTracking: true, orderId: "466854", chatbotType: viewModel.chatbotType)
+    func presentRateFlow(orderId: String, type: String) {
+        let uiModel = OrderRatingUIModel(ratingType: type, contentType: "tracking", isLiveTracking: true, orderId: orderId, chatbotType: viewModel.chatbotType)
         let model = OrderRatingViewModel(orderRatingUIModel: uiModel)
         let viewController = OrderRatingViewController.create(with: model, delegate: self)
         viewController.modalPresentationStyle = .overFullScreen
@@ -335,7 +338,6 @@ public final class OrderTrackingViewController: UIViewController, Toastable, Map
             } else {
                 cell.processAnimation(stop: stop)
             }
-            
         }
     }
     

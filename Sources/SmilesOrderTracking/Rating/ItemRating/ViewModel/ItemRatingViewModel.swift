@@ -46,7 +46,7 @@ final public class ItemRatingViewModel: NSObject {
                 
                 switch completion {
                 case .failure(let error):
-                    self.showErrorMessage = error.errorDescription
+                    self.showErrorMessage = error.localizedDescription
                 default:
                     break
                 }

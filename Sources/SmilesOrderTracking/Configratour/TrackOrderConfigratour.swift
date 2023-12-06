@@ -15,7 +15,7 @@ public struct OrderTrackingDependance {
     public var checkForVoucher: Bool
     public var chatbotType: String
     
-    public init(orderId: String, orderNUmber: String, checkForVoucher: Bool = false, chatbotType: String, firebasePublisher: AnyPublisher<LiveTrackingState, Never>) {
+    public init(orderId: String, orderNUmber: String, checkForVoucher: Bool = false, chatbotType: String) {
         self.orderId = orderId
         self.orderNUmber = orderNUmber
         self.checkForVoucher = checkForVoucher

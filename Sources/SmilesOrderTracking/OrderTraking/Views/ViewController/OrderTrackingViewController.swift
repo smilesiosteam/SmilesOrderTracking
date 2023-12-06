@@ -25,11 +25,6 @@ protocol OrderTrackingViewDelegate: AnyObject {
 
 extension OrderTrackingViewController: OrderTrackingViewDelegate {
     func presentCancelFlow(orderId: String) {
-        
-        let c = isHeaderVisible ? false : true
-        isHeaderVisible = c
-        animateHeaderVisibility(show: c)
-        return
         let vc = ConfirmationPopupViewController(
             popupData: ConfirmationPopupViewModelData(
                 showCloseButton: false,

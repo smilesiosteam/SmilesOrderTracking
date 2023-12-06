@@ -14,7 +14,7 @@ enum OrderTrackingLocalization {
     case orderDetails
     case cancelOrder
     case pickUpYourOrderFrom
-    case hasPickedUpYourOrder
+//    case hasPickedUpYourOrder
     case restaurantCancelledOrder
     case viewAvailableRestaurants
     case pendingDeliveryConfirmation
@@ -27,14 +27,14 @@ enum OrderTrackingLocalization {
     case orderCancelledLikeToPickupOrder
     case minText
     case orderAccepted
-    case rateYourDeliveryExperience
-    case howWouldYouRateRiderDelivery
-    case riderDeliveredYourOrderInMins
+//    case rateYourDeliveryExperience
+//    case howWouldYouRateRiderDelivery
+//    case riderDeliveredYourOrderInMins
     case submit
     case facedTroubleWithYourOrder
     case getSupport
-    case rateYourFoodExperience
-    case howWouldYouRateRestaurantFood
+//    case rateYourFoodExperience
+//    case howWouldYouRateRestaurantFood
     case done
     case okay
     case didReceivedOrder
@@ -77,23 +77,23 @@ enum OrderTrackingLocalization {
         case .getDirectionsFrom:
             return "Get directions from"
         case .support:
-           return "Support"
+            return "Support".localizedString
         case .callRestaurant:
             return "Call restaurant".localizedString
         case .orderDetails:
             return "Order details".localizedString
         case .cancelOrder:
-            return "Cancel order"
+            return "CancelOrder".localizedString
         case .pickUpYourOrderFrom:
             return "PickUpOrder".localizedString
-        case .hasPickedUpYourOrder:
-            return "has picked up your order"
+//        case .hasPickedUpYourOrder:
+//            return "has picked up your order"
         case .restaurantCancelledOrder:
             return "Sorry, the restaurant had to cancel your order. Would you like to order from another restaurant?"
         case .viewAvailableRestaurants:
             return "ViewAvailableRestaurant".localizedString
         case .pendingDeliveryConfirmation:
-            return "Pending delivery confirmation"
+            return "Pending delivery confirmation".localizedString
         case .yesTitle:
             return "Yes".localizedString
         case .noTitle:
@@ -112,22 +112,22 @@ enum OrderTrackingLocalization {
             return "MinTitle".localizedString
         case .orderAccepted:
             return "Your order has been accepted"
-        case .rateYourDeliveryExperience:
-            return "RateYourDeliveryExperience".localizedString
-        case .howWouldYouRateRiderDelivery:
-            return "HowWouldYouRateRiderDelivery".localizedString
-        case .riderDeliveredYourOrderInMins:
-            return "RiderDeliveredYourOrderInMins".localizedString
+//        case .rateYourDeliveryExperience:
+//            return "RateYourDeliveryExperience".localizedString
+//        case .howWouldYouRateRiderDelivery:
+//            return "HowWouldYouRateRiderDelivery".localizedString
+//        case .riderDeliveredYourOrderInMins:
+//            return "RiderDeliveredYourOrderInMins".localizedString
         case .submit:
             return "SubmitTitleSmall".localizedString
         case .facedTroubleWithYourOrder:
             return "Faced trouble with your order?".localizedString
         case .getSupport:
             return "GetSupport".localizedString
-        case .rateYourFoodExperience:
-            return "RateYourFoodExperience".localizedString
-        case .howWouldYouRateRestaurantFood:
-            return "HowWouldYouRateRestaurantFood".localizedString
+//        case .rateYourFoodExperience:
+//            return "RateYourFoodExperience".localizedString
+//        case .howWouldYouRateRestaurantFood:
+//            return "HowWouldYouRateRestaurantFood".localizedString
         case .done:
             return "Done".localizedString
         case .okay:
@@ -140,13 +140,13 @@ enum OrderTrackingLocalization {
 //        case .restaurantCanceledTitle:
 //            return "Sorry, the restaurant had to cancel your order. Would you like to order from another restaurant?"
         case .restaurantCanceledButtonTitle:
-            return "View available restaurants"
+            return "ViewAvailableRestaurant".localizedString
         case .pickUpOrderFrom:
-            return "Pick up your order from:"
+            return "Pick up your order from".localizedString
 //        case .unavailableItemsTitle:
 //            return "Some of the items you ordered are not available. We have replaced them with items of a lower price and created new order."
         case .unavailableItemsButtonTitle:
-            return "Continue with new order"
+            return "ContinueNewOrder".localizedString
         case .liveTrackingAvailable:
             return "Live tracking is not available"
         case .dismiss:

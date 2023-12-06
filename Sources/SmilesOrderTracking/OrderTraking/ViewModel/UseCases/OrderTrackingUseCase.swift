@@ -149,7 +149,7 @@ final class OrderTrackingUseCase: OrderTrackingUseCaseProtocol {
         // Check if 10 seconds have passed
         if elapsedTime >= hideCancelOrderAfter {
             stopTimer()
-//            hideCancelButton()
+            hideCancelButton()
         }
     }
     

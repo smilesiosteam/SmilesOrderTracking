@@ -120,7 +120,8 @@ extension OrderTrackingDataSource: LocationCollectionViewProtocol {
     }
     
     func didTappCancelDetails(orderId: String) {
-        delegate?.presentCancelFlow(orderId: orderId)
+        delegate?.pauseAnimation()
+        viewModel.pauseOrder(orderId: orderId)
     }
 }
 

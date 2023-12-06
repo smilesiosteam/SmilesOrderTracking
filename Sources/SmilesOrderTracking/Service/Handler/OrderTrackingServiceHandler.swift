@@ -18,6 +18,7 @@ protocol OrderTrackingServiceHandlerProtocol {
     func changeOrderType(orderId: String) -> AnyPublisher<OrderChangeTypeResponse, NetworkError>
     func cancelOrder(orderId: String, rejectionReason:String?) -> AnyPublisher<OrderCancelResponse, NetworkError>
     func getOrderRating(ratingType: String, contentType: String, isLiveTracking: Bool, orderId: String) -> AnyPublisher<GetOrderRatingResponse, NetworkError>
+    func pauseOrder(orderId: String) -> AnyPublisher<BaseMainResponse, NetworkError>
 }
 
 final class OrderTrackingServiceHandler: OrderTrackingServiceHandlerProtocol {

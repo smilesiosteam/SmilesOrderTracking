@@ -15,12 +15,12 @@ import SmilesScratchHandler
 
 protocol OrderTrackingViewDelegate: AnyObject {
     func presentConfirmationPickup(location: String, didTappedContinue: (()-> Void)?)
-    func presentCancelFlow(orderId: String)
     func presentRateFlow(orderId: String, type: String)
     func dismiss()
     func phoneCall(with number: String)
     func openMaps(lat: Double, lng: Double, placeName: String)
     func timerIs(on: Bool)
+    func pauseAnimation()
 }
 
 extension OrderTrackingViewController: OrderTrackingViewDelegate {
@@ -40,10 +40,7 @@ extension OrderTrackingViewController: OrderTrackingViewDelegate {
                 }
             )
         )
-        
-         present(vc) {
-            self.processAnimation(stop: true)
-        }
+        present(vc)
     }
     
     func presentRateFlow(orderId: String, type: String) {
@@ -80,6 +77,10 @@ extension OrderTrackingViewController: OrderTrackingViewDelegate {
             }
             
         }
+    }
+    
+    func pauseAnimation() {
+        processAnimation(stop: true)
     }
 }
 
@@ -289,6 +290,9 @@ public final class OrderTrackingViewController: UIViewController, Toastable, Map
                 self.timerIsOn = false
             case .presentScratchAndWin(let response):
                 self.presentScratchAndWinVC(response: response)
+                
+            case .presentCancelFlow(orderId: let orderId):
+                self.presentCancelFlow(orderId: orderId)
             }
         }.store(in: &cancellables)
     }

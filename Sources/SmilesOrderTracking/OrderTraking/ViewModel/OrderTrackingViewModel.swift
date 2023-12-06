@@ -1,6 +1,6 @@
 //
 //  File.swift
-//  
+//
 //
 //  Created by Ahmed Naguib on 14/11/2023.
 //
@@ -14,9 +14,10 @@ final class OrderTrackingViewModel {
     // MARK: - Properties
     private var cancellables = Set<AnyCancellable>()
     var serviceHandler = OrderTrackingServiceHandler()
-
+    
     private let useCase: OrderTrackingUseCaseProtocol
     private let confirmUseCase: OrderConfirmationUseCaseProtocol
+    private let pauseOrderUseCase: PauseOrderUseCaseProtocol
     private var statusSubject = PassthroughSubject<State, Never>()
     private let changeTypeUseCase: ChangeTypeUseCaseProtocol
     private let scratchAndWinUseCase: ScratchAndWinUseCaseProtocol
@@ -31,16 +32,18 @@ final class OrderTrackingViewModel {
     var navigationDelegate: OrderTrackingNavigationProtocol?
     
     // MARK: - Init
-    init(useCase: OrderTrackingUseCaseProtocol, 
+    init(useCase: OrderTrackingUseCaseProtocol,
          confirmUseCase: OrderConfirmationUseCaseProtocol,
          changeTypeUseCase: ChangeTypeUseCaseProtocol,
          scratchAndWinUseCase: ScratchAndWinUseCaseProtocol,
-         firebasePublisher: AnyPublisher<LiveTrackingState, Never>) {
+         firebasePublisher: AnyPublisher<LiveTrackingState, Never>,
+         pauseOrderUseCase: PauseOrderUseCaseProtocol) {
         self.useCase = useCase
         self.confirmUseCase = confirmUseCase
         self.changeTypeUseCase = changeTypeUseCase
         self.scratchAndWinUseCase = scratchAndWinUseCase
         self.firebasePublisher = firebasePublisher
+        self.pauseOrderUseCase = pauseOrderUseCase
     }
     
     func fetchStatus() {
@@ -84,7 +87,7 @@ final class OrderTrackingViewModel {
             guard let self else {
                 return
             }
-          
+            
             switch state {
             case .showError(message: let message):
                 self.statusSubject.send(.hideLoader)
@@ -129,6 +132,26 @@ final class OrderTrackingViewModel {
     func resumeTimer() {
         useCase.resumeTimer()
     }
+    
+    func pauseOrder(orderId: String) {
+        statusSubject.send(.showLoader)
+        pauseOrderUseCase.pauseOrder(orderId: orderId)
+            .sink { [weak self] state in
+                guard let self else {
+                    return
+                }
+                self.statusSubject.send(.hideLoader)
+                switch state {
+                    
+                case .showError(message: let message):
+                    self.statusSubject.send(.showError(message: message))
+                case .presentPopupCancelFlow:
+                    self.statusSubject.send(.presentCancelFlow(orderId: self.orderId))
+                }
+            }
+            .store(in: &cancellables)
+    }
+    
     func setupScratchAndWin(orderId: String, isVoucherScratched: Bool) {
         scratchAndWinUseCase.statePublisher.sink { [weak self] state in
             guard let self else { return }
@@ -169,5 +192,6 @@ extension OrderTrackingViewModel {
         case success(model: OrderTrackingModel)
         case timerIsOff
         case presentScratchAndWin(response: ScratchAndWinResponse)
+        case presentCancelFlow(orderId: String)
     }
 }

@@ -35,7 +35,8 @@ public enum TrackOrderConfigurator {
         let orderConfirmationUseCase = OrderConfirmationUseCase(services: service)
         let changeTypeUseCase = ChangeTypeUseCase(services: service)
         let scratchAndWinUseCase = ScratchAndWinUseCase()
-        let viewModel = OrderTrackingViewModel(useCase: useCase, confirmUseCase: orderConfirmationUseCase, changeTypeUseCase: changeTypeUseCase, scratchAndWinUseCase: scratchAndWinUseCase, firebasePublisher: firebasePublisher)
+        let useCasePauseOrder = PauseOrderUseCase(services: service)
+        let viewModel = OrderTrackingViewModel(useCase: useCase, confirmUseCase: orderConfirmationUseCase, changeTypeUseCase: changeTypeUseCase, scratchAndWinUseCase: scratchAndWinUseCase, firebasePublisher: firebasePublisher, pauseOrderUseCase: useCasePauseOrder)
         viewModel.navigationDelegate = navigationDelegate
         viewModel.orderId = dependance.orderId
         viewModel.checkForVoucher = dependance.checkForVoucher

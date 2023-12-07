@@ -42,12 +42,18 @@ class ReasonCollectionViewCell: UICollectionViewCell {
         self.backgroundColor = UIColor.appRevampFilterCountBGColor.withAlphaComponent(0.2)
         self.layer.borderWidth = 0
         self.layer.borderColor = UIColor.clear.cgColor
+        layer.borderWidth = 1
+        layer.cornerRadius = 8
+        layer.borderColor = UIColor.black.withAlphaComponent(0.5).cgColor
     }
     
     func cellNonSelectedState() {
         self.layer.borderWidth = 1
         self.layer.borderColor = UIColor.appLightGrayColor2.withAlphaComponent(0.80).cgColor
         self.backgroundColor = .white
+        layer.borderWidth = 1
+        layer.cornerRadius = 8
+        layer.borderColor = UIColor.black.withAlphaComponent(0.5).cgColor
     }
 
 }

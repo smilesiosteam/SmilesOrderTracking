@@ -40,7 +40,12 @@ extension OrderTrackingViewController: OrderTrackingViewDelegate {
                 }
             )
         )
-        present(vc)
+        
+      
+        vc.modalPresentationStyle = .overCurrentContext
+        vc.view.backgroundColor = UIColor.black.withAlphaComponent(0.2)
+
+        present(vc, animated: true, completion: nil)
     }
     
     func presentRateFlow(orderId: String, type: String) {
@@ -127,6 +132,7 @@ public final class OrderTrackingViewController: UIViewController, Toastable, Map
     private lazy var collectionViewDataSource = OrderTrackingLayout()
     var isHeaderVisible = true
     var lastContentOffset: CGFloat = 0
+    private var isAnimationPlay = true
     // MARK: - Life Cycle
     public override func viewDidLoad() {
         super.viewDidLoad()
@@ -188,37 +194,46 @@ public final class OrderTrackingViewController: UIViewController, Toastable, Map
                 case .resumeOrderDidSucceed:
                     //resume animations
                     self?.processAnimation(stop: false)
-                    break
                     //MARK: -- Failure cases
                 case .cancelOrderDidFail(let error):
-                    debugPrint(error)
+                    self?.showErrorMessage(message: error.localizedDescription)
                 case .pauseOrderDidFail(let error):
-                    debugPrint(error)
+                    self?.showErrorMessage(message: error.localizedDescription)
                 case .resumeOrderDidFail(let error):
-                    debugPrint(error)
+                    self?.showErrorMessage(message: error.localizedDescription)
                 }
             }.store(in: &cancellables)
     }
     
     
     private func navigateToThanksForFeedback(response:OrderCancelResponse) {
-        let vc = SuccessMessagePopupViewController(popupData: SuccessPopupViewModelData(message: response.title ?? "", descriptionMessage: response.description ?? "", primaryButtonTitle: "Back to home".localizedString, primaryAction: {
-            // TODO: - for ahmed move to food home
+        let vc = SuccessMessagePopupViewController(popupData: SuccessPopupViewModelData(message: response.title ?? "", descriptionMessage: response.description ?? "", primaryButtonTitle: "Back to home".localizedString, primaryAction: { [weak self] in
+            self?.viewModel.navigationDelegate?.navigateAvailableRestaurant()
         }))
         self.present(vc)
     }
     
     private func navigateToOrderCancelledScreen(response:OrderCancelResponse){
-        // TODO: - for ahmed pass order id and number
-        let vc = SmilesOrderCancelledViewController.init(orderId: "", orderNumber: "", cancelResponse: response, onSubmitSuccess: {feedBacksubmittedResponse in
+        let vc = SmilesOrderCancelledViewController.init(orderId: viewModel.orderId, orderNumber: viewModel.orderNumber, cancelResponse: response, onSubmitSuccess: { [weak self] feedBacksubmittedResponse in
+            guard let self else {
+                return
+            }
             if feedBacksubmittedResponse.status == 204 {
                 self.navigateToThanksForFeedback(response: feedBacksubmittedResponse)
             }else{
-                // TODO: - for ahmed: move to restaurant details vc
-                //                self.router?.popToViewRestaurantDetailVC()
+                self.viewModel.navigationDelegate?.navigateAvailableRestaurant()
             }
         }) {
             //support
+        }
+        vc.modalPresentationStyle = .overCurrentContext
+        
+        vc.didTapDismiss = { [weak self] in
+            guard let self else {
+                return
+            }
+            self.viewModel.navigationDelegate?.navigateAvailableRestaurant()
+            
         }
         self.present(vc)
     }
@@ -269,9 +284,7 @@ public final class OrderTrackingViewController: UIViewController, Toastable, Map
             case .hideLoader:
                 SmilesLoader.dismiss()
             case .showError(let message):
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                    self.showAlertWithOkayOnly(message: message)
-                }
+                self.showErrorMessage(message: message)
                 
             case .showToastForArrivedOrder(let isShow):
                 if isShow {
@@ -306,6 +319,14 @@ public final class OrderTrackingViewController: UIViewController, Toastable, Map
         }
     }
     
+    private func showErrorMessage(message: String) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+            self.showAlertWithOkayOnly(message: message)
+        }
+        if !isAnimationPlay {
+            processAnimation(stop: false)
+        }
+    }
     private func presentToastForNoTracking() {
         let model = ToastModel()
         let text = OrderTrackingLocalization.liveTrackingAvailable.text
@@ -333,17 +354,25 @@ public final class OrderTrackingViewController: UIViewController, Toastable, Map
         guard let collectionView = collectionView else {
             return
         }
-        
+        isAnimationPlay = !stop
         // Process the animation for header view
         let headerView = getImageHeader()
         headerView?.processAnimation(stop: stop)
-        stop ? viewModel.pauseTimer() : viewModel.resumeTimer()
-        // Process animation for status bar view
-        if let cell = collectionView.cellForItem(at: IndexPath(row: 0, section: 0)) as? OrderProgressCollectionViewCell {
-            if stop == false {
-                collectionView.reloadItems(at: [IndexPath(row: 0, section: 0)])
-            } else {
-                cell.processAnimation(stop: stop)
+        stop ? self.viewModel.pauseTimer() : self.viewModel.resumeTimer()
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { [weak self] in
+            guard let self else {
+                return
+            }
+            
+            // Process animation for status bar view
+            if let cell = collectionView.cellForItem(at: IndexPath(row: 0, section: 0)) as? OrderProgressCollectionViewCell {
+                if stop == false {
+                    collectionView.reloadItems(at: [IndexPath(row: 0, section: 0)])
+                } else {
+                    cell.processAnimation(stop: stop)
+                    cell.processAnimation(stop: stop)
+                }
             }
         }
     }

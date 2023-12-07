@@ -201,7 +201,7 @@ extension OrderTrackingUseCase {
         case showToastForArrivedOrder(isShow: Bool)
         case showToastForNoLiveTracking(isShow: Bool)
         case success(model: OrderTrackingModel)
-        case orderId(id: String)
+        case orderId(id: String, orderNumber: String)
         case trackDriverLocation(liveTrackingId: String)
     }
 }

@@ -22,13 +22,13 @@ class SmilesOrderCancelledViewModel: NSObject {
     
     enum Output {
         case cancelOrderDidSucceed(response: OrderCancelResponse)
-        case cancelOrderDidFail(error: Error)
+        case cancelOrderDidFail(error: NetworkError)
         
         case pauseOrderDidSucceed(response: BaseMainResponse)
-        case pauseOrderDidFail(error: Error)
+        case pauseOrderDidFail(error: NetworkError)
         
         case resumeOrderDidSucceed(response: BaseMainResponse)
-        case resumeOrderDidFail(error: Error)
+        case resumeOrderDidFail(error: NetworkError)
     }
     
     // MARK: -- Variables

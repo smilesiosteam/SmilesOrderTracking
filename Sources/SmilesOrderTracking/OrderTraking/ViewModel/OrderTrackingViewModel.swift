@@ -23,6 +23,7 @@ final class OrderTrackingViewModel {
     private let scratchAndWinUseCase: ScratchAndWinUseCaseProtocol
     private let firebasePublisher: AnyPublisher<LiveTrackingState, Never>
     var orderId = ""
+    var orderNumber = ""
     var checkForVoucher = false
     var chatbotType = ""
     var orderStatusPublisher: AnyPublisher<State, Never> {
@@ -68,8 +69,9 @@ final class OrderTrackingViewModel {
                 self.statusSubject.send(.showToastForNoLiveTracking(isShow: isShow))
             case .success(let model):
                 self.statusSubject.send(.success(model: model))
-            case .orderId(let id):
+            case .orderId(let id, let orderNumber):
                 self.orderId = id
+                self.orderNumber = orderNumber
             case .trackDriverLocation(liveTrackingId: let liveTrackingId):
                 self.navigationDelegate?.liveLocation(liveTrackingId: liveTrackingId)
             }

@@ -9,17 +9,23 @@ import UIKit
 import SmilesUtilities
 import LottieAnimationManager
 import Combine
+import SmilesLanguageManager
 
 public class SmilesOrderCancelledViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate {
-
+    
+    @IBOutlet weak var backButton: UIButton! {
+        didSet {
+            let imageName = SmilesLanguageManager.shared.isRightToLeft ? "RightbackArrow" : "leftbackArrow"
+            let image = UIImage(named: imageName, in: .module, with: nil)
+            backButton.setImage(image, for: .normal)
+        }
+    }
     @IBOutlet weak var primaryButton: UIButton!
     @IBOutlet weak var reasonsCollectionView: UICollectionView!
     @IBOutlet weak var animationView: UIImageView!
     @IBOutlet weak var popupTitleContainer: UIView!
-    
     @IBOutlet weak var secondaryButton: UIButton!
     @IBOutlet weak var closeButton: UIButton!
-    
     @IBOutlet weak var roundedView: UIView!
     @IBOutlet var panDismissView: UIView!
 
@@ -45,11 +51,12 @@ public class SmilesOrderCancelledViewController: UIViewController, UICollectionV
     
     @IBOutlet weak var textView: UITextView!
     // MARK: Lifecycle
-
+    
+    @Published var isVisibleTextView = false
+    
+    var didTapDismiss: (()-> Void)?
     fileprivate func setupUI() {
         self.rejectionReasons = cancelResponse.rejectionReasons ?? []
-        panDismissView.addGestureRecognizer(UIPanGestureRecognizer(target: self, action: #selector(handleDismiss)))
-        panDismissView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleTap)))
         messageText.text = OrderTrackingLocalization.yourOrderCancelled.text
         descriptionMessage.text = OrderTrackingLocalization.whyCancel.text
         messageText.fontTextStyle = .smilesHeadline2
@@ -74,8 +81,33 @@ public class SmilesOrderCancelledViewController: UIViewController, UICollectionV
         super.viewDidLoad()
         setupUI()
         bind(to: viewModel)
+        backButton.isHidden = true
+        bindShowBackButton()
+        setBtnUI(enabled: false)
     }
     
+    public override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        
+        primaryButton.fontTextStyle = .smilesHeadline4
+        secondaryButton.fontTextStyle = .smilesHeadline4
+        
+        primaryButton.titleLabel?.textColor = .white
+        primaryButton.backgroundColor = .appRevampPurpleMainColor
+        secondaryButton.titleLabel?.textColor = .appRevampPurpleMainColor
+    }
+    
+    private func bindShowBackButton() {
+        $isVisibleTextView.sink { [weak self] show in
+            if show {
+                self?.reasonsCollectionView.isHidden = true
+                self?.showTextView()
+            } else {
+                self?.textViewContainer.isHidden = true
+                self?.showCollectionView()
+            }
+        }.store(in: &cancellables)
+    }
     func bind(to viewModel: SmilesOrderCancelledViewModel) {
         let output = viewModel.transform(input: input.eraseToAnyPublisher())
         output
@@ -108,9 +140,9 @@ public class SmilesOrderCancelledViewController: UIViewController, UICollectionV
         
         self.reasonsCollectionView.register(UINib(nibName: String(describing: ReasonCollectionViewCell.self), bundle: .module), forCellWithReuseIdentifier: String(describing: ReasonCollectionViewCell.self))
         reasonsCollectionView.allowsMultipleSelection = true
-        let rows = Int(rejectionReasons.count)/2 + (rejectionReasons.count)%2
-        let spacings = CGFloat(max(rows-1,0)*10)
-        collectionHeight.constant = min(500,max(100,CGFloat(rows*40)-spacings))
+        let rows = (rejectionReasons.count / 2) + (rejectionReasons.count % 2)
+        let spacings =  CGFloat((rows - 1) * 10)
+        collectionHeight.constant =  CGFloat((rows * 40)) + spacings
     }
     
     func setBtnUI(enabled:Bool){
@@ -119,7 +151,11 @@ public class SmilesOrderCancelledViewController: UIViewController, UICollectionV
         primaryButton.backgroundColor = enabled ? .appRevampPurpleMainColor : UIColor(white: 0, alpha: 0.1)
     }
     
-    public init(orderId:String, orderNumber:String, cancelResponse:OrderCancelResponse, onSubmitSuccess: @escaping (_:OrderCancelResponse)->Void = {_ in }, supportAction: @escaping ()->Void = {}) {
+    public init(orderId:String, 
+                orderNumber:String,
+                cancelResponse: OrderCancelResponse, 
+                onSubmitSuccess: @escaping (_:OrderCancelResponse)->Void = {_ in },
+                supportAction: @escaping ()->Void = {}) {
         self.onSubmitSuccess = onSubmitSuccess
         self.supportAction = supportAction
         self.cancelResponse = cancelResponse
@@ -136,37 +172,15 @@ public class SmilesOrderCancelledViewController: UIViewController, UICollectionV
         self.navigationController?.isNavigationBarHidden = true
     }
 
-    @objc func handleDismiss(sender: UIPanGestureRecognizer) {
-        switch sender.state {
-        case .changed:
-            dismissViewTranslation = sender.translation(in: view)
-            if dismissViewTranslation.y > 0 {
-                UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
-                    self.view.transform = CGAffineTransform(translationX: 0, y: self.dismissViewTranslation.y)
-                })
-            }
-        case .ended:
-            if dismissViewTranslation.y < 200 {
-                UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
-                    self.view.transform = .identity
-                })
-            }
-            else {
-                dismiss(animated: true)
-            }
-        default:
-            break
-        }
-    }
-
-    @objc func handleTap(sender: UITapGestureRecognizer) {
-        dismiss(animated: true)
-    }
 
     @IBAction func closePressed(_ sender: Any) {
+        didTapDismiss?()
         dismiss(animated: true)
     }
     
+    @IBAction func backTapped(_ sender: Any) {
+        isVisibleTextView = false
+    }
     @IBAction func primaryAction(_ sender: Any) {
         dismiss(animated: true)
         
@@ -175,8 +189,9 @@ public class SmilesOrderCancelledViewController: UIViewController, UICollectionV
     }
     
     @IBAction func secondaryAction(_ sender: Any) {
-        dismiss(animated: true)
         supportAction()
+        dismiss(animated: true)
+       
     }
     
 }
@@ -208,14 +223,27 @@ extension SmilesOrderCancelledViewController: UICollectionViewDelegateFlowLayout
     public func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         setBtnUI(enabled: (collectionView.indexPathsForSelectedItems?.count ?? 0) > 0)
         if ((rejectionReasons[safe: indexPath.row] ?? "").lowercased().contains("other")
-        || (rejectionReasons[safe: indexPath.row] ?? "").lowercased().contains("أخرى")){
-            reasonsCollectionView.isHidden = true
-            textViewContainer.isHidden = false
-            UIView.animate(withDuration: 0.5) {
-                self.view.layoutIfNeeded()
-            }
-            textViewContainer.becomeFirstResponder()
+            || (rejectionReasons[safe: indexPath.row] ?? "").lowercased().contains("أخرى")){
+            isVisibleTextView = true
+            collectionView.deselectItem(at: indexPath, animated: false)
         }
+    }
+    
+    private func showCollectionView() {
+        reasonsCollectionView.isHidden = false
+        UIView.animate(withDuration: 0.5) {
+            self.view.layoutIfNeeded()
+        }
+        backButton.isHidden = true
+    }
+    
+    private func showTextView() {
+        textViewContainer.isHidden = false
+        UIView.animate(withDuration: 0.5) {
+            self.view.layoutIfNeeded()
+        }
+        textViewContainer.becomeFirstResponder()
+        backButton.isHidden = false
     }
     
     public func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {

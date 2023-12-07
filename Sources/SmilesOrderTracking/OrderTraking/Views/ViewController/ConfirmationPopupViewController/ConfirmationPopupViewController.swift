@@ -31,8 +31,6 @@ public class ConfirmationPopupViewController: UIViewController {
     // MARK: Lifecycle
 
     fileprivate func setupUI() {
-        panDismissView.addGestureRecognizer(UIPanGestureRecognizer(target: self, action: #selector(handleDismiss)))
-        panDismissView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleTap)))
         popupTitle.text = data.popupTitle
         messageText.text = data.message
         descriptionMessage.text = data.descriptionMessage
@@ -45,25 +43,29 @@ public class ConfirmationPopupViewController: UIViewController {
         
         primaryButton.setTitle(data.primaryButtonTitle, for: .normal)
         secondaryButton.setTitle(data.secondaryButtonTitle, for: .normal)
-        primaryButton.fontTextStyle = .smilesHeadline4
-        secondaryButton.fontTextStyle = .smilesHeadline4
+       
         secondaryButton.layer.borderWidth = 2
         secondaryButton.layer.borderColor = UIColor.appRevampPurpleMainColor.withAlphaComponent(0.4).cgColor
         roundedView.layer.cornerRadius = 12
         roundedView.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
-        modalPresentationStyle = .overFullScreen
     }
     
     public override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
+        view.backgroundColor = UIColor.black.withAlphaComponent(0.2)
     }
     
-    public override func viewDidAppear(_ animated: Bool) {
-        setupUI()
-        super.viewDidAppear(animated)
+    public override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        primaryButton.fontTextStyle = .smilesHeadline4
+        secondaryButton.fontTextStyle = .smilesHeadline4
+        
+        primaryButton.titleLabel?.textColor = .white
+        primaryButton.backgroundColor = .appRevampPurpleMainColor
+        secondaryButton.titleLabel?.textColor = .appRevampPurpleMainColor
     }
-    public init(popupData:ConfirmationPopupViewModelData) {
+    public init(popupData: ConfirmationPopupViewModelData) {
         self.data = popupData
         super.init(nibName: "ConfirmationPopupViewController", bundle: .module)
     }
@@ -74,33 +76,6 @@ public class ConfirmationPopupViewController: UIViewController {
     
     public override func viewWillAppear(_ animated: Bool) {
         self.navigationController?.isNavigationBarHidden = true
-    }
-
-    @objc func handleDismiss(sender: UIPanGestureRecognizer) {
-        switch sender.state {
-        case .changed:
-            dismissViewTranslation = sender.translation(in: view)
-            if dismissViewTranslation.y > 0 {
-                UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
-                    self.view.transform = CGAffineTransform(translationX: 0, y: self.dismissViewTranslation.y)
-                })
-            }
-        case .ended:
-            if dismissViewTranslation.y < 200 {
-                UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
-                    self.view.transform = .identity
-                })
-            }
-            else {
-                dismiss(animated: true)
-            }
-        default:
-            break
-        }
-    }
-
-    @objc func handleTap(sender: UITapGestureRecognizer) {
-        dismiss(animated: true)
     }
 
     @IBAction func closePressed(_ sender: Any) {

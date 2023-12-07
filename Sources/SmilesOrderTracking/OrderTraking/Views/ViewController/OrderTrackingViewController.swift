@@ -213,26 +213,21 @@ public final class OrderTrackingViewController: UIViewController, Toastable, Map
     }
     
     
-    private func navigateToThanksForFeedback(response:OrderCancelResponse) {
-        let vc = SuccessMessagePopupViewController(popupData: SuccessPopupViewModelData(message: response.title ?? "", descriptionMessage: response.description ?? "", primaryButtonTitle: "Back to home".localizedString, primaryAction: { [weak self] in
-            self?.viewModel.navigationDelegate?.navigateAvailableRestaurant()
+    private func navigateToThanksForFeedback() {
+        let vc = SuccessMessagePopupViewController(popupData: SuccessPopupViewModelData(message: OrderTrackingLocalization.thankyouForFeedback.text, descriptionMessage: OrderTrackingLocalization.alwaysWrokingToImprove.text, primaryButtonTitle: OrderTrackingLocalization.backToHome.text, primaryAction: {
+            self.viewModel.navigationDelegate?.navigateAvailableRestaurant()
         }))
         self.present(vc)
     }
     
     private func navigateToOrderCancelledScreen(response:OrderCancelResponse){
-        let vc = SmilesOrderCancelledViewController.init(orderId: viewModel.orderId, orderNumber: viewModel.orderNumber, cancelResponse: response, onSubmitSuccess: { [weak self] feedBacksubmittedResponse in
-            guard let self else {
-                return
-            }
+        let vc = SmilesOrderCancelledViewController.init(orderId: viewModel.orderId, orderNumber: viewModel.orderNumber, chatbotType: viewModel.chatbotType, cancelResponse: response, delegate: viewModel.navigationDelegate, onSubmitSuccess: {feedBacksubmittedResponse in
             if feedBacksubmittedResponse.status == 204 {
-                self.navigateToThanksForFeedback(response: feedBacksubmittedResponse)
+                self.navigateToThanksForFeedback()
             }else{
                 self.viewModel.navigationDelegate?.navigateAvailableRestaurant()
             }
-        }) {
-            //support
-        }
+        })
         vc.modalPresentationStyle = .overCurrentContext
         
         vc.didTapDismiss = { [weak self] in

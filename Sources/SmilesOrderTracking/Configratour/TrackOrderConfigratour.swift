@@ -76,7 +76,7 @@ public enum TrackOrderConfigurator {
         let useCase = GetSupportUseCase(orderId: dependance.orderId,
                                            orderNumber: dependance.orderNUmber,
                                            services: service)
-        let viewModel = GetSupportViewModel(useCase: useCase, liveChatUseCase: LiveChatUseCase(), orderId: dependance.orderId, orderNumber: dependance.orderNUmber,chatBotType: dependance.chatBotType)
+        let viewModel = GetSupportViewModel(useCase: useCase, orderId: dependance.orderId, orderNumber: dependance.orderNUmber,chatBotType: dependance.chatBotType)
         viewModel.navigationDelegate = navigationDelegate
         let viewController = GetSupportViewController.create()
         viewController.viewModel = viewModel

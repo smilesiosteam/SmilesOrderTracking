@@ -18,7 +18,7 @@ struct ConfirmationOrderConfig: OrderTrackable, GetSupportable {
         var location = orderLocation
         location.type = .details
         
-        var cells: [GetSupportCellType] = [
+        let cells: [GetSupportCellType] = [
             .progressBar(model: progressBar),
             .text(model: .init(title: orderText)),
         ]

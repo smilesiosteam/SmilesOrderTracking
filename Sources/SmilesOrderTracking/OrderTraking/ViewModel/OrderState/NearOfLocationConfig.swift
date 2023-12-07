@@ -15,7 +15,7 @@ struct NearOfLocationConfig: OrderTrackable, GetSupportable {
         progressBar.hideTimeLabel = false
         
         
-        var cells: [GetSupportCellType] = [
+        let cells: [GetSupportCellType] = [
             .progressBar(model: progressBar)
         ]
         

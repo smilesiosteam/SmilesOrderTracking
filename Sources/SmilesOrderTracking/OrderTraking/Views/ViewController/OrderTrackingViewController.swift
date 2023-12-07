@@ -367,10 +367,7 @@ public final class OrderTrackingViewController: UIViewController, Toastable, Map
         headerView?.processAnimation(stop: stop)
         stop ? self.viewModel.pauseTimer() : self.viewModel.resumeTimer()
         
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { [weak self] in
-            guard let self else {
-                return
-            }
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
             
             // Process animation for status bar view
             if let cell = collectionView.cellForItem(at: IndexPath(row: 0, section: 0)) as? OrderProgressCollectionViewCell {
@@ -420,7 +417,7 @@ public final class OrderTrackingViewController: UIViewController, Toastable, Map
             self?.dismissMe()
         }
         
-        floatingView.didTrailingButton = { [weak self] in
+        floatingView.didTrailingButton = { 
             print("didTrailingButton")
         }
     }

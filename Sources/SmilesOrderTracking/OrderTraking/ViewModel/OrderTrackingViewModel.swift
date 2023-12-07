@@ -54,12 +54,12 @@ final class OrderTrackingViewModel {
     }
     
     private func bindUseCase() {
-        statusSubject.send(.showLoader)
+//        statusSubject.send(.showLoader)
         useCase.statePublisher.sink { [weak self] states in
             guard let self else {
                 return
             }
-            self.statusSubject.send(.hideLoader)
+//            self.statusSubject.send(.hideLoader)
             switch states {
             case .showError(let message):
                 self.statusSubject.send(.showError(message: message))
@@ -74,6 +74,10 @@ final class OrderTrackingViewModel {
                 self.orderNumber = orderNumber
             case .trackDriverLocation(liveTrackingId: let liveTrackingId):
                 self.navigationDelegate?.liveLocation(liveTrackingId: liveTrackingId)
+            case .showLoader:
+                self.statusSubject.send(.showLoader)
+            case .hideLoader:
+                self.statusSubject.send(.hideLoader)
             }
         }
         .store(in: &cancellables)

@@ -44,7 +44,9 @@ final class OrderTrackingUseCase: OrderTrackingUseCaseProtocol {
     }
     
     func fetchOrderStates() {
-        loadOrderStatus()
+        loadOrderStatus(orderId: orderId,
+                        orderStatus: "\(OrderTrackingType.confirmation.rawValue)",
+                        orderNumber: orderNumber, isComingFromFirebase: false)
 //        if let jsonData = jsonString.data(using: .utf8) {
 //            do {
 //                let orderResponse = try JSONDecoder().decode(OrderTrackingStatusResponse.self, from: jsonData)
@@ -82,6 +84,10 @@ final class OrderTrackingUseCase: OrderTrackingUseCaseProtocol {
         case .orderIsOnTheWay:
             let status = OnTheWayOrderConfig(response: response)
             stateSubject.send(.showToastForNoLiveTracking(isShow: status.isLiveTracking))
+            if status.isLiveTracking {
+                let liveTracingId = response.orderDetails?.liveTrackingId ?? ""
+                stateSubject.send(.trackDriverLocation(liveTrackingId: liveTracingId))
+            }
             return status.build()
         case .orderCancelled:
             return CanceledOrderConfig(response: response).build()
@@ -108,11 +114,11 @@ final class OrderTrackingUseCase: OrderTrackingUseCaseProtocol {
         return processOrder.build()
     }
     
-    private func loadOrderStatus() {
+    private func loadOrderStatus(orderId: String, orderStatus: String, orderNumber: String, isComingFromFirebase: Bool) {
         let handler = OrderTrackingServiceHandler()
         handler.getOrderTrackingStatus(orderId: orderId,
-                                       orderStatus: .confirmation,
-                                       orderNumber: orderNumber, isComingFromFirebase: false)
+                                       orderStatus: orderStatus,
+                                       orderNumber: orderNumber, isComingFromFirebase: isComingFromFirebase)
         .sink { [weak self] completion in
             switch completion {
                 
@@ -196,6 +202,7 @@ extension OrderTrackingUseCase {
         case showToastForNoLiveTracking(isShow: Bool)
         case success(model: OrderTrackingModel)
         case orderId(id: String)
+        case trackDriverLocation(liveTrackingId: String)
     }
 }
 
@@ -205,7 +212,7 @@ let jsonString = """
 {
   "extTransactionId": "3530191483630",
   "orderDetails": {
-    "orderStatus": 0,
+    "orderStatus": 7,
      "smallImageAnimationUrl": "https://www.smilesuae.ae/images/APP/ORDER_TRACKING/ENGLISH/SMALL/Delivering.json",
      "largeImageAnimationUrl": "https://www.smilesuae.ae/images/APP/ORDER_TRACKING/ENGLISH/LARGE/Waiting.json",
      "trackingColorCode": "#a5deef",

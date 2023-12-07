@@ -20,6 +20,7 @@ final class OrderTrackingViewModel {
     private var statusSubject = PassthroughSubject<State, Never>()
     private let changeTypeUseCase: ChangeTypeUseCaseProtocol
     private let scratchAndWinUseCase: ScratchAndWinUseCaseProtocol
+    private let firebasePublisher: AnyPublisher<LiveTrackingState, Never>
     var orderId = ""
     var orderNumber = ""
     var checkForVoucher = false
@@ -34,14 +35,17 @@ final class OrderTrackingViewModel {
     init(useCase: OrderTrackingUseCaseProtocol, 
          confirmUseCase: OrderConfirmationUseCaseProtocol,
          changeTypeUseCase: ChangeTypeUseCaseProtocol,
-         scratchAndWinUseCase: ScratchAndWinUseCaseProtocol) {
+         scratchAndWinUseCase: ScratchAndWinUseCaseProtocol,
+         firebasePublisher: AnyPublisher<LiveTrackingState, Never>) {
         self.useCase = useCase
         self.confirmUseCase = confirmUseCase
         self.changeTypeUseCase = changeTypeUseCase
         self.scratchAndWinUseCase = scratchAndWinUseCase
+        self.firebasePublisher = firebasePublisher
     }
     
     func fetchStatus() {
+        bindLiveTracking()
         bindUseCase()
         useCase.fetchOrderStates()
     }
@@ -64,6 +68,8 @@ final class OrderTrackingViewModel {
                 self.statusSubject.send(.success(model: model))
             case .orderId(let id):
                 self.orderId = id
+            case .trackDriverLocation(liveTrackingId: let liveTrackingId):
+                self.navigationDelegate?.liveLocation(liveTrackingId: liveTrackingId)
             }
         }
         .store(in: &cancellables)
@@ -139,6 +145,18 @@ final class OrderTrackingViewModel {
         
         statusSubject.send(.showLoader)
         scratchAndWinUseCase.configureScratchAndWin(with: orderId, isVoucherScratched: isVoucherScratched)
+    }
+    
+    func bindLiveTracking() {
+        firebasePublisher.sink { [weak self] state in
+            guard let self else { return }
+            switch state {
+            case .orderStatusDidChange(let orderId, let orderNumber, let orderStatus, let comingFromFirebase):
+                print("LIVE ORDER: \(orderId) \(orderStatus)")
+            case .liveLocationDidUpdate(let latitude, let longitude):
+                print("LIVE LOCATION: \(latitude) \(longitude)")
+            }
+        }.store(in: &cancellables)
     }
 }
 

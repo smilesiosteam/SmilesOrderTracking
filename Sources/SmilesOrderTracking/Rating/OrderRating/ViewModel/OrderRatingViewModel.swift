@@ -41,7 +41,7 @@ final class OrderRatingViewModel {
                 
                 switch completion {
                 case .failure(let error):
-                    self.showErrorMessage = error.errorDescription
+                    self.showErrorMessage = error.localizedDescription
                 default:
                     break
                 }
@@ -64,7 +64,7 @@ final class OrderRatingViewModel {
                 
                 switch completion {
                 case .failure(let error):
-                    self.showErrorMessage = error.errorDescription
+                    self.showErrorMessage = error.localizedDescription
                 default:
                     break
                 }

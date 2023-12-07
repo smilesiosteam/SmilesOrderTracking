@@ -79,6 +79,7 @@ final class OrderConfirmationCollectionViewCell: UICollectionViewCell {
     // MARK: - Methods
     func updateCell(with viewModel: ViewModel, delegate: OrderConfirmationCellActionDelegate) {
         self.delegate = delegate
+        self.viewModel = viewModel
         questionLabel.text = viewModel.question
     }
     

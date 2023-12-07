@@ -13,7 +13,7 @@ import SmilesBaseMainRequestManager
 import SmilesLocationHandler
 
 protocol OrderTrackingServiceHandlerProtocol {
-    func getOrderTrackingStatus(orderId: String, orderStatus: OrderTrackingType, orderNumber: String, isComingFromFirebase: Bool) -> AnyPublisher<OrderTrackingStatusResponse, NetworkError>
+    func getOrderTrackingStatus(orderId: String, orderStatus: String, orderNumber: String, isComingFromFirebase: Bool) -> AnyPublisher<OrderTrackingStatusResponse, NetworkError>
     func setOrderConfirmationStatus(orderId: String, orderStatus: OrderTrackingType) -> AnyPublisher<OrderTrackingStatusResponse, NetworkError>
     func changeOrderType(orderId: String) -> AnyPublisher<OrderChangeTypeResponse, NetworkError>
     func cancelOrder(orderId: String, rejectionReason:String?) -> AnyPublisher<OrderCancelResponse, NetworkError>
@@ -21,7 +21,7 @@ protocol OrderTrackingServiceHandlerProtocol {
 }
 
 final class OrderTrackingServiceHandler: OrderTrackingServiceHandlerProtocol {
-    func getOrderTrackingStatus(orderId: String, orderStatus: OrderTrackingType, orderNumber: String, isComingFromFirebase: Bool) -> AnyPublisher<OrderTrackingStatusResponse, NetworkError> {
+    func getOrderTrackingStatus(orderId: String, orderStatus: String, orderNumber: String, isComingFromFirebase: Bool) -> AnyPublisher<OrderTrackingStatusResponse, NetworkError> {
         
         let request = OrderTrackingStatusRequest(orderId: orderId)
         print(request)
@@ -29,7 +29,7 @@ final class OrderTrackingServiceHandler: OrderTrackingServiceHandlerProtocol {
             var additionalInfo = [BaseMainResponseAdditionalInfo]()
             let orderStatusAdditionalInfo : BaseMainResponseAdditionalInfo = BaseMainResponseAdditionalInfo()
             orderStatusAdditionalInfo.name = "order_status"
-            orderStatusAdditionalInfo.value = "\(orderStatus.rawValue)"
+            orderStatusAdditionalInfo.value = "\(orderStatus)"
             additionalInfo.append(orderStatusAdditionalInfo)
 
             let orderNumberAdditionalInfo : BaseMainResponseAdditionalInfo = BaseMainResponseAdditionalInfo()

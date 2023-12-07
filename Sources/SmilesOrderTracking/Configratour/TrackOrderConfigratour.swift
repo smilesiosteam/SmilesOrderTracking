@@ -7,6 +7,7 @@
 
 import Foundation
 import UIKit
+import Combine
 
 public struct OrderTrackingDependance {
     public var orderId: String
@@ -36,15 +37,17 @@ public struct GetSupportDependance {
 
 public enum TrackOrderConfigurator {
     
-    public static func getOrderTrackingView(dependance: OrderTrackingDependance,
-                                            navigationDelegate: OrderTrackingNavigationProtocol) -> UIViewController {
+    public static func getOrderTrackingView(dependance: OrderTrackingDependance, 
+                                            navigationDelegate: OrderTrackingNavigationProtocol,
+                                            firebasePublisher: AnyPublisher<LiveTrackingState, Never>
+    ) -> OrderTrackingViewController {
         let useCase = OrderTrackingUseCase(orderId: dependance.orderId,
                                            orderNumber: dependance.orderNUmber,
                                            services: service)
         let orderConfirmationUseCase = OrderConfirmationUseCase(services: service)
         let changeTypeUseCase = ChangeTypeUseCase(services: service)
         let scratchAndWinUseCase = ScratchAndWinUseCase()
-        let viewModel = OrderTrackingViewModel(useCase: useCase, confirmUseCase: orderConfirmationUseCase, changeTypeUseCase: changeTypeUseCase, scratchAndWinUseCase: scratchAndWinUseCase)
+        let viewModel = OrderTrackingViewModel(useCase: useCase, confirmUseCase: orderConfirmationUseCase, changeTypeUseCase: changeTypeUseCase, scratchAndWinUseCase: scratchAndWinUseCase, firebasePublisher: firebasePublisher)
         viewModel.navigationDelegate = navigationDelegate
         viewModel.orderId = dependance.orderId
         viewModel.orderNumber = dependance.orderNUmber

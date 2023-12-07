@@ -100,7 +100,8 @@ final class OrderTrackingViewModel {
                 self.statusSubject.send(.showError(message: message))
             case .openLiveChat:
                 self.statusSubject.send(.hideLoader)
-                self.navigationDelegate?.openLiveChat(orderId: orderId, orderNumber: orderNumber)
+//                self.navigationDelegate?.openLiveChat(orderId: orderId, orderNumber: orderNumber)
+                self.statusSubject.send(.navigateToGetSupport)
             case .callOrderStatus:
                 self.fetchStatus()
             }
@@ -200,5 +201,6 @@ extension OrderTrackingViewModel {
         case presentScratchAndWin(response: ScratchAndWinResponse)
         case presentCancelFlow(orderId: String)
         case driverLocation(lat: Double, long: Double)
+        case navigateToGetSupport
     }
 }

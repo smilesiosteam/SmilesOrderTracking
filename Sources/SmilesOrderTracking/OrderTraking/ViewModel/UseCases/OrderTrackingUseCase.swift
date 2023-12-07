@@ -136,7 +136,8 @@ final class OrderTrackingUseCase: OrderTrackingUseCaseProtocol {
             let status = self.configOrderStatus(response: response)
             self.stateSubject.send(.success(model: status))
             let orderId = response.orderDetails?.orderId ?? 0
-            self.stateSubject.send(.orderId(id: "\(orderId)"))
+            let orderNumber = response.orderDetails?.orderNumber ?? ""
+            self.stateSubject.send(.orderId(id: "\(orderId)", orderNumber: orderNumber))
         }.store(in: &cancellables)
     }
     

@@ -7,9 +7,21 @@
 
 import Foundation
 
-struct InTheKitchenOrderConfig: OrderTrackable {
+struct InTheKitchenOrderConfig: OrderTrackable, GetSupportable {
     var response: OrderTrackingStatusResponse
     
+    func buildConfig() -> GetSupportModel {
+        var cells: [GetSupportCellType] = [.progressBar(model: getProgressBarModel())]
+        
+      
+        if let delayText = response.orderDetails?.delayStatusText, !delayText.isEmpty {
+            cells.append(.text(model: .init(title: delayText)))
+        }
+        
+        
+        let header: GetSupportHeaderType = getImageHeaderAnimated()
+        return .init(header: header, cells: cells + getSupportActions())
+    }
     func build() -> OrderTrackingModel {
         
         var cells: [TrackingCellType] = [.progressBar(model: getProgressBarModel())]

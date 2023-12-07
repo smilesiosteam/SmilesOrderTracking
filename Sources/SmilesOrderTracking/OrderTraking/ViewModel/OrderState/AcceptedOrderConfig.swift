@@ -7,7 +7,15 @@
 
 import Foundation
 
-struct AcceptedOrderConfig: OrderTrackable {
+struct AcceptedOrderConfig: OrderTrackable, GetSupportable {
+    func buildConfig() -> GetSupportModel {
+        var cells: [GetSupportCellType] = [
+            .progressBar(model: getProgressBarModel())
+        ]
+        let header: GetSupportHeaderType = getImageHeaderAnimated()
+        return .init(header: header, cells: cells + getSupportActions())
+    }
+    
     var response: OrderTrackingStatusResponse
     
     func build() -> OrderTrackingModel {

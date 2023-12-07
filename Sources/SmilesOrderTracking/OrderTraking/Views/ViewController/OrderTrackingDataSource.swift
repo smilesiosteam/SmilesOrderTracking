@@ -133,7 +133,7 @@ extension OrderTrackingDataSource: HeaderCollectionViewProtocol {
     }
     
     func didTappSupport() {
-        
+        delegate?.getSupport()
     }
 }
 

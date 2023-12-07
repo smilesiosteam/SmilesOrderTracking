@@ -15,11 +15,23 @@ public struct OrderTrackingDependance {
     public var checkForVoucher: Bool
     public var chatbotType: String
     
-    public init(orderId: String, orderNUmber: String, checkForVoucher: Bool = false, chatbotType: String, firebasePublisher: AnyPublisher<LiveTrackingState, Never>) {
+    public init(orderId: String, orderNUmber: String, checkForVoucher: Bool = false, chatbotType: String) {
         self.orderId = orderId
         self.orderNUmber = orderNUmber
         self.checkForVoucher = checkForVoucher
         self.chatbotType = chatbotType
+    }
+}
+
+public struct GetSupportDependance {
+    public var orderId: String
+    public var orderNUmber: String
+    public var chatBotType:String
+    
+    public init(orderId: String, orderNumber: String, chatbotType:String) {
+        self.orderId = orderId
+        self.orderNUmber = orderNumber
+        self.chatBotType = chatbotType
     }
 }
 
@@ -39,6 +51,7 @@ public enum TrackOrderConfigurator {
         let viewModel = OrderTrackingViewModel(useCase: useCase, confirmUseCase: orderConfirmationUseCase, changeTypeUseCase: changeTypeUseCase, scratchAndWinUseCase: scratchAndWinUseCase, firebasePublisher: firebasePublisher, pauseOrderUseCase: useCasePauseOrder)
         viewModel.navigationDelegate = navigationDelegate
         viewModel.orderId = dependance.orderId
+        viewModel.orderNumber = dependance.orderNUmber
         viewModel.checkForVoucher = dependance.checkForVoucher
         viewModel.chatbotType = dependance.chatbotType
         let viewController = OrderTrackingViewController.create()
@@ -46,6 +59,7 @@ public enum TrackOrderConfigurator {
         return viewController
     }
     
+
     static func getConfirmationPopup(locationText: String, didTappedContinue: (()-> Void)?) -> UIViewController {
         let viewController = PickupConfirmationViewController.create()
         viewController.locationText = locationText
@@ -56,4 +70,18 @@ public enum TrackOrderConfigurator {
    static var service: OrderTrackingServiceHandler {
         return .init()
     }
+
+    public static func getOrderSupportView(dependance: GetSupportDependance,
+                                            navigationDelegate: OrderTrackingNavigationProtocol?) -> UIViewController {
+        let useCase = GetSupportUseCase(orderId: dependance.orderId,
+                                           orderNumber: dependance.orderNUmber,
+                                           services: service)
+        let viewModel = GetSupportViewModel(useCase: useCase, liveChatUseCase: LiveChatUseCase(), orderId: dependance.orderId, orderNumber: dependance.orderNUmber,chatBotType: dependance.chatBotType)
+        viewModel.navigationDelegate = navigationDelegate
+        let viewController = GetSupportViewController.create()
+        viewController.viewModel = viewModel
+        return viewController
+    }
+    
+
 }

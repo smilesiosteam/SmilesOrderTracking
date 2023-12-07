@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct WaitingOrderConfig: OrderTrackable, AnimationHeaderProtocol {
+struct WaitingOrderConfig: OrderTrackable, AnimationHeaderProtocol, GetSupportable {
     var response: OrderTrackingStatusResponse
     
     func build() -> OrderTrackingModel {
@@ -37,5 +37,19 @@ struct WaitingOrderConfig: OrderTrackable, AnimationHeaderProtocol {
         
        
         return .init(header: getAnimationHeader(isShowButtons: true), cells: cells)
+    }
+    func buildConfig() -> GetSupportModel {
+        var progressBar = orderProgressBar
+        progressBar.step = .first
+        
+        var cells: [GetSupportCellType] = [
+            .progressBar(model: progressBar)
+        ]
+        
+        if let description = orderText {
+            cells.append(.text(model: .init(title: orderText)))
+        }
+       
+        return .init(header: getImageHeaderAnimated(), cells: cells + getSupportActions())
     }
 }

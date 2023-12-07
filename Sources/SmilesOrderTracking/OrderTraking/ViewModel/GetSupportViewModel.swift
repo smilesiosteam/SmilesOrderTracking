@@ -17,7 +17,7 @@ final class GetSupportViewModel {
     private var statusSubject = PassthroughSubject<GetSupportViewModel.State, Never>()
     var orderId = ""
     var orderNumber = ""
-    var liveChatUseCase:LiveChatUseCase!
+    var liveChatUseCase = LiveChatUseCase()
     var chatbotType = ""
     @Published private(set) var liveChatUrl: String?
     var orderStatusPublisher: AnyPublisher<GetSupportViewModel.State, Never> {
@@ -27,12 +27,11 @@ final class GetSupportViewModel {
     var navigationDelegate: OrderTrackingNavigationProtocol?
     
     // MARK: - Init
-    init(useCase: GetSupportUseCase, liveChatUseCase:LiveChatUseCase, orderId:String, orderNumber:String, chatBotType:String) {
+    init(useCase: GetSupportUseCase, orderId:String, orderNumber:String, chatBotType:String) {
         self.useCase = useCase
         self.orderId = orderId
         self.orderNumber = orderNumber
         self.chatbotType = chatBotType
-        self.liveChatUseCase = liveChatUseCase
     }
     
     func getLiveChatUrl() {

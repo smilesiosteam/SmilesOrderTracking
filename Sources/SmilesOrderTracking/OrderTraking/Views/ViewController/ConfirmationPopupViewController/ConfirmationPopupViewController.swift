@@ -83,12 +83,15 @@ public class ConfirmationPopupViewController: UIViewController {
     }
     
     @IBAction func primaryAction(_ sender: Any) {
-        dismiss(animated: true)
-        data.primaryAction()
+        dismiss{
+            self.data.primaryAction()
+            
+        }
     }
     
     @IBAction func secondaryAction(_ sender: Any) {
-        dismiss(animated: true)
-        data.secondaryAction()
+        dismiss{
+            self.data.secondaryAction()
+        }
     }
 }

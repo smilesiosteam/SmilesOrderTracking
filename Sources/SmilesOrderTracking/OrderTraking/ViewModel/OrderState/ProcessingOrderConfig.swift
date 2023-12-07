@@ -36,7 +36,7 @@ struct ProcessingOrderConfig: OrderTrackable, AnimationHeaderProtocol, GetSuppor
             .restaurant(model: orderRestaurant)
         ]
         
-        return .init(header: getAnimationHeader(isShowButtons: true), cells: cells)
+        return .init(header: getAnimationHeader(isShowButtons: false), cells: cells)
     }
     
     private func getOrderLocation() -> LocationCollectionViewCell.ViewModel {

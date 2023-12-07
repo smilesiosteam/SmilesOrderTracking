@@ -13,6 +13,12 @@ import SmilesLoader
 
 class SmilesOrderCancelledViewModel: NSObject {
     let service = OrderTrackingServiceHandler()
+    var liveChatUseCase = LiveChatUseCase()
+    var chatbotType = ""
+    var orderId = ""
+    var orderNumber = ""
+    @Published private(set) var liveChatUrl: String?
+    
     // MARK: - INPUT. View event methods
     enum Input {
         case cancelOrder(ordeId:String, reason:String?)
@@ -37,6 +43,22 @@ class SmilesOrderCancelledViewModel: NSObject {
 }
 
 extension SmilesOrderCancelledViewModel {
+    func getLiveChatUrl() {
+        liveChatUseCase.statePublisher.sink { [weak self] state in
+            guard let self else { return }
+            switch state {
+            case .showError(let error):
+                SmilesLoader.dismiss()
+                print(error.localizedString)
+            case .navigateToLiveChatWebview(let url):
+                SmilesLoader.dismiss()
+                self.liveChatUrl = url
+            }
+        }.store(in: &cancellables)
+        
+        SmilesLoader.show()
+        liveChatUseCase.getLiveChatUrl(with: "\(orderId)", chatbotType: chatbotType, orderNumber: orderNumber)
+    }
     func transform(input: AnyPublisher<Input, Never>) -> AnyPublisher<Output, Never> {
         output = PassthroughSubject<Output, Never>()
         input.sink { [weak self] event in
@@ -55,19 +77,19 @@ extension SmilesOrderCancelledViewModel {
     func cancelOrder(id:String, rejectionReason:String?) {
         SmilesLoader.show()
         service.cancelOrder(orderId: id, rejectionReason: rejectionReason)
-            .sink { [weak self] completion in
+            .sink {completion in
                 debugPrint(completion)
                 switch completion {
                 case .failure(let error):
                     SmilesLoader.dismiss()
-                    self?.output.send(.cancelOrderDidFail(error: error))
+                    self.output.send(.cancelOrderDidFail(error: error))
                 case .finished:
                     debugPrint("nothing much to do here")
                 }
-            } receiveValue: { [weak self] response in
+            } receiveValue: {response in
                 SmilesLoader.dismiss()
                 debugPrint("got my response here \(response)")
-                self?.output.send(.cancelOrderDidSucceed(response: response))
+                self.output.send(.cancelOrderDidSucceed(response: response))
             }
         .store(in: &cancellables)
     }

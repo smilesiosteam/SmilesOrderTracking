@@ -100,24 +100,10 @@ public class SuccessMessagePopupViewController: UIViewController {
     }
     
     @IBAction func primaryAction(_ sender: Any) {
-        dismiss(animated: true)
-        data.primaryAction()
+        dismiss{
+            self.data.primaryAction()
+        }
     }
-    public class func showFeedbackSuccessViewController(from viewController:UIViewController){
-        let vc = SuccessMessagePopupViewController(
-            popupData: SuccessPopupViewModelData(
-                showCloseButton: true,
-                message: OrderTrackingLocalization.thankyouForFeedback.text,
-                descriptionMessage: OrderTrackingLocalization.alwaysWrokingToImprove.text,
-                primaryButtonTitle: OrderTrackingLocalization.backToHome.text,
-                primaryAction: {
-                    
-                }
-            )
-        )
-        viewController.present(vc)
-    }
-    
 }
 
 

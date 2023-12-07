@@ -28,12 +28,10 @@ public class SmilesOrderCancelledViewController: UIViewController, UICollectionV
     @IBOutlet weak var closeButton: UIButton!
     @IBOutlet weak var roundedView: UIView!
     @IBOutlet var panDismissView: UIView!
-
     @IBOutlet weak var messageText: UILabel!
     
     @IBOutlet weak var descriptionMessage: UILabel!
     var onSubmitSuccess: (_:OrderCancelResponse)->Void = {resonse in}
-    var supportAction: ()->Void = {}
     var dismissViewTranslation = CGPoint(x: 0, y: 0)
     
     private let viewModel = SmilesOrderCancelledViewModel()
@@ -43,6 +41,7 @@ public class SmilesOrderCancelledViewController: UIViewController, UICollectionV
     @IBOutlet weak var textViewContainer: UIView!
     @IBOutlet weak var collectionHeight: NSLayoutConstraint!
     
+    var navigationDelegate: OrderTrackingNavigationProtocol?
     var cancelResponse:OrderCancelResponse!
     var orderId:String!
     var orderNumber:String!
@@ -72,7 +71,6 @@ public class SmilesOrderCancelledViewController: UIViewController, UICollectionV
         roundedView.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
         modalPresentationStyle = .overFullScreen
         setupCollectionView()
-        
         textViewContainer.layer.borderWidth = 1
         textViewContainer.layer.borderColor = UIColor.appRevampPurpleMainColor.cgColor
     }
@@ -84,6 +82,7 @@ public class SmilesOrderCancelledViewController: UIViewController, UICollectionV
         backButton.isHidden = true
         bindShowBackButton()
         setBtnUI(enabled: false)
+        
     }
     
     public override func viewDidLayoutSubviews() {
@@ -121,14 +120,22 @@ public class SmilesOrderCancelledViewController: UIViewController, UICollectionV
                 case .resumeOrderDidSucceed:
                     break
                 //MARK: -- Failure cases
-                case .cancelOrderDidFail(let error):
-                    debugPrint(error)
+                case .cancelOrderDidFail(_):
+                    self?.didTapDismiss?()
+                    self?.dismiss(animated: true)
                 case .pauseOrderDidFail(let error):
                     debugPrint(error)
                 case .resumeOrderDidFail(let error):
                     debugPrint(error)
                 }
             }.store(in: &cancellables)
+        
+        viewModel.$liveChatUrl.sink {value in
+            guard let value else { return }
+            self.dismiss {
+                self.navigationDelegate?.navigateToLiveChatWebview(url: value)
+            }
+        }.store(in: &cancellables)
     }
     
     
@@ -153,14 +160,18 @@ public class SmilesOrderCancelledViewController: UIViewController, UICollectionV
     
     public init(orderId:String, 
                 orderNumber:String,
-                cancelResponse: OrderCancelResponse, 
-                onSubmitSuccess: @escaping (_:OrderCancelResponse)->Void = {_ in },
-                supportAction: @escaping ()->Void = {}) {
+                chatbotType:String,
+                cancelResponse: OrderCancelResponse,
+                delegate:OrderTrackingNavigationProtocol?,
+                onSubmitSuccess: @escaping (_:OrderCancelResponse)->Void = {_ in }) {
         self.onSubmitSuccess = onSubmitSuccess
-        self.supportAction = supportAction
         self.cancelResponse = cancelResponse
         self.orderId = orderId
         self.orderNumber = orderNumber
+        self.viewModel.orderId = orderId
+        self.viewModel.orderNumber = orderNumber
+        self.viewModel.chatbotType = chatbotType
+        self.navigationDelegate = delegate
         super.init(nibName: "SmilesOrderCancelledViewController", bundle: .module)
     }
     
@@ -189,11 +200,8 @@ public class SmilesOrderCancelledViewController: UIViewController, UICollectionV
     }
     
     @IBAction func secondaryAction(_ sender: Any) {
-        supportAction()
-        dismiss(animated: true)
-       
+        self.viewModel.getLiveChatUrl()
     }
-    
 }
 
 extension SmilesOrderCancelledViewController: UICollectionViewDelegateFlowLayout{

@@ -10,6 +10,7 @@ import Combine
 
 protocol OrderTrackingUseCaseProtocol {
     func fetchOrderStates()
+    func loadOrderStatus(orderId: String, orderStatus: String, orderNumber: String, isComingFromFirebase: Bool)
     func pauseTimer()
     func resumeTimer()
     var statePublisher: AnyPublisher<OrderTrackingUseCase.State, Never> { get }
@@ -114,12 +115,15 @@ final class OrderTrackingUseCase: OrderTrackingUseCaseProtocol {
         return processOrder.build()
     }
     
-    private func loadOrderStatus(orderId: String, orderStatus: String, orderNumber: String, isComingFromFirebase: Bool) {
+    func loadOrderStatus(orderId: String, orderStatus: String, orderNumber: String, isComingFromFirebase: Bool) {
+        self.stateSubject.send(.showLoader)
+
         let handler = OrderTrackingServiceHandler()
         handler.getOrderTrackingStatus(orderId: orderId,
                                        orderStatus: orderStatus,
                                        orderNumber: orderNumber, isComingFromFirebase: isComingFromFirebase)
         .sink { [weak self] completion in
+            self?.stateSubject.send(.hideLoader)
             switch completion {
                 
             case .finished:
@@ -131,7 +135,7 @@ final class OrderTrackingUseCase: OrderTrackingUseCaseProtocol {
             guard let self else {
                 return
             }
-            
+            self.stateSubject.send(.hideLoader)
             self.statusResponse = response
             let status = self.configOrderStatus(response: response)
             self.stateSubject.send(.success(model: status))
@@ -204,6 +208,8 @@ extension OrderTrackingUseCase {
         case success(model: OrderTrackingModel)
         case orderId(id: String, orderNumber: String)
         case trackDriverLocation(liveTrackingId: String)
+        case showLoader
+        case hideLoader
     }
 }
 

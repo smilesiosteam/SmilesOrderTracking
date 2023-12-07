@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="22154" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="22155" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_12" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22130"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22131"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="collection view cell content view" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -43,11 +43,35 @@
                                         </subviews>
                                     </stackView>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Have you received your order from Big Smoke Burger?" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wKo-jj-fAx">
-                                        <rect key="frame" x="0.0" y="32" width="367" height="133"/>
+                                        <rect key="frame" x="0.0" y="32" width="367" height="77"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
+                                    <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="18" translatesAutoresizingMaskIntoConstraints="NO" id="NeL-Fh-wru">
+                                        <rect key="frame" x="0.0" y="117" width="367" height="48"/>
+                                        <subviews>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="o6r-y6-i7h">
+                                                <rect key="frame" x="0.0" y="0.0" width="174.66666666666666" height="48"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="48" id="zaK-Oo-xPR"/>
+                                                </constraints>
+                                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                                <state key="normal" title="Button"/>
+                                                <connections>
+                                                    <action selector="denyButtonTapped:" destination="zMg-Jj-eU0" eventType="touchUpInside" id="Lcu-OR-GpS"/>
+                                                </connections>
+                                            </button>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eKU-kD-KBL">
+                                                <rect key="frame" x="192.66666666666663" y="0.0" width="174.33333333333337" height="48"/>
+                                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                                <state key="normal" title="Button"/>
+                                                <connections>
+                                                    <action selector="confirmButtonTapped:" destination="zMg-Jj-eU0" eventType="touchUpInside" id="mpC-iY-c0a"/>
+                                                </connections>
+                                            </button>
+                                        </subviews>
+                                    </stackView>
                                 </subviews>
                             </stackView>
                         </subviews>
@@ -69,7 +93,10 @@
             </collectionViewCellContentView>
             <size key="customSize" width="399" height="197"/>
             <connections>
+                <outlet property="confirmButton" destination="eKU-kD-KBL" id="Sp9-lP-lu9"/>
+                <outlet property="containerStackView" destination="HKB-dc-o1C" id="d58-8c-Cca"/>
                 <outlet property="containerView" destination="v03-qh-Bkh" id="8TR-7X-lEc"/>
+                <outlet property="denyButton" destination="o6r-y6-i7h" id="nga-ax-EO1"/>
                 <outlet property="questionLabel" destination="wKo-jj-fAx" id="NOA-Gw-RUC"/>
                 <outlet property="titleLabel" destination="uB8-ap-Tns" id="bRU-9o-la4"/>
                 <outlet property="titleStackView" destination="396-jJ-RTk" id="QRL-hC-ei4"/>

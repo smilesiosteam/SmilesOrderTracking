@@ -308,6 +308,9 @@ public final class OrderTrackingViewController: UIViewController, Toastable, Map
                 
             case .presentCancelFlow(orderId: let orderId):
                 self.presentCancelFlow(orderId: orderId)
+            case .driverLocation(lat: let lat, long: let long):
+                let headerMap = self.getMapHeader()
+                headerMap?.moveDriverOnMap(lat: lat, long: long)
             }
         }.store(in: &cancellables)
     }
@@ -369,8 +372,8 @@ public final class OrderTrackingViewController: UIViewController, Toastable, Map
                 if stop == false {
                     collectionView.reloadItems(at: [IndexPath(row: 0, section: 0)])
                 } else {
-                    cell.processAnimation(stop: stop)
-                    cell.processAnimation(stop: stop)
+                    cell.processAnimation(stop: true)
+                    cell.processAnimation(stop: true)
                 }
             }
         }

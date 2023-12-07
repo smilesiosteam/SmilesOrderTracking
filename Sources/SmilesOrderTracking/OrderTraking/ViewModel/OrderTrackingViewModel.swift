@@ -54,12 +54,12 @@ final class OrderTrackingViewModel {
     }
     
     private func bindUseCase() {
-        statusSubject.send(.showLoader)
+//        statusSubject.send(.showLoader)
         useCase.statePublisher.sink { [weak self] states in
             guard let self else {
                 return
             }
-            self.statusSubject.send(.hideLoader)
+//            self.statusSubject.send(.hideLoader)
             switch states {
             case .showError(let message):
                 self.statusSubject.send(.showError(message: message))
@@ -74,6 +74,10 @@ final class OrderTrackingViewModel {
                 self.orderNumber = orderNumber
             case .trackDriverLocation(liveTrackingId: let liveTrackingId):
                 self.navigationDelegate?.liveLocation(liveTrackingId: liveTrackingId)
+            case .showLoader:
+                self.statusSubject.send(.showLoader)
+            case .hideLoader:
+                self.statusSubject.send(.hideLoader)
             }
         }
         .store(in: &cancellables)
@@ -175,10 +179,10 @@ final class OrderTrackingViewModel {
         firebasePublisher.sink { [weak self] state in
             guard let self else { return }
             switch state {
-            case .orderStatusDidChange(let orderId, let orderNumber, let orderStatus, let comingFromFirebase):
-                print("LIVE ORDER: \(orderId) \(orderStatus)")
+            case .orderStatusDidChange(let orderId, let orderNumber, let orderStatus, _):
+                self.useCase.loadOrderStatus(orderId: orderId, orderStatus: "\(orderStatus.rawValue)", orderNumber: orderNumber, isComingFromFirebase: true)
             case .liveLocationDidUpdate(let latitude, let longitude):
-                print("LIVE LOCATION: \(latitude) \(longitude)")
+                self.statusSubject.send(.driverLocation(lat: latitude, long: longitude))
             }
         }.store(in: &cancellables)
     }
@@ -195,5 +199,6 @@ extension OrderTrackingViewModel {
         case timerIsOff
         case presentScratchAndWin(response: ScratchAndWinResponse)
         case presentCancelFlow(orderId: String)
+        case driverLocation(lat: Double, long: Double)
     }
 }

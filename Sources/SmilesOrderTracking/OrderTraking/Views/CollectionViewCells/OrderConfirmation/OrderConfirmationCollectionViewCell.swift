@@ -85,7 +85,7 @@ final class OrderConfirmationCollectionViewCell: UICollectionViewCell {
     
     private func configCell() {
         containerStackView.setCustomSpacing(8.0, after: titleStackView)
-        containerStackView.setCustomSpacing(24.0, after: titleLabel)
+        containerStackView.setCustomSpacing(24.0, after: questionLabel)
     }
 }
 

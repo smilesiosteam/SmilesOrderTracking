@@ -21,7 +21,7 @@ struct WaitingOrderConfig: OrderTrackable, AnimationHeaderProtocol, GetSupportab
             .progressBar(model: progressBar)
         ]
         
-        if let description = orderText {
+        if let orderText = orderText {
             cells.append(.text(model: .init(title: orderText)))
         }
         
@@ -46,7 +46,7 @@ struct WaitingOrderConfig: OrderTrackable, AnimationHeaderProtocol, GetSupportab
             .progressBar(model: progressBar)
         ]
         
-        if let description = orderText {
+        if let orderText = orderText {
             cells.append(.text(model: .init(title: orderText)))
         }
        

@@ -313,6 +313,9 @@ public final class OrderTrackingViewController: UIViewController, Toastable, Map
                 
             case .presentCancelFlow(orderId: let orderId):
                 self.presentCancelFlow(orderId: orderId)
+            case .driverLocation(lat: let lat, long: let long):
+                let headerMap = self.getMapHeader()
+                headerMap?.moveDriverOnMap(lat: lat, long: long)
             }
         }.store(in: &cancellables)
     }
@@ -367,18 +370,15 @@ public final class OrderTrackingViewController: UIViewController, Toastable, Map
         headerView?.processAnimation(stop: stop)
         stop ? self.viewModel.pauseTimer() : self.viewModel.resumeTimer()
         
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { [weak self] in
-            guard let self else {
-                return
-            }
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
             
             // Process animation for status bar view
             if let cell = collectionView.cellForItem(at: IndexPath(row: 0, section: 0)) as? OrderProgressCollectionViewCell {
                 if stop == false {
                     collectionView.reloadItems(at: [IndexPath(row: 0, section: 0)])
                 } else {
-                    cell.processAnimation(stop: stop)
-                    cell.processAnimation(stop: stop)
+                    cell.processAnimation(stop: true)
+                    cell.processAnimation(stop: true)
                 }
             }
         }
@@ -420,7 +420,7 @@ public final class OrderTrackingViewController: UIViewController, Toastable, Map
             self?.dismissMe()
         }
         
-        floatingView.didTrailingButton = { [weak self] in
+        floatingView.didTrailingButton = { 
             print("didTrailingButton")
         }
     }

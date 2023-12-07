@@ -10,6 +10,7 @@ import Combine
 
 protocol OrderTrackingUseCaseProtocol {
     func fetchOrderStates()
+    func loadOrderStatus(orderId: String, orderStatus: String, orderNumber: String, isComingFromFirebase: Bool)
     func pauseTimer()
     func resumeTimer()
     var statePublisher: AnyPublisher<OrderTrackingUseCase.State, Never> { get }
@@ -114,8 +115,9 @@ final class OrderTrackingUseCase: OrderTrackingUseCaseProtocol {
         return processOrder.build()
     }
     
-    private func loadOrderStatus(orderId: String, orderStatus: String, orderNumber: String, isComingFromFirebase: Bool) {
+    func loadOrderStatus(orderId: String, orderStatus: String, orderNumber: String, isComingFromFirebase: Bool) {
         self.stateSubject.send(.showLoader)
+
         let handler = OrderTrackingServiceHandler()
         handler.getOrderTrackingStatus(orderId: orderId,
                                        orderStatus: orderStatus,

@@ -103,7 +103,6 @@ public final class GetSupportViewController: UIViewController, Toastable, GetSup
         viewModel?.$liveChatUrl.sink { [weak self] value in
             guard let self, let value else { return }
             viewModel.navigationDelegate?.navigateToLiveChatWebview(url: value)
-            self.navigationController?.popViewController(animated:false)
         }.store(in: &cancellables)
     }
     private func showToastForOrderArrived() {

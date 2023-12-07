@@ -23,11 +23,15 @@ final class MapHeaderCollectionViewCell: UICollectionReusableView {
     
     // MARK: - Properties
     private weak var delegate: HeaderCollectionViewProtocol?
+    private var isFirstTimeSetCamera = false
+    private var moveMarker: MoveMarker?
+    private var driverMarker :GMSMarker?
     
     override func awakeFromNib() {
         super.awakeFromNib()
         setupMap()
         configControllers()
+        moveMarker = MoveMarker(markerCar: driverMarker, mapView: mapView)
     }
     
     // MARK: - Buttons Actions
@@ -105,6 +109,16 @@ final class MapHeaderCollectionViewCell: UICollectionReusableView {
         DispatchQueue.main.asyncAfter(deadline: DispatchTime(uptimeNanoseconds: UInt64(0.3))) {
             self.mapView.animate(with: GMSCameraUpdate.fit(bounds, withPadding: 100.0))
         }
+    }
+    
+    func moveDriverOnMap(lat: Double, long: Double) {
+        let coordinate = CLLocationCoordinate2D(latitude: lat, longitude: long)
+//        let camera = GMSCameraPosition.camera(withLatitude: lat, longitude: long, zoom: 14)
+        if !isFirstTimeSetCamera {
+//            mapView?.animate(to: camera)
+            isFirstTimeSetCamera = true
+        }
+        moveMarker?.rotateMarker(nextCoordinate: coordinate)
     }
 }
 

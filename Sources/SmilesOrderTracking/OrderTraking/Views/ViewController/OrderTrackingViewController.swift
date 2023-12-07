@@ -215,7 +215,11 @@ public final class OrderTrackingViewController: UIViewController, Toastable, Map
     
     private func navigateToThanksForFeedback() {
         let vc = SuccessMessagePopupViewController(popupData: SuccessPopupViewModelData(message: OrderTrackingLocalization.thankyouForFeedback.text, descriptionMessage: OrderTrackingLocalization.alwaysWrokingToImprove.text, primaryButtonTitle: OrderTrackingLocalization.backToHome.text, primaryAction: {
-            self.viewModel.navigationDelegate?.navigateAvailableRestaurant()
+//            self.viewModel.navigationDelegate?.navigateAvailableRestaurant()
+            DispatchQueue.main.asyncAfter(deadline:  .now() + 1) {
+                self.dismiss()
+            }
+            
         }))
         self.present(vc)
     }

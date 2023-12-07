@@ -12,20 +12,15 @@ import SmilesLoader
 
 final class OrderRatingViewModel {
     private var cancellables = Set<AnyCancellable>()
-    private(set) var orderRatingUIModel: OrderRatingUIModel
-    private(set) var liveChatUseCase: LiveChatUseCaseProtocol
-    @Published private(set) var popupTitle: String?
-    @Published private(set) var ratingTitle: String?
-    @Published private(set) var ratingDescription: String?
+    private var orderRatingUIModel: OrderRatingUIModel
+    private var liveChatUseCase: LiveChatUseCaseProtocol
+    private var stateSubject: PassthroughSubject<State, Never> = .init()
+    var statePublisher: AnyPublisher<State, Never> {
+        stateSubject.eraseToAnyPublisher()
+    }
+
     private let serviceHandler = OrderTrackingServiceHandler()
-    
-    @Published private(set) var getOrderRatingResponse: GetOrderRatingResponse?
-    @Published private(set) var rateOrderResponse: RateOrderResponse?
-    @Published private(set) var ratingStarsData: [Rating]?
-    @Published private(set) var orderItems: [OrderItemDetail]?
-    @Published private(set) var shouldDismiss = false
-    @Published private(set) var showErrorMessage: String?
-    @Published private(set) var liveChatUrl: String?
+    private var getOrderRatingResponse: GetOrderRatingResponse?
     
     init(orderRatingUIModel: OrderRatingUIModel, liveChatUseCase: LiveChatUseCaseProtocol = LiveChatUseCase()) {
         self.orderRatingUIModel = orderRatingUIModel
@@ -41,14 +36,15 @@ final class OrderRatingViewModel {
                 
                 switch completion {
                 case .failure(let error):
-                    self.showErrorMessage = error.localizedDescription
+                    self.stateSubject.send(.showError(message: error.localizedDescription))
                 default:
                     break
                 }
             } receiveValue: { [weak self] response in
                 guard let self else { return }
                 self.getOrderRatingResponse = response
-                self.orderItems = response.orderItemDetails
+                self.stateSubject.send(.getOrderRatingResponse(response: response))
+                self.stateSubject.send(.orderItems(items: response.orderItemDetails))
                 self.createPopupUI(with: response)
                 SmilesLoader.dismiss()
             }
@@ -64,13 +60,13 @@ final class OrderRatingViewModel {
                 
                 switch completion {
                 case .failure(let error):
-                    self.showErrorMessage = error.localizedDescription
+                    self.stateSubject.send(.showError(message: error.localizedDescription))
                 default:
                     break
                 }
             } receiveValue: { [weak self] response in
                 guard let self else { return }
-                self.rateOrderResponse = response
+                self.stateSubject.send(.rateOrderResponse(response: response))
                 SmilesLoader.dismiss()
             }
         .store(in: &cancellables)
@@ -82,10 +78,10 @@ final class OrderRatingViewModel {
             switch state {
             case .showError(let message):
                 SmilesLoader.dismiss()
-                self.showErrorMessage = message
+                self.stateSubject.send(.showError(message: message))
             case .navigateToLiveChatWebview(let url):
                 SmilesLoader.dismiss()
-                self.liveChatUrl = url
+                self.stateSubject.send(.liveChatUrl(url: url))
             }
         }.store(in: &cancellables)
         
@@ -99,23 +95,37 @@ final class OrderRatingViewModel {
     private func createPopupUI(with getOrderRatingResponse: GetOrderRatingResponse) {
         if let orderRating = getOrderRatingResponse.orderRating {
             let rating = orderRating[0]
-            ratingStarsData = rating.rating
+            stateSubject.send(.ratingStarsData(data: rating.rating))
             if rating.ratingType == "delivery" {
-                popupTitle = rating.title
+                stateSubject.send(.popupTitle(text: rating.ratingTitle ?? ""))
                 let driverName = getOrderRatingResponse.orderDetails?.driverName ?? ""
                 let deliveryTitle = rating.title?.replacingOccurrences(of: "{driver_name}", with: driverName)
-                ratingTitle = deliveryTitle
+                stateSubject.send(.ratingTitle(text: deliveryTitle ?? ""))
                 
                 let deliveryTime = getOrderRatingResponse.orderDetails?.deliveredTime ?? ""
                 let description = rating.description?.replacingOccurrences(of: "{driver_name}", with: driverName)
                 let deliverDescription = description?.replacingOccurrences(of: "{delivered_time}", with: deliveryTime)
-                ratingDescription = deliverDescription
+                stateSubject.send(.ratingDescription(text: deliverDescription ?? ""))
             } else {
-                popupTitle = getOrderRatingResponse.title
+                stateSubject.send(.popupTitle(text: getOrderRatingResponse.title ?? ""))
                 let restaurantName = getOrderRatingResponse.orderDetails?.restaurantName ?? ""
                 let deliveryTitle = rating.title?.replacingOccurrences(of: "{driver_name}", with: restaurantName)
-                ratingTitle = deliveryTitle
+                stateSubject.send(.ratingTitle(text: deliveryTitle ?? ""))
             }
         }
+    }
+}
+
+extension OrderRatingViewModel {
+    enum State {
+        case popupTitle(text: String)
+        case ratingTitle(text: String)
+        case ratingDescription(text: String)
+        case showError(message: String)
+        case getOrderRatingResponse(response: GetOrderRatingResponse?)
+        case rateOrderResponse(response: RateOrderResponse?)
+        case ratingStarsData(data: [Rating]?)
+        case orderItems(items: [OrderItemDetail]?)
+        case liveChatUrl(url: String?)
     }
 }

@@ -78,14 +78,14 @@ final public class FeedbackSuccessViewController: UIViewController {
     }
     
     private func bindViewModel() {
-        viewModel?.$popupTitle.sink { [weak self] value in
+        viewModel?.statePublisher.sink { [weak self] state in
             guard let self else { return }
-            self.thankYouLabel.text = value
-        }.store(in: &cancellables)
-        
-        viewModel?.$description.sink { [weak self] value in
-            guard let self else { return }
-            self.feedbackDescriptionLabel.attributedText = value
+            switch state {
+            case .popupTitle(let text):
+                self.thankYouLabel.text = text
+            case .description(let text):
+                self.feedbackDescriptionLabel.attributedText = text
+            }
         }.store(in: &cancellables)
     }
     

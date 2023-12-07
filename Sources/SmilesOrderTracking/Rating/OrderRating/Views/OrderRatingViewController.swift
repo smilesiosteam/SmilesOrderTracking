@@ -170,62 +170,44 @@ final public class OrderRatingViewController: UIViewController {
     }
     
     private func bindViewModel() {
-        viewModel?.$getOrderRatingResponse.sink { [weak self] value in
+        viewModel?.statePublisher.sink { [weak self] state in
             guard let self else { return }
-            self.getOrderRatingResponse = value
-        }.store(in: &cancellables)
-        
-        viewModel?.$rateOrderResponse.sink { [weak self] value in
-            guard let self, let value else { return }
-            
-            dismiss {
-                if let itemWiseRatingEnabled = value.itemLevelRatingEnable, itemWiseRatingEnabled {
-                    self.delegate?.shouldOpenItemRatingViewController(with: value, orderItems: self.orderItems ?? [])
+            switch state {
+            case .popupTitle(let text):
+                self.popupTitleLabel.text = text
+            case .ratingTitle(let text):
+                self.ratingTitleLabel.text = text
+            case .ratingDescription(let text):
+                if !text.isEmpty {
+                    self.ratingDescriptionLabel.text = text
+                    self.ratingDescriptionLabel.isHidden = false
                 } else {
-                    self.delegate?.shouldOpenFeedbackSuccessViewController(with: value)
+                    self.ratingDescriptionLabel.isHidden = true
                 }
-            }
-        }.store(in: &cancellables)
-        
-        viewModel?.$popupTitle.sink { [weak self] value in
-            guard let self else { return }
-            self.popupTitleLabel.text = value
-        }.store(in: &cancellables)
-        
-        viewModel?.$ratingTitle.sink { [weak self] value in
-            guard let self else { return }
-            self.ratingTitleLabel.text = value
-        }.store(in: &cancellables)
-        
-        viewModel?.$ratingDescription.sink { [weak self] value in
-            guard let self else { return }
-            if let description = value, !description.isEmpty {
-                self.ratingDescriptionLabel.text = description
-            } else {
-                self.ratingDescriptionLabel.isHidden = true
-            }
-        }.store(in: &cancellables)
-        
-        viewModel?.$orderItems.sink { [weak self] value in
-            guard let self else { return }
-            self.orderItems = value
-        }.store(in: &cancellables)
-        
-        viewModel?.$ratingStarsData.sink { [weak self] value in
-            guard let self else { return }
-            self.ratingStarsData = value
-        }.store(in: &cancellables)
-        
-        viewModel?.$showErrorMessage.sink { [weak self] value in
-            guard let self else { return }
-            self.showAlertWithOkayOnly(message: value.asStringOrEmpty())
-        }.store(in: &cancellables)
-        
-        viewModel?.$liveChatUrl.sink { [weak self] value in
-            guard let self, let value else { return }
-            
-            dismiss {
-                self.delegate?.shouldOpenGetSupport(with: value)
+            case .showError(let message):
+                self.showAlertWithOkayOnly(message: message)
+            case .getOrderRatingResponse(let response):
+                self.getOrderRatingResponse = response
+            case .rateOrderResponse(let response):
+                guard let response else { return }
+                
+                dismiss {
+                    if let itemWiseRatingEnabled = response.itemLevelRatingEnable, itemWiseRatingEnabled {
+                        self.delegate?.shouldOpenItemRatingViewController(with: response, orderItems: self.orderItems ?? [])
+                    } else {
+                        self.delegate?.shouldOpenFeedbackSuccessViewController(with: response)
+                    }
+                }
+            case .ratingStarsData(let data):
+                self.ratingStarsData = data
+            case .orderItems(let items):
+                self.orderItems = items
+            case .liveChatUrl(let url):
+                guard let url else { return }
+                
+                dismiss {
+                    self.delegate?.shouldOpenGetSupport(with: url)
+                }
             }
         }.store(in: &cancellables)
     }

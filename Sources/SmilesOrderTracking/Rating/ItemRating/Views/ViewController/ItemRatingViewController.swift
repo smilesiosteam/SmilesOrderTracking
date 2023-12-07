@@ -79,24 +79,28 @@ final public class ItemRatingViewController: UIViewController {
     }
     
     private func bindViewModel() {
-        viewModel?.$rateOrderResponse.sink { [weak self] value in
-            guard let self, let value else { return }
-            
-            dismiss {
-                self.delegate?.shouldOpenFeedbackSuccessViewController(with: value)
-            }
-        }.store(in: &cancellables)
-        
-        viewModel?.$showErrorMessage.sink { [weak self] value in
+        viewModel?.statePublisher.sink { [weak self] state in
             guard let self else { return }
-            self.showAlertWithOkayOnly(message: value.asStringOrEmpty())
+            switch state {
+            case .rateOrderResponse(let response):
+                guard let response else { return }
+                
+                dismiss {
+                    self.delegate?.shouldOpenFeedbackSuccessViewController(with: response)
+                }
+            case .showError(let message):
+                self.showAlertWithOkayOnly(message: message)
+            }
         }.store(in: &cancellables)
     }
     
     private func bindDataSource() {
-        dataSource?.$enableDoneButton.sink { [weak self] value in
+        dataSource?.statePublisher.sink { [weak self] state in
             guard let self else { return }
-            self.doneButtonState(enabled: value)
+            switch state {
+            case .enableDoneButton(let enable):
+                self.doneButtonState(enabled: enable)
+            }
         }.store(in: &cancellables)
     }
     

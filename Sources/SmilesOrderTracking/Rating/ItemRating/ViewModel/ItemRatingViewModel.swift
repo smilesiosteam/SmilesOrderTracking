@@ -15,11 +15,14 @@ final public class ItemRatingViewModel: NSObject {
     
     var itemRatingUIModel: ItemRatingUIModel
     private(set) var popupTitle: String?
-    @Published private(set) var rateOrderResponse: RateOrderResponse?
     var itemRatings = [ItemRatings]()
     var itemWiseRating = false
     var doneActionDismiss = false
-    @Published private(set) var showErrorMessage: String?
+
+    private var stateSubject: PassthroughSubject<State, Never> = .init()
+    var statePublisher: AnyPublisher<State, Never> {
+        stateSubject.eraseToAnyPublisher()
+    }
     
     init(itemRatingUIModel: ItemRatingUIModel) {
         self.itemRatingUIModel = itemRatingUIModel
@@ -46,15 +49,22 @@ final public class ItemRatingViewModel: NSObject {
                 
                 switch completion {
                 case .failure(let error):
-                    self.showErrorMessage = error.localizedDescription
+                    self.stateSubject.send(.showError(message: error.localizedDescription))
                 default:
                     break
                 }
             } receiveValue: { [weak self] response in
                 guard let self else { return }
-                self.rateOrderResponse = response
+                self.stateSubject.send(.rateOrderResponse(response: response))
                 SmilesLoader.dismiss()
             }
         .store(in: &cancellables)
+    }
+}
+
+extension ItemRatingViewModel {
+    enum State {
+        case rateOrderResponse(response: RateOrderResponse?)
+        case showError(message: String)
     }
 }

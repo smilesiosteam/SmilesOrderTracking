@@ -15,7 +15,7 @@ struct OrderHasBeenDeliveredConfig: OrderTrackable, GetSupportable {
         progressBar.step = .completed
         progressBar.hideTimeLabel = true
         
-        var cells: [GetSupportCellType] = [
+        let cells: [GetSupportCellType] = [
             .progressBar(model: progressBar)
         ]
         

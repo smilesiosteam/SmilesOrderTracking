@@ -55,7 +55,7 @@
                                             <constraint firstAttribute="height" constant="40" id="asQ-LJ-WFT"/>
                                         </constraints>
                                         <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
-                                        <state key="normal" image="call-icon"/>
+                                        <state key="normal" image="phone_call_icon"/>
                                         <connections>
                                             <action selector="actionButtonTapped:" destination="4pa-7a-fXi" eventType="touchUpInside" id="RtN-H1-O4G"/>
                                         </connections>
@@ -90,8 +90,8 @@
         </collectionViewCell>
     </objects>
     <resources>
-        <image name="call-icon" width="40" height="40"/>
         <image name="driver-icon" width="50.666667938232422" height="53.333332061767578"/>
+        <image name="phone_call_icon" width="40" height="40"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>

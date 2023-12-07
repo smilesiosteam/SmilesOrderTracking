@@ -8,9 +8,18 @@
 import Foundation
 
 
-struct SomeItemsUnavailableConfig: CanceledOrderConfigProtocol {
+struct SomeItemsUnavailableConfig: CanceledOrderConfigProtocol, GetSupportable {
     var response: OrderTrackingStatusResponse
    
+    func buildConfig() -> GetSupportModel {
+        var someItemsUnavailable = getOrderCancelledModel(buttonTitle: OrderTrackingLocalization.unavailableItemsButtonTitle.text)
+        someItemsUnavailable.type = .someItemsUnavailable
+        let cells: [GetSupportCellType] = [
+            .text(model: getTextModel()),
+        ]
+        
+        return .init(header: getImageHeader(image: "Cancelled"), cells: cells)
+    }
     func build() -> OrderTrackingModel {
         var someItemsUnavailable = getOrderCancelledModel(buttonTitle: OrderTrackingLocalization.unavailableItemsButtonTitle.text)
         someItemsUnavailable.type = .someItemsUnavailable

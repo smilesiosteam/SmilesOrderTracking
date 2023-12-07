@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="22155" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="22154" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_12" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22131"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22130"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="collection view cell content view" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -21,71 +21,42 @@
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="v03-qh-Bkh">
                         <rect key="frame" x="0.0" y="0.0" width="399" height="197"/>
                         <subviews>
-                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="24" translatesAutoresizingMaskIntoConstraints="NO" id="X8v-5S-ZaG">
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="HKB-dc-o1C">
                                 <rect key="frame" x="16" y="16" width="367" height="165"/>
                                 <subviews>
-                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="HKB-dc-o1C">
-                                        <rect key="frame" x="0.0" y="0.0" width="367" height="93"/>
+                                    <stackView opaque="NO" contentMode="scaleToFill" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="396-jJ-RTk">
+                                        <rect key="frame" x="0.0" y="0.0" width="367" height="24"/>
                                         <subviews>
-                                            <stackView opaque="NO" contentMode="scaleToFill" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="396-jJ-RTk">
-                                                <rect key="frame" x="0.0" y="0.0" width="367" height="24"/>
-                                                <subviews>
-                                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="order-pending-icon" translatesAutoresizingMaskIntoConstraints="NO" id="F2c-VL-21X">
-                                                        <rect key="frame" x="0.0" y="0.0" width="24" height="24"/>
-                                                        <constraints>
-                                                            <constraint firstAttribute="width" constant="24" id="swo-5z-GIU"/>
-                                                            <constraint firstAttribute="height" constant="24" id="x3Q-zf-Fu6"/>
-                                                        </constraints>
-                                                    </imageView>
-                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Pending delivery confirmation" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uB8-ap-Tns">
-                                                        <rect key="frame" x="32" y="0.0" width="335" height="24"/>
-                                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                        <nil key="textColor"/>
-                                                        <nil key="highlightedColor"/>
-                                                    </label>
-                                                </subviews>
-                                            </stackView>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Have you received your order from Big Smoke Burger?" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wKo-jj-fAx">
-                                                <rect key="frame" x="0.0" y="32" width="367" height="61"/>
+                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="order-pending-icon" translatesAutoresizingMaskIntoConstraints="NO" id="F2c-VL-21X">
+                                                <rect key="frame" x="0.0" y="0.0" width="24" height="24"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" constant="24" id="swo-5z-GIU"/>
+                                                    <constraint firstAttribute="height" constant="24" id="x3Q-zf-Fu6"/>
+                                                </constraints>
+                                            </imageView>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="FAQ" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uB8-ap-Tns">
+                                                <rect key="frame" x="32" y="0.0" width="335" height="24"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                         </subviews>
                                     </stackView>
-                                    <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="18" translatesAutoresizingMaskIntoConstraints="NO" id="aNJ-dk-VHP">
-                                        <rect key="frame" x="0.0" y="117" width="367" height="48"/>
-                                        <subviews>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mpj-zF-oZf">
-                                                <rect key="frame" x="0.0" y="0.0" width="174.66666666666666" height="48"/>
-                                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
-                                                <state key="normal" title="Button"/>
-                                                <connections>
-                                                    <action selector="denyButtonTapped:" destination="zMg-Jj-eU0" eventType="touchUpInside" id="a52-0U-FQM"/>
-                                                </connections>
-                                            </button>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tlv-g0-s2i">
-                                                <rect key="frame" x="192.66666666666663" y="0.0" width="174.33333333333337" height="48"/>
-                                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
-                                                <state key="normal" title="Button"/>
-                                                <connections>
-                                                    <action selector="confirmButtonTapped:" destination="zMg-Jj-eU0" eventType="touchUpInside" id="KUu-cg-yRk"/>
-                                                </connections>
-                                            </button>
-                                        </subviews>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="48" id="oqc-F8-Q3M"/>
-                                        </constraints>
-                                    </stackView>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Have you received your order from Big Smoke Burger?" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wKo-jj-fAx">
+                                        <rect key="frame" x="0.0" y="32" width="367" height="133"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
                                 </subviews>
                             </stackView>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
-                            <constraint firstItem="X8v-5S-ZaG" firstAttribute="top" secondItem="v03-qh-Bkh" secondAttribute="top" constant="16" id="2lR-6p-6dS"/>
-                            <constraint firstAttribute="bottom" secondItem="X8v-5S-ZaG" secondAttribute="bottom" constant="16" id="7kw-ai-Oro"/>
-                            <constraint firstAttribute="trailing" secondItem="X8v-5S-ZaG" secondAttribute="trailing" constant="16" id="hbr-vy-r8Q"/>
-                            <constraint firstItem="X8v-5S-ZaG" firstAttribute="leading" secondItem="v03-qh-Bkh" secondAttribute="leading" constant="16" id="yMZ-RM-t19"/>
+                            <constraint firstAttribute="trailing" secondItem="HKB-dc-o1C" secondAttribute="trailing" constant="16" id="Hoo-OV-WzR"/>
+                            <constraint firstAttribute="bottom" secondItem="HKB-dc-o1C" secondAttribute="bottom" constant="16" id="J2W-q9-F5N"/>
+                            <constraint firstItem="HKB-dc-o1C" firstAttribute="top" secondItem="v03-qh-Bkh" secondAttribute="top" constant="16" id="MdZ-Sy-h0y"/>
+                            <constraint firstItem="HKB-dc-o1C" firstAttribute="leading" secondItem="v03-qh-Bkh" secondAttribute="leading" constant="16" id="eYl-6q-PLv"/>
                         </constraints>
                     </view>
                 </subviews>
@@ -98,10 +69,7 @@
             </collectionViewCellContentView>
             <size key="customSize" width="399" height="197"/>
             <connections>
-                <outlet property="confirmButton" destination="tlv-g0-s2i" id="Keb-sq-xCO"/>
-                <outlet property="containerStackView" destination="X8v-5S-ZaG" id="Qmb-5X-1lH"/>
                 <outlet property="containerView" destination="v03-qh-Bkh" id="8TR-7X-lEc"/>
-                <outlet property="denyButton" destination="mpj-zF-oZf" id="Lgp-FV-N9Q"/>
                 <outlet property="questionLabel" destination="wKo-jj-fAx" id="NOA-Gw-RUC"/>
                 <outlet property="titleLabel" destination="uB8-ap-Tns" id="bRU-9o-la4"/>
                 <outlet property="titleStackView" destination="396-jJ-RTk" id="QRL-hC-ei4"/>

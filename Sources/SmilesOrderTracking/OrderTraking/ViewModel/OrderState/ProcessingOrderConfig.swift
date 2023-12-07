@@ -1,13 +1,25 @@
 //
 //  File.swift
-//  
+//
 //
 //  Created by Ahmed Naguib on 21/11/2023.
 //
 
 import Foundation
 
-struct ProcessingOrderConfig: OrderTrackable, AnimationHeaderProtocol {
+struct ProcessingOrderConfig: OrderTrackable, AnimationHeaderProtocol, GetSupportable {
+    func buildConfig() -> GetSupportModel {
+        var progressBar = orderProgressBar
+        progressBar.step = .first
+        let cells: [GetSupportCellType] = [
+            .progressBar(model: progressBar),
+            .text(model: .init(title: orderText)),
+        ]+getSupportActions()
+        getSupportModel(type: <#T##SmilesSupportActionType#>)
+        
+        return .init(header: getImageHeaderAnimated(), cells: cells)
+    }
+    
     var response: OrderTrackingStatusResponse
     
     func build() -> OrderTrackingModel {
@@ -32,7 +44,7 @@ struct ProcessingOrderConfig: OrderTrackable, AnimationHeaderProtocol {
     private func getOrderLocation() -> LocationCollectionViewCell.ViewModel {
         var location = orderLocation
         location.type = isCancelationAllowed ? .showCancelButton : .hideAllButtons
-
+        
         let showCancelButtonTimeout = response.orderDetails?.showCancelButtonTimeout ?? false
         location.type = showCancelButtonTimeout ? .hideAllButtons : location.type
         return location

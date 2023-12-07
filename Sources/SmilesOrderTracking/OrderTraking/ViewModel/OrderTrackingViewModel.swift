@@ -21,6 +21,7 @@ final class OrderTrackingViewModel {
     private let changeTypeUseCase: ChangeTypeUseCaseProtocol
     private let scratchAndWinUseCase: ScratchAndWinUseCaseProtocol
     var orderId = ""
+    var orderNumber = ""
     var checkForVoucher = false
     var chatbotType = ""
     var orderStatusPublisher: AnyPublisher<State, Never> {

@@ -7,9 +7,20 @@
 
 import Foundation
 
-struct NearOfLocationConfig: OrderTrackable {
+struct NearOfLocationConfig: OrderTrackable, GetSupportable {
     var response: OrderTrackingStatusResponse
-    
+    func buildConfig() -> GetSupportModel {
+        var progressBar = orderProgressBar
+        progressBar.step = .fourth
+        progressBar.hideTimeLabel = false
+        
+        
+        var cells: [GetSupportCellType] = [
+            .progressBar(model: progressBar)
+        ]
+        
+        return .init(header: getImageHeaderAnimated(), cells: cells)
+    }
     func build() -> OrderTrackingModel {
         var progressBar = orderProgressBar
         progressBar.step = .fourth

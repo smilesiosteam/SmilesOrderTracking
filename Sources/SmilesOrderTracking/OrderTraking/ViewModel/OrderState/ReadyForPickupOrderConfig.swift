@@ -7,9 +7,13 @@
 
 import Foundation
 
-struct ReadyForPickupOrderConfig: OrderTrackable {
+struct ReadyForPickupOrderConfig: OrderTrackable, GetSupportable {
     var response: OrderTrackingStatusResponse
     
+    func buildConfig() -> GetSupportModel {
+        var cells: [GetSupportCellType] = [.progressBar(model: getProgressBarModel())]
+        return .init(header: getImageHeaderAnimated(), cells: cells)
+    }
     func build() -> OrderTrackingModel {
         
         var cells: [TrackingCellType] = [.progressBar(model: getProgressBarModel())]

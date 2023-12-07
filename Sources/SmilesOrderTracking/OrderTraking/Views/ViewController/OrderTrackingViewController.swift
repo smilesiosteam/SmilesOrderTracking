@@ -21,9 +21,17 @@ protocol OrderTrackingViewDelegate: AnyObject {
     func phoneCall(with number: String)
     func openMaps(lat: Double, lng: Double, placeName: String)
     func timerIs(on: Bool)
+    func getSupport()
 }
 
 extension OrderTrackingViewController: OrderTrackingViewDelegate {
+    func getSupport() {
+        let dependence = GetSupportDependance(orderId: viewModel.orderId, orderNUmber: viewModel.orderNumber, chatbotType: viewModel.chatbotType)
+        let orderViewController = TrackOrderConfigurator.getOrderSupportView(dependance: dependence, navigationDelegate: viewModel.navigationDelegate)
+        
+        self.navigationController?.pushViewController(viewController: orderViewController)
+    }
+    
     func presentCancelFlow(orderId: String) {
         let vc = ConfirmationPopupViewController(
             popupData: ConfirmationPopupViewModelData(

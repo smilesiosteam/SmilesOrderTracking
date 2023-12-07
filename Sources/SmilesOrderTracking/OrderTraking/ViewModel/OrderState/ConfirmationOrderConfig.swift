@@ -8,9 +8,23 @@
 import Foundation
 import UIKit
 
-struct ConfirmationOrderConfig: OrderTrackable {
+struct ConfirmationOrderConfig: OrderTrackable, GetSupportable {
     var response: OrderTrackingStatusResponse
-    
+    func buildConfig() -> GetSupportModel {
+        var progressBar = orderProgressBar
+        progressBar.step = .fourth
+        progressBar.hideTimeLabel = true
+        
+        var location = orderLocation
+        location.type = .details
+        
+        var cells: [GetSupportCellType] = [
+            .progressBar(model: progressBar),
+            .text(model: .init(title: orderText)),
+        ]
+        
+        return .init(header: getImageHeader(image: "Confirmation"), cells: cells)
+    }
     func build() -> OrderTrackingModel {
         var progressBar = orderProgressBar
         progressBar.step = .fourth

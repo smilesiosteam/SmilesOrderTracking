@@ -7,9 +7,15 @@
 
 import Foundation
 
-struct ChangedToPickupOrderConfig: OrderTrackable, CancelHeaderProtocol {
+struct ChangedToPickupOrderConfig: OrderTrackable, CancelHeaderProtocol, GetSupportable {
     var response: OrderTrackingStatusResponse
-    
+    func buildConfig() -> GetSupportModel {
+        let cells: [GetSupportCellType] = [
+            .text(model: getTextModel()),
+        ]
+      
+        return .init(header: getImageHeader(image: "Cancelled"), cells: cells)
+    }
     func build() -> OrderTrackingModel {
         let cells: [TrackingCellType] = [
             .text(model: getTextModel()),

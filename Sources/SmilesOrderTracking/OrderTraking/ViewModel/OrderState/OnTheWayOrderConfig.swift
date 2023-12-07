@@ -7,7 +7,24 @@
 
 import Foundation
 
-struct OnTheWayOrderConfig: OrderTrackable {
+struct OnTheWayOrderConfig: OrderTrackable, GetSupportable {
+    func buildConfig() -> GetSupportModel {
+        var progressBar = orderProgressBar
+        progressBar.step = .third
+        progressBar.hideTimeLabel = false
+        
+        var cells: [GetSupportCellType] = [
+            .progressBar(model: progressBar)
+        ]
+        
+        // If the order will be delayed
+        if let delayText = response.orderDetails?.delayStatusText, !delayText.isEmpty {
+            cells.append(.text(model: .init(title: delayText)))
+        }
+        
+        let header: GetSupportHeaderType = getImageHeaderAnimated()
+        return .init(header: header, cells: cells)
+    }
     var response: OrderTrackingStatusResponse
     
     func build() -> OrderTrackingModel {

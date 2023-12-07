@@ -27,9 +27,9 @@ public struct GetSupportDependance {
     public var orderNUmber: String
     public var chatBotType:String
     
-    public init(orderId: String, orderNUmber: String, chatbotType:String) {
+    public init(orderId: String, orderNumber: String, chatbotType:String) {
         self.orderId = orderId
-        self.orderNUmber = orderNUmber
+        self.orderNUmber = orderNumber
         self.chatBotType = chatbotType
     }
 }

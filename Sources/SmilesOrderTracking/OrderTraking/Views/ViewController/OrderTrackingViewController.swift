@@ -26,7 +26,7 @@ protocol OrderTrackingViewDelegate: AnyObject {
 
 extension OrderTrackingViewController: OrderTrackingViewDelegate {
     func getSupport() {
-        let dependence = GetSupportDependance(orderId: viewModel.orderId, orderNUmber: viewModel.orderNumber, chatbotType: viewModel.chatbotType)
+        let dependence = GetSupportDependance(orderId: viewModel.orderId, orderNumber: viewModel.orderNumber, chatbotType: viewModel.chatbotType)
         let supportViewController = TrackOrderConfigurator.getOrderSupportView(dependance: dependence, navigationDelegate: viewModel.navigationDelegate)
         self.navigationController?.pushViewController(viewController: supportViewController)
     }

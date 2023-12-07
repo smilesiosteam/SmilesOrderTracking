@@ -51,10 +51,10 @@ extension OrderTrackable {
     }
     
     var orderSubscription: FreeDeliveryCollectionViewCell.ViewModel? {
-        if let bannerImageUrl = response.orderDetails?.bannerImageUrl {
+        if let bannerImageUrl = response.orderDetails?.subscriptionBannerV2?.bannerImageUrl {
             var viewModel = FreeDeliveryCollectionViewCell.ViewModel()
             viewModel.imageURL = bannerImageUrl
-            viewModel.redirectUrl = response.orderDetails?.subscriptionBanner?.redirectionUrl ?? ""
+            viewModel.redirectUrl = response.orderDetails?.subscriptionBannerV2?.redirectionUrl ?? ""
             return viewModel
         }
         return nil
@@ -106,7 +106,7 @@ extension OrderTrackable {
     var orderRateModel: RatingCollectionViewCell.ViewModel? {
         let orderId = response.orderDetails?.orderId ?? 0
         var viewModel = RatingCollectionViewCell.ViewModel(orderId: orderId)
-        let ratingModels = response.orderRating ?? []
+        let ratingModels = response.orderDetails?.orderRatings ?? []
         let rates = ratingModels.compactMap { ratingModel -> RatingCollectionViewCell.RateModel? in
             guard let type = RatingCollectionViewCell.RateType(rawValue: ratingModel.ratingType ?? "") else {
                 return nil

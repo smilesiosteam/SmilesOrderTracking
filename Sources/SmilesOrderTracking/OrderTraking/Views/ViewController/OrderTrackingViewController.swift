@@ -316,6 +316,8 @@ public final class OrderTrackingViewController: UIViewController, Toastable, Map
             case .driverLocation(lat: let lat, long: let long):
                 let headerMap = self.getMapHeader()
                 headerMap?.moveDriverOnMap(lat: lat, long: long)
+            case .navigateToGetSupport:
+                self.getSupport()
             }
         }.store(in: &cancellables)
     }

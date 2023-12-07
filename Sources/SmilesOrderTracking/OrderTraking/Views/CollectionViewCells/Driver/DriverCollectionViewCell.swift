@@ -57,7 +57,7 @@ final class DriverCollectionViewCell: UICollectionViewCell {
         switch viewModel.cellType {
         case .delivery:
             iconImageView.image = UIImage(resource: .driverIcon)
-            actionButton.setImage(UIImage(resource: .callIcon), for: .normal)
+            actionButton.setImage(UIImage(resource: .phoneCallIcon), for: .normal)
             
         case .pickup:
             iconImageView.image = UIImage(resource: .pickupIcon)

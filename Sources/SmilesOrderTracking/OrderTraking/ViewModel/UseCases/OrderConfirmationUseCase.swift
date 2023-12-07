@@ -38,9 +38,11 @@ final class OrderConfirmationUseCase: OrderConfirmationUseCaseProtocol {
                         promise(.success(.showError(message: error.localizedDescription)))
                     }
                 } receiveValue: { response in
-    
-                    let state: State = isUserDeliveredOrder ? .callOrderStatus : .openLiveChat
-                    promise(.success(state))
+                    if let responseCode = response.responseCode, !responseCode.isEmpty {                        promise(.success(.showError(message: response.responseMsg ?? "")))
+                    } else {
+                        let state: State = isUserDeliveredOrder ? .callOrderStatus : .openLiveChat
+                        promise(.success(state))
+                    }
                 }
                 .store(in: &cancellables)
         }

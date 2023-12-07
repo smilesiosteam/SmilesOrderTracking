@@ -195,5 +195,6 @@ extension OrderTrackingViewModel {
         case timerIsOff
         case presentScratchAndWin(response: ScratchAndWinResponse)
         case presentCancelFlow(orderId: String)
+        case driverLocation(lat: Double, long: Double)
     }
 }

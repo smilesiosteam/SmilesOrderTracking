@@ -14,10 +14,8 @@ struct ProcessingOrderConfig: OrderTrackable, AnimationHeaderProtocol, GetSuppor
         let cells: [GetSupportCellType] = [
             .progressBar(model: progressBar),
             .text(model: .init(title: orderText)),
-        ]+getSupportActions()
-        getSupportModel(type: <#T##SmilesSupportActionType#>)
-        
-        return .init(header: getImageHeaderAnimated(), cells: cells)
+        ]
+        return .init(header: getImageHeaderAnimated(), cells: cells + getSupportActions())
     }
     
     var response: OrderTrackingStatusResponse

@@ -19,7 +19,7 @@ struct OrderHasBeenDeliveredConfig: OrderTrackable, GetSupportable {
             .progressBar(model: progressBar)
         ]
         
-        return .init(header: getImageHeader(image: "Delivered"), cells: cells)
+        return .init(header: getImageHeader(image: "Delivered"), cells: cells + getSupportActions())
     }
     func build() -> OrderTrackingModel {
         var progressBar = orderProgressBar

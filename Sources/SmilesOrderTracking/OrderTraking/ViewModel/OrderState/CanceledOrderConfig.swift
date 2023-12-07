@@ -15,7 +15,7 @@ struct CanceledOrderConfig: CanceledOrderConfigProtocol, GetSupportable {
         let cells: [GetSupportCellType] = [
             .text(model: getTextModel()),
         ]
-        return .init(header: getImageHeader(image: "Cancelled"), cells: cells)
+        return .init(header: getImageHeader(image: "Cancelled"), cells: cells + getSupportActions())
     }
     func build() -> OrderTrackingModel {
         var orderCancelledModel = getOrderCancelledModel(buttonTitle: OrderTrackingLocalization.restaurantCanceledButtonTitle.text)

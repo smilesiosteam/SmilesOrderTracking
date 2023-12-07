@@ -27,9 +27,8 @@ protocol OrderTrackingViewDelegate: AnyObject {
 extension OrderTrackingViewController: OrderTrackingViewDelegate {
     func getSupport() {
         let dependence = GetSupportDependance(orderId: viewModel.orderId, orderNUmber: viewModel.orderNumber, chatbotType: viewModel.chatbotType)
-        let orderViewController = TrackOrderConfigurator.getOrderSupportView(dependance: dependence, navigationDelegate: viewModel.navigationDelegate)
-        
-        self.navigationController?.pushViewController(viewController: orderViewController)
+        let supportViewController = TrackOrderConfigurator.getOrderSupportView(dependance: dependence, navigationDelegate: viewModel.navigationDelegate)
+        self.navigationController?.pushViewController(viewController: supportViewController)
     }
     
     func presentCancelFlow(orderId: String) {

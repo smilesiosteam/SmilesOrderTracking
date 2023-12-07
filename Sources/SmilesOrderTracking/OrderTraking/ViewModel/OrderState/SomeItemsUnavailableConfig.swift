@@ -18,7 +18,7 @@ struct SomeItemsUnavailableConfig: CanceledOrderConfigProtocol, GetSupportable {
             .text(model: getTextModel()),
         ]
         
-        return .init(header: getImageHeader(image: "Cancelled"), cells: cells)
+        return .init(header: getImageHeader(image: "Cancelled"), cells: cells + getSupportActions())
     }
     func build() -> OrderTrackingModel {
         var someItemsUnavailable = getOrderCancelledModel(buttonTitle: OrderTrackingLocalization.unavailableItemsButtonTitle.text)

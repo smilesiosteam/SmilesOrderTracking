@@ -50,6 +50,6 @@ struct WaitingOrderConfig: OrderTrackable, AnimationHeaderProtocol, GetSupportab
             cells.append(.text(model: .init(title: orderText)))
         }
        
-        return .init(header: getImageHeaderAnimated(), cells: cells)
+        return .init(header: getImageHeaderAnimated(), cells: cells + getSupportActions())
     }
 }

@@ -20,7 +20,7 @@ struct InTheKitchenOrderConfig: OrderTrackable, GetSupportable {
         
         
         let header: GetSupportHeaderType = getImageHeaderAnimated()
-        return .init(header: header, cells: cells)
+        return .init(header: header, cells: cells + getSupportActions())
     }
     func build() -> OrderTrackingModel {
         

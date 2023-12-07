@@ -23,7 +23,7 @@ struct OnTheWayOrderConfig: OrderTrackable, GetSupportable {
         }
         
         let header: GetSupportHeaderType = getImageHeaderAnimated()
-        return .init(header: header, cells: cells)
+        return .init(header: header, cells: cells + getSupportActions())
     }
     var response: OrderTrackingStatusResponse
     

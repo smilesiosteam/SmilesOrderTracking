@@ -14,10 +14,10 @@ protocol GetSupportable {
     func buildConfig() -> GetSupportModel
 }
 extension GetSupportable {
-    func getSupportModel(type:SmilesSupportActionType)-> GetSupportCollectionViewCell.ViewModel? {
+    func getSupportModel(type:SmilesSupportActionType)-> GetSupportCellType? {
         if let order = response.orderDetails {
             var viewModel = GetSupportCollectionViewCell.ViewModel(type: type,order: order)
-            return viewModel
+            return .support(model: viewModel)
         }
         return nil
     }
@@ -34,17 +34,17 @@ extension GetSupportable {
         return header
     }
     func getSupportActions()->[GetSupportCellType]{
-        var actions:[GetSupportCellType] = [getSupportModel(type: .openFAQ)]
-        if !(response.restaurentNumber?.isEmpty ?? true) {
+        var actions:[GetSupportCellType?] = [getSupportModel(type: .openFAQ)]
+        if !(response.orderDetails?.restaurentNumber?.isEmpty ?? true) {
             actions.append(getSupportModel(type: .callRestaurant))
         }
-        if !(response.partnerNumber?.isEmpty ?? true) {
+        if !(response.orderDetails?.partnerNumber?.isEmpty ?? true) {
             actions.append(getSupportModel(type: .callChampion))
         }
         if response.orderDetails?.isLiveChatEnable ?? false {
             actions.append(getSupportModel(type: .liveChat))
         }
-        return actions
+        return actions.compactMap({$0})
         
     }
 }

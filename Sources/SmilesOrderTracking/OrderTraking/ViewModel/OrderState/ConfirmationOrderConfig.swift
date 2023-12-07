@@ -23,7 +23,7 @@ struct ConfirmationOrderConfig: OrderTrackable, GetSupportable {
             .text(model: .init(title: orderText)),
         ]
         
-        return .init(header: getImageHeader(image: "Confirmation"), cells: cells)
+        return .init(header: getImageHeader(image: "Confirmation"), cells: cells + getSupportActions())
     }
     func build() -> OrderTrackingModel {
         var progressBar = orderProgressBar

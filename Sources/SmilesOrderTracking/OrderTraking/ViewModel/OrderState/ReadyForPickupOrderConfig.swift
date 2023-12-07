@@ -12,7 +12,7 @@ struct ReadyForPickupOrderConfig: OrderTrackable, GetSupportable {
     
     func buildConfig() -> GetSupportModel {
         var cells: [GetSupportCellType] = [.progressBar(model: getProgressBarModel())]
-        return .init(header: getImageHeaderAnimated(), cells: cells)
+        return .init(header: getImageHeader(image: "DriverArrived"), cells: cells + getSupportActions())
     }
     func build() -> OrderTrackingModel {
         

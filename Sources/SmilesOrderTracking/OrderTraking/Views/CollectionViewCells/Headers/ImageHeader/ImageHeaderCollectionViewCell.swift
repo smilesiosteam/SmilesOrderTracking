@@ -48,7 +48,7 @@ final class ImageHeaderCollectionViewCell: UICollectionReusableView {
         print(viewModel.isShowSupportHeader)
         
         headerStack.isHidden =  !viewModel.isShowSupportHeader
-        
+        animationView?.removeFromSuperview()
         switch viewModel.type {
         case .image(let imageName, let backgroundColor):
             headerImage.image = UIImage(named: imageName, in: .module, with: nil)
@@ -59,7 +59,6 @@ final class ImageHeaderCollectionViewCell: UICollectionReusableView {
             headerImage.isHidden = true
             containerView.backgroundColor = UIColor(hex: backgroundColor)
             containerView.backgroundColor = .white
-            containerView.subviews.forEach({ $0.removeFromSuperview() })
             if let url {
                 LottieAnimationManager.showAnimationFromUrl(FromUrl: url, animationBackgroundView: containerView, removeFromSuper: false, loopMode: .loop,contentMode: .scaleAspectFill) { _ in }
             }
@@ -67,10 +66,13 @@ final class ImageHeaderCollectionViewCell: UICollectionReusableView {
     }
     
     func processAnimation(stop: Bool) {
-        if let animationView = containerView.subviews.first(where: { $0 is LottieAnimationView }) as?  LottieAnimationView {
+        if let animationView {
             stop ? animationView.pause() : animationView.play()
         }
-        
+    }
+    
+    private var animationView: LottieAnimationView? {
+        containerView.subviews.first(where: { $0 is LottieAnimationView }) as?  LottieAnimationView
     }
     
     private func configControllers() {

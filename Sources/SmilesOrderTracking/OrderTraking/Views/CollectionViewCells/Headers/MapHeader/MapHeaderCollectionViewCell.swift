@@ -60,6 +60,7 @@ final class MapHeaderCollectionViewCell: UICollectionReusableView {
     }
     
     private func configCellType(type: CellType) {
+        animationLottieView?.removeFromSuperview()
         switch type {
         case .image(let imageName):
             animationView.backgroundColor = .clear
@@ -68,13 +69,15 @@ final class MapHeaderCollectionViewCell: UICollectionReusableView {
         case .animation(let url):
             driverImage.isHidden = true
             animationView.isHidden = false
-            animationView.subviews.forEach({ $0.removeFromSuperview() })
             if let url {
                 LottieAnimationManager.showAnimationFromUrl(FromUrl: url, animationBackgroundView: animationView, removeFromSuper: false, loopMode: .loop,contentMode: .scaleAspectFill) { _ in }
             }
         }
     }
     
+    private var animationLottieView: LottieAnimationView? {
+        animationView.subviews.first(where: { $0 is LottieAnimationView }) as?  LottieAnimationView
+    }
     
     private func configControllers() {
         driverImage.layer.cornerRadius = 50

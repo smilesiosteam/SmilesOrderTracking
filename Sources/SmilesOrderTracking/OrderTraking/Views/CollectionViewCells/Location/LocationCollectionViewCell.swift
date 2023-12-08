@@ -98,9 +98,11 @@ final class LocationCollectionViewCell: UICollectionViewCell {
         case .showCancelButton:
             stackDetails.isHidden = true
             cancelOrderButton.isHidden = false
+            bottomConstraint.constant = 0
         case .details:
             stackDetails.isHidden = false
             cancelOrderButton.isHidden = true
+            bottomConstraint.constant = 0
         case .hideAllButtons:
             buttonsStack.isHidden = true
             lineView.isHidden = true

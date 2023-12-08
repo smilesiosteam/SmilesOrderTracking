@@ -214,12 +214,11 @@ public final class OrderTrackingViewController: UIViewController, Toastable, Map
     
     
     private func navigateToThanksForFeedback() {
-        let vc = SuccessMessagePopupViewController(popupData: 
+        let vc = SuccessMessagePopupViewController(popupData:
                                                     SuccessPopupViewModelData(message:OrderTrackingLocalization.thankyouForFeedback.text, descriptionMessage: OrderTrackingLocalization.alwaysWrokingToImprove.text,
                                                                               primaryButtonTitle: OrderTrackingLocalization.backToHome.text, primaryAction: { [weak self] in
-            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                self?.viewModel.navigationDelegate?.popToViewRestaurantDetailVC()
-            }
+            self?.viewModel.navigationDelegate?.closeTracking()
+            self?.viewModel.navigationDelegate?.popToViewRestaurantDetailVC()
             
         }))
         vc.modalPresentationStyle = .overCurrentContext
@@ -227,11 +226,12 @@ public final class OrderTrackingViewController: UIViewController, Toastable, Map
     }
     
     private func navigateToOrderCancelledScreen(response:OrderCancelResponse){
-        let vc = SmilesOrderCancelledViewController.init(orderId: viewModel.orderId, orderNumber: viewModel.orderNumber, chatbotType: viewModel.chatbotType, cancelResponse: response, delegate: viewModel.navigationDelegate, onSubmitSuccess: {feedBacksubmittedResponse in
+        let vc = SmilesOrderCancelledViewController.init(orderId: viewModel.orderId, orderNumber: viewModel.orderNumber, chatbotType: viewModel.chatbotType, cancelResponse: response, delegate: viewModel.navigationDelegate, onSubmitSuccess: { [weak self]feedBacksubmittedResponse in
             if feedBacksubmittedResponse.status == 204 {
-                self.navigateToThanksForFeedback()
+                self?.navigateToThanksForFeedback()
             }else{
-                self.viewModel.navigationDelegate?.popToViewRestaurantDetailVC()
+                self?.viewModel.navigationDelegate?.closeTracking()
+                self?.viewModel.navigationDelegate?.popToViewRestaurantDetailVC()
             }
         })
         vc.modalPresentationStyle = .overCurrentContext
@@ -420,11 +420,11 @@ public final class OrderTrackingViewController: UIViewController, Toastable, Map
         view.addSubview(floatingView)
         
         floatingView.didLeadingButton = { [weak self] in
-            self?.dismissMe()
+            self?.dismiss()
         }
         
-        floatingView.didTrailingButton = { 
-            print("didTrailingButton")
+        floatingView.didTrailingButton = { [weak self] in
+            self?.getSupport()
         }
     }
     

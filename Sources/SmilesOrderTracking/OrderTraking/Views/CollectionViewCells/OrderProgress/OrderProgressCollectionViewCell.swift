@@ -36,9 +36,8 @@ final class OrderProgressCollectionViewCell: UICollectionViewCell {
     
     
     func processAnimation(stop: Bool) {
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-            self.fillAnimator?.stopAnimation(true)
-        }
+        self.fillAnimator?.stopAnimation(true)
+        fillAnimator = nil
     }
     // MARK: - Functions
     func updateCell(with viewModel: ViewModel) {

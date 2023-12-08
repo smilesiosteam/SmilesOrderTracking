@@ -68,6 +68,7 @@ final class MapHeaderCollectionViewCell: UICollectionReusableView {
         case .animation(let url):
             driverImage.isHidden = true
             animationView.isHidden = false
+            animationView.subviews.forEach({ $0.removeFromSuperview() })
             if let url {
                 LottieAnimationManager.showAnimationFromUrl(FromUrl: url, animationBackgroundView: animationView, removeFromSuper: false, loopMode: .loop,contentMode: .scaleAspectFill) { _ in }
             }
@@ -75,19 +76,21 @@ final class MapHeaderCollectionViewCell: UICollectionReusableView {
     }
     
     
-    
     private func configControllers() {
-        dismissButton.layer.cornerRadius = 20
-        supportButton.layer.cornerRadius = 20
         driverImage.layer.cornerRadius = 50
         animationView.layer.cornerRadius = 50
         animationView.layer.borderWidth = 5
         animationView.layer.borderColor = UIColor.white.cgColor
+        supportButton.layer.cornerRadius = 20
         supportButton.setTitle(OrderTrackingLocalization.support.text, for: .normal)
-        [supportButton, dismissButton].forEach({
+        supportButton.addShadowToSelf(
+            offset: CGSize(width: 0, height: 2),
+            color: UIColor(red: 0/255, green: 0/255, blue: 0/255, alpha: 0.12),
+            radius: 8.0,
+            opacity: 1)
+        [supportButton].forEach({
             $0.fontTextStyle = .smilesTitle1
             $0.setTitleColor(.appRevampPurpleMainColor, for: .normal)
-            $0.addShadowToSelf(offset: CGSize(width: 0, height: 0), color: UIColor(red: 0/255, green: 0/255, blue: 0/255, alpha: 0.2), radius: 1.0, opacity: 1)
         })
     }
     

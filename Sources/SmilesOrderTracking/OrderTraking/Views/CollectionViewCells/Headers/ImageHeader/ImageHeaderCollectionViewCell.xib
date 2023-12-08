@@ -38,17 +38,17 @@
                         </constraints>
                     </view>
                     <stackView opaque="NO" contentMode="scaleToFill" alignment="top" spacingType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="CwR-c0-MEE">
-                        <rect key="frame" x="16" y="60" width="488" height="40"/>
+                        <rect key="frame" x="16" y="60" width="488" height="50"/>
                         <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eSs-To-dW2">
-                                <rect key="frame" x="0.0" y="0.0" width="40" height="40"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eSs-To-dW2">
+                                <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="40" id="GPq-un-KCR"/>
-                                    <constraint firstAttribute="height" constant="40" id="nl2-so-5CD"/>
+                                    <constraint firstAttribute="width" constant="50" id="GPq-un-KCR"/>
+                                    <constraint firstAttribute="height" constant="50" id="nl2-so-5CD"/>
                                 </constraints>
                                 <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
-                                <state key="normal" title="X">
+                                <state key="normal" image="button-dimiss">
                                     <color key="titleColor" systemColor="labelColor"/>
                                 </state>
                                 <connections>
@@ -56,7 +56,7 @@
                                 </connections>
                             </button>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jcB-O5-pr0">
-                                <rect key="frame" x="48" y="0.0" width="342" height="40"/>
+                                <rect key="frame" x="58" y="0.0" width="332" height="40"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="40" id="cNJ-zl-8va"/>
@@ -106,6 +106,7 @@
     </objects>
     <resources>
         <image name="Delivered" width="258" height="209"/>
+        <image name="button-dimiss" width="56" height="56"/>
         <systemColor name="labelColor">
             <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>

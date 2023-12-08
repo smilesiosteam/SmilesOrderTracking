@@ -177,6 +177,7 @@ public final class OrderTrackingViewController: UIViewController, Toastable, Map
     public override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         navigationController?.setNavigationBarHidden(false, animated: animated)
+        hideFloatingView()
     }
     
     @objc private func applicationDidBecomeActive(notification: NSNotification) {
@@ -368,23 +369,19 @@ public final class OrderTrackingViewController: UIViewController, Toastable, Map
             return
         }
         isAnimationPlay = !stop
+        
+        // Process the animation for progress bar
+        if let cell = collectionView.cellForItem(at: IndexPath(row: 0, section: 0)) as? OrderProgressCollectionViewCell {
+            if stop == false {
+                collectionView.reloadItems(at: [IndexPath(row: 0, section: 0)])
+            } else {
+                cell.processAnimation(stop: true)
+            }
+        }
         // Process the animation for header view
         let headerView = getImageHeader()
         headerView?.processAnimation(stop: stop)
         stop ? self.viewModel.pauseTimer() : self.viewModel.resumeTimer()
-        
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-            
-            // Process animation for status bar view
-            if let cell = collectionView.cellForItem(at: IndexPath(row: 0, section: 0)) as? OrderProgressCollectionViewCell {
-                if stop == false {
-                    collectionView.reloadItems(at: [IndexPath(row: 0, section: 0)])
-                } else {
-                    cell.processAnimation(stop: true)
-                    cell.processAnimation(stop: true)
-                }
-            }
-        }
     }
     
     private func getImageHeader() -> ImageHeaderCollectionViewCell? {
@@ -465,6 +462,10 @@ public final class OrderTrackingViewController: UIViewController, Toastable, Map
 extension OrderTrackingViewController: UICollectionViewDelegate, UIScrollViewDelegate {
     
     public func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
+        
+        guard viewModel.orderStatus != .orderProcessing else {
+            return
+        }
         let scrollOffset = scrollView.contentOffset.y
         
         // Adjust the threshold value based on your specific needs
@@ -505,48 +506,3 @@ extension OrderTrackingViewController: ScratchAndWinDelegate {
         viewModel.navigationDelegate?.navigateToVouchersRevamp(voucherCode: voucherCode)
     }
 }
-
-
-//    func updateMapWithLocation(newLocation: CLLocation) {
-//        // Assuming you have a reference to the MapHeaderCell
-//        let indexPath = IndexPath(item: 0, section: 0)
-//        let headerView = collectionView?.supplementaryView(forElementKind: UICollectionView.elementKindSectionHeader, at: indexPath)
-//        print(headerView)
-//
-//        if let mapHeaderCell = getFirstMapHeader() {
-//            let camera = GMSCameraPosition.camera(withTarget: newLocation.coordinate, zoom: 15.0)
-//            mapHeaderCell.mapView.camera = camera
-//
-//            // Remove existing markers if any
-//            mapHeaderCell.mapView.clear()
-//
-//            // Add a new marker for the updated location
-//            let marker = GMSMarker(position: newLocation.coordinate)
-//            marker.title = "New Location"
-//            marker.map = mapHeaderCell.mapView
-//        }
-//    }
-
-//    func getNewLocationFromAPI() {
-//
-//            // Assume you get a new location (CLLocation) from your API
-//            let newLocation = CLLocation(latitude: 37.7749, longitude: -122.4194)
-//            updateMapWithLocation(newLocation: newLocation)
-//        }
-//
-//    func getFirstMapHeader() -> MapHeaderCollectionViewCell? {
-//        guard let collectionView = collectionView else {
-//            return nil
-//        }
-//
-//        // Iterate through visible supplementary views
-//        for indexPath in collectionView.indexPathsForVisibleSupplementaryElements(ofKind: OrderConstans.headerName.rawValue) {
-//            if let headerView = collectionView.supplementaryView(forElementKind: OrderConstans.headerName.rawValue, at: indexPath) as? MapHeaderCollectionViewCell {
-//                // Found the first MapHeaderCollectionViewCell
-//                return headerView
-//            }
-//        }
-//
-//        // If no MapHeaderCollectionViewCell is found
-//        return nil
-//    }

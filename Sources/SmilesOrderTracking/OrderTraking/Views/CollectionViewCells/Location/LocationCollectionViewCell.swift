@@ -103,10 +103,6 @@ final class LocationCollectionViewCell: UICollectionViewCell {
             stackDetails.isHidden = false
             cancelOrderButton.isHidden = true
             bottomConstraint.constant = 0
-        case .hideAllButtons:
-            buttonsStack.isHidden = true
-            lineView.isHidden = true
-            bottomConstraint.constant = -20
         }
     }
 }
@@ -116,7 +112,6 @@ extension LocationCollectionViewCell {
     enum CellType {
         case showCancelButton
         case details
-        case hideAllButtons
     }
     
     struct ViewModel {

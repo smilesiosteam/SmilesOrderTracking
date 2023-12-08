@@ -59,6 +59,7 @@ final class ImageHeaderCollectionViewCell: UICollectionReusableView {
             headerImage.isHidden = true
             containerView.backgroundColor = UIColor(hex: backgroundColor)
             containerView.backgroundColor = .white
+            containerView.subviews.forEach({ $0.removeFromSuperview() })
             if let url {
                 LottieAnimationManager.showAnimationFromUrl(FromUrl: url, animationBackgroundView: containerView, removeFromSuper: false, loopMode: .loop,contentMode: .scaleAspectFill) { _ in }
             }
@@ -76,7 +77,12 @@ final class ImageHeaderCollectionViewCell: UICollectionReusableView {
         dismissButton.layer.cornerRadius = 20
         supportButton.layer.cornerRadius = 20
         supportButton.setTitle(OrderTrackingLocalization.support.text, for: .normal)
-        [supportButton, dismissButton].forEach({
+        supportButton.addShadowToSelf(
+            offset: CGSize(width: 0, height: 2),
+            color: UIColor(red: 0/255, green: 0/255, blue: 0/255, alpha: 0.12),
+            radius: 8.0,
+            opacity: 1)
+        [supportButton].forEach({
             $0.fontTextStyle = .smilesTitle1
             $0.setTitleColor(.appRevampPurpleMainColor, for: .normal)
         })

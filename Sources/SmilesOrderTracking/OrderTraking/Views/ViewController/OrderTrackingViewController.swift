@@ -214,13 +214,15 @@ public final class OrderTrackingViewController: UIViewController, Toastable, Map
     
     
     private func navigateToThanksForFeedback() {
-        let vc = SuccessMessagePopupViewController(popupData: SuccessPopupViewModelData(message: OrderTrackingLocalization.thankyouForFeedback.text, descriptionMessage: OrderTrackingLocalization.alwaysWrokingToImprove.text, primaryButtonTitle: OrderTrackingLocalization.backToHome.text, primaryAction: {
-//            self.viewModel.navigationDelegate?.navigateAvailableRestaurant()
-            DispatchQueue.main.asyncAfter(deadline:  .now() + 1) {
-                self.dismiss()
+        let vc = SuccessMessagePopupViewController(popupData: 
+                                                    SuccessPopupViewModelData(message:OrderTrackingLocalization.thankyouForFeedback.text, descriptionMessage: OrderTrackingLocalization.alwaysWrokingToImprove.text,
+                                                                              primaryButtonTitle: OrderTrackingLocalization.backToHome.text, primaryAction: { [weak self] in
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                self?.viewModel.navigationDelegate?.popToViewRestaurantDetailVC()
             }
             
         }))
+        vc.modalPresentationStyle = .overCurrentContext
         self.present(vc)
     }
     
@@ -229,7 +231,7 @@ public final class OrderTrackingViewController: UIViewController, Toastable, Map
             if feedBacksubmittedResponse.status == 204 {
                 self.navigateToThanksForFeedback()
             }else{
-                self.viewModel.navigationDelegate?.navigateAvailableRestaurant()
+                self.viewModel.navigationDelegate?.popToViewRestaurantDetailVC()
             }
         })
         vc.modalPresentationStyle = .overCurrentContext
@@ -238,7 +240,7 @@ public final class OrderTrackingViewController: UIViewController, Toastable, Map
             guard let self else {
                 return
             }
-            self.viewModel.navigationDelegate?.navigateAvailableRestaurant()
+            self.viewModel.navigationDelegate?.popToViewRestaurantDetailVC()
             
         }
         self.present(vc)

@@ -100,7 +100,6 @@ final class OrderTrackingViewModel {
                 self.statusSubject.send(.showError(message: message))
             case .openLiveChat:
                 self.statusSubject.send(.hideLoader)
-//                self.navigationDelegate?.openLiveChat(orderId: orderId, orderNumber: orderNumber)
                 self.statusSubject.send(.navigateToGetSupport)
             case .callOrderStatus:
                 self.fetchStatus()

@@ -44,7 +44,7 @@ struct ProcessingOrderConfig: OrderTrackable, AnimationHeaderProtocol, GetSuppor
         location.type = isCancelationAllowed ? .showCancelButton : .hideAllButtons
         
         let showCancelButtonTimeout = response.orderDetails?.showCancelButtonTimeout ?? false
-        location.type = showCancelButtonTimeout ? .hideAllButtons : location.type
+        location.type = showCancelButtonTimeout ? .details : location.type
         return location
     }
     

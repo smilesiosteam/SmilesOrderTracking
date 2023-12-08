@@ -65,7 +65,11 @@ extension OrderTrackingViewController: OrderTrackingViewDelegate {
     
     func dismiss() {
         viewModel.navigationDelegate?.closeTracking()
-        self.dismissMe()
+        if isComingFromPayment {
+            viewModel.navigationDelegate?.popToViewRestaurantDetailVC()
+        } else {
+            self.dismissMe()
+        }
     }
     
     func presentConfirmationPickup(location: String, didTappedContinue: (()-> Void)?) {
@@ -125,21 +129,24 @@ public final class OrderTrackingViewController: UIViewController, Toastable, Map
     
     // MARK: - Outlets
     @IBOutlet private weak var collectionView: UICollectionView!
-    
     @IBOutlet weak var topConstraint: NSLayoutConstraint!
+    
+    // MARK: - Properties
     private var cancellables: Set<AnyCancellable> = []
     private let cancelOrderviewModel = SmilesOrderCancelledViewModel()
     private let cancelOrderInput: PassthroughSubject<SmilesOrderCancelledViewModel.Input, Never> = .init()
-    var viewModel: OrderTrackingViewModel!
     private lazy var dataSource = OrderTrackingDataSource(viewModel: viewModel)
     private var floatingView: FloatingView!
     private var timerIsOn = false
     private var isFirstTime = true
-    
+    private var isAnimationPlay = true
     private lazy var collectionViewDataSource = OrderTrackingLayout()
+    
     var isHeaderVisible = true
     var lastContentOffset: CGFloat = 0
-    private var isAnimationPlay = true
+    var viewModel: OrderTrackingViewModel!
+    var isComingFromPayment = false
+    
     // MARK: - Life Cycle
     public override func viewDidLoad() {
         super.viewDidLoad()

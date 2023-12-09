@@ -27,6 +27,7 @@ final class OrderTrackingViewModel {
     var checkForVoucher = false
     var chatbotType = ""
     var isLiveTracking = false
+    var orderStatus: OrderTrackingType = .inTheKitchen
     var orderStatusPublisher: AnyPublisher<State, Never> {
         statusSubject.eraseToAnyPublisher()
     }
@@ -70,9 +71,10 @@ final class OrderTrackingViewModel {
                 self.statusSubject.send(.showToastForNoLiveTracking(isShow: isShow))
             case .success(let model):
                 self.statusSubject.send(.success(model: model))
-            case .orderId(let id, let orderNumber):
+            case .orderId(let id, let orderNumber, let status):
                 self.orderId = id
                 self.orderNumber = orderNumber
+                self.orderStatus = status
             case .trackDriverLocation(liveTrackingId: let liveTrackingId):
                 self.navigationDelegate?.liveLocation(liveTrackingId: liveTrackingId)
             case .showLoader:
@@ -103,7 +105,6 @@ final class OrderTrackingViewModel {
                 self.statusSubject.send(.showError(message: message))
             case .openLiveChat:
                 self.statusSubject.send(.hideLoader)
-//                self.navigationDelegate?.openLiveChat(orderId: orderId, orderNumber: orderNumber)
                 self.statusSubject.send(.navigateToGetSupport)
             case .callOrderStatus:
                 self.fetchStatus()

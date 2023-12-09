@@ -16,7 +16,7 @@ final class FloatingView: UIView {
     
     private let leadingButton: UIButton = {
         let button = UIButton()
-        button.setTitle("X", for: .normal)
+        button.setImage(UIImage(resource: .closeIconPurple), for: .normal)
         button.translatesAutoresizingMaskIntoConstraints = false
         button.fontTextStyle = .smilesTitle1
         button.layer.cornerRadius = 20

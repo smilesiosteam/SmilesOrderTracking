@@ -23,4 +23,5 @@ public protocol OrderTrackingNavigationProtocol: OrderTrackingLiveProtocol {
     func navigateToVouchersRevamp(voucherCode: String)
     func navigateToLiveChatWebview(url: String)
     func navigateToFAQs()
+    func popToViewRestaurantDetailVC()
 }

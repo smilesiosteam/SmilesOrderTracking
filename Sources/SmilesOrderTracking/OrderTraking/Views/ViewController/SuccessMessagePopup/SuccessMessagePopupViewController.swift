@@ -29,8 +29,6 @@ public class SuccessMessagePopupViewController: UIViewController {
     // MARK: Lifecycle
 
     fileprivate func setupUI() {
-        panDismissView.addGestureRecognizer(UIPanGestureRecognizer(target: self, action: #selector(handleDismiss)))
-        panDismissView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleTap)))
         popupTitle.text = data.popupTitle
         messageText.text = data.message
         descriptionMessage.text = data.descriptionMessage
@@ -43,7 +41,7 @@ public class SuccessMessagePopupViewController: UIViewController {
         descriptionMessage.fontTextStyle = .smilesBody2
         
         primaryButton.setTitle(data.primaryButtonTitle, for: .normal)
-        primaryButton.fontTextStyle = .smilesHeadline4
+      
         
         roundedView.layer.cornerRadius = 12
         roundedView.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
@@ -53,6 +51,13 @@ public class SuccessMessagePopupViewController: UIViewController {
     public override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
+    }
+    
+    public override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        primaryButton.fontTextStyle = .smilesHeadline4
+        primaryButton.titleLabel?.textColor = .white
+        primaryButton.backgroundColor = .appRevampPurpleMainColor
     }
     
     public init(popupData:SuccessPopupViewModelData) {
@@ -67,36 +72,11 @@ public class SuccessMessagePopupViewController: UIViewController {
     public override func viewWillAppear(_ animated: Bool) {
         self.navigationController?.isNavigationBarHidden = true
     }
-
-    @objc func handleDismiss(sender: UIPanGestureRecognizer) {
-        switch sender.state {
-        case .changed:
-            dismissViewTranslation = sender.translation(in: view)
-            if dismissViewTranslation.y > 0 {
-                UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
-                    self.view.transform = CGAffineTransform(translationX: 0, y: self.dismissViewTranslation.y)
-                })
-            }
-        case .ended:
-            if dismissViewTranslation.y < 200 {
-                UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
-                    self.view.transform = .identity
-                })
-            }
-            else {
-                dismiss(animated: true)
-            }
-        default:
-            break
-        }
-    }
-
-    @objc func handleTap(sender: UITapGestureRecognizer) {
-        dismiss(animated: true)
-    }
-
+    
     @IBAction func closePressed(_ sender: Any) {
-        dismiss(animated: true)
+        dismiss{
+            self.data.primaryAction()
+        }
     }
     
     @IBAction func primaryAction(_ sender: Any) {

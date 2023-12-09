@@ -136,12 +136,13 @@ final class OrderTrackingUseCase: OrderTrackingUseCaseProtocol {
                 return
             }
             self.stateSubject.send(.hideLoader)
-            self.statusResponse = response
             let status = self.configOrderStatus(response: response)
             self.stateSubject.send(.success(model: status))
             let orderId = response.orderDetails?.orderId ?? 0
             let orderNumber = response.orderDetails?.orderNumber ?? ""
-            self.stateSubject.send(.orderId(id: "\(orderId)", orderNumber: orderNumber))
+            let orderStatus = response.orderDetails?.orderStatus ?? 0
+            let type = OrderTrackingType(rawValue: orderStatus) ?? .inTheKitchen
+            self.stateSubject.send(.orderId(id: "\(orderId)", orderNumber: orderNumber, orderStatus: type))
             let isLiveTracking = response.orderDetails?.liveTracking ?? false
             self.stateSubject.send(.isLiveTracking(isLiveTracking: isLiveTracking))
         }.store(in: &cancellables)
@@ -208,7 +209,7 @@ extension OrderTrackingUseCase {
         case showToastForArrivedOrder(isShow: Bool)
         case showToastForNoLiveTracking(isShow: Bool)
         case success(model: OrderTrackingModel)
-        case orderId(id: String, orderNumber: String)
+        case orderId(id: String, orderNumber: String, orderStatus: OrderTrackingType)
         case trackDriverLocation(liveTrackingId: String)
         case showLoader
         case hideLoader

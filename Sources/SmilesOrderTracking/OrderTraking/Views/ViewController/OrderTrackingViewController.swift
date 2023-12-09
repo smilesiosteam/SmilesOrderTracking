@@ -65,7 +65,11 @@ extension OrderTrackingViewController: OrderTrackingViewDelegate {
     
     func dismiss() {
         viewModel.navigationDelegate?.closeTracking()
-        self.dismissMe()
+        if isComingFromPayment {
+            viewModel.navigationDelegate?.popToViewRestaurantDetailVC()
+        } else {
+            self.dismissMe()
+        }
     }
     
     func presentConfirmationPickup(location: String, didTappedContinue: (()-> Void)?) {
@@ -130,21 +134,24 @@ public final class OrderTrackingViewController: UIViewController, Toastable, Map
     
     // MARK: - Outlets
     @IBOutlet private weak var collectionView: UICollectionView!
-    
     @IBOutlet weak var topConstraint: NSLayoutConstraint!
+    
+    // MARK: - Properties
     private var cancellables: Set<AnyCancellable> = []
     private let cancelOrderviewModel = SmilesOrderCancelledViewModel()
     private let cancelOrderInput: PassthroughSubject<SmilesOrderCancelledViewModel.Input, Never> = .init()
-    var viewModel: OrderTrackingViewModel!
     private lazy var dataSource = OrderTrackingDataSource(viewModel: viewModel)
     private var floatingView: FloatingView!
     private var timerIsOn = false
     private var isFirstTime = true
-    
+    private var isAnimationPlay = true
     private lazy var collectionViewDataSource = OrderTrackingLayout()
+    
     var isHeaderVisible = true
     var lastContentOffset: CGFloat = 0
-    private var isAnimationPlay = true
+    var viewModel: OrderTrackingViewModel!
+    var isComingFromPayment = false
+    
     // MARK: - Life Cycle
     public override func viewDidLoad() {
         super.viewDidLoad()
@@ -185,6 +192,7 @@ public final class OrderTrackingViewController: UIViewController, Toastable, Map
     public override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         navigationController?.setNavigationBarHidden(false, animated: animated)
+        hideFloatingView()
     }
     
     @objc private func applicationDidBecomeActive(notification: NSNotification) {
@@ -222,22 +230,24 @@ public final class OrderTrackingViewController: UIViewController, Toastable, Map
     
     
     private func navigateToThanksForFeedback() {
-        let vc = SuccessMessagePopupViewController(popupData: SuccessPopupViewModelData(message: OrderTrackingLocalization.thankyouForFeedback.text, descriptionMessage: OrderTrackingLocalization.alwaysWrokingToImprove.text, primaryButtonTitle: OrderTrackingLocalization.backToHome.text, primaryAction: {
-//            self.viewModel.navigationDelegate?.navigateAvailableRestaurant()
-            DispatchQueue.main.asyncAfter(deadline:  .now() + 1) {
-                self.dismiss()
-            }
+        let vc = SuccessMessagePopupViewController(popupData:
+                                                    SuccessPopupViewModelData(message:OrderTrackingLocalization.thankyouForFeedback.text, descriptionMessage: OrderTrackingLocalization.alwaysWrokingToImprove.text,
+                                                                              primaryButtonTitle: OrderTrackingLocalization.backToHome.text, primaryAction: { [weak self] in
+            self?.viewModel.navigationDelegate?.closeTracking()
+            self?.viewModel.navigationDelegate?.popToViewRestaurantDetailVC()
             
         }))
+        vc.modalPresentationStyle = .overCurrentContext
         self.present(vc)
     }
     
     private func navigateToOrderCancelledScreen(response:OrderCancelResponse){
-        let vc = SmilesOrderCancelledViewController.init(orderId: viewModel.orderId, orderNumber: viewModel.orderNumber, chatbotType: viewModel.chatbotType, cancelResponse: response, delegate: viewModel.navigationDelegate, onSubmitSuccess: {feedBacksubmittedResponse in
+        let vc = SmilesOrderCancelledViewController.init(orderId: viewModel.orderId, orderNumber: viewModel.orderNumber, chatbotType: viewModel.chatbotType, cancelResponse: response, delegate: viewModel.navigationDelegate, onSubmitSuccess: { [weak self]feedBacksubmittedResponse in
             if feedBacksubmittedResponse.status == 204 {
-                self.navigateToThanksForFeedback()
+                self?.navigateToThanksForFeedback()
             }else{
-                self.viewModel.navigationDelegate?.navigateAvailableRestaurant()
+                self?.viewModel.navigationDelegate?.closeTracking()
+                self?.viewModel.navigationDelegate?.popToViewRestaurantDetailVC()
             }
         })
         vc.modalPresentationStyle = .overCurrentContext
@@ -246,7 +256,7 @@ public final class OrderTrackingViewController: UIViewController, Toastable, Map
             guard let self else {
                 return
             }
-            self.viewModel.navigationDelegate?.navigateAvailableRestaurant()
+            self.viewModel.navigationDelegate?.popToViewRestaurantDetailVC()
             
         }
         self.present(vc)
@@ -374,23 +384,19 @@ public final class OrderTrackingViewController: UIViewController, Toastable, Map
             return
         }
         isAnimationPlay = !stop
+        
+        // Process the animation for progress bar
+        if let cell = collectionView.cellForItem(at: IndexPath(row: 0, section: 0)) as? OrderProgressCollectionViewCell {
+            if stop == false {
+                collectionView.reloadItems(at: [IndexPath(row: 0, section: 0)])
+            } else {
+                cell.processAnimation(stop: true)
+            }
+        }
         // Process the animation for header view
         let headerView = getImageHeader()
         headerView?.processAnimation(stop: stop)
         stop ? self.viewModel.pauseTimer() : self.viewModel.resumeTimer()
-        
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-            
-            // Process animation for status bar view
-            if let cell = collectionView.cellForItem(at: IndexPath(row: 0, section: 0)) as? OrderProgressCollectionViewCell {
-                if stop == false {
-                    collectionView.reloadItems(at: [IndexPath(row: 0, section: 0)])
-                } else {
-                    cell.processAnimation(stop: true)
-                    cell.processAnimation(stop: true)
-                }
-            }
-        }
     }
     
     private func getImageHeader() -> ImageHeaderCollectionViewCell? {
@@ -426,11 +432,11 @@ public final class OrderTrackingViewController: UIViewController, Toastable, Map
         view.addSubview(floatingView)
         
         floatingView.didLeadingButton = { [weak self] in
-            self?.dismissMe()
+            self?.dismiss()
         }
         
-        floatingView.didTrailingButton = { 
-            print("didTrailingButton")
+        floatingView.didTrailingButton = { [weak self] in
+            self?.getSupport()
         }
     }
     
@@ -471,6 +477,10 @@ public final class OrderTrackingViewController: UIViewController, Toastable, Map
 extension OrderTrackingViewController: UICollectionViewDelegate, UIScrollViewDelegate {
     
     public func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
+        
+        guard viewModel.orderStatus != .orderProcessing else {
+            return
+        }
         let scrollOffset = scrollView.contentOffset.y
         
         // Adjust the threshold value based on your specific needs
@@ -511,48 +521,3 @@ extension OrderTrackingViewController: ScratchAndWinDelegate {
         viewModel.navigationDelegate?.navigateToVouchersRevamp(voucherCode: voucherCode)
     }
 }
-
-
-//    func updateMapWithLocation(newLocation: CLLocation) {
-//        // Assuming you have a reference to the MapHeaderCell
-//        let indexPath = IndexPath(item: 0, section: 0)
-//        let headerView = collectionView?.supplementaryView(forElementKind: UICollectionView.elementKindSectionHeader, at: indexPath)
-//        print(headerView)
-//
-//        if let mapHeaderCell = getFirstMapHeader() {
-//            let camera = GMSCameraPosition.camera(withTarget: newLocation.coordinate, zoom: 15.0)
-//            mapHeaderCell.mapView.camera = camera
-//
-//            // Remove existing markers if any
-//            mapHeaderCell.mapView.clear()
-//
-//            // Add a new marker for the updated location
-//            let marker = GMSMarker(position: newLocation.coordinate)
-//            marker.title = "New Location"
-//            marker.map = mapHeaderCell.mapView
-//        }
-//    }
-
-//    func getNewLocationFromAPI() {
-//
-//            // Assume you get a new location (CLLocation) from your API
-//            let newLocation = CLLocation(latitude: 37.7749, longitude: -122.4194)
-//            updateMapWithLocation(newLocation: newLocation)
-//        }
-//
-//    func getFirstMapHeader() -> MapHeaderCollectionViewCell? {
-//        guard let collectionView = collectionView else {
-//            return nil
-//        }
-//
-//        // Iterate through visible supplementary views
-//        for indexPath in collectionView.indexPathsForVisibleSupplementaryElements(ofKind: OrderConstans.headerName.rawValue) {
-//            if let headerView = collectionView.supplementaryView(forElementKind: OrderConstans.headerName.rawValue, at: indexPath) as? MapHeaderCollectionViewCell {
-//                // Found the first MapHeaderCollectionViewCell
-//                return headerView
-//            }
-//        }
-//
-//        // If no MapHeaderCollectionViewCell is found
-//        return nil
-//    }

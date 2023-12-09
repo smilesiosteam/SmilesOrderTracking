@@ -18,6 +18,7 @@ final public class ItemRatingViewController: UIViewController {
         }
     }
     @IBOutlet private weak var collectionView: UICollectionView!
+    @IBOutlet private weak var collectionViewHeight: NSLayoutConstraint!
     @IBOutlet private weak var doneButton: UIButton! {
         didSet {
             doneButton.addMaskedCorner(withMaskedCorner: [.layerMinXMinYCorner, .layerMaxXMaxYCorner, .layerMaxXMinYCorner, .layerMinXMaxYCorner], cornerRadius: 12.0)
@@ -49,6 +50,13 @@ final public class ItemRatingViewController: UIViewController {
         bindDataSource()
         setupPanGesture()
         setupUI()
+    }
+    
+    public override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        collectionView.layoutIfNeeded()
+        let height = collectionView.collectionViewLayout.collectionViewContentSize.height
+        collectionViewHeight.constant = height
     }
     
     // MARK: - Actions

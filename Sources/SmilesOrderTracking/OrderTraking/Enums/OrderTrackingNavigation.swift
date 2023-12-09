@@ -10,6 +10,8 @@ import Foundation
 public protocol OrderTrackingLiveProtocol: AnyObject {
     func closeTracking()
     func liveLocation(liveTrackingId: String)
+    func fireSuccessfulOrderCompletionEvent()
+    func fireOrderTrackingEvent()
 }
 
 public protocol OrderTrackingNavigationProtocol: OrderTrackingLiveProtocol {

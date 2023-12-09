@@ -142,6 +142,8 @@ final class OrderTrackingUseCase: OrderTrackingUseCaseProtocol {
             let orderId = response.orderDetails?.orderId ?? 0
             let orderNumber = response.orderDetails?.orderNumber ?? ""
             self.stateSubject.send(.orderId(id: "\(orderId)", orderNumber: orderNumber))
+            let isLiveTracking = response.orderDetails?.liveTracking ?? false
+            self.stateSubject.send(.isLiveTracking(isLiveTracking: isLiveTracking))
         }.store(in: &cancellables)
     }
     
@@ -210,6 +212,7 @@ extension OrderTrackingUseCase {
         case trackDriverLocation(liveTrackingId: String)
         case showLoader
         case hideLoader
+        case isLiveTracking(isLiveTracking: Bool)
     }
 }
 
@@ -217,154 +220,73 @@ extension OrderTrackingUseCase {
 
 let jsonString = """
 {
-  "extTransactionId": "3530191483630",
-  "orderDetails": {
-    "orderStatus": 7,
-     "smallImageAnimationUrl": "https://www.smilesuae.ae/images/APP/ORDER_TRACKING/ENGLISH/SMALL/Delivering.json",
-     "largeImageAnimationUrl": "https://www.smilesuae.ae/images/APP/ORDER_TRACKING/ENGLISH/LARGE/Waiting.json",
-     "trackingColorCode": "#a5deef",
-     "earnPointsText": "smiles points earned and will be credited soon.",
-   "partnerNumber": "010300349340340",
-    "title": "Wow, your order has arrived X min early. Enjoy! Ya Naguib",
-    "orderDescription": "Hardee's should accept your order soon.",
-    "orderNumber": "SMHD111620230000467198",
-    "restaurantName": "Hardee's",
-    "deliveryRegion": "Al Kifaf",
-    "recipient": "SYMEON STEFANIDIS",
-    "totalAmount": "56",
-    "deliveryCharges": "9",
-    "discount": "0",
-    "promoCodeDiscount": 0.0,
-    "grandTotal": 65.0,
-    "vatPrice": 3.1,
-    "totalSaving": 0,
-    "orderTime": "20-11-2023 03:46 PM",
-    "deliveryTime": "40",
-    "deliveryTimeRange": "30-40",
-    "deliveryTimeRangeText": "04:16PM - 04:26PM",
-    "deliveryTimeRangeV2": "Your order will be delivered between 04:16PM - 04:26PM to: Home",
-    "pickupTime": "20",
-    "restaurantAddress": "Sheikh Essa Tower  Beside Financial Centre Metro Station- Dubai - UAE",
-    "phone": "0543936216",
-    "latitude": "25.211333693767923",
-    "longitude": "55.274305138728316",
-    "restaurentNumber": "065092434",
-    "estimateTime": "20 Nov 2023 04:26 PM",
-    "deliveryAdrress": "maama, Annan, Alan, amann, Sheikh Zayed Rd - Za'abeel - Dubai - United Arab Emirates, Al Kifaf",
-    "orderTimeOut": 2,
-    "isCancelationAllowed": true,
-    "orderType": "DELIVERY",
-    "determineStatus": false,
-    "earnPoints": 120,
-    "addressTitle": "Home",
-    "reOrder": true,
-    "liveTracking": true,
-    "orderId": 466698,
-    "imageUrl": "https://cdn.eateasily.com/restaurants/profile/app/400X300/17316.jpg",
-    "iconUrl": "https://cdn.eateasily.com/restaurants/9d237d8a2148c1c2354ff1a2b769f3e2/17338_small.jpg",
-    "deliveryLatitude": "25.230654",
-    "subscriptionBanner": {
-            "subscriptionTitle": "Subscribe for Unlimited free delivery!",
-            "subscriptionIcon": "https://cdn.eateasily.com/mamba/food_bogo.png",
-            "redirectionUrl": "smiles://smilessubscription"
-        },
-    "deliveryLongitude": "55.291472",
-    "trackingType": "no",
-    "delayAlert": {
-         "title": "A slight delay in your order",
-         "description": "description description description description"
-     },
-    "paymentType": "cashOnDelivery",
-   "changeTypeTimer": 1,
-    "paidAedAmount": "65",
-    "isFirstOrder": false,
-    "statusText": "Order Received",
-    "inlineItemIncluded": false,
-    "virtualRestaurantIncluded": false,
-    "inlineItemTotal": 0.0,
-    "restaurantId": "17338",
-    "isDeliveryFree": false,
-    "deliveryTip": 0,
-    "isLiveChatEnable": true,
-    "deliveryBy": "Delivered By Restaurant",
-    "driverStatusText": "has picked up your order",
-    "driverName": "Osama Tester Driver",
-    "driverImageIconUrl": "https://www.smilesuae.ae/images/APP/ORDER_TRACKING/IMAGES/driverimageIcon.png",
-    "driverPhoneImageUrl": "https://www.smilesuae.ae/images/APP/ORDER_TRACKING/IMAGES/driverphoneIcon.png",
-    "mapImageIconUrl": "https://www.smilesuae.ae/images/APP/ORDER_TRACKING/IMAGES/mapIcon.png",
-    "subTitleImageIconUrl": "https://www.smilesuae.ae/images/APP/ORDER_TRACKING/IMAGES/SubTitleimageIcon.png",
-    "bannerImageUrl": "https://www.smilesuae.ae/images/APP/BANNERS/ENGLISH/BOTTOM/OrderTrackingULFD_V2.png",
-
- "delayStatusText": "delayStatusText delayStatusText delayStatusText ",
-
+  "orderDetails" : {
+    "estimateTime" : "08 Dec 2023 08:15 PM",
+    "restaurentNumber" : "043062981",
+    "orderType" : "DELIVERY",
+    "orderId" : 467034,
+    "earnPoints" : 0,
+    "isLiveChatEnable" : true,
+    "restaurantName" : "Pizzalicious",
+    "orderRatings" : [
+      {
+        "userRating" : 0,
+        "title" : "Rate your order",
+        "ratingType" : "food",
+        "image" : "https://cdn.eateasily.com/mamba/BurgerIcon.png"
+      },
+      {
+        "userRating" : 0,
+        "title" : "Rate delivery",
+        "ratingType" : "delivery",
+        "image" : "https://cdn.eateasily.com/mamba/MotorcycleIcon.png"
+      }
+    ],
+    "deliveryTimeRange" : "40-50",
+    "orderStatus" : 7,
+    "deliveryTimeRangeText" : "08:05PM - 08:15PM",
+    "subscriptionBanner" : {
+      "subscriptionIcon" : "https://cdn.eateasily.com/mamba/food_bogo.png",
+      "colorCode" : "#9400D3",
+      "redirectionUrl" : "smiles://smilessubscription",
+      "subscriptionTitle" : "Subscribe for Unlimited free delivery!"
+    },
+    "orderDescription" : "Your order was delivered at 08 dec 2023 08:15 pm",
+    "pickupTime" : "50",
+    "driverName" : "Irshad Ahmed",
+    "liveTracking" : true,
+    "ratingStatus" : false,
+    "addressTitle" : "Home",
+    "subStatusText" : "Your Smiles Champion  is on the way to pick it up.",
+    "subscriptionBannerV2" : {
+      "bannerImageUrl" : "https://www.smilesuae.ae/images/APP/BANNERS/ENGLISH/BOTTOM/OrderTrackingULFD_V2.jpg",
+      "redirectionUrl" : "smiles://smilessubscription"
+    },
+    "longitude" : "55.275466496589324",
+    "deliveryAdrress" : "123, My tower, 100, 57WHVV - Downtown Dubai - Dubai - United Arab Emirates, Downtown Dubai",
+    "fullfilledTime" : "10 Dec 2023 01:09 AM",
+    "liveTrackingUrl" : "https://test-web.eateasy.ae/dubai/track/smiles/441e8d13-2814-45cd-aab1-b33bd1e7ae6c/25.206286627010712/55.275466496589324/25.1972/55.2797",
+    "deliveryBy" : "Delivered By Smiles",
+    "deliveryLongitude" : "55.2797",
+    "trackingType" : "live",
+    "iconUrl" : "https://cdn.eateasily.com/restaurants/af29d7fc24afb5ec93096564b367f676/16646_small.jpg",
+    "deliveryTime" : "50",
+    "determineStatus" : false,
+    "restaurantAddress" : "DIFC, Dubai",
+    "isFirstOrder" : false,
+    "orderTimeOut" : 300,
+    "orderNumber" : "SMHD120820230000467534",
+    "isCancelationAllowed" : false,
+    "inlineItemIncluded" : false,
+    "imageUrl" : "https://cdn.eateasily.com/restaurants/profile/app/400X300/16453.jpg",
+    "liveTrackingId" : "441e8d13-2814-45cd-aab1-b33bd1e7ae6c",
+    "statusText" : "Delivered",
+    "title" : "Your order has been delivered!",
+    "deliveryLatitude" : "25.1972",
+    "partnerNumber" : "971545861399",
+    "driverStatusText" : "has delivered your order",
+    "latitude" : "25.206286627010712"
   },
-"orderRatings": [
-            {
-                "ratingType": "food",
-                "userRating": 0.0,
-                "title": "how was the food from Hardee's?",
-                "image": "https://cdn.eateasily.com/restaurants/9d237d8a2148c1c2354ff1a2b769f3e2/17338_small.jpg"
-            },
-            {
-                "ratingType": "delivery",
-                "userRating": 0.0,
-                "title": "Rate delivery",
-                "image": "https://cdn.eateasily.com/restaurants/9d237d8a2148c1c2354ff1a2b769f3e2/17338_small.jpg"
-            }
-        ],
-  "orderItems": [
-    {
-      "quantity": 1,
-      "choicesName": [
-        " Wraptor sandwich ,  Mayonnaise ,  Wraptor sandwich ,  Mayonnaise ,  Wraptor sandwich ,  Mayonnaise ,  Wraptor sandwich ,  Mayonnaise ,  Family Curly fries ,   7 Up "
-      ],
-      "discountPrice": 56.0,
-      "actualChoicePoints": 6223,
-      "isVeg": false,
-      "isEggIncluded": false,
-      "itemName": "Quattro Box",
-      "price": 56.0,
-      "inlineItemIncluded": false
-    },
-    {
-      "quantity": 4,
-      "choicesName": [
-        " Wraptor sandwich ,  Mayonnaise ,  Wraptor sandwich ,  Mayonnaise ,  Wraptor sandwich ,  Mayonnaise ,  Wraptor sandwich ,  Mayonnaise ,  Family Curly fries ,   7 Up "
-      ],
-      "discountPrice": 56.0,
-      "actualChoicePoints": 6223,
-      "isVeg": false,
-      "isEggIncluded": false,
-      "itemName": "Dummy Box",
-      "price": 56.0,
-      "inlineItemIncluded": false
-    },
-    {
-      "quantity": 10,
-      "choicesName": [
-        " Wraptor sandwich ,  Mayonnaise ,  Wraptor sandwich ,  Mayonnaise ,  Wraptor sandwich ,  Mayonnaise ,  Wraptor sandwich ,  Mayonnaise ,  Family Curly fries ,   7 Up "
-      ],
-      "discountPrice": 56.0,
-      "actualChoicePoints": 6223,
-      "isVeg": false,
-      "isEggIncluded": false,
-      "itemName": "Beef",
-      "price": 56.0,
-      "inlineItemIncluded": false
-    },
-    {
-      "quantity": 18,
-      "choicesName": [
-        " Wraptor sandwich ,  Mayonnaise ,  Wraptor sandwich ,  Mayonnaise ,  Wraptor sandwich ,  Mayonnaise ,  Wraptor sandwich ,  Mayonnaise ,  Family Curly fries ,   7 Up "
-      ],
-      "discountPrice": 56.0,
-      "actualChoicePoints": 6223,
-      "isVeg": false,
-      "isEggIncluded": false,
-      "itemName": "Burger",
-      "price": 56.0,
-      "inlineItemIncluded": false
-    }
-  ]
+  "extTransactionId" : "2731272666123"
 }
 """

@@ -97,7 +97,7 @@ final class OrderRatingViewModel {
             let rating = orderRating[0]
             stateSubject.send(.ratingStarsData(data: rating.rating))
             if rating.ratingType == "delivery" {
-                stateSubject.send(.popupTitle(text: rating.ratingTitle ?? ""))
+                stateSubject.send(.popupTitle(text: getOrderRatingResponse.title ?? ""))
                 let driverName = getOrderRatingResponse.orderDetails?.driverName ?? ""
                 let deliveryTitle = rating.title?.replacingOccurrences(of: "{driver_name}", with: driverName)
                 stateSubject.send(.ratingTitle(text: deliveryTitle ?? ""))

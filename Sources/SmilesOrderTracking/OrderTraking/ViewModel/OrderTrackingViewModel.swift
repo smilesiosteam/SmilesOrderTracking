@@ -26,6 +26,7 @@ final class OrderTrackingViewModel {
     var orderNumber = ""
     var checkForVoucher = false
     var chatbotType = ""
+    var isLiveTracking = false
     var orderStatusPublisher: AnyPublisher<State, Never> {
         statusSubject.eraseToAnyPublisher()
     }
@@ -78,6 +79,8 @@ final class OrderTrackingViewModel {
                 self.statusSubject.send(.showLoader)
             case .hideLoader:
                 self.statusSubject.send(.hideLoader)
+            case .isLiveTracking(let isLiveTracking):
+                self.isLiveTracking = isLiveTracking
             }
         }
         .store(in: &cancellables)

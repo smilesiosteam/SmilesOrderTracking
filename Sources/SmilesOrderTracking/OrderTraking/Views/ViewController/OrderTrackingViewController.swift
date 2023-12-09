@@ -111,6 +111,7 @@ extension OrderTrackingViewController: OrderRatingViewDelegate {
         let feedBackSuccessUIModel = FeedbackSuccessUIModel(popupTitle: ratingOrderResult?.title ?? "", description: ratingOrderResult?.description ?? "", boldText: ratingOrderResult?.accrualTitle ?? "")
         let feedBackSuccessViewModel = FeedbackSuccessViewModel(feedBackSuccessUIModel: feedBackSuccessUIModel)
         let feedBackSuccessViewController = FeedbackSuccessViewController.create(with: feedBackSuccessViewModel)
+        feedBackSuccessViewController.delegate = self
         feedBackSuccessViewController.modalPresentationStyle = .overFullScreen
         
         self.present(feedBackSuccessViewController)
@@ -118,6 +119,10 @@ extension OrderTrackingViewController: OrderRatingViewDelegate {
     
     func shouldOpenGetSupport(with url: String) {
         viewModel.navigationDelegate?.navigateToLiveChatWebview(url: url)
+    }
+    
+    func ratingDidComplete() {
+        viewModel.fetchStatus()
     }
 }
 
@@ -172,6 +177,9 @@ public final class OrderTrackingViewController: UIViewController, Toastable, Map
         if isBeingDismissed {
             viewModel.navigationDelegate?.closeTracking()
         }
+        
+        viewModel.navigationDelegate?.fireSuccessfulOrderCompletionEvent()
+        viewModel.navigationDelegate?.fireOrderTrackingEvent()
     }
     
     public override func viewWillDisappear(_ animated: Bool) {

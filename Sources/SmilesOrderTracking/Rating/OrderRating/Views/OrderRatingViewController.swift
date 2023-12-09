@@ -16,6 +16,7 @@ protocol OrderRatingViewDelegate: AnyObject {
     func shouldOpenItemRatingViewController(with model: RateOrderResponse, orderItems: [OrderItemDetail])
     func shouldOpenFeedbackSuccessViewController(with model: RateOrderResponse)
     func shouldOpenGetSupport(with url: String)
+    func ratingDidComplete()
 }
 
 final public class OrderRatingViewController: UIViewController {

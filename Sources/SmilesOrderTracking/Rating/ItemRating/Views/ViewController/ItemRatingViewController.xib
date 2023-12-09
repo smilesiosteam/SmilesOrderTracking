@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="22155" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
-    <device id="retina6_12" orientation="portrait" appearance="light"/>
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22131"/>
@@ -12,6 +12,7 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ItemRatingViewController" customModule="SmilesOrderTracking">
             <connections>
                 <outlet property="collectionView" destination="EcA-il-UJb" id="6Hk-S1-Ups"/>
+                <outlet property="collectionViewHeight" destination="zVp-Vt-9iQ" id="LHd-a4-knd"/>
                 <outlet property="containerView" destination="m1F-Rm-ul8" id="0gE-XW-iWL"/>
                 <outlet property="doneButton" destination="PRP-zi-0NN" id="KVp-lH-Vsq"/>
                 <outlet property="panGesture" destination="mFA-Nk-A0e" id="mF7-D6-Eip"/>
@@ -20,15 +21,18 @@
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <view contentMode="scaleToFill" id="e2s-yo-7GF">
-            <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+            <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="m1F-Rm-ul8">
-                    <rect key="frame" x="0.0" y="173" width="393" height="679"/>
+                    <rect key="frame" x="0.0" y="323" width="414" height="573"/>
                     <subviews>
                         <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="EcA-il-UJb">
-                            <rect key="frame" x="0.0" y="0.0" width="393" height="583"/>
+                            <rect key="frame" x="0.0" y="0.0" width="414" height="477"/>
                             <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="477" id="zVp-Vt-9iQ"/>
+                            </constraints>
                             <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="gfu-BZ-lBP">
                                 <size key="itemSize" width="128" height="128"/>
                                 <size key="headerReferenceSize" width="0.0" height="0.0"/>
@@ -37,7 +41,7 @@
                             </collectionViewFlowLayout>
                         </collectionView>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PRP-zi-0NN">
-                            <rect key="frame" x="16" y="607" width="361" height="48"/>
+                            <rect key="frame" x="16" y="501" width="382" height="48"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="48" id="dqy-or-jPR"/>
                             </constraints>
@@ -64,7 +68,6 @@
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <gestureRecognizers/>
             <constraints>
-                <constraint firstItem="m1F-Rm-ul8" firstAttribute="top" secondItem="jY4-iz-4Cz" secondAttribute="top" constant="114" id="7Os-lJ-ftu"/>
                 <constraint firstAttribute="bottom" secondItem="m1F-Rm-ul8" secondAttribute="bottom" id="Erx-mm-WY6"/>
                 <constraint firstItem="m1F-Rm-ul8" firstAttribute="trailing" secondItem="jY4-iz-4Cz" secondAttribute="trailing" id="JPa-6S-ZNK"/>
                 <constraint firstItem="m1F-Rm-ul8" firstAttribute="leading" secondItem="jY4-iz-4Cz" secondAttribute="leading" id="Y0i-EC-qym"/>

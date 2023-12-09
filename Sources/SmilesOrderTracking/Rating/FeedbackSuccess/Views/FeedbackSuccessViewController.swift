@@ -47,6 +47,7 @@ final public class FeedbackSuccessViewController: UIViewController {
     // MARK: - Properties
     private var viewModel: FeedbackSuccessViewModel?
     private var cancellables = Set<AnyCancellable>()
+    weak var delegate: OrderRatingViewDelegate?
     
     // MARK: - Lifecycle
     public override func viewDidLoad() {
@@ -64,6 +65,7 @@ final public class FeedbackSuccessViewController: UIViewController {
     // MARK: - Actions
     @IBAction private func okayTapped(_ sender: UIButton) {
         dismiss()
+        delegate?.ratingDidComplete()
     }
     
     // MARK: - Methods

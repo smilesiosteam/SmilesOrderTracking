@@ -11,33 +11,22 @@ import SmilesUtilities
 import LottieAnimationManager
 import Lottie
 
-protocol GetSupportHeaderCollectionViewProtocol: AnyObject {
-    func didTapBack()
-}
-
 final class GetSupportImageHeaderCollectionViewCell: UICollectionReusableView {
 
     // MARK: - Outlets
     @IBOutlet private weak var containerView: UIView!
-    @IBOutlet private weak var dismissButton: UIButton!
     @IBOutlet private weak var headerImage: UIImageView!
     
-    private weak var delegate: GetSupportHeaderCollectionViewProtocol?
     // MARK: - Life Cycle
     override func awakeFromNib() {
         super.awakeFromNib()
         
     }
     
-    // MARK: - Button Actions
-    @IBAction private func dismissButtonTapped(_ sender: Any) {
-        delegate?.didTapBack()
-    }
     
     
     // MARK: - Functions
-    func updateCell(with viewModel: ViewModel, delegate: GetSupportHeaderCollectionViewProtocol) {
-        self.delegate = delegate
+    func updateCell(with viewModel: ViewModel) {
         switch viewModel.type {
         case .image(let imageName):
             headerImage.image = UIImage(named: imageName, in: .module, with: nil)

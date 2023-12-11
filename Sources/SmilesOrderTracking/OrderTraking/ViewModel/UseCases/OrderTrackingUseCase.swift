@@ -137,6 +137,7 @@ final class OrderTrackingUseCase: OrderTrackingUseCaseProtocol {
             }
             self.stateSubject.send(.hideLoader)
             let status = self.configOrderStatus(response: response)
+            self.statusResponse = response
             self.stateSubject.send(.success(model: status))
             let orderId = response.orderDetails?.orderId ?? 0
             let orderNumber = response.orderDetails?.orderNumber ?? ""

@@ -60,6 +60,7 @@ final class MapHeaderCollectionViewCell: UICollectionReusableView {
     }
     
     private func configCellType(type: CellType) {
+        animationLottieView?.removeFromSuperview()
         switch type {
         case .image(let imageName):
             animationView.backgroundColor = .clear
@@ -74,20 +75,25 @@ final class MapHeaderCollectionViewCell: UICollectionReusableView {
         }
     }
     
-    
+    private var animationLottieView: LottieAnimationView? {
+        animationView.subviews.first(where: { $0 is LottieAnimationView }) as?  LottieAnimationView
+    }
     
     private func configControllers() {
-        dismissButton.layer.cornerRadius = 20
-        supportButton.layer.cornerRadius = 20
         driverImage.layer.cornerRadius = 50
         animationView.layer.cornerRadius = 50
         animationView.layer.borderWidth = 5
         animationView.layer.borderColor = UIColor.white.cgColor
+        supportButton.layer.cornerRadius = 20
         supportButton.setTitle(OrderTrackingLocalization.support.text, for: .normal)
-        [supportButton, dismissButton].forEach({
+        supportButton.addShadowToSelf(
+            offset: CGSize(width: 0, height: 2),
+            color: UIColor(red: 0/255, green: 0/255, blue: 0/255, alpha: 0.12),
+            radius: 8.0,
+            opacity: 1)
+        [supportButton].forEach({
             $0.fontTextStyle = .smilesTitle1
             $0.setTitleColor(.appRevampPurpleMainColor, for: .normal)
-            $0.addShadowToSelf(offset: CGSize(width: 0, height: 0), color: UIColor(red: 0/255, green: 0/255, blue: 0/255, alpha: 0.2), radius: 1.0, opacity: 1)
         })
     }
     

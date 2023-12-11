@@ -10,6 +10,8 @@ import Foundation
 public protocol OrderTrackingLiveProtocol: AnyObject {
     func closeTracking()
     func liveLocation(liveTrackingId: String)
+    func fireSuccessfulOrderCompletionEvent()
+    func fireOrderTrackingEvent()
 }
 
 public protocol OrderTrackingNavigationProtocol: OrderTrackingLiveProtocol {
@@ -21,4 +23,5 @@ public protocol OrderTrackingNavigationProtocol: OrderTrackingLiveProtocol {
     func navigateToVouchersRevamp(voucherCode: String)
     func navigateToLiveChatWebview(url: String)
     func navigateToFAQs()
+    func popToViewRestaurantDetailVC()
 }

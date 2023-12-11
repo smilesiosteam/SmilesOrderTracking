@@ -47,6 +47,7 @@ final public class FeedbackSuccessViewController: UIViewController {
     // MARK: - Properties
     private var viewModel: FeedbackSuccessViewModel?
     private var cancellables = Set<AnyCancellable>()
+    weak var delegate: OrderRatingViewDelegate?
     
     // MARK: - Lifecycle
     public override func viewDidLoad() {
@@ -64,6 +65,7 @@ final public class FeedbackSuccessViewController: UIViewController {
     // MARK: - Actions
     @IBAction private func okayTapped(_ sender: UIButton) {
         dismiss()
+        delegate?.ratingDidComplete()
     }
     
     // MARK: - Methods
@@ -78,14 +80,14 @@ final public class FeedbackSuccessViewController: UIViewController {
     }
     
     private func bindViewModel() {
-        viewModel?.$popupTitle.sink { [weak self] value in
+        viewModel?.statePublisher.sink { [weak self] state in
             guard let self else { return }
-            self.thankYouLabel.text = value
-        }.store(in: &cancellables)
-        
-        viewModel?.$description.sink { [weak self] value in
-            guard let self else { return }
-            self.feedbackDescriptionLabel.attributedText = value
+            switch state {
+            case .popupTitle(let text):
+                self.thankYouLabel.text = text
+            case .description(let text):
+                self.feedbackDescriptionLabel.attributedText = text
+            }
         }.store(in: &cancellables)
     }
     

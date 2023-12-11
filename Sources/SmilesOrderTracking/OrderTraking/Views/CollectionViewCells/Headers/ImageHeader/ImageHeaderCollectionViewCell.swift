@@ -48,7 +48,7 @@ final class ImageHeaderCollectionViewCell: UICollectionReusableView {
         print(viewModel.isShowSupportHeader)
         
         headerStack.isHidden =  !viewModel.isShowSupportHeader
-        
+        animationView?.removeFromSuperview()
         switch viewModel.type {
         case .image(let imageName, let backgroundColor):
             headerImage.image = UIImage(named: imageName, in: .module, with: nil)
@@ -66,17 +66,25 @@ final class ImageHeaderCollectionViewCell: UICollectionReusableView {
     }
     
     func processAnimation(stop: Bool) {
-        if let animationView = containerView.subviews.first(where: { $0 is LottieAnimationView }) as?  LottieAnimationView {
+        if let animationView {
             stop ? animationView.pause() : animationView.play()
         }
-        
+    }
+    
+    private var animationView: LottieAnimationView? {
+        containerView.subviews.first(where: { $0 is LottieAnimationView }) as?  LottieAnimationView
     }
     
     private func configControllers() {
         dismissButton.layer.cornerRadius = 20
         supportButton.layer.cornerRadius = 20
         supportButton.setTitle(OrderTrackingLocalization.support.text, for: .normal)
-        [supportButton, dismissButton].forEach({
+        supportButton.addShadowToSelf(
+            offset: CGSize(width: 0, height: 2),
+            color: UIColor(red: 0/255, green: 0/255, blue: 0/255, alpha: 0.12),
+            radius: 8.0,
+            opacity: 1)
+        [supportButton].forEach({
             $0.fontTextStyle = .smilesTitle1
             $0.setTitleColor(.appRevampPurpleMainColor, for: .normal)
         })

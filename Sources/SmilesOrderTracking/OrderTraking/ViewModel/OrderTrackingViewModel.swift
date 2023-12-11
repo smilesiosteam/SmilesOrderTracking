@@ -26,6 +26,8 @@ final class OrderTrackingViewModel {
     var orderNumber = ""
     var checkForVoucher = false
     var chatbotType = ""
+    var isLiveTracking = false
+    var orderStatus: OrderTrackingType = .inTheKitchen
     var orderStatusPublisher: AnyPublisher<State, Never> {
         statusSubject.eraseToAnyPublisher()
     }
@@ -61,23 +63,26 @@ final class OrderTrackingViewModel {
             }
 //            self.statusSubject.send(.hideLoader)
             switch states {
-            case .showError(let message):
-                self.statusSubject.send(.showError(message: message))
+            case .showErrorAndPop(let message):
+                self.statusSubject.send(.showErrorAndPop(message: message))
             case .showToastForArrivedOrder(let isShow):
                 self.statusSubject.send(.showToastForArrivedOrder(isShow: isShow))
             case .showToastForNoLiveTracking(let isShow):
                 self.statusSubject.send(.showToastForNoLiveTracking(isShow: isShow))
             case .success(let model):
                 self.statusSubject.send(.success(model: model))
-            case .orderId(let id, let orderNumber):
+            case .orderId(let id, let orderNumber, let status):
                 self.orderId = id
                 self.orderNumber = orderNumber
+                self.orderStatus = status
             case .trackDriverLocation(liveTrackingId: let liveTrackingId):
                 self.navigationDelegate?.liveLocation(liveTrackingId: liveTrackingId)
             case .showLoader:
                 self.statusSubject.send(.showLoader)
             case .hideLoader:
                 self.statusSubject.send(.hideLoader)
+            case .isLiveTracking(let isLiveTracking):
+                self.isLiveTracking = isLiveTracking
             }
         }
         .store(in: &cancellables)
@@ -100,9 +105,9 @@ final class OrderTrackingViewModel {
                 self.statusSubject.send(.showError(message: message))
             case .openLiveChat:
                 self.statusSubject.send(.hideLoader)
-                self.navigationDelegate?.openLiveChat(orderId: orderId, orderNumber: orderNumber)
+                self.statusSubject.send(.navigateToGetSupport)
             case .callOrderStatus:
-                self.fetchStatus()
+                self.useCase.fetchOrderStates()
             }
         }
         .store(in: &cancellables)
@@ -200,5 +205,7 @@ extension OrderTrackingViewModel {
         case presentScratchAndWin(response: ScratchAndWinResponse)
         case presentCancelFlow(orderId: String)
         case driverLocation(lat: Double, long: Double)
+        case navigateToGetSupport
+        case showErrorAndPop(message: String)
     }
 }

@@ -14,6 +14,8 @@ struct OrderTrackingStatusResponse: Codable {
     var orderRating: [OrderRatings]?
     var orderTrackingDetails: [OrderTrackingDetail]?
     var orderTimeOut: Int?
+    var responseCode : String?
+    var responseMsg : String?
     
     enum CodingKeys: String, CodingKey {
         case orderDetails
@@ -22,6 +24,8 @@ struct OrderTrackingStatusResponse: Codable {
         case orderTrackingDetails
         case orderRating = "orderRatings"
         case orderTimeOut
+        case responseCode = "responseCode"
+        case responseMsg = "responseMsg"
     }
     
     init(from decoder: Decoder) throws {
@@ -32,5 +36,8 @@ struct OrderTrackingStatusResponse: Codable {
         orderTrackingDetails = try values.decodeIfPresent([OrderTrackingDetail].self, forKey: .orderTrackingDetails)
         orderRating = try values.decodeIfPresent([OrderRatings].self, forKey: .orderRating)
         orderTimeOut = try values.decodeIfPresent(Int.self, forKey: .orderTimeOut)
+        responseCode = try values.decodeIfPresent(String.self, forKey: .responseCode)
+        responseMsg = try values.decodeIfPresent(String.self, forKey: .responseMsg)
+
     }
 }

@@ -20,6 +20,7 @@ final class RateOrderRequest: SmilesBaseMainRequest {
     var itemLevelRatingEnabled: Bool?
     var restaurantId: String?
     var userFeedback: String?
+    var isRevampedUI: Bool?
     
     // MARK: - CodingKeys
     enum CodingKeys: String, CodingKey{
@@ -32,10 +33,11 @@ final class RateOrderRequest: SmilesBaseMainRequest {
         case itemLevelRatingEnabled
         case restaurantId
         case userFeedback
+        case isRevampedUI
     }
     
     // MARK: - Lifecycle
-    init(orderId: String? = nil, orderNumber: String? = nil, restaurantName: String? = nil, orderRatings: [OrderRatingModel]? = nil, itemRatings: [ItemRatings]? = nil, isAccuralPointsAllowed: Bool? = nil, itemLevelRatingEnabled: Bool? = nil, restaurantId: String? = nil, userFeedback: String? = nil) {
+    init(orderId: String? = nil, orderNumber: String? = nil, restaurantName: String? = nil, orderRatings: [OrderRatingModel]? = nil, itemRatings: [ItemRatings]? = nil, isAccuralPointsAllowed: Bool? = nil, itemLevelRatingEnabled: Bool? = nil, restaurantId: String? = nil, userFeedback: String? = nil, isRevampedUI: Bool? = true) {
         super.init()
         self.orderId = orderId
         self.orderNumber = orderNumber
@@ -46,6 +48,7 @@ final class RateOrderRequest: SmilesBaseMainRequest {
         self.itemLevelRatingEnabled = itemLevelRatingEnabled
         self.restaurantId = restaurantId
         self.userFeedback = userFeedback
+        self.isRevampedUI = isRevampedUI
     }
     
     required init(from decoder: Decoder) throws {
@@ -64,5 +67,6 @@ final class RateOrderRequest: SmilesBaseMainRequest {
         try container.encodeIfPresent(self.itemLevelRatingEnabled, forKey: .itemLevelRatingEnabled)
         try container.encodeIfPresent(self.restaurantId, forKey: .restaurantId)
         try container.encodeIfPresent(self.userFeedback, forKey: .userFeedback)
+        try container.encodeIfPresent(self.isRevampedUI, forKey: .isRevampedUI)
     }
 }

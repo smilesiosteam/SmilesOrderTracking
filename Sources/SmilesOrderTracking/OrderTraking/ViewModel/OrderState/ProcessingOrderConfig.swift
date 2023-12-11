@@ -41,10 +41,13 @@ struct ProcessingOrderConfig: OrderTrackable, AnimationHeaderProtocol, GetSuppor
     
     private func getOrderLocation() -> LocationCollectionViewCell.ViewModel {
         var location = orderLocation
-        location.type = isCancelationAllowed ? .showCancelButton : .hideAllButtons
+        location.type = isCancelationAllowed ? .showCancelButton : .details
         
         let showCancelButtonTimeout = response.orderDetails?.showCancelButtonTimeout ?? false
-        location.type = showCancelButtonTimeout ? .hideAllButtons : location.type
+        if !isCancelationAllowed, showCancelButtonTimeout {
+            location.type = .details
+        }
+        
         return location
     }
     

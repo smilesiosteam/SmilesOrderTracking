@@ -18,8 +18,12 @@ final class ItemRatingDataSource: NSObject {
     private let viewModel: ItemRatingViewModel
     weak var delegate: ItemRatingDataSourceDelegate?
     
-    @Published var enableDoneButton = false
     private var sections = [ItemRatingSection]()
+    
+    private var stateSubject: PassthroughSubject<State, Never> = .init()
+    var statePublisher: AnyPublisher<State, Never> {
+        stateSubject.eraseToAnyPublisher()
+    }
     
     // MARK: - Lifecycle
     init(viewModel: ItemRatingViewModel) {
@@ -123,7 +127,7 @@ extension ItemRatingDataSource: ItemRatingCellActionDelegate {
     func didTapRating(with ratingNumber: Int, ratingType: String?) {}
     
     func updateItemData(with itemRating: ItemRatings, orderRating: OrderRatingModel, ratingType: String?) {
-        enableDoneButton = true
+        stateSubject.send(.enableDoneButton(enable: true))
         
         viewModel.itemRatingUIModel.orderItems = viewModel.itemRatingUIModel.orderItems.map {
             var item = $0
@@ -144,5 +148,11 @@ extension ItemRatingDataSource: ItemRatingCellActionDelegate {
         if let index = viewModel.itemRatingUIModel.orderItems.firstIndex(where: { $0.itemID == itemRating.itemId }) {
             delegate?.collectionViewShouldReloadRow(at: index)
         }
+    }
+}
+
+extension ItemRatingDataSource {
+    enum State {
+        case enableDoneButton(enable: Bool)
     }
 }

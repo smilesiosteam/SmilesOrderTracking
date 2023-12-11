@@ -244,7 +244,7 @@ let jsonString = """
       }
     ],
     "deliveryTimeRange" : "40-50",
-    "orderStatus" : 7,
+    "orderStatus" : 0,
     "deliveryTimeRangeText" : "08:05PM - 08:15PM",
     "subscriptionBanner" : {
       "subscriptionIcon" : "https://cdn.eateasily.com/mamba/food_bogo.png",
@@ -288,6 +288,11 @@ let jsonString = """
     "driverStatusText" : "has delivered your order",
     "latitude" : "25.206286627010712"
   },
+"orderItems": [
+{"quantity": 10, "itemName": "Pesi"},
+{"quantity": 9, "itemName": "ahmed"},
+{"quantity": 3, "itemName": "nanan"},
+],
   "extTransactionId" : "2731272666123"
 }
 """

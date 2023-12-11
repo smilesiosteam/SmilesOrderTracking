@@ -29,9 +29,11 @@ final class RestaurantCollectionViewCell: UICollectionViewCell {
     func updateCell(with viewModel: ViewModel) {
         self.viewModel = viewModel
         nameLabel.text = viewModel.name
+        nameLabel.setAlignment()
         purchasedItemsLabel.text = viewModel.items
         purchasedItemsLabel.setLineHeight(lineHeight: 8)
         iconView.setImageWithUrlString(viewModel.iconUrl ?? "")
+        purchasedItemsLabel.setAlignment()
     }
     
     private func configControllers() {
@@ -41,6 +43,7 @@ final class RestaurantCollectionViewCell: UICollectionViewCell {
         containerView.layer.borderWidth = 1
         containerView.layer.borderColor = UIColor.black.withAlphaComponent(0.1).cgColor
         purchasedItemsLabel.fontTextStyle = .smilesBody3
+        
     }
 }
 

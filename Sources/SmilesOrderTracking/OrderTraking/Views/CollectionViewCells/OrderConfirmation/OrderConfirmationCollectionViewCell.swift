@@ -81,6 +81,7 @@ final class OrderConfirmationCollectionViewCell: UICollectionViewCell {
         self.delegate = delegate
         self.viewModel = viewModel
         questionLabel.text = viewModel.question
+        questionLabel.setAlignment()
     }
     
     private func configCell() {

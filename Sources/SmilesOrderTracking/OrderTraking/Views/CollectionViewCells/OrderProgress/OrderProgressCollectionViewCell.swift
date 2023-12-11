@@ -48,7 +48,8 @@ final class OrderProgressCollectionViewCell: UICollectionViewCell {
         
         titleLabel.text = viewModel.title
         timeLabel.text = viewModel.time
-        
+        titleLabel.setAlignment()
+        timeLabel.setAlignment()
         if viewModel.hideTimeLabel {
             timeLabel.isHidden = true
             titleLabel.fontTextStyle = .smilesHeadline2

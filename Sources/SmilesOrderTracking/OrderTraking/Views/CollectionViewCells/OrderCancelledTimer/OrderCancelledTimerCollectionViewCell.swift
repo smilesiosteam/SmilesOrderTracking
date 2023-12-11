@@ -80,7 +80,7 @@ final class OrderCancelledTimerCollectionViewCell: UICollectionViewCell {
         self.viewModel = viewModel
         actionButton.setTitle(viewModel.buttonTitle, for: .normal)
         textLabel.text = viewModel.title
-       
+        textLabel.setAlignment()
         if let timerCount = viewModel.timerCount {
             count = timerCount
             timeLabel.isHidden = false
@@ -107,6 +107,7 @@ final class OrderCancelledTimerCollectionViewCell: UICollectionViewCell {
             timer = nil
             timeLabel.text = "00:00" + " " + OrderTrackingLocalization.minText.text
             textLabel.text = OrderTrackingLocalization.orderCancelledTimeFinished.text
+            textLabel.setAlignment()
             mainStackView.spacing = 8
             bottomConstraint.constant = 9
             topConstraint.constant = 9

@@ -30,6 +30,7 @@ final class GetSupportCollectionViewCell: UICollectionViewCell {
         didSet {
             titleLabel.fontTextStyle = .smilesHeadline3
             titleLabel.textColor = .black
+            titleLabel.setAlignment()
         }
     }
     override func awakeFromNib() {
@@ -43,6 +44,7 @@ final class GetSupportCollectionViewCell: UICollectionViewCell {
         didSet {
             subtitleLabel.fontTextStyle = .smilesBody3
             subtitleLabel.textColor = .black.withAlphaComponent(0.5)
+            subtitleLabel.setAlignment()
         }
     }
     

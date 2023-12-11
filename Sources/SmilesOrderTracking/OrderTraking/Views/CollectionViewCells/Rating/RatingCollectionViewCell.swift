@@ -43,6 +43,7 @@ final class RatingCollectionViewCell: UICollectionViewCell {
         didSet {
             rateDeliveryLabel.fontTextStyle = .smilesBody2
             rateDeliveryLabel.textColor = .black.withAlphaComponent(0.8)
+            rateDeliveryLabel.setAlignment()
         }
     }
     

@@ -79,6 +79,8 @@ final class LocationCollectionViewCell: UICollectionViewCell {
     private func configFont() {
         startAddressLabel.fontTextStyle = .smilesBody2
         endAddressLabel.fontTextStyle = .smilesBody2
+        startAddressLabel.setAlignment()
+        endAddressLabel.setAlignment()
         
         cancelOrderButton.setTitle(OrderTrackingLocalization.cancelOrder.text, for: .normal)
         callRestrantButton.setTitle(OrderTrackingLocalization.callRestaurant.text, for: .normal)
@@ -123,3 +125,5 @@ extension LocationCollectionViewCell {
         var type: CellType = .showCancelButton
     }
 }
+
+

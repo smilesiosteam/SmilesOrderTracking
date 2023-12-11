@@ -7,7 +7,7 @@
 
 import Foundation
 import SmilesUtilities
-
+import SmilesLanguageManager
 protocol OrderTrackable {
     var response: OrderTrackingStatusResponse { get set }
     func build() -> OrderTrackingModel
@@ -64,7 +64,13 @@ extension OrderTrackable {
         var viewModel = RestaurantCollectionViewCell.ViewModel()
         viewModel.name = response.orderDetails?.restaurantName
         viewModel.iconUrl = response.orderDetails?.iconUrl
-        let orderItems = response.orderItems?.map({ "\($0.quantity ?? 0) x \($0.itemName ?? "")" }) ?? []
+        var orderItems: [String] = []
+        if SmilesLanguageManager.shared.isRightToLeft {
+            orderItems = response.orderItems?.map({ " \($0.itemName ?? "") x \($0.quantity ?? 0)" }) ?? []
+        } else {
+        orderItems = response.orderItems?.map({ "\($0.quantity ?? 0) x \($0.itemName ?? "")" }) ?? []
+        }
+       
         viewModel.items = orderItems.joined(separator: "\n")
         return viewModel
     }

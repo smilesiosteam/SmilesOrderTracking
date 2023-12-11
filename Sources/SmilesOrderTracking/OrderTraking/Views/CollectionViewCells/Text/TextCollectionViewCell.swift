@@ -21,6 +21,7 @@ final class TextCollectionViewCell: UICollectionViewCell {
     func updateCell(with viewModel: ViewModel) {
         detailsLable.text = viewModel.title
         detailsLable.fontTextStyle = viewModel.type.style
+        detailsLable.setAlignment()
     }
 }
 

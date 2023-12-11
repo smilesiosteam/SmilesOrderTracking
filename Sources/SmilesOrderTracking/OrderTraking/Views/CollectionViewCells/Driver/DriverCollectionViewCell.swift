@@ -41,8 +41,6 @@ final class DriverCollectionViewCell: UICollectionViewCell {
         case .delivery:
             delegate?.didTappPhoneCall(with: viewModel.driverMobileNumber)
         case .pickup:
-            print(viewModel.lat)
-            print(viewModel.lng)
             delegate?.opneMap(lat: viewModel.lat, lng: viewModel.lng, placeName: viewModel.placeName)
         }
     }
@@ -53,7 +51,8 @@ final class DriverCollectionViewCell: UICollectionViewCell {
         self.viewModel = viewModel
         titleLabel.text = viewModel.title
         descriptionLabel.text = viewModel.subTitle
-        
+        titleLabel.setAlignment()
+        descriptionLabel.setAlignment()
         switch viewModel.cellType {
         case .delivery:
             iconImageView.image = UIImage(resource: .driverIcon)

@@ -14,7 +14,8 @@ public struct OrderTrackingDependance {
     public var orderNUmber: String
     public var checkForVoucher: Bool
     public var chatbotType: String
-    public var isComingFromPayment = false
+    public var isCameFromMyOrder = false
+    public var personalizationEventSource: String?
     
     public init(orderId: String, orderNUmber: String, checkForVoucher: Bool = false, chatbotType: String) {
         self.orderId = orderId
@@ -55,9 +56,10 @@ public enum TrackOrderConfigurator {
         viewModel.orderNumber = dependance.orderNUmber
         viewModel.checkForVoucher = dependance.checkForVoucher
         viewModel.chatbotType = dependance.chatbotType
+        viewModel.personalizationEventSource = dependance.personalizationEventSource
         let viewController = OrderTrackingViewController.create()
         viewController.viewModel = viewModel
-        viewController.isComingFromPayment = dependance.isComingFromPayment
+        viewController.isCameFromMyOrder = dependance.isCameFromMyOrder
         return viewController
     }
     

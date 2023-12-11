@@ -22,7 +22,7 @@ final class PointsCollectionViewCell: UICollectionViewCell {
     
     // MARK: - Functions
     func updateCell(with viewModel: ViewModel) {
-        
+        detailsLabel.setAlignment()
         let text = viewModel.text ?? ""
         let combinedText = "\(viewModel.numberOfPoints) \(text)"
         let attributedString = NSMutableAttributedString(string: combinedText)

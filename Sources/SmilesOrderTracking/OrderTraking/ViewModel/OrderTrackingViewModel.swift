@@ -107,7 +107,7 @@ final class OrderTrackingViewModel {
                 self.statusSubject.send(.hideLoader)
                 self.statusSubject.send(.navigateToGetSupport)
             case .callOrderStatus:
-                self.fetchStatus()
+                self.useCase.fetchOrderStates()
             }
         }
         .store(in: &cancellables)

@@ -87,12 +87,6 @@ extension OrderTrackingViewController: OrderTrackingViewDelegate {
     
     func timerIs(on: Bool) {
         timerIsOn = on
-        if !on {
-            DispatchQueue.main.asyncAfter(deadline: .now() + 1) { [weak self] in
-                self?.viewModel.fetchStatus()
-            }
-            
-        }
     }
     
     func pauseAnimation() {

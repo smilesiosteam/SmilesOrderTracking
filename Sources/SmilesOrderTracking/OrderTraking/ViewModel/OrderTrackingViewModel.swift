@@ -63,8 +63,8 @@ final class OrderTrackingViewModel {
             }
 //            self.statusSubject.send(.hideLoader)
             switch states {
-            case .showError(let message):
-                self.statusSubject.send(.showError(message: message))
+            case .showErrorAndPop(let message):
+                self.statusSubject.send(.showErrorAndPop(message: message))
             case .showToastForArrivedOrder(let isShow):
                 self.statusSubject.send(.showToastForArrivedOrder(isShow: isShow))
             case .showToastForNoLiveTracking(let isShow):
@@ -206,5 +206,6 @@ extension OrderTrackingViewModel {
         case presentCancelFlow(orderId: String)
         case driverLocation(lat: Double, long: Double)
         case navigateToGetSupport
+        case showErrorAndPop(message: String)
     }
 }

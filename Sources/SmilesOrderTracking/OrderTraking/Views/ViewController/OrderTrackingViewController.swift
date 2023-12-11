@@ -329,6 +329,12 @@ public final class OrderTrackingViewController: UIViewController, Toastable, Map
                 headerMap?.moveDriverOnMap(lat: lat, long: long)
             case .navigateToGetSupport:
                 self.getSupport()
+            case .showErrorAndPop(message: let message):
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) {
+                    self.showAlertWithOkayOnly(message: message) { [weak self] _ in
+                        self?.dismiss()
+                    }
+                }
             }
         }.store(in: &cancellables)
     }

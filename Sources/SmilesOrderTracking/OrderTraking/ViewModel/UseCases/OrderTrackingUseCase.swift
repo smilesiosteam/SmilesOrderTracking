@@ -129,7 +129,7 @@ final class OrderTrackingUseCase: OrderTrackingUseCaseProtocol {
             case .finished:
                 print("finished")
             case .failure(let error):
-                self?.stateSubject.send(.showError(message: error.localizedDescription))
+                self?.stateSubject.send(.showErrorAndPop(message: error.localizedDescription))
             }
         } receiveValue: { [weak self] response in
             guard let self else {
@@ -205,7 +205,7 @@ final class OrderTrackingUseCase: OrderTrackingUseCaseProtocol {
 
 extension OrderTrackingUseCase {
     enum State {
-        case showError(message: String)
+        case showErrorAndPop(message: String)
         case showToastForArrivedOrder(isShow: Bool)
         case showToastForNoLiveTracking(isShow: Bool)
         case success(model: OrderTrackingModel)

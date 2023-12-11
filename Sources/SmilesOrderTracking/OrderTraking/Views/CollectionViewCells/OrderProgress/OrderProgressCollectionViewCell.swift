@@ -7,6 +7,7 @@
 
 import UIKit
 import SmilesUtilities
+import SmilesLanguageManager
 
 final class OrderProgressCollectionViewCell: UICollectionViewCell {
     
@@ -57,8 +58,15 @@ final class OrderProgressCollectionViewCell: UICollectionViewCell {
         }
     }
     private func configControllers() {
-        firstStepView.addMaskedCorner(withMaskedCorner: [.layerMinXMinYCorner, .layerMinXMaxYCorner], cornerRadius: 3)
-        fourthStepView.addMaskedCorner(withMaskedCorner: [.layerMaxXMaxYCorner, .layerMaxXMinYCorner], cornerRadius: 3)
+        
+        if SmilesLanguageManager.shared.isRightToLeft {
+            fourthStepView.addMaskedCorner(withMaskedCorner: [.layerMinXMinYCorner, .layerMinXMaxYCorner], cornerRadius: 3)
+            firstStepView.addMaskedCorner(withMaskedCorner: [.layerMaxXMaxYCorner, .layerMaxXMinYCorner], cornerRadius: 3)
+        } else {
+            firstStepView.addMaskedCorner(withMaskedCorner: [.layerMinXMinYCorner, .layerMinXMaxYCorner], cornerRadius: 3)
+            fourthStepView.addMaskedCorner(withMaskedCorner: [.layerMaxXMaxYCorner, .layerMaxXMinYCorner], cornerRadius: 3)
+        }
+       
         timeLabel.fontTextStyle = .smilesHeadline2
         titleLabel.fontTextStyle = .smilesHeadline4
     }

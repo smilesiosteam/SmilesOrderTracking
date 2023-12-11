@@ -62,6 +62,8 @@ final class RatingCollectionViewCell: UICollectionViewCell {
     
     // MARK: - Methods
     func updateCell(with viewModel: ViewModel, delegate: RatingCellActionDelegate) {
+        rateDeliveryStackView.isHidden = true
+        rateOrderStackView.isHidden = true
         self.delegate = delegate
         self.orderId = viewModel.orderId
         for item in viewModel.items {

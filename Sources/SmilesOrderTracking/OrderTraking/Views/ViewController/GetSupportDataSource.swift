@@ -63,17 +63,15 @@ extension GetSupportDataSource: UICollectionViewDataSource {
         switch type {
         case .supportImageHeader(model: let model):
             let header = collectionView.dequeueReusableSupplementaryView(ofKind: headerName, withClass: GetSupportImageHeaderCollectionViewCell.self, for: indexPath)
-            header.updateCell(with: model, delegate: self)
+            header.updateCell(with: model)
             return header
         }
     }
 }
 
 // MARK: - Header Delegate
-extension GetSupportDataSource: GetSupportHeaderCollectionViewProtocol, GetSupportCollectionViewCellActionDelegate {
-    func didTapBack() {
-        delegate?.back()
-    }
+extension GetSupportDataSource: GetSupportCollectionViewCellActionDelegate {
+    
     func didClick(_ model: GetSupportCollectionViewCell.ViewModel) {
         delegate?.performAction(model)
     }

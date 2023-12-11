@@ -14,7 +14,6 @@ import SmilesLoader
 
 protocol GetSupportViewDelegate: AnyObject {
     func performAction(_:GetSupportCollectionViewCell.ViewModel)
-    func back()
 }
 
 
@@ -32,7 +31,7 @@ public final class GetSupportViewController: UIViewController, Toastable, GetSup
         }
     }
     
-    func back() {
+    @IBAction func back(_ sender:Any) {
         self.navigationController?.popViewController()
     }
     

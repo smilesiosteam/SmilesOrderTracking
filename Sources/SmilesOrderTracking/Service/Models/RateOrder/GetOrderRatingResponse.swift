@@ -9,13 +9,13 @@ import Foundation
 
 struct GetOrderRatingResponse: Codable {
     // MARK: - Properties
-    let title: String?
-    let orderRating: [OrderRating]?
-    let orderDetails: OrderDetails?
-    let orderItemDetails: [OrderItemDetail]?
-    let isAccrualPointsAllowed: Bool?
-    let itemLevelRatingEnabled: Bool?
-    let ratingStatus: Bool?
+   var title: String?
+   var orderRating: [OrderRating]?
+   var orderDetails: OrderDetails?
+   var orderItemDetails: [OrderItemDetail]?
+   var isAccrualPointsAllowed: Bool?
+   var itemLevelRatingEnabled: Bool?
+   var ratingStatus: Bool?
     
     enum CodingKeys: String, CodingKey {
         case title
@@ -38,21 +38,5 @@ struct GetOrderRatingResponse: Codable {
         self.itemLevelRatingEnabled = try container.decodeIfPresent(Bool.self, forKey: .itemLevelRatingEnabled)
         self.ratingStatus = try container.decodeIfPresent(Bool.self, forKey: .ratingStatus)
     }
-    
-    init(title: String? = nil,
-         orderRating: [OrderRating]? = [],
-         orderDetails: OrderDetails? = nil,
-         orderItemDetails: [OrderItemDetail]? = [],
-         isAccrualPointsAllowed: Bool? = nil,
-         itemLevelRatingEnabled: Bool = false,
-         ratingStatus: Bool? = nil
-    ) {
-        self.title = title
-        self.orderRating = orderRating
-        self.orderDetails = orderDetails
-        self.orderItemDetails = orderItemDetails
-        self.isAccrualPointsAllowed = isAccrualPointsAllowed
-        self.itemLevelRatingEnabled = itemLevelRatingEnabled
-        self.ratingStatus = ratingStatus
-    }
+    init(){}
 }

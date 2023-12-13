@@ -11,6 +11,11 @@ import NetworkingLayer
 @testable import SmilesOrderTracking
 
 final class OrderTrackingServiceHandlerMock: OrderTrackingServiceHandlerProtocol {
+    
+    // MARK: - Properties
+    var changeOrderTypeResponse: Result<OrderChangeTypeResponse, NetworkError> = .failure(.badURL(""))
+    
+    // MARK: - Mock Behaviours
     func getOrderTrackingStatus(orderId: String, orderStatus: String, orderNumber: String, isComingFromFirebase: Bool) -> AnyPublisher<OrderTrackingStatusResponse, NetworkError> {
         Just(OrderTrackingStatusResponse())
             .setFailureType(to: NetworkError.self)
@@ -24,9 +29,9 @@ final class OrderTrackingServiceHandlerMock: OrderTrackingServiceHandlerProtocol
     }
     
     func changeOrderType(orderId: String) -> AnyPublisher<OrderChangeTypeResponse, NetworkError> {
-        Just(OrderChangeTypeResponse())
-            .setFailureType(to: NetworkError.self)
-            .eraseToAnyPublisher()
+        Future<OrderChangeTypeResponse, NetworkError> { promise in
+            promise(self.changeOrderTypeResponse)
+        }.eraseToAnyPublisher()
     }
     
     func cancelOrder(orderId: String, rejectionReason: String?) -> AnyPublisher<OrderCancelResponse, NetworkError> {
@@ -46,6 +51,4 @@ final class OrderTrackingServiceHandlerMock: OrderTrackingServiceHandlerProtocol
             .setFailureType(to: NetworkError.self)
             .eraseToAnyPublisher()
     }
-    
-    
 }

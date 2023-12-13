@@ -49,7 +49,7 @@ final class ChangeTypeUseCase: ChangeTypeUseCaseProtocol {
 }
 
 extension ChangeTypeUseCase {
-    enum State {
+    enum State: Equatable {
         case showError(message: String)
         case navigateToOrderConfirmation(orderId: String, orderNumber: String)
         case callOrderStatus

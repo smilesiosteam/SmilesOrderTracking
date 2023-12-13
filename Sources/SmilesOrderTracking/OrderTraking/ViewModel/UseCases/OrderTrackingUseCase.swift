@@ -118,7 +118,7 @@ final class OrderTrackingUseCase: OrderTrackingUseCaseProtocol {
     func loadOrderStatus(orderId: String, orderStatus: String, orderNumber: String, isComingFromFirebase: Bool) {
         self.stateSubject.send(.showLoader)
 
-        let handler = OrderTrackingServiceHandler(network: TrackOrderConfigurator.network)
+        let handler = OrderTrackingServiceHandler(repository: TrackOrderConfigurator.repository)
         handler.getOrderTrackingStatus(orderId: orderId,
                                        orderStatus: orderStatus,
                                        orderNumber: orderNumber, isComingFromFirebase: isComingFromFirebase)

@@ -21,94 +21,90 @@ protocol OrderTrackingServiceable {
 }
 
 final class OrderTrackingRepository: OrderTrackingServiceable {
-    private var networkRequest: Requestable
-    private var baseUrl: String
-    private var endPoint: SmilesOrderTrackingEndpoint
-
-  // inject this for testability
-    init(networkRequest: Requestable, baseUrl: String, endPoint: SmilesOrderTrackingEndpoint) {
+    // MARK: - Properties
+    private let networkRequest: Requestable
+    private let baseUrl: String
+    
+    // MARK: - Init
+    init(networkRequest: Requestable, baseUrl: String) {
         self.networkRequest = networkRequest
         self.baseUrl = baseUrl
-        self.endPoint = endPoint
     }
   
+    // MARK: - Functions
     func getOrderTrackingStatusService(request: OrderTrackingStatusRequest) -> AnyPublisher<OrderTrackingStatusResponse, NetworkError> {
         let endPoint = OrderTrackingRequestBuilder.getOrderTrackingStatus(request: request)
         let request = endPoint.createRequest(
-            baseUrl: self.baseUrl,
-            endPoint: self.endPoint
+            baseUrl: baseUrl,
+            endPoint: .orderTrackingStatus
         )
-        
-        return self.networkRequest.request(request)
+
+        return networkRequest.request(request)
     }
     
     func setOrderConfirmationStatusService(request: OrderTrackingStatusRequest) -> AnyPublisher<OrderTrackingStatusResponse, NetworkError> {
         let endPoint = OrderTrackingRequestBuilder.setOrderConfirmationStatus(request: request)
         let request = endPoint.createRequest(
-            baseUrl: self.baseUrl,
-            endPoint: self.endPoint
+            baseUrl: baseUrl,
+            endPoint: .orderConfirmationStatus
         )
         
-        return self.networkRequest.request(request)
+        return networkRequest.request(request)
     }
     
     func changeOrderTypeService(request: OrderTrackingStatusRequest) -> AnyPublisher<OrderChangeTypeResponse, NetworkError> {
         let endPoint = OrderTrackingRequestBuilder.changeOrderType(request: request)
         let request = endPoint.createRequest(
-            baseUrl: self.baseUrl,
-            endPoint: self.endPoint
+            baseUrl: baseUrl,
+            endPoint: .orderChangeType
         )
         
-        return self.networkRequest.request(request)
+        return networkRequest.request(request)
     }
     
     func resumeOrderService(request: OrderTrackingStatusRequest) -> AnyPublisher<BaseMainResponse, NetworkError> {
         let endPoint = OrderTrackingRequestBuilder.resumeOrder(request: request)
         let request = endPoint.createRequest(
-            baseUrl: self.baseUrl,
-            endPoint: self.endPoint
+            baseUrl: baseUrl,
+            endPoint: .resumeOrder
         )
         
-        return self.networkRequest.request(request)
+        return networkRequest.request(request)
     }
     
     func pauseOrderService(request: OrderTrackingStatusRequest) -> AnyPublisher<BaseMainResponse, NetworkError> {
         let endPoint = OrderTrackingRequestBuilder.pauseOrder(request: request)
         let request = endPoint.createRequest(
-            baseUrl: self.baseUrl,
-            endPoint: self.endPoint
+            baseUrl: baseUrl,
+            endPoint: .pauseOrder
         )
-        
-        return self.networkRequest.request(request)
+        return networkRequest.request(request)
     }
     
     func cancelOrderService(request: OrderCancelRequest) -> AnyPublisher<OrderCancelResponse, NetworkError> {
         let endPoint = OrderTrackingRequestBuilder.cancelOrder(request: request)
         let request = endPoint.createRequest(
-            baseUrl: self.baseUrl,
-            endPoint: self.endPoint
+            baseUrl: baseUrl,
+            endPoint: .cancelOrder
         )
-        
-        return self.networkRequest.request(request)
+        return networkRequest.request(request)
     }
     
     func submitOrderRatingService(request: RateOrderRequest) -> AnyPublisher<RateOrderResponse, NetworkError> {
         let endPoint = OrderTrackingRequestBuilder.submitOrderRating(request: request)
         let request = endPoint.createRequest(
-            baseUrl: self.baseUrl,
-            endPoint: self.endPoint
+            baseUrl: baseUrl,
+            endPoint: .submitOrderRating
         )
-        
-        return self.networkRequest.request(request)
+        return networkRequest.request(request)
     }
     
     func getOrderRatingService(request: GetOrderRatingRequest) -> AnyPublisher<GetOrderRatingResponse, NetworkError> {
         let endPoint = OrderTrackingRequestBuilder.getOrderRating(request: request)
         let request = endPoint.createRequest(
-            baseUrl: self.baseUrl,
-            endPoint: self.endPoint
+            baseUrl: baseUrl,
+            endPoint: .getOrderRating
         )
-        
-        return self.networkRequest.request(request)
+        return networkRequest.request(request)
     }
 }

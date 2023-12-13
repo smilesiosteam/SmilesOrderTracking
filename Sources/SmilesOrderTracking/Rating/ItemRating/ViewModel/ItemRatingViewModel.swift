@@ -37,7 +37,7 @@ final public class ItemRatingViewModel: NSObject {
     }
     
     func submitRating() {
-        let serviceHandler = OrderTrackingServiceHandler(network: TrackOrderConfigurator.network)
+        let serviceHandler = OrderTrackingServiceHandler(repository: TrackOrderConfigurator.repository)
         NotificationCenter.default.post(name: .ReloadOrderSummary, object: nil, userInfo: nil)
         
         SmilesLoader.show()

@@ -12,7 +12,7 @@ import NetworkingLayer
 import SmilesLoader
 
 class SmilesOrderCancelledViewModel: NSObject {
-    let service = OrderTrackingServiceHandler(network: TrackOrderConfigurator.network)
+    let service = OrderTrackingServiceHandler(repository: TrackOrderConfigurator.repository)
     var liveChatUseCase = LiveChatUseCase()
     var chatbotType = ""
     var orderId = ""

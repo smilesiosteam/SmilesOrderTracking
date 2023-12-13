@@ -14,7 +14,7 @@ final class OrderTrackingViewModel {
     
     // MARK: - Properties
     private var cancellables = Set<AnyCancellable>()
-    var serviceHandler = OrderTrackingServiceHandler(network: TrackOrderConfigurator.network)
+    var serviceHandler = OrderTrackingServiceHandler(repository: TrackOrderConfigurator.repository)
     
     private let useCase: OrderTrackingUseCaseProtocol
     private let confirmUseCase: OrderConfirmationUseCaseProtocol

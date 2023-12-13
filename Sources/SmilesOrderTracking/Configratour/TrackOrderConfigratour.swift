@@ -1,6 +1,6 @@
 //
 //  File.swift
-//  
+//
 //
 //  Created by Ahmed Naguib on 30/11/2023.
 //
@@ -9,6 +9,7 @@ import Foundation
 import UIKit
 import Combine
 import NetworkingLayer
+import SmilesUtilities
 
 public struct OrderTrackingDependance {
     public var orderId: String
@@ -40,7 +41,7 @@ public struct GetSupportDependance {
 
 public enum TrackOrderConfigurator {
     
-    public static func getOrderTrackingView(dependance: OrderTrackingDependance, 
+    public static func getOrderTrackingView(dependance: OrderTrackingDependance,
                                             navigationDelegate: OrderTrackingNavigationProtocol,
                                             firebasePublisher: AnyPublisher<LiveTrackingState, Never>
     ) -> OrderTrackingViewController {
@@ -64,7 +65,7 @@ public enum TrackOrderConfigurator {
         return viewController
     }
     
-
+    
     static func getConfirmationPopup(locationText: String, didTappedContinue: (()-> Void)?) -> UIViewController {
         let viewController = PickupConfirmationViewController.create()
         viewController.locationText = locationText
@@ -72,24 +73,29 @@ public enum TrackOrderConfigurator {
         return viewController
     }
     
-   static var service: OrderTrackingServiceHandler {
-       return .init(network: network)
+    static var service: OrderTrackingServiceHandler {
+        return .init(repository: repository)
     }
     
     static var network: Requestable {
         NetworkingLayerRequestable(requestTimeOut: 60)
     }
-
+    
+    static var repository: OrderTrackingServiceable {
+        OrderTrackingRepository(networkRequest: network, baseUrl: AppCommonMethods.serviceBaseUrl)
+    }
+    
+    
     public static func getOrderSupportView(dependance: GetSupportDependance,
-                                            navigationDelegate: OrderTrackingNavigationProtocol?) -> UIViewController {
+                                           navigationDelegate: OrderTrackingNavigationProtocol?) -> UIViewController {
         let useCase = GetSupportUseCase(orderId: dependance.orderId,
-                                           orderNumber: dependance.orderNUmber,
-                                           services: service)
+                                        orderNumber: dependance.orderNUmber,
+                                        services: service)
         let viewModel = GetSupportViewModel(useCase: useCase, orderId: dependance.orderId, orderNumber: dependance.orderNUmber,chatBotType: dependance.chatBotType)
         viewModel.navigationDelegate = navigationDelegate
         let viewController = GetSupportViewController.create()
         viewController.viewModel = viewModel
         return viewController
     }
-
+    
 }

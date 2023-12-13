@@ -60,7 +60,7 @@
       "location" : "https://github.com/smilesiosteam/NetworkingLayer.git",
       "state" : {
         "branch" : "main",
-        "revision" : "ce9d841179a6cb4d5e21e60bb5d31691ecb80ca1"
+        "revision" : "b836cad618e80206d2ebe13588ca44a07673d4ad"
       }
     },
     {
@@ -86,8 +86,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/SDWebImage/SDWebImage.git",
       "state" : {
-        "revision" : "0383fd49fe4d9ae43f150f24693550ebe6ef0d14",
-        "version" : "5.18.6"
+        "revision" : "e278c13e46e8d20c895c221e922c6ac6b72aaca9",
+        "version" : "5.18.7"
       }
     },
     {
@@ -195,7 +195,7 @@
       "location" : "https://github.com/smilesiosteam/SmilesUtilities.git",
       "state" : {
         "branch" : "main",
-        "revision" : "c500c8aaee7a122c54d0b0f79fbff10f30afdf36"
+        "revision" : "af4692c33586898a16a5c920151cd2066e4b1534"
       }
     }
   ],

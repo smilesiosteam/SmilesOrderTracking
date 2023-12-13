@@ -41,7 +41,7 @@ final public class RateYourOrderViewModel: NSObject {
     }
     
     func submitRating() {
-        let serviceHandler = OrderTrackingServiceHandler()
+        let serviceHandler = OrderTrackingServiceHandler(network: TrackOrderConfigurator.network)
         
         SmilesLoader.show()
         let ratingOrderResponse = rateYourOrderUIModel.ratingOrderResponse

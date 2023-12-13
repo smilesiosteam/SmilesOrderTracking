@@ -8,6 +8,7 @@
 import Foundation
 import UIKit
 import Combine
+import NetworkingLayer
 
 public struct OrderTrackingDependance {
     public var orderId: String
@@ -72,7 +73,11 @@ public enum TrackOrderConfigurator {
     }
     
    static var service: OrderTrackingServiceHandler {
-        return .init()
+       return .init(network: network)
+    }
+    
+    static var network: Requestable {
+        NetworkingLayerRequestable(requestTimeOut: 60)
     }
 
     public static func getOrderSupportView(dependance: GetSupportDependance,
@@ -86,6 +91,5 @@ public enum TrackOrderConfigurator {
         viewController.viewModel = viewModel
         return viewController
     }
-    
 
 }

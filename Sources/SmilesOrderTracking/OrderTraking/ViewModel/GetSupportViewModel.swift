@@ -12,7 +12,7 @@ import SmilesLoader
 final class GetSupportViewModel {
     // MARK: - Properties
     private var cancellables = Set<AnyCancellable>()
-    var serviceHandler = OrderTrackingServiceHandler()
+    var serviceHandler = OrderTrackingServiceHandler(network: TrackOrderConfigurator.network)
     private let useCase: GetSupportUseCase
     private var statusSubject = PassthroughSubject<GetSupportViewModel.State, Never>()
     var orderId = ""

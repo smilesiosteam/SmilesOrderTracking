@@ -22,10 +22,19 @@ protocol OrderTrackingServiceHandlerProtocol {
 }
 
 final class OrderTrackingServiceHandler: OrderTrackingServiceHandlerProtocol {
+    
+    // MARK: - Properties
+    private let network: Requestable
+    
+    // MARK: - Init
+    init(network: Requestable) {
+        self.network = network
+    }
+    
+    // MARK: - Functions
     func getOrderTrackingStatus(orderId: String, orderStatus: String, orderNumber: String, isComingFromFirebase: Bool) -> AnyPublisher<OrderTrackingStatusResponse, NetworkError> {
         
         let request = OrderTrackingStatusRequest(orderId: orderId)
-        print(request)
         if isComingFromFirebase {
             var additionalInfo = [BaseMainResponseAdditionalInfo]()
             let orderStatusAdditionalInfo : BaseMainResponseAdditionalInfo = BaseMainResponseAdditionalInfo()
@@ -49,7 +58,7 @@ final class OrderTrackingServiceHandler: OrderTrackingServiceHandlerProtocol {
         }
         
         let service = OrderTrackingRepository(
-            networkRequest: NetworkingLayerRequestable(requestTimeOut: 60),
+            networkRequest: network,
             baseUrl: AppCommonMethods.serviceBaseUrl,
             endPoint: .orderTrackingStatus
         )
@@ -60,7 +69,7 @@ final class OrderTrackingServiceHandler: OrderTrackingServiceHandlerProtocol {
     func setOrderConfirmationStatus(orderId: String, orderStatus: OrderTrackingType) -> AnyPublisher<OrderTrackingStatusResponse, NetworkError> {
         let request = OrderTrackingStatusRequest(orderId: orderId, orderStatus: orderStatus.rawValue)
         let service = OrderTrackingRepository(
-            networkRequest: NetworkingLayerRequestable(requestTimeOut: 60),
+            networkRequest: network,
             baseUrl: AppCommonMethods.serviceBaseUrl,
             endPoint: .orderConfirmationStatus
         )
@@ -71,7 +80,7 @@ final class OrderTrackingServiceHandler: OrderTrackingServiceHandlerProtocol {
     func changeOrderType(orderId: String) -> AnyPublisher<OrderChangeTypeResponse, NetworkError> {
         let request = OrderTrackingStatusRequest(orderId: orderId)
         let service = OrderTrackingRepository(
-            networkRequest: NetworkingLayerRequestable(requestTimeOut: 60),
+            networkRequest: network,
             baseUrl: AppCommonMethods.serviceBaseUrl,
             endPoint: .orderChangeType
         )
@@ -82,7 +91,7 @@ final class OrderTrackingServiceHandler: OrderTrackingServiceHandlerProtocol {
     func resumeOrder(orderId: String) -> AnyPublisher<BaseMainResponse, NetworkError> {
         let request = OrderTrackingStatusRequest(orderId: orderId)
         let service = OrderTrackingRepository(
-            networkRequest: NetworkingLayerRequestable(requestTimeOut: 60),
+            networkRequest: network,
             baseUrl: AppCommonMethods.serviceBaseUrl,
             endPoint: .resumeOrder
         )
@@ -93,7 +102,7 @@ final class OrderTrackingServiceHandler: OrderTrackingServiceHandlerProtocol {
     func pauseOrder(orderId: String) -> AnyPublisher<BaseMainResponse, NetworkError> {
         let request = OrderTrackingStatusRequest(orderId: orderId)
         let service = OrderTrackingRepository(
-            networkRequest: NetworkingLayerRequestable(requestTimeOut: 60),
+            networkRequest: network,
             baseUrl: AppCommonMethods.serviceBaseUrl,
             endPoint: .pauseOrder
         )
@@ -105,7 +114,7 @@ final class OrderTrackingServiceHandler: OrderTrackingServiceHandlerProtocol {
         let request = OrderCancelRequest(orderId: orderId, rejectionReason: rejectionReason)
         
         let service = OrderTrackingRepository(
-            networkRequest: NetworkingLayerRequestable(requestTimeOut: 60),
+            networkRequest: network,
             baseUrl: AppCommonMethods.serviceBaseUrl,
             endPoint: .cancelOrder
         )
@@ -118,7 +127,7 @@ final class OrderTrackingServiceHandler: OrderTrackingServiceHandlerProtocol {
         let request = RateOrderRequest(orderId: orderId, orderNumber: orderNumber, restaurantName: restaurantName, orderRatings: orderRating, itemRatings: itemRatings, isAccuralPointsAllowed: isAccrualPointsAllowed, itemLevelRatingEnabled: itemLevelRatingEnabled, restaurantId: restaurantId, userFeedback: userFeedback)
         
         let service = OrderTrackingRepository(
-            networkRequest: NetworkingLayerRequestable(requestTimeOut: 60),
+            networkRequest: network,
             baseUrl: AppCommonMethods.serviceBaseUrl,
             endPoint: .submitOrderRating
         )
@@ -131,7 +140,7 @@ final class OrderTrackingServiceHandler: OrderTrackingServiceHandlerProtocol {
         let request = GetOrderRatingRequest(ratingType: ratingType, contentType: contentType, isLiveTracking: isLiveTracking, orderId: orderId)
         
         let service = OrderTrackingRepository(
-            networkRequest: NetworkingLayerRequestable(requestTimeOut: 60),
+            networkRequest: network,
             baseUrl: AppCommonMethods.serviceBaseUrl,
             endPoint: .getOrderRating
         )
@@ -139,3 +148,4 @@ final class OrderTrackingServiceHandler: OrderTrackingServiceHandlerProtocol {
         return service.getOrderRatingService(request: request)
     }
 }
+

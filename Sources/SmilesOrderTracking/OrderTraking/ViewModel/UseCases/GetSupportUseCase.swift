@@ -94,7 +94,7 @@ final class GetSupportUseCase: GetSupportUseCaseProtocol {
     }
     
     private func loadOrderStatus() {
-        let handler = OrderTrackingServiceHandler()
+        let handler = OrderTrackingServiceHandler(network: TrackOrderConfigurator.network)
         handler.getOrderTrackingStatus(orderId: orderId,
                                        orderStatus: "5",
                                        orderNumber: orderNumber, isComingFromFirebase: false)

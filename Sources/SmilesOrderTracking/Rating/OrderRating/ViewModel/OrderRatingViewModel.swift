@@ -19,7 +19,7 @@ final class OrderRatingViewModel {
         stateSubject.eraseToAnyPublisher()
     }
 
-    private let serviceHandler = OrderTrackingServiceHandler()
+    private let serviceHandler = OrderTrackingServiceHandler(network: TrackOrderConfigurator.network)
     private var getOrderRatingResponse: GetOrderRatingResponse?
     
     init(orderRatingUIModel: OrderRatingUIModel, liveChatUseCase: LiveChatUseCaseProtocol = LiveChatUseCase()) {

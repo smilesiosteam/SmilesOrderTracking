@@ -26,6 +26,7 @@ final class RestaurantCancelCollectionViewCell: UICollectionViewCell {
             titleLabel.fontTextStyle = .smilesBody2
             titleLabel.text = OrderTrackingLocalization.restaurantCancelledOrder.text
             titleLabel.textColor = .black
+            titleLabel.setAlignment()
         }
     }
     @IBOutlet private weak var actionButton: UIButton! {

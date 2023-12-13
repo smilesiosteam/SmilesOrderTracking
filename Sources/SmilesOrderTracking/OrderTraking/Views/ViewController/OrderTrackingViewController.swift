@@ -65,10 +65,10 @@ extension OrderTrackingViewController: OrderTrackingViewDelegate {
     
     func dismiss() {
         viewModel.navigationDelegate?.closeTracking()
-        if isComingFromPayment {
-            viewModel.navigationDelegate?.popToViewRestaurantDetailVC()
-        } else {
+        if isCameFromMyOrder {
             self.dismissMe()
+        } else {
+            viewModel.navigationDelegate?.popToViewRestaurantDetailVC()
         }
     }
     
@@ -144,7 +144,7 @@ public final class OrderTrackingViewController: UIViewController, Toastable, Map
     var isHeaderVisible = true
     var lastContentOffset: CGFloat = 0
     var viewModel: OrderTrackingViewModel!
-    var isComingFromPayment = false
+    var isCameFromMyOrder = false
     
     // MARK: - Life Cycle
     public override func viewDidLoad() {
@@ -153,7 +153,7 @@ public final class OrderTrackingViewController: UIViewController, Toastable, Map
         dataSource.delegate = self
         bindCancelFlow()
         bindStatus()
-        
+        viewModel.setPersonalizationEventSource()
         NotificationCenter.default.addObserver(self, selector: #selector(applicationDidBecomeActive),
                                                name: UIApplication.willEnterForegroundNotification, object: nil)
         

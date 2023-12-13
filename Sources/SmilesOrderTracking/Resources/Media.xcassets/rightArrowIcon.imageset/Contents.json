@@ -2,7 +2,13 @@
   "images" : [
     {
       "filename" : "rightArrowIcon.pdf",
-      "idiom" : "universal"
+      "idiom" : "universal",
+      "language-direction" : "left-to-right"
+    },
+    {
+      "filename" : "rightArrowIcon copy.pdf",
+      "idiom" : "universal",
+      "language-direction" : "right-to-left"
     }
   ],
   "info" : {

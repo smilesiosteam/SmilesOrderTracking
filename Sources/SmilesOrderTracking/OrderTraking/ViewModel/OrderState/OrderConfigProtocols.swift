@@ -22,7 +22,7 @@ extension CanceledOrderConfigProtocol {
     
     func getTextModel() -> TextCollectionViewCell.ViewModel {
         var viewModel = TextCollectionViewCell.ViewModel()
-        viewModel.title = orderText
+        viewModel.title = response.orderDetails?.title
         viewModel.type = .title
         return viewModel
     }

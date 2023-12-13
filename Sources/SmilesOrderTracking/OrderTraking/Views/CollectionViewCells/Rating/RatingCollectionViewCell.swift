@@ -43,6 +43,7 @@ final class RatingCollectionViewCell: UICollectionViewCell {
         didSet {
             rateDeliveryLabel.fontTextStyle = .smilesBody2
             rateDeliveryLabel.textColor = .black.withAlphaComponent(0.8)
+            rateDeliveryLabel.setAlignment()
         }
     }
     
@@ -61,6 +62,8 @@ final class RatingCollectionViewCell: UICollectionViewCell {
     
     // MARK: - Methods
     func updateCell(with viewModel: ViewModel, delegate: RatingCellActionDelegate) {
+        rateDeliveryStackView.isHidden = true
+        rateOrderStackView.isHidden = true
         self.delegate = delegate
         self.orderId = viewModel.orderId
         for item in viewModel.items {

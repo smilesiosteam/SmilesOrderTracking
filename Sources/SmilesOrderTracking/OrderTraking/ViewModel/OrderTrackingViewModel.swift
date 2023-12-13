@@ -8,6 +8,7 @@
 import Foundation
 import Combine
 import SmilesScratchHandler
+import SmilesUtilities
 
 final class OrderTrackingViewModel {
     
@@ -28,6 +29,7 @@ final class OrderTrackingViewModel {
     var chatbotType = ""
     var isLiveTracking = false
     var orderStatus: OrderTrackingType = .inTheKitchen
+    var personalizationEventSource: String?
     var orderStatusPublisher: AnyPublisher<State, Never> {
         statusSubject.eraseToAnyPublisher()
     }
@@ -190,6 +192,13 @@ final class OrderTrackingViewModel {
                 self.statusSubject.send(.driverLocation(lat: latitude, long: longitude))
             }
         }.store(in: &cancellables)
+    }
+    
+    func setPersonalizationEventSource() {
+        if let source = SharedConstants.personalizationEventSource {
+            self.personalizationEventSource = source
+            SharedConstants.personalizationEventSource = nil
+        }
     }
 }
 

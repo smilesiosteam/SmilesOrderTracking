@@ -7,6 +7,7 @@
 
 import Foundation
 import NetworkingLayer
+import SmilesUtilities
 
 // if you wish you can have multiple services like this in a project
 enum OrderTrackingRequestBuilder {
@@ -48,14 +49,14 @@ enum OrderTrackingRequestBuilder {
     }
     
     // compose the NetworkRequest
-    func createRequest(baseUrl: String, endPoint: SmilesOrderTrackingEndpoint) -> NetworkRequest {
+    func createRequest(endPoint: SmilesOrderTrackingEndpoint) -> NetworkRequest {
         var headers: [String: String] = [:]
 
         headers["Content-Type"] = "application/json"
         headers["Accept"] = "application/json"
         headers["CUSTOM_HEADER"] = "pre_prod"
         
-        return NetworkRequest(url: getURL(from: baseUrl, for: endPoint), headers: headers, reqBody: requestBody, httpMethod: httpMethod)
+        return NetworkRequest(url: getURL(from: AppCommonMethods.serviceBaseUrl, for: endPoint), headers: headers, reqBody: requestBody, httpMethod: httpMethod)
     }
     
     // encodable request body for POST

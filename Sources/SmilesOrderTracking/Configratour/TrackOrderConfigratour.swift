@@ -32,7 +32,7 @@ public struct GetSupportDependance {
     public var orderNUmber: String
     public var chatBotType:String
     
-    public init(orderId: String, orderNumber: String, chatbotType:String) {
+    public init(orderId: String, orderNumber: String, chatbotType: String) {
         self.orderId = orderId
         self.orderNUmber = orderNumber
         self.chatBotType = chatbotType
@@ -65,7 +65,6 @@ public enum TrackOrderConfigurator {
         return viewController
     }
     
-    
     static func getConfirmationPopup(locationText: String, didTappedContinue: (()-> Void)?) -> UIViewController {
         let viewController = PickupConfirmationViewController.create()
         viewController.locationText = locationText
@@ -82,7 +81,7 @@ public enum TrackOrderConfigurator {
     }
     
     static var repository: OrderTrackingServiceable {
-        OrderTrackingRepository(networkRequest: network, baseUrl: AppCommonMethods.serviceBaseUrl)
+        OrderTrackingRepository(networkRequest: network)
     }
     
     

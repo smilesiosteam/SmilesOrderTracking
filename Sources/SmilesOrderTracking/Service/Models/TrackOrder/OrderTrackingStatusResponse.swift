@@ -40,4 +40,8 @@ struct OrderTrackingStatusResponse: Codable {
         responseMsg = try values.decodeIfPresent(String.self, forKey: .responseMsg)
 
     }
+    
+    init() {
+        
+    }
 }

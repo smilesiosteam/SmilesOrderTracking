@@ -21,4 +21,6 @@ struct OrderChangeTypeResponse: Codable {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         self.isChangeType = try container.decodeIfPresent(Bool.self, forKey: .isChangeType)
     }
+    
+    init() {}
 }

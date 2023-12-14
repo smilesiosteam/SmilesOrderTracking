@@ -24,7 +24,7 @@ extension GMSMapView {
     }
 }
 
-struct MarkerModel {
+struct MarkerModel: Equatable {
     let lat: Double
     let lang: Double
     var title: String? = nil

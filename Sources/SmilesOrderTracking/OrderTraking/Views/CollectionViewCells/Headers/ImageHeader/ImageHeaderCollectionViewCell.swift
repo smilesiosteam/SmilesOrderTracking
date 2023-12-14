@@ -96,13 +96,13 @@ final class ImageHeaderCollectionViewCell: UICollectionReusableView {
 }
 
 extension ImageHeaderCollectionViewCell {
-    struct ViewModel {
+    struct ViewModel: Equatable {
         var isShowSupportHeader = false
         var url: String?
         var type: CellType
     }
     
-    enum CellType {
+    enum CellType: Equatable {
         case image(imageName: String, backgroundColor: UIColor)
         case animation(url: URL?, backgroundColor: String)
     }

@@ -7,6 +7,7 @@
 
 import Foundation
 import Combine
+import SmilesUtilities
 
 protocol OrderConfirmationUseCaseProtocol {
     func setOrderConfirmation(orderId: String,
@@ -19,6 +20,7 @@ final class OrderConfirmationUseCase: OrderConfirmationUseCaseProtocol {
     // MARK: - Properties
     private let services: OrderTrackingServiceHandlerProtocol
     private var cancellables = Set<AnyCancellable>()
+    
     // MARK: - Init
     init(services: OrderTrackingServiceHandlerProtocol) {
         self.services = services
@@ -51,7 +53,7 @@ final class OrderConfirmationUseCase: OrderConfirmationUseCaseProtocol {
 }
 
 extension OrderConfirmationUseCase {
-    enum State {
+    enum State: Equatable {
         case showError(message: String)
         case openLiveChat
         case callOrderStatus

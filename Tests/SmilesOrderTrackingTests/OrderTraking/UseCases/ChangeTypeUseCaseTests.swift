@@ -6,8 +6,7 @@
 //
 
 import XCTest
-import Combine
-import SmilesUtilities
+import SmilesTests
 @testable import SmilesOrderTracking
 
 final class ChangeTypeUseCaseTests: XCTestCase {
@@ -69,5 +68,4 @@ final class ChangeTypeUseCaseTests: XCTestCase {
         let expectedResult = ChangeTypeUseCase.State.showError(message: error)
         XCTAssertEqual(result, expectedResult, "Expected navigate to show error message but is not happened")
     }
-    
 }

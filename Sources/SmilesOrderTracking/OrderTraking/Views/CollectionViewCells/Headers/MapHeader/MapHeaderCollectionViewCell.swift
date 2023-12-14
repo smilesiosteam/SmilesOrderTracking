@@ -130,13 +130,13 @@ final class MapHeaderCollectionViewCell: UICollectionReusableView {
 
 extension MapHeaderCollectionViewCell {
     
-    struct ViewModel {
+    struct ViewModel: Equatable {
         var startPoint: MarkerModel
         var endPoint: MarkerModel
         var type: CellType
     }
     
-    enum CellType {
+    enum CellType: Equatable {
         case image(imageName: String)
         case animation(url: URL?)
     }

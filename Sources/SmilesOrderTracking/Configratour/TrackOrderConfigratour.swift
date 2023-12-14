@@ -47,7 +47,7 @@ public enum TrackOrderConfigurator {
     ) -> OrderTrackingViewController {
         let useCase = OrderTrackingUseCase(orderId: dependance.orderId,
                                            orderNumber: dependance.orderNUmber,
-                                           services: service)
+                                           services: service, timer: TimerManager())
         let orderConfirmationUseCase = OrderConfirmationUseCase(services: service)
         let changeTypeUseCase = ChangeTypeUseCase(services: service)
         let scratchAndWinUseCase = ScratchAndWinUseCase()

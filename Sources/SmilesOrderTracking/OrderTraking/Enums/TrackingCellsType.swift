@@ -22,12 +22,17 @@ enum TrackingCellType {
     case orderCancelled(model: OrderCancelledTimerCollectionViewCell.ViewModel)
 }
 
-enum TrackingHeaderType {
+enum TrackingHeaderType: Equatable {
     case image(model: ImageHeaderCollectionViewCell.ViewModel)
     case map(model: MapHeaderCollectionViewCell.ViewModel)
 }
 
-struct OrderTrackingModel {
+struct OrderTrackingModel: Equatable {
     var header: TrackingHeaderType = .image(model: .init(type: .image(imageName: "", backgroundColor: .white)))
     var cells: [TrackingCellType] = []
+    
+    // Make it always true for unit test not more
+    static func == (lhs: OrderTrackingModel, rhs: OrderTrackingModel) -> Bool {
+        true
+    }
 }

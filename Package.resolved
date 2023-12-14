@@ -190,12 +190,21 @@
       }
     },
     {
+      "identity" : "smilestests",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/smilesiosteam/SmilesTests.git",
+      "state" : {
+        "branch" : "main",
+        "revision" : "2d4542777a5e77070cd2578e229a99808f87f63a"
+      }
+    },
+    {
       "identity" : "smilesutilities",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/smilesiosteam/SmilesUtilities.git",
       "state" : {
         "branch" : "main",
-        "revision" : "af4692c33586898a16a5c920151cd2066e4b1534"
+        "revision" : "4929e8b79f318cb78838bb3463ee0183f0a77748"
       }
     }
   ],

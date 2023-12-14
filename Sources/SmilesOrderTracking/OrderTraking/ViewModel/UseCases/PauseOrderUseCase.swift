@@ -45,7 +45,7 @@ final class PauseOrderUseCase: PauseOrderUseCaseProtocol {
 }
 
 extension PauseOrderUseCase {
-    enum State {
+    enum State: Equatable {
         case showError(message: String)
         case presentPopupCancelFlow
     }

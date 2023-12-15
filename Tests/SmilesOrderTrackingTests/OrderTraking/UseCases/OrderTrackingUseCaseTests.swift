@@ -15,11 +15,13 @@ final class OrderTrackingUseCaseTests: XCTestCase {
     // MARK: - Properties
     private var sut: OrderTrackingUseCase!
     private var services: OrderTrackingServiceHandlerMock!
+    private var timer: TimerManagerMock!
     
     // MARK: - Life Cycle
     override func setUpWithError() throws {
         services = OrderTrackingServiceHandlerMock()
-        sut = OrderTrackingUseCase(orderId: Constants.orderId.rawValue, orderNumber: Constants.orderNumber.rawValue, services: services, timer: TimerManager())
+        timer = TimerManagerMock()
+        sut = OrderTrackingUseCase(orderId: Constants.orderId.rawValue, orderNumber: Constants.orderNumber.rawValue, services: services, timer: timer)
     }
 
     override func tearDownWithError() throws {
@@ -53,5 +55,30 @@ final class OrderTrackingUseCaseTests: XCTestCase {
     
     func test_hideCancelOrderAfter_mustBe10Seconds() {
         XCTAssertEqual(sut.hideCancelOrderAfter, 10, "The seconds must be 10s")
+    }
+    
+    func test_getProcessingOrderModel_isCancelationAllowed_startTimer() {
+        // Given
+        var model = OrderStatusStub.getOrderStatusModel
+        model.orderDetails?.isCancelationAllowed = true
+        services.getOrderTrackingStatus = .success(model)
+        // When
+        sut.fetchOrderStates()
+        // Then
+        XCTAssertTrue(timer.isCalledStartTimer)
+    }
+    
+    func test_getProcessingOrderModel_isCancelationAllowed_hideCancelButton() {
+        // Given
+        var model = OrderStatusStub.getOrderStatusModel
+        model.orderDetails?.isCancelationAllowed = true
+        services.getOrderTrackingStatus = .success(model)
+        // When
+        sut.fetchOrderStates()
+        timer.stop()
+        // Then
+        XCTAssertTrue(timer.isCalledStartTimer)
+        XCTAssertTrue(sut.statusResponse?.orderDetails?.showCancelButtonTimeout ?? false)
+        XCTAssertFalse(sut.statusResponse?.orderDetails?.isCancelationAllowed ?? true)
     }
 }

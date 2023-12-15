@@ -23,11 +23,11 @@ final class OrderTrackingUseCase: OrderTrackingUseCaseProtocol {
     var stateSubject = PassthroughSubject<State, Never>()
     private var isTimerRunning = false
     private var elapsedTime: TimeInterval = 0
-    private var statusResponse: OrderTrackingStatusResponse?
+    private(set) var statusResponse: OrderTrackingStatusResponse?
     private let orderId: String
     private let orderNumber: String
     private let services: OrderTrackingServiceHandlerProtocol
-    private let timer: TimerManagerProtocol
+    private var timer: TimerManagerProtocol
     let hideCancelOrderAfter: TimeInterval = 10 // Hide the cancel button after 10s
   
     var statePublisher: AnyPublisher<State, Never> {
@@ -55,6 +55,10 @@ final class OrderTrackingUseCase: OrderTrackingUseCaseProtocol {
     
     private func configOrderStatus(response: OrderTrackingStatusResponse) -> OrderTrackable {
         timer.stop() // Stop timer when the status is changed
+        print(response.orderDetails?.isCancelationAllowed)
+        print(response.orderDetails?.showCancelButtonTimeout)
+        
+        
         guard let status = response.orderDetails?.orderStatus,
               let value = OrderTrackingType(rawValue: status) else {
             return WaitingOrderConfig(response: response)
@@ -101,7 +105,9 @@ final class OrderTrackingUseCase: OrderTrackingUseCaseProtocol {
         let processOrder = ProcessingOrderConfig(response: response)
         
         if processOrder.isCancelationAllowed {
-            timer.start(stopTimerAfter: hideCancelOrderAfter) { [weak self] in
+            timer.start(stopTimerAfter: hideCancelOrderAfter)
+            
+            timer.timerTickHandler = { [weak self] in
                 self?.hideCancelButton()
             }
         }
@@ -152,7 +158,7 @@ final class OrderTrackingUseCase: OrderTrackingUseCaseProtocol {
         statusResponse.orderDetails?.showCancelButtonTimeout = true
         statusResponse.orderDetails?.isCancelationAllowed = false
         self.statusResponse = statusResponse
-        let status = self.configOrderStatus(response: statusResponse).build()
+        let status = ProcessingOrderConfig(response: statusResponse).build()
         stateSubject.send(.success(model: status))
     }
 }

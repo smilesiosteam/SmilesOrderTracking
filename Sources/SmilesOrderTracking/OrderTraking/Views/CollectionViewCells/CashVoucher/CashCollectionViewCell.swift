@@ -13,6 +13,7 @@ final class CashCollectionViewCell: UICollectionViewCell {
     @IBOutlet private weak var subtitleLabel: UILabel!
     @IBOutlet private weak var containerView: UIView!
     @IBOutlet private weak var titleLabel: UILabel!
+    @IBOutlet private weak var iconImage: UIImageView!
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -22,12 +23,17 @@ final class CashCollectionViewCell: UICollectionViewCell {
     }
     
     func updateCell(with viewModel: ViewModel) {
+        titleLabel.text = viewModel.title
+        subtitleLabel.text = viewModel.description
+        iconImage.setImageWithUrlString(viewModel.iconUrl ?? "")
         
     }
 }
 
 extension CashCollectionViewCell {
     struct ViewModel {
-        
+        var title: String?
+        var description: String?
+        var iconUrl: String?
     }
 }

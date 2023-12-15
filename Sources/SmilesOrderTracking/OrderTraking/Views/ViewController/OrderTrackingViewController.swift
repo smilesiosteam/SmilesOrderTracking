@@ -185,7 +185,9 @@ public final class OrderTrackingViewController: UIViewController, Toastable, Map
     
     public override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        hideFloatingView()
+        if viewModel.orderStatus != .orderProcessing {
+            hideFloatingView()
+        }
     }
     
     @objc private func applicationDidBecomeActive(notification: NSNotification) {
@@ -193,9 +195,7 @@ public final class OrderTrackingViewController: UIViewController, Toastable, Map
             viewModel.fetchStatus()
         }
     }
-    
-    
-    
+
     private func bindCancelFlow() {
         cancelOrderviewModel.transform(input: cancelOrderInput.eraseToAnyPublisher())
             .sink { [weak self] event in

@@ -14,6 +14,4 @@ enum OrderStatusStub {
         let model: OrderTrackingStatusResponse? = readJsonFile("Order_Tracking_Model", bundle: .module)
         return model ?? .init()
     }
-    
-    
 }

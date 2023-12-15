@@ -79,10 +79,10 @@ extension OrderTrackingDataSource: UICollectionViewDataSource {
             let cell = collectionView.dequeueReusableCell(withClass: OrderCancelledCollectionViewCell.self, for: indexPath)
             cell.updateCell(with: model, delegate: self)
             return cell
-//        case .cashVoucher(model: let model):
-//            let cell = collectionView.dequeueReusableCell(withClass: CashCollectionViewCell.self, for: indexPath)
-//            cell.updateCell(with: model)
-//            return cell
+        case .cashVoucher(model: let model):
+            let cell = collectionView.dequeueReusableCell(withClass: CashCollectionViewCell.self, for: indexPath)
+            cell.updateCell(with: model)
+            return cell
         case .orderCancelled(model: let model):
             let cell = collectionView.dequeueReusableCell(withClass: OrderCancelledTimerCollectionViewCell.self, for: indexPath)
             cell.updateCell(with: model, delegate: self)

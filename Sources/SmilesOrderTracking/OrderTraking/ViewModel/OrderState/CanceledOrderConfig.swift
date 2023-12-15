@@ -20,12 +20,16 @@ struct CanceledOrderConfig: CanceledOrderConfigProtocol, GetSupportable {
     func build() -> OrderTrackingModel {
         var orderCancelledModel = getOrderCancelledModel(buttonTitle: OrderTrackingLocalization.restaurantCanceledButtonTitle.text)
         orderCancelledModel.type = .cancelled
-        let cells: [TrackingCellType] = [
+        var cells: [TrackingCellType] = [
             .text(model: getTextModel()),
             .orderCancelled(model: orderCancelledModel),
-//            .cashVoucher(model: .init()),
-            .orderActions(model: getOrderActionsModel())
         ]
+        if let cashVoucher {
+            cells.append(.cashVoucher(model: cashVoucher))
+        }
+        cells.append(.orderActions(model: getOrderActionsModel()))
+        
+        
         
         return .init(header: getCanceledHeader(), cells: cells)
     }

@@ -18,7 +18,7 @@ enum TrackingCellType {
     case rating(model: RatingCollectionViewCell.ViewModel)
     case confirmation(model: OrderConfirmationCollectionViewCell.ViewModel)
     case orderActions(model: OrderCancelledCollectionViewCell.ViewModel)
-//    case cashVoucher(model: CashCollectionViewCell.ViewModel)
+    case cashVoucher(model: CashCollectionViewCell.ViewModel)
     case orderCancelled(model: OrderCancelledTimerCollectionViewCell.ViewModel)
 }
 

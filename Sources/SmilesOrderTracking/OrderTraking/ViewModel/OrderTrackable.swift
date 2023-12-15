@@ -130,4 +130,14 @@ extension OrderTrackable {
         let orderType = response.orderDetails?.orderType ?? ""
         return OrderTrackingCellType(rawValue: orderType) ?? .delivery
     }
+    
+    var cashVoucher: CashCollectionViewCell.ViewModel? {
+        var viewModel = CashCollectionViewCell.ViewModel()
+        
+        guard let title = response.orderDetails?.refundTitle, !title.isEmpty else { return nil }
+        viewModel.title = title
+        viewModel.description = response.orderDetails?.refundDescription
+        viewModel.iconUrl = response.orderDetails?.refundIcon
+        return viewModel
+    }
 }

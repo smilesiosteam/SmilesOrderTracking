@@ -23,12 +23,14 @@ struct SomeItemsUnavailableConfig: CanceledOrderConfigProtocol, GetSupportable {
     func build() -> OrderTrackingModel {
         var someItemsUnavailable = getOrderCancelledModel(buttonTitle: OrderTrackingLocalization.unavailableItemsButtonTitle.text)
         someItemsUnavailable.type = .someItemsUnavailable
-        let cells: [TrackingCellType] = [
+        var cells: [TrackingCellType] = [
             .text(model: getTextModel()),
-            .orderCancelled(model: someItemsUnavailable),
-//            .cashVoucher(model: .init()),
-            .orderActions(model: getOrderActionsModel())
+            .orderCancelled(model: someItemsUnavailable)
         ]
+        if let cashVoucher {
+            cells.append(.cashVoucher(model: cashVoucher))
+        }
+        cells.append(.orderActions(model: getOrderActionsModel()))
         
         return .init(header: getCanceledHeader(), cells: cells)
     }

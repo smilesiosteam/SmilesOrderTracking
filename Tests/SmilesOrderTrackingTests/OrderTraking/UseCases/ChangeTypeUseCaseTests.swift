@@ -31,8 +31,8 @@ final class ChangeTypeUseCaseTests: XCTestCase {
         // Given
         let model = OrderChangeStub.getChangeTypeModel(isChanged: true)
         services.changeOrderTypeResponse = .success(model)
-        let orderId = "12334"
-        let orderNumber = "#343434"
+        let orderId = Constants.orderId.rawValue
+        let orderNumber = Constants.orderNumber.rawValue
         // When
         let publisher = sut.changeType(orderId: orderId, orderNumber: orderNumber)
         let result = try awaitPublisher(publisher)

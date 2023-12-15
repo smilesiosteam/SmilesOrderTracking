@@ -12,7 +12,9 @@ final class TimerManagerMock: TimerManagerProtocol {
     // MARK: - Spy Properties
     var isCalledStartTimer = false
     var timerTickHandler: (() -> Void)?
-    var isRunning = false
+    var isCalledPauseTimer = false
+    var isCalledResumeTimer = false
+    var isCalledStopTimer = false
     
     // MARK: - Functions
     func start(stopTimerAfter: TimeInterval?) {
@@ -20,14 +22,15 @@ final class TimerManagerMock: TimerManagerProtocol {
     }
     
     func pause() {
-        
+        isCalledPauseTimer.toggle()
     }
     
     func resume() {
-        
+        isCalledResumeTimer.toggle()
     }
     
     func stop() {
         timerTickHandler?()
+        isCalledStopTimer.toggle()
     }
 }

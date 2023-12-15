@@ -20,7 +20,7 @@ protocol OrderTrackingUseCaseProtocol {
 final class OrderTrackingUseCase: OrderTrackingUseCaseProtocol {
     
     private var cancellables = Set<AnyCancellable>()
-    var stateSubject = PassthroughSubject<State, Never>()
+    private var stateSubject = PassthroughSubject<State, Never>()
     private var isTimerRunning = false
     private var elapsedTime: TimeInterval = 0
     private(set) var statusResponse: OrderTrackingStatusResponse?
@@ -53,12 +53,8 @@ final class OrderTrackingUseCase: OrderTrackingUseCaseProtocol {
                         orderNumber: orderNumber, isComingFromFirebase: false)
     }
     
-    private func configOrderStatus(response: OrderTrackingStatusResponse) -> OrderTrackable {
+     func configOrderStatus(response: OrderTrackingStatusResponse) -> OrderTrackable {
         timer.stop() // Stop timer when the status is changed
-        print(response.orderDetails?.isCancelationAllowed)
-        print(response.orderDetails?.showCancelButtonTimeout)
-        
-        
         guard let status = response.orderDetails?.orderStatus,
               let value = OrderTrackingType(rawValue: status) else {
             return WaitingOrderConfig(response: response)

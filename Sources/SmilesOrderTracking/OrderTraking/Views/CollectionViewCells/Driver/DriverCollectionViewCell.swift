@@ -67,7 +67,7 @@ final class DriverCollectionViewCell: UICollectionViewCell {
 
 // MARK: - ViewModel
 extension DriverCollectionViewCell {
-    struct ViewModel {
+    struct ViewModel: Equatable {
         var title: String?
         var subTitle: String?
         var driverMobileNumber: String?

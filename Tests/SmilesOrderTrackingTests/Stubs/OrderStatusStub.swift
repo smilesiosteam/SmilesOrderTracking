@@ -1,6 +1,6 @@
 //
 //  File.swift
-//  
+//
 //
 //  Created by Ahmed Naguib on 14/12/2023.
 //
@@ -13,5 +13,68 @@ enum OrderStatusStub {
     static var getOrderStatusModel: OrderTrackingStatusResponse {
         let model: OrderTrackingStatusResponse? = readJsonFile("Order_Tracking_Model", bundle: .module)
         return model ?? .init()
+    }
+    
+    static var location: LocationCollectionViewCell.ViewModel {
+        let orderDetails = getOrderStatusModel.orderDetails
+        var location = LocationCollectionViewCell.ViewModel()
+        location.startAddress = orderDetails?.restaurantAddress
+        location.endAddress = orderDetails?.deliveryAdrress
+        location.restaurantNumber = orderDetails?.restaurentNumber
+        location.orderId = "466715"
+        location.restaurantId = "17338"
+        location.type = .showCancelButton
+        return location
+    }
+    
+    static var progressBar: OrderProgressCollectionViewCell.ViewModel {
+        let title = getOrderStatusModel.orderDetails?.title
+        var bar: OrderProgressCollectionViewCell.ViewModel = .init()
+        bar.title = title
+        bar.step = .second
+        bar.time = getOrderStatusModel.orderDetails?.deliveryTimeRangeText
+        bar.hideTimeLabel = false
+        return bar
+    }
+    
+    static var point:PointsCollectionViewCell.ViewModel {
+        let response = getOrderStatusModel
+        let pointCount = response.orderDetails?.earnPoints ?? 0
+        var pointModel = PointsCollectionViewCell.ViewModel()
+        pointModel.numberOfPoints = pointCount
+        pointModel.text = response.orderDetails?.earnPointsText
+        return pointModel
+    }
+    
+    static var subscription: FreeDeliveryCollectionViewCell.ViewModel {
+        let response = getOrderStatusModel
+        let bannerImageUrl = response.orderDetails?.subscriptionBannerV2?.bannerImageUrl ?? ""
+        var viewModel = FreeDeliveryCollectionViewCell.ViewModel()
+        viewModel.imageURL = bannerImageUrl
+        viewModel.redirectUrl = response.orderDetails?.subscriptionBannerV2?.redirectionUrl ?? ""
+        return viewModel
+    }
+    
+    static var driver: DriverCollectionViewCell.ViewModel {
+        let response = getOrderStatusModel
+        var viewModel = DriverCollectionViewCell.ViewModel()
+        let orderDetails = response.orderDetails
+        viewModel.title = orderDetails?.driverName
+        viewModel.lat = Double(orderDetails?.latitude ?? "") ?? 0.0
+        viewModel.lng = Double(orderDetails?.longitude ?? "") ?? 0.0
+        viewModel.subTitle = orderDetails?.driverStatusText
+        viewModel.cellType = .delivery
+        viewModel.driverMobileNumber = response.orderDetails?.partnerNumber
+        return viewModel
+    }
+    
+    static var mapHeader: TrackingHeaderType {
+        let response = getOrderStatusModel
+        let startModel = MarkerModel(lat: 25.2113, lang: 55.2743, image: "startPin")
+        let endModel = MarkerModel(lat: 25.230, lang: 55.291, image: "endPin")
+        let url = URL(string: response.orderDetails?.smallImageAnimationUrl ?? "")
+        let headerModel = MapHeaderCollectionViewCell.ViewModel(startPoint: startModel, endPoint: endModel, type: .animation(url: url))
+        let header: TrackingHeaderType = .map(model: headerModel)
+        return header
     }
 }

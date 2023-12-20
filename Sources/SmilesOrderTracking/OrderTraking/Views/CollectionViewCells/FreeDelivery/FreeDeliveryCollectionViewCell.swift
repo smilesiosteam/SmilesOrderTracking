@@ -36,7 +36,7 @@ final class FreeDeliveryCollectionViewCell: UICollectionViewCell {
 }
 
 extension FreeDeliveryCollectionViewCell {
-    struct ViewModel {
+    struct ViewModel: Equatable {
         var imageURL: String?
         var redirectUrl: String = ""
     }

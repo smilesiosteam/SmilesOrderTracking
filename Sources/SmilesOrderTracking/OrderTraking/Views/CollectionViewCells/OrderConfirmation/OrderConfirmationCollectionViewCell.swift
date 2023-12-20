@@ -92,7 +92,7 @@ final class OrderConfirmationCollectionViewCell: UICollectionViewCell {
 
 // MARK: - ViewModel
 extension OrderConfirmationCollectionViewCell {
-    struct ViewModel {
+    struct ViewModel: Equatable {
         var question: String?
         var orderId: String = ""
         var orderNumber: String = ""

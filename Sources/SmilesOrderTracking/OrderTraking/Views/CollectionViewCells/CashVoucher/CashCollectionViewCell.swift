@@ -31,7 +31,7 @@ final class CashCollectionViewCell: UICollectionViewCell {
 }
 
 extension CashCollectionViewCell {
-    struct ViewModel {
+    struct ViewModel: Equatable {
         var title: String?
         var description: String?
         var iconUrl: String?

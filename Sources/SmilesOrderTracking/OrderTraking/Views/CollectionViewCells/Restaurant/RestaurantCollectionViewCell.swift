@@ -49,7 +49,7 @@ final class RestaurantCollectionViewCell: UICollectionViewCell {
 
 // MARK: - ViewModel
 extension RestaurantCollectionViewCell {
-    struct ViewModel {
+    struct ViewModel: Equatable {
         var name: String?
         var iconUrl: String?
         var items: String?

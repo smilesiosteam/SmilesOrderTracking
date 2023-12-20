@@ -26,10 +26,10 @@ extension OrderTrackable {
         vieModel.startAddress = response.orderDetails?.restaurantAddress
         vieModel.endAddress = response.orderDetails?.deliveryAdrress
         vieModel.restaurantNumber = response.orderDetails?.restaurentNumber
-        let orderId = response.orderDetails?.orderId ?? 0
-        let restaurantId = response.orderDetails?.restaurantId ?? ""
-        vieModel.orderId = "\(orderId)"
-        vieModel.restaurantId = restaurantId
+        let orderId = response.orderDetails?.orderId
+        let restaurantId = response.orderDetails?.restaurantId
+        vieModel.orderId = "\(orderId.asIntOrEmpty())"
+        vieModel.restaurantId = restaurantId.asStringOrEmpty()
         return vieModel
     }
     

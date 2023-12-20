@@ -41,7 +41,7 @@ final class PointsCollectionViewCell: UICollectionViewCell {
 
 
 extension PointsCollectionViewCell {
-    struct ViewModel {
+    struct ViewModel: Equatable {
         var numberOfPoints: Int = 0
         var text: String?
     }

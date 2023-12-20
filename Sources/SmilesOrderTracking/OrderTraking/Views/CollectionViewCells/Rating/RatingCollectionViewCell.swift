@@ -87,7 +87,7 @@ final class RatingCollectionViewCell: UICollectionViewCell {
 
 // MARK: - ViewModel
 extension RatingCollectionViewCell {
-    struct ViewModel {
+    struct ViewModel: Equatable {
         var orderId: Int = 0
         var items: [RateModel] = []
     }
@@ -97,7 +97,7 @@ extension RatingCollectionViewCell {
         case food = "food"
     }
     
-    struct RateModel {
+    struct RateModel: Equatable {
         var type: RateType
         var title: String?
         var iconUrl: String?

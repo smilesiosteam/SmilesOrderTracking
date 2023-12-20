@@ -231,7 +231,7 @@ extension OrderProgressCollectionViewCell {
         case completed
     }
     
-    struct ViewModel {
+    struct ViewModel: Equatable {
         var step: ProgressSteps = .completed
         var title: String?
         var time: String?

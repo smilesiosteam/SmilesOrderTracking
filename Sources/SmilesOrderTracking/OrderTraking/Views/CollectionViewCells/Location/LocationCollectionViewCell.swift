@@ -116,7 +116,7 @@ extension LocationCollectionViewCell {
         case details
     }
     
-    struct ViewModel {
+    struct ViewModel: Equatable {
         var startAddress: String?
         var endAddress: String?
         var orderId = ""

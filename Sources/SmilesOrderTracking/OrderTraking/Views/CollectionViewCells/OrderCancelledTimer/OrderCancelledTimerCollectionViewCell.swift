@@ -132,7 +132,7 @@ final class OrderCancelledTimerCollectionViewCell: UICollectionViewCell {
 
 // MARK: - ViewModel
 extension OrderCancelledTimerCollectionViewCell {
-    struct ViewModel {
+    struct ViewModel: Equatable {
         var timerCount: Int? = nil
         var title: String?
         var buttonTitle: String?

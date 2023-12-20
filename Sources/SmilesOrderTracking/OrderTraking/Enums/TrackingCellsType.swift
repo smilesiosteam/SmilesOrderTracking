@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum TrackingCellType {
+enum TrackingCellType: Equatable {
     case progressBar(model: OrderProgressCollectionViewCell.ViewModel)
     case text(model: TextCollectionViewCell.ViewModel)
     case location(model: LocationCollectionViewCell.ViewModel)

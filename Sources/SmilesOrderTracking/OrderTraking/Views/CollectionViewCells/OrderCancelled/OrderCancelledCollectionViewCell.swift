@@ -62,7 +62,7 @@ final class OrderCancelledCollectionViewCell: UICollectionViewCell {
 
 // MARK: - ViewModel
 extension OrderCancelledCollectionViewCell {
-    struct ViewModel {
+    struct ViewModel: Equatable {
         var orderId: String = ""
         var restaurantId = ""
         var restaurantNumber: String?

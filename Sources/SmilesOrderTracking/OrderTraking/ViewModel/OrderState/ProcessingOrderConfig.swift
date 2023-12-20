@@ -8,6 +8,7 @@
 import Foundation
 
 struct ProcessingOrderConfig: OrderTrackable, AnimationHeaderProtocol, GetSupportable {
+    // This for get support view
     func buildConfig() -> GetSupportModel {
         var progressBar = orderProgressBar
         progressBar.step = .first

@@ -14,8 +14,6 @@ final class OrderTrackingViewModel {
     
     // MARK: - Properties
     private var cancellables = Set<AnyCancellable>()
-    var serviceHandler = OrderTrackingServiceHandler(repository: TrackOrderConfigurator.repository)
-    
     private let useCase: OrderTrackingUseCaseProtocol
     private let confirmUseCase: OrderConfirmationUseCaseProtocol
     private let pauseOrderUseCase: PauseOrderUseCaseProtocol
@@ -58,12 +56,10 @@ final class OrderTrackingViewModel {
     }
     
     private func bindUseCase() {
-//        statusSubject.send(.showLoader)
         useCase.statePublisher.sink { [weak self] states in
             guard let self else {
                 return
             }
-//            self.statusSubject.send(.hideLoader)
             switch states {
             case .showErrorAndPop(let message):
                 self.statusSubject.send(.showErrorAndPop(message: message))

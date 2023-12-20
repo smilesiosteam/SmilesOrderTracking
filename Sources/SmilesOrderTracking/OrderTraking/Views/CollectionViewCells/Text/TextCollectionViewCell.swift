@@ -26,12 +26,12 @@ final class TextCollectionViewCell: UICollectionViewCell {
 }
 
 extension TextCollectionViewCell {
-    struct ViewModel {
+    struct ViewModel: Equatable {
         var title: String?
         var type: FontType = .subTitle
     }
     
-    enum FontType {
+    enum FontType: Equatable {
         case title
         case subTitle
         

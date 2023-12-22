@@ -220,6 +220,7 @@
                 <outlet property="endImage" destination="0qo-vu-1fp" id="i00-xF-SwD"/>
                 <outlet property="lineView" destination="rUD-Ms-sGU" id="3An-m0-TcH"/>
                 <outlet property="orderDetailsButton" destination="zYM-uG-7wF" id="lv5-xn-zjC"/>
+                <outlet property="seperatorView" destination="9ZF-Ff-tz7" id="7jG-7J-tbl"/>
                 <outlet property="stackDetails" destination="x6R-68-dzF" id="G3Z-X8-pCP"/>
                 <outlet property="startAddressLabel" destination="tCE-D6-tqw" id="zGt-Lq-iFh"/>
                 <outlet property="startImage" destination="Ueg-7S-hIu" id="AGZ-QG-vy6"/>

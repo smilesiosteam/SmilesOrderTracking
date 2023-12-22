@@ -14,8 +14,7 @@ struct WaitingOrderConfig: OrderTrackable, AnimationHeaderProtocol, GetSupportab
         var progressBar = orderProgressBar
         progressBar.step = .first
         
-        var location = orderLocation
-        location.type = .details
+        let location = orderLocation
         
         var cells: [TrackingCellType] = [
             .progressBar(model: progressBar)

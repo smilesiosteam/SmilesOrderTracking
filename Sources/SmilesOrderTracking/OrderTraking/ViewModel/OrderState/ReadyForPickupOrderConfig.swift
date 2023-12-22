@@ -35,9 +35,8 @@ struct ReadyForPickupOrderConfig: OrderTrackable, GetSupportable {
         return progressBar
     }
     private func getLocationOrderModel() -> LocationCollectionViewCell.ViewModel {
-        var location = orderLocation
-        location.type = .details
-        return location
+        orderLocation
+    
     }
     
     private func getDriverModel() -> DriverCollectionViewCell.ViewModel {

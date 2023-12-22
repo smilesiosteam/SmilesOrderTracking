@@ -32,6 +32,7 @@ final class LocationCollectionViewCell: UICollectionViewCell {
     @IBOutlet private weak var stackDetails: UIStackView!
     @IBOutlet private weak var lineView: UIView!
     @IBOutlet private weak var buttonsStack: UIStackView!
+    @IBOutlet private weak var seperatorView: UIView!
     
     @IBOutlet weak var bottomConstraint: NSLayoutConstraint!
     // MARK: - Properties
@@ -101,10 +102,18 @@ final class LocationCollectionViewCell: UICollectionViewCell {
             stackDetails.isHidden = true
             cancelOrderButton.isHidden = false
             bottomConstraint.constant = 0
+            seperatorView.isHidden = false
         case .details:
             stackDetails.isHidden = false
             cancelOrderButton.isHidden = true
             bottomConstraint.constant = 0
+            seperatorView.isHidden = false
+        case .hideCallButton:
+            stackDetails.isHidden = false
+            cancelOrderButton.isHidden = true
+            callRestrantButton.isHidden = true
+            bottomConstraint.constant = 0
+            seperatorView.isHidden = true
         }
     }
 }
@@ -114,6 +123,7 @@ extension LocationCollectionViewCell {
     enum CellType {
         case showCancelButton
         case details
+        case hideCallButton
     }
     
     struct ViewModel: Equatable {

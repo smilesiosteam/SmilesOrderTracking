@@ -63,6 +63,10 @@
         "deliveryBy": "Delivered By Restaurant",
         "driverStatusText": "has picked up your order",
         "driverName": "Osama Tester Driver",
+        "refundTitle": "refund Title Dummmy",
+        "refundDescription": "refund Description Dummy",
+        "changeTypeTimer": 100,
+        "refundIcon": "refundIcon",
         "subscriptionBannerV2": {
             "bannerImageUrl": "https://www.google.com/search?q=image+for+kia.jpg",
             "redirectionUrl": "navigate_to_subscription"

@@ -30,11 +30,11 @@ extension CanceledOrderConfigProtocol {
     func getOrderCancelledModel(buttonTitle: String) -> OrderCancelledTimerCollectionViewCell.ViewModel {
         var viewModel = OrderCancelledTimerCollectionViewCell.ViewModel()
         viewModel.buttonTitle = buttonTitle
-        let orderId = response.orderDetails?.orderId ?? 0
+        let orderId = (response.orderDetails?.orderId).asIntOrEmpty()
         viewModel.orderId = "\(orderId)"
-        viewModel.orderNumber = response.orderDetails?.orderNumber ?? ""
-        viewModel.title = response.orderDetails?.orderDescription ?? ""
-        viewModel.restaurantAddress = response.orderDetails?.restaurantAddress ?? ""
+        viewModel.orderNumber = (response.orderDetails?.orderNumber).asStringOrEmpty()
+        viewModel.title = (response.orderDetails?.orderDescription).asStringOrEmpty()
+        viewModel.restaurantAddress = (response.orderDetails?.restaurantAddress).asStringOrEmpty()
         return viewModel
     }
 }
@@ -56,7 +56,7 @@ protocol AnimationHeaderProtocol: OrderTrackable { }
 
 extension AnimationHeaderProtocol {
     func getAnimationHeader(isShowButtons: Bool) -> TrackingHeaderType {
-        let url = URL(string: response.orderDetails?.largeImageAnimationUrl ?? "")
+        let url = URL(string: (response.orderDetails?.largeImageAnimationUrl).asStringOrEmpty())
         var viewModel = ImageHeaderCollectionViewCell.ViewModel(type: .animation(url: url, backgroundColor: response.orderDetails?.trackingColorCode ?? ""))
         viewModel.isShowSupportHeader = isShowButtons
         let header: TrackingHeaderType = .image(model: viewModel)

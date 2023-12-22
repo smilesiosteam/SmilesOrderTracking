@@ -28,9 +28,10 @@ struct ChangedToPickupOrderConfig: OrderTrackable, CancelHeaderProtocol, GetSupp
     
     private func getOrderActionsModel() -> OrderCancelledCollectionViewCell.ViewModel {
         var orderActions = OrderCancelledCollectionViewCell.ViewModel()
-        let orderId = response.orderDetails?.orderId ?? 0
+        let orderId = (response.orderDetails?.orderId).asIntOrEmpty()
         orderActions.orderId = "\(orderId)"
         orderActions.restaurantNumber = response.orderDetails?.restaurentNumber
+        orderActions.restaurantId = (response.orderDetails?.restaurantId).asStringOrEmpty()
         return orderActions
     }
     
@@ -44,13 +45,13 @@ struct ChangedToPickupOrderConfig: OrderTrackable, CancelHeaderProtocol, GetSupp
     private func getOrderCancelledModel() -> OrderCancelledTimerCollectionViewCell.ViewModel {
         var viewModel = OrderCancelledTimerCollectionViewCell.ViewModel()
         viewModel.buttonTitle = OrderTrackingLocalization.orderCancelledLikeToPickupOrder.text
-        viewModel.title = response.orderDetails?.orderDescription ?? ""
-        let orderId = response.orderDetails?.orderId ?? 0
+        viewModel.title = (response.orderDetails?.orderDescription).asStringOrEmpty()
+        let orderId = (response.orderDetails?.orderId).asIntOrEmpty()
         viewModel.orderId = "\(orderId)"
-        viewModel.orderNumber = response.orderDetails?.orderNumber ?? ""
-        let timeOut = response.orderDetails?.changeTypeTimer ?? 0
+        viewModel.orderNumber = (response.orderDetails?.orderNumber).asStringOrEmpty()
+        let timeOut = (response.orderDetails?.changeTypeTimer).asIntOrEmpty()
         viewModel.timerCount = timeOut * 60
-        viewModel.restaurantAddress = response.orderDetails?.restaurantAddress ?? ""
+        viewModel.restaurantAddress = (response.orderDetails?.restaurantAddress).asStringOrEmpty()
         return viewModel
     }
 }

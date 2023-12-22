@@ -69,7 +69,6 @@ final class AcceptedOrderConfigTests: XCTestCase {
         response.orderDetails?.earnPoints = 0
         response.orderDetails?.orderDescription = nil
         sut = AcceptedOrderConfig(response: response)
-        let orderDetails = response.orderDetails
         
         // Progress Bar
         var progressBar = OrderStatusStub.progressBar

@@ -52,9 +52,6 @@ final class WaitingOrderConfigTests: XCTestCase {
         progressBar.hideTimeLabel = true
         progressBar.time = orderDetails?.deliveryTimeRangeText
         
-        // Text
-        let text = orderDetails?.orderDescription
-        
         // Location
         var location = LocationCollectionViewCell.ViewModel()
         location.startAddress = orderDetails?.restaurantAddress
@@ -79,7 +76,6 @@ final class WaitingOrderConfigTests: XCTestCase {
         
         let cells: [TrackingCellType] = [
             .progressBar(model: progressBar),
-            .text(model: .init(title: text)),
             .location(model: location),
             .point(model: pointModel),
             .subscription(model: subscriptionModel)

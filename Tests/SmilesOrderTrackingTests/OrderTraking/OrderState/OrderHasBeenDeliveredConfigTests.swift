@@ -72,6 +72,4 @@ final class OrderHasBeenDeliveredConfigTests: XCTestCase {
         // Then
         XCTAssertEqual(result.cells, cells)
     }
-    
-    
 }

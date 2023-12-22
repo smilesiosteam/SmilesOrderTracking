@@ -77,4 +77,41 @@ enum OrderStatusStub {
         let header: TrackingHeaderType = .map(model: headerModel)
         return header
     }
+    
+    static var cancelModel: OrderCancelledTimerCollectionViewCell.ViewModel {
+        let response = getOrderStatusModel
+        var viewModel = OrderCancelledTimerCollectionViewCell.ViewModel()
+        let orderId = response.orderDetails?.orderId ?? 0
+        viewModel.orderId = "\(orderId)"
+        viewModel.orderNumber = response.orderDetails?.orderNumber ?? ""
+        viewModel.title = response.orderDetails?.orderDescription ?? ""
+        viewModel.restaurantAddress = response.orderDetails?.restaurantAddress ?? ""
+        return viewModel
+    }
+    
+    static var text:  TextCollectionViewCell.ViewModel {
+        var viewModel = TextCollectionViewCell.ViewModel()
+        viewModel.title = getOrderStatusModel.orderDetails?.title
+        viewModel.type = .title
+        return viewModel
+    }
+    
+   static var cashVoucher: CashCollectionViewCell.ViewModel {
+        var viewModel = CashCollectionViewCell.ViewModel()
+        let response = getOrderStatusModel
+        viewModel.title = response.orderDetails?.refundTitle
+        viewModel.description = response.orderDetails?.refundDescription
+        viewModel.iconUrl = response.orderDetails?.refundIcon
+        return viewModel
+    }
+    
+    static var orderAction: OrderCancelledCollectionViewCell.ViewModel {
+        let response = getOrderStatusModel
+        var orderActions = OrderCancelledCollectionViewCell.ViewModel()
+        let orderId = response.orderDetails?.orderId ?? 0
+        orderActions.orderId = "\(orderId)"
+        orderActions.restaurantId = response.orderDetails?.restaurantId ?? ""
+        orderActions.restaurantNumber = response.orderDetails?.restaurentNumber
+        return orderActions
+    }
 }

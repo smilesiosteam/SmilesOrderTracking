@@ -8,7 +8,7 @@
 import Foundation
 import SmilesUtilities
 
-enum OrderTrackingLocalization {
+enum OrderTrackingLocalization: CaseIterable {
     case support
     case callRestaurant
     case orderDetails
@@ -46,7 +46,6 @@ enum OrderTrackingLocalization {
     case dontCancel
     case yesCancel
     case describeYourExperience
-    
     // Pickup Confirmation
     case confirmOrderPickup
     case refundInfo
@@ -62,7 +61,7 @@ enum OrderTrackingLocalization {
         case .appleMaps:
             return "AppleMaps".localizedString
         case .getDirectionsFrom:
-            return "Get directions from"
+            return "GetDirectionsFrom".localizedString
         case .support:
             return "Support".localizedString
         case .callRestaurant:
@@ -74,7 +73,7 @@ enum OrderTrackingLocalization {
         case .pickUpYourOrderFrom:
             return "PickUpOrder".localizedString
         case .restaurantCancelledOrder:
-            return "Sorry, the restaurant had to cancel your order. Would you like to order from another restaurant?"
+            return "RestaurantCancelledOrder".localizedString
         case .viewAvailableRestaurants:
             return "ViewAvailableRestaurant".localizedString
         case .pendingDeliveryConfirmation:
@@ -87,13 +86,13 @@ enum OrderTrackingLocalization {
             return "Have you received".localizedString
 
         case .orderCancelledTimeFinished:
-            return "Oops, looks like you’ve run out of time to convert your order to a pick-up order! You can try placing the order again."
+            return "OrderCancelledTimeFinished".localizedString
         case .orderCancelledLikeToPickupOrder:
-            return "I’d like to pick up order"
+            return "OrderCancelledLikeToPickupOrder".localizedString
         case .minText:
             return "MinTitle".localizedString
         case .orderAccepted:
-            return "Your order has been accepted"
+            return "OrderAccepted".localizedString
         case .submit:
             return "SubmitTitleSmall".localizedString
         case .facedTroubleWithYourOrder:
@@ -115,9 +114,9 @@ enum OrderTrackingLocalization {
         case .unavailableItemsButtonTitle:
             return "ContinueNewOrder".localizedString
         case .liveTrackingAvailable:
-            return "Live tracking is not available"
+            return "LiveTrackingAvailable".localizedString
         case .dismiss:
-            return "Dismiss"
+            return "Dismiss".localizedString
         case .yourOrderCancelled:
             return "Your order has been cancelled".localizedString
         case .whyCancel:

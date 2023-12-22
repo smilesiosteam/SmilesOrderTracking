@@ -38,6 +38,11 @@ public final class GetSupportViewController: UIViewController, Toastable, GetSup
     
     // MARK: - Outlets
     @IBOutlet private weak var collectionView: UICollectionView!
+    @IBOutlet private weak var titleLabel: UILabel! {
+        didSet {
+            titleLabel.text = OrderTrackingLocalization.getSupport.text
+        }
+    }
     
     private var cancellables: Set<AnyCancellable> = []
     var viewModel: GetSupportViewModel!

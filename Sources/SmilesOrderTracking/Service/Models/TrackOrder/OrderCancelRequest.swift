@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import SmilesLocationHandler
 import SmilesBaseMainRequestManager
 
 final class OrderCancelRequest: SmilesBaseMainRequest {

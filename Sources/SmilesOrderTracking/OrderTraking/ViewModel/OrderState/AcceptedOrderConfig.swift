@@ -12,7 +12,7 @@ struct AcceptedOrderConfig: OrderTrackable, GetSupportable {
         let cells: [GetSupportCellType] = [
             .progressBar(model: getProgressBarModel())
         ]
-        let header: GetSupportHeaderType = getImageHeaderAnimated()
+        let header: GetSupportHeaderType = getSmallHeaderAnimated()
         return .init(header: header, cells: cells + getSupportActions())
     }
     

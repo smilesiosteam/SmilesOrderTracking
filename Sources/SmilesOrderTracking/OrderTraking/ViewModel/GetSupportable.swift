@@ -27,6 +27,13 @@ extension GetSupportable {
         let header: GetSupportHeaderType = .supportImageHeader(model: viewModel)
         return header
     }
+    
+    func getSmallHeaderAnimated() -> GetSupportHeaderType {
+        let url = URL(string: response.orderDetails?.smallImageAnimationUrl ?? "")
+        let viewModel = GetSupportImageHeaderCollectionViewCell.ViewModel(type: .animation(url: url))
+        let header: GetSupportHeaderType = .supportImageHeader(model: viewModel)
+        return header
+    }
     func getImageHeader(image:String) -> GetSupportHeaderType {
         let viewModel = GetSupportImageHeaderCollectionViewCell.ViewModel(type: .image(imageName: image))
         let header: GetSupportHeaderType = .supportImageHeader(model: viewModel)

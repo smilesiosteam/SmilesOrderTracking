@@ -18,8 +18,7 @@ struct NearOfLocationConfig: OrderTrackable, GetSupportable {
         let cells: [GetSupportCellType] = [
             .progressBar(model: progressBar)
         ]
-        
-        return .init(header: getImageHeaderAnimated(), cells: cells + getSupportActions())
+        return .init(header: getSmallHeaderAnimated(), cells: cells + getSupportActions())
     }
     func build() -> OrderTrackingModel {
         var progressBar = orderProgressBar

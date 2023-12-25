@@ -22,7 +22,7 @@ struct OnTheWayOrderConfig: OrderTrackable, GetSupportable {
             cells.append(.text(model: .init(title: delayText)))
         }
         
-        let header: GetSupportHeaderType = getImageHeaderAnimated()
+        let header: GetSupportHeaderType = getSmallHeaderAnimated()
         return .init(header: header, cells: cells + getSupportActions())
     }
     var response: OrderTrackingStatusResponse

@@ -15,9 +15,6 @@ struct ConfirmationOrderConfig: OrderTrackable, GetSupportable {
         progressBar.step = .fourth
         progressBar.hideTimeLabel = true
         
-        var location = orderLocation
-        location.type = .details
-        
         let cells: [GetSupportCellType] = [
             .progressBar(model: progressBar),
             .text(model: .init(title: orderText)),

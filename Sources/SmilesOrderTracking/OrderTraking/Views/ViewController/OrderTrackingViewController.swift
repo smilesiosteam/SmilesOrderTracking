@@ -140,12 +140,12 @@ public final class OrderTrackingViewController: UIViewController, Toastable, Map
     private var isFirstTime = true
     private var isAnimationPlay = true
     private lazy var collectionViewDataSource = OrderTrackingLayout()
-    
+    private var isNoLiveTrackingToastPresented = false
+    private var isOrderAcceptedToastPresented = false
     var isHeaderVisible = true
     var lastContentOffset: CGFloat = 0
     var viewModel: OrderTrackingViewModel!
     var isCameFromMyOrder = false
-    
     // MARK: - Life Cycle
     public override func viewDidLoad() {
         super.viewDidLoad()
@@ -304,11 +304,13 @@ public final class OrderTrackingViewController: UIViewController, Toastable, Map
                 self.showErrorMessage(message: message)
                 
             case .showToastForArrivedOrder(let isShow):
-                if isShow {
+                if isShow, !self.isOrderAcceptedToastPresented {
+                    self.isOrderAcceptedToastPresented = true
                     self.showToastForOrderArrived()
                 }
             case .showToastForNoLiveTracking(let isLiveTracking):
-                if !isLiveTracking {
+                if !isLiveTracking, !self.isNoLiveTrackingToastPresented {
+                    isNoLiveTrackingToastPresented = true
                     DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
                         self.presentToastForNoTracking()
                     }

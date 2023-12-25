@@ -29,7 +29,7 @@ final class OrderTrackingUseCase: OrderTrackingUseCaseProtocol {
     private let services: OrderTrackingServiceHandlerProtocol
     private var timer: TimerManagerProtocol
     let hideCancelOrderAfter: TimeInterval = 10 // Hide the cancel button after 10s
-  
+    private var showLoader = true
     var statePublisher: AnyPublisher<State, Never> {
         stateSubject.eraseToAnyPublisher()
     }
@@ -112,7 +112,11 @@ final class OrderTrackingUseCase: OrderTrackingUseCaseProtocol {
     }
     
     func loadOrderStatus(orderId: String, orderStatus: String, orderNumber: String, isComingFromFirebase: Bool) {
-        self.stateSubject.send(.showLoader)
+        // Show Loader only one timer
+        if showLoader {
+            self.stateSubject.send(.showLoader)
+            showLoader = false
+        }
         services.getOrderTrackingStatus(orderId: orderId,
                                        orderStatus: orderStatus,
                                        orderNumber: orderNumber, isComingFromFirebase: isComingFromFirebase)

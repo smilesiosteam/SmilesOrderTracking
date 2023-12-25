@@ -28,7 +28,7 @@ struct AcceptedOrderConfig: OrderTrackable, GetSupportable {
             cells.append(.driver(model: getDriverModel()))
         }
         
-        cells.append(.location(model: getLocationOrderModel()))
+        cells.append(.location(model: orderLocation))
         if let orderPoint {
             cells.append(.point(model: orderPoint))
         }
@@ -46,10 +46,6 @@ struct AcceptedOrderConfig: OrderTrackable, GetSupportable {
         progressBar.step = .second
         progressBar.hideTimeLabel = false
         return progressBar
-    }
-    
-    private func getLocationOrderModel() -> LocationCollectionViewCell.ViewModel {
-        orderLocation
     }
     
     private func getDriverModel() -> DriverCollectionViewCell.ViewModel {

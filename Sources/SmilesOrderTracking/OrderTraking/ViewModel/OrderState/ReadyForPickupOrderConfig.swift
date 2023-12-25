@@ -20,7 +20,7 @@ struct ReadyForPickupOrderConfig: OrderTrackable, GetSupportable {
         
         cells.append(.driver(model: getDriverModel()))
         
-        cells.append(.location(model: getLocationOrderModel()))
+        cells.append(.location(model: orderLocation))
         
         if let orderSubscription {
             cells.append(.subscription(model: orderSubscription))
@@ -33,10 +33,6 @@ struct ReadyForPickupOrderConfig: OrderTrackable, GetSupportable {
         progressBar.step = .fourth
         progressBar.hideTimeLabel = true
         return progressBar
-    }
-    private func getLocationOrderModel() -> LocationCollectionViewCell.ViewModel {
-        orderLocation
-    
     }
     
     private func getDriverModel() -> DriverCollectionViewCell.ViewModel {

@@ -36,17 +36,6 @@ final class GetSupportUseCase: GetSupportUseCaseProtocol {
     
     func fetchOrderStates() {
         loadOrderStatus()
-//        if let jsonData = jsonString.data(using: .utf8) {
-//            do {
-//                let orderResponse = try JSONDecoder().decode(OrderTrackingStatusResponse.self, from: jsonData)
-//                _ = orderResponse.orderDetails?.orderStatus
-//                statusResponse =  orderResponse
-//                let status = self.configOrderStatus(response: orderResponse)
-//                stateSubject.send(.success(model: status))
-//            } catch {
-//                print("Error decoding JSON: \(error)")
-//            }
-//        }
     }
     
     private func configOrderStatus(response: OrderTrackingStatusResponse) -> GetSupportModel {

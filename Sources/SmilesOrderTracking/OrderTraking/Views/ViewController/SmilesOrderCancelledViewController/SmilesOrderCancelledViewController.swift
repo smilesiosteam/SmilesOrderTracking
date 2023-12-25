@@ -259,22 +259,3 @@ extension SmilesOrderCancelledViewController: UICollectionViewDelegateFlowLayout
     }
 
 }
-
-extension SmilesOrderCancelledViewController {
-    
-//    func showCancelledPopup(vc: OrderCancelledFeedbackViewController) {
-//        var items = [CustomizableActionSheetItem]()
-//        let sampleViewItem = CustomizableActionSheetItem(type: .view, height: 332)
-//        sampleViewItem.view = vc.view
-//        items.append(sampleViewItem)
-//        
-//        let actionSheet = CustomizableActionSheet()
-//        actionSheet.tag = cartActionSheetTag.changeToPickup.rawValue
-//        actionSheet.defaultCornerRadius = 12
-//        actionSheet.shouldDismiss = false
-//        self.actionSheet = actionSheet
-//        
-//        actionSheet.showInView(view, items: items)
-//    }
-    
-}

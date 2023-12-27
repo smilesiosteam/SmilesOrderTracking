@@ -29,6 +29,7 @@ final class RatingCollectionViewCell: UICollectionViewCell {
         didSet {
             titleLabel.fontTextStyle = .smilesHeadline3
             titleLabel.textColor = .black
+            titleLabel.text = OrderTrackingLocalization.yourExperience.text
         }
     }
     @IBOutlet private weak var rateOrderStackView: UIStackView!

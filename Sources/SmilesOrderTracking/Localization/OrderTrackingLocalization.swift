@@ -54,6 +54,7 @@ enum OrderTrackingLocalization: CaseIterable {
     case googleMaps
     case appleMaps
     case getDirectionsFrom
+    case yourExperience
     var text: String {
         switch self {
         case .googleMaps:
@@ -145,6 +146,8 @@ enum OrderTrackingLocalization: CaseIterable {
             return "ContinueText".localizedString
         case .cancelText:
             return "CancelText".localizedString
+        case .yourExperience:
+            return "yourExperience".localizedString
         }
     }
 }

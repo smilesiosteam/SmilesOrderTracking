@@ -41,7 +41,7 @@
                                             <action selector="actionButtonTapped:" destination="mvh-X5-H5F" eventType="touchUpInside" id="e0K-n3-24G"/>
                                         </connections>
                                     </button>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="15:00 min" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NeX-Cv-tC8">
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="00:00 min" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NeX-Cv-tC8">
                                         <rect key="frame" x="0.0" y="131" width="324" height="34"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="34" id="NTI-4z-WfX"/>

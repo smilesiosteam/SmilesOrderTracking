@@ -93,7 +93,7 @@ final class OrderTrackingUseCase: OrderTrackingUseCaseProtocol {
         case .orderNearYourLocation:
             return NearOfLocationConfig(response: response)
         case .delivered:
-            return OrderHasBeenDeliveredConfig(response: response)
+            return DeliveredOrderConfig(response: response)
         }
     }
     

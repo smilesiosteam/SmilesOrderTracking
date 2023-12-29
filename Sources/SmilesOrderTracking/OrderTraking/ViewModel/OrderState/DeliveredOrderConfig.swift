@@ -33,6 +33,10 @@ struct DeliveredOrderConfig: OrderTrackable, GetSupportable {
             .progressBar(model: progressBar)
         ]
         
+        if isLiveTracking {
+            cells.append(.driver(model: orderDriverModel))
+        }
+        
         cells.append(.location(model: location))
         
         if let orderRateModel {

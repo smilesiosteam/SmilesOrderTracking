@@ -137,7 +137,6 @@ public final class OrderTrackingViewController: UIViewController, Toastable, Map
     private lazy var dataSource = OrderTrackingDataSource(viewModel: viewModel)
     private var floatingView: FloatingView!
     private var timerIsOn = false
-    private var isFirstTime = true
     private var isAnimationPlay = true
     private lazy var collectionViewDataSource = OrderTrackingLayout()
     private var isNoLiveTrackingToastPresented = false
@@ -154,6 +153,9 @@ public final class OrderTrackingViewController: UIViewController, Toastable, Map
         bindCancelFlow()
         bindStatus()
         viewModel.setPersonalizationEventSource()
+        if viewModel.checkForVoucher {
+            viewModel.setupScratchAndWin(orderId: viewModel.orderId, isVoucherScratched: false)
+        }
         NotificationCenter.default.addObserver(self, selector: #selector(applicationDidBecomeActive),
                                                name: UIApplication.willEnterForegroundNotification, object: nil)
         
@@ -169,10 +171,6 @@ public final class OrderTrackingViewController: UIViewController, Toastable, Map
         navigationController?.setNavigationBarHidden(true, animated: false)
         if !timerIsOn {
             viewModel.fetchStatus()
-            if viewModel.checkForVoucher && isFirstTime {
-                viewModel.setupScratchAndWin(orderId: viewModel.orderId, isVoucherScratched: false)
-                isFirstTime = false
-            }
         }
         
         if isBeingDismissed {
@@ -471,7 +469,9 @@ public final class OrderTrackingViewController: UIViewController, Toastable, Map
         scratchVC.modalTransitionStyle = .crossDissolve
         scratchVC.delegate = self
         present(scratchVC)
+        
     }
+    
 }
 
 // MARK: - UICollectionViewDelegate
@@ -518,7 +518,13 @@ extension OrderTrackingViewController {
 
 // MARK: - ScratchAndWinDelegate
 extension OrderTrackingViewController: ScratchAndWinDelegate {
+    
     public func viewVoucherPressed(voucherCode: String) {
         viewModel.navigationDelegate?.navigateToVouchersRevamp(voucherCode: voucherCode)
     }
+    
+    public func proceedToOfferDetails(offerId: String, offerType: String) {
+        viewModel.navigationDelegate?.navigateToOfferDetails(offerId: offerId, offerType: offerType)
+    }
+    
 }

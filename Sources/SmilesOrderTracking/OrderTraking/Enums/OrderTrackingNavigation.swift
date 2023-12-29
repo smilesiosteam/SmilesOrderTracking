@@ -21,6 +21,7 @@ public protocol OrderTrackingNavigationProtocol: OrderTrackingLiveProtocol {
     func navigateToSubscriptionPage(url: String)
     func navigateAvailableRestaurant()
     func navigateToVouchersRevamp(voucherCode: String)
+    func navigateToOfferDetails(offerId: String, offerType: String)
     func navigateToLiveChatWebview(url: String)
     func navigateToFAQs()
     func popToViewRestaurantDetailVC()

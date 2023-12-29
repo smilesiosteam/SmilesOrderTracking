@@ -49,8 +49,7 @@ struct ChangedToPickupOrderConfig: OrderTrackable, CancelHeaderProtocol, GetSupp
         let orderId = (response.orderDetails?.orderId).asIntOrEmpty()
         viewModel.orderId = "\(orderId)"
         viewModel.orderNumber = (response.orderDetails?.orderNumber).asStringOrEmpty()
-        let timeOut = (response.orderDetails?.changeTypeTimer).asIntOrEmpty()
-        viewModel.timerCount = timeOut * 60
+        viewModel.timerCount = (response.orderDetails?.changeTypeTimer).asIntOrEmpty()
         viewModel.restaurantAddress = (response.orderDetails?.restaurantAddress).asStringOrEmpty()
         return viewModel
     }

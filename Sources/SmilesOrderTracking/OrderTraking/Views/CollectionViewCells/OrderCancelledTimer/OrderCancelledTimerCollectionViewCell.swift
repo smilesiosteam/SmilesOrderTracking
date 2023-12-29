@@ -58,7 +58,10 @@ final class OrderCancelledTimerCollectionViewCell: UICollectionViewCell {
         super.prepareForReuse()
         self.timer?.invalidate()
         self.timer = nil
-        enableButton() 
+        mainStackView.spacing = 16
+        topConstraint.constant = 16
+        bottomConstraint.constant = 16
+        enableButton()
     }
     
     // MARK: - Actions
@@ -112,7 +115,7 @@ final class OrderCancelledTimerCollectionViewCell: UICollectionViewCell {
             bottomConstraint.constant = 9
             topConstraint.constant = 9
             disableButton()
-            delegate?.timerIs(on: false)
+            self.contentView.layoutIfNeeded()
         }
     }
     

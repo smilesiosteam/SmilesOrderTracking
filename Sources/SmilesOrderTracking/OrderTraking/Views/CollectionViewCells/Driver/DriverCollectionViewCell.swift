@@ -58,6 +58,8 @@ final class DriverCollectionViewCell: UICollectionViewCell {
             iconImageView.image = UIImage(resource: .driverIcon)
             actionButton.setImage(UIImage(resource: .phoneCallIcon), for: .normal)
             
+            let mobile = viewModel.driverMobileNumber.asStringOrEmpty()
+            actionButton.isHidden = mobile.isEmpty
         case .pickup:
             iconImageView.image = UIImage(resource: .pickupIcon)
             actionButton.setImage(UIImage(resource: .navigateToMapsIcon), for: .normal)

@@ -120,8 +120,8 @@
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hZH-40-yUa">
                             <rect key="frame" x="0.0" y="214" width="393" height="24"/>
                             <subviews>
-                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3B9-Yd-3Pa" customClass="CosmosView" customModule="Cosmos">
-                                    <rect key="frame" x="16" y="0.0" width="361" height="24"/>
+                                <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="3B9-Yd-3Pa" customClass="CosmosView" customModule="Cosmos">
+                                    <rect key="frame" x="16" y="0.0" width="114" height="24"/>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="24" id="ANg-Zl-MXD"/>
@@ -161,7 +161,6 @@
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <constraints>
                                 <constraint firstItem="3B9-Yd-3Pa" firstAttribute="leading" secondItem="hZH-40-yUa" secondAttribute="leading" constant="16" id="0ia-4G-iEV"/>
-                                <constraint firstAttribute="trailing" secondItem="3B9-Yd-3Pa" secondAttribute="trailing" constant="16" id="Cbw-ed-uwF"/>
                                 <constraint firstItem="3B9-Yd-3Pa" firstAttribute="top" secondItem="hZH-40-yUa" secondAttribute="top" id="Hyu-qK-ddh"/>
                                 <constraint firstAttribute="bottom" secondItem="3B9-Yd-3Pa" secondAttribute="bottom" id="gsH-2h-hl8"/>
                             </constraints>

@@ -56,7 +56,7 @@ extension OrderTrackingViewController: OrderTrackingViewDelegate {
     }
     
     func presentRateFlow(orderId: String, type: String) {
-        let uiModel = OrderRatingUIModel(ratingType: type, contentType: "tracking", isLiveTracking: true, orderId: orderId, chatbotType: viewModel.chatbotType)
+        let uiModel = OrderRatingUIModel(ratingType: type, contentType: "tracking", isLiveTracking: viewModel.isLiveTracking, orderId: orderId, chatbotType: viewModel.chatbotType)
         let model = OrderRatingViewModel(orderRatingUIModel: uiModel)
         let viewController = OrderRatingViewController.create(with: model, delegate: self)
         viewController.modalPresentationStyle = .overFullScreen

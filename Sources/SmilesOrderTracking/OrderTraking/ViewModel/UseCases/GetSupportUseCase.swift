@@ -73,7 +73,7 @@ final class GetSupportUseCase: GetSupportUseCaseProtocol {
         case .orderNearYourLocation:
             return NearOfLocationConfig(response: response).buildConfig()
         case .delivered:
-            return OrderHasBeenDeliveredConfig(response: response).buildConfig()
+            return DeliveredOrderConfig(response: response).buildConfig()
         }
     }
     

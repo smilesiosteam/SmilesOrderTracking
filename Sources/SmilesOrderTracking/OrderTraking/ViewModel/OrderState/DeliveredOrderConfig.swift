@@ -19,8 +19,8 @@ struct DeliveredOrderConfig: OrderTrackable, GetSupportable {
         let cells: [GetSupportCellType] = [
             .progressBar(model: progressBar)
         ]
-        
-        return .init(header: getImageHeader(image: "DriverArrived"), cells: cells + getSupportActions())
+        let imageName = isLiveTracking ? "DriverArrived" : "Delivered"
+        return .init(header: getImageHeader(image: imageName), cells: cells + getSupportActions())
     }
     func build() -> OrderTrackingModel {
         var progressBar = orderProgressBar

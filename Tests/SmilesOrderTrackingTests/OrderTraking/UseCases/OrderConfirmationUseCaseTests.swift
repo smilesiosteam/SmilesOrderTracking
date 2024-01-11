@@ -33,8 +33,12 @@ final class OrderConfirmationUseCaseTests: XCTestCase {
         services.setOrderConfirmationStatus = .success(response)
         let orderId = Constants.orderId.rawValue
         let status = OrderTrackingType.confirmation
+        
         // When
-        let publisher = sut.setOrderConfirmation(orderId: orderId, orderStatus: status, isUserDeliveredOrder: true)
+        let publisher = sut.setOrderConfirmation(orderId: orderId, 
+                                                 orderStatus: status,
+                                                 isUserDeliveredOrder: true)
+        
         // Then
         let result = try awaitPublisher(publisher)
         let expectedResult = OrderConfirmationUseCase.State.callOrderStatus

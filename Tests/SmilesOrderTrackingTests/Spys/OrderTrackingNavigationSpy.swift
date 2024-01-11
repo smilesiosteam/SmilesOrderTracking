@@ -9,6 +9,7 @@ import Foundation
 @testable import SmilesOrderTracking
 
 final class OrderTrackingNavigationSpy: OrderTrackingNavigationProtocol {
+    
     // MARK: - Properties
     var isLiveLocationCalled = false
     var liveTrackingId = ""
@@ -64,6 +65,10 @@ final class OrderTrackingNavigationSpy: OrderTrackingNavigationProtocol {
     }
     
     func fireOrderTrackingEvent() {
+        
+    }
+    
+    func navigateToOfferDetails(offerId: String, offerType: String) {
         
     }
 }

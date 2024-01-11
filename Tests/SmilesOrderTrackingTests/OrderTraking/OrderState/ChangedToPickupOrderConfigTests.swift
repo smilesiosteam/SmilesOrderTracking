@@ -37,7 +37,7 @@ final class ChangedToPickupOrderConfigTests: XCTestCase {
         canceled.orderId = "\(orderId)"
         canceled.orderNumber = response.orderDetails?.orderNumber ?? ""
         let timeOut = response.orderDetails?.changeTypeTimer ?? 0
-        canceled.timerCount = timeOut * 60
+        canceled.timerCount = timeOut
         canceled.restaurantAddress = response.orderDetails?.restaurantAddress ?? ""
         // Actions
         let action = OrderStatusStub.orderAction

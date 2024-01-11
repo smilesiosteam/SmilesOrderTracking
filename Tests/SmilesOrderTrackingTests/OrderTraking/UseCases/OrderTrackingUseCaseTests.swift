@@ -240,7 +240,7 @@ final class OrderTrackingUseCaseTests: XCTestCase {
         model.orderDetails?.orderStatus = 7
         // When
         let result = sut.configOrderStatus(response: model)
-        XCTAssertTrue(result is OrderHasBeenDeliveredConfig)
+        XCTAssertTrue(result is DeliveredOrderConfig)
     }
     
     func test_configOrderStatus_orderIsOnTheWay_hasLiveTracking_showToast() {

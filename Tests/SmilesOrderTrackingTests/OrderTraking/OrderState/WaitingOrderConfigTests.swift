@@ -76,6 +76,7 @@ final class WaitingOrderConfigTests: XCTestCase {
         
         let cells: [TrackingCellType] = [
             .progressBar(model: progressBar),
+            .text(model: .init(title: orderDetails?.orderDescription ?? "")),
             .location(model: location),
             .point(model: pointModel),
             .subscription(model: subscriptionModel)

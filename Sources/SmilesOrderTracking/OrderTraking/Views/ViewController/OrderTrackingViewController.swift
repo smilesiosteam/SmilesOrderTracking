@@ -184,9 +184,7 @@ public final class OrderTrackingViewController: UIViewController, Toastable, Map
     
     public override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        if viewModel.orderStatus != .orderProcessing {
-            hideFloatingView()
-        }
+        hideFloatingView()
         
         processAnimation(stop: true)
     }
@@ -482,10 +480,6 @@ public final class OrderTrackingViewController: UIViewController, Toastable, Map
 extension OrderTrackingViewController: UICollectionViewDelegate, UIScrollViewDelegate {
     
     public func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
-        
-        guard viewModel.orderStatus != .orderProcessing else {
-            return
-        }
         let scrollOffset = scrollView.contentOffset.y
         
         // Adjust the threshold value based on your specific needs

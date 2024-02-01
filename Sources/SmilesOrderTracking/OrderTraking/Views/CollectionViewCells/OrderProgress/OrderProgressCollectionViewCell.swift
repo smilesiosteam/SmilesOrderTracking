@@ -19,6 +19,7 @@ final class OrderProgressCollectionViewCell: UICollectionViewCell {
     @IBOutlet private weak var thirdStepView: UIView!
     @IBOutlet private weak var fourthStepView: UIView!
     private var fillAnimator: UIViewPropertyAnimator?
+    private var secondAnimator: UIViewPropertyAnimator?
     
     // MARK: - Properties
     private var leadingConstraint: NSLayoutConstraint!
@@ -31,17 +32,22 @@ final class OrderProgressCollectionViewCell: UICollectionViewCell {
     
     override func prepareForReuse() {
         super.prepareForReuse()
+        stopAnimation()
+        print(stopAnimation)
+    }
+    
+    func processAnimation() {
+        stopAnimation()
+    }
+    
+    private func stopAnimation() {
         fillAnimator?.stopAnimation(true)
-        fillAnimator = nil
+        secondAnimator?.stopAnimation(true)
     }
     
-    
-    func processAnimation(stop: Bool) {
-        self.fillAnimator?.stopAnimation(true)
-        fillAnimator = nil
-    }
     // MARK: - Functions
     func updateCell(with viewModel: ViewModel) {
+       
         self.viewModel = viewModel
         self.setProgressBar(step: viewModel.step)
         
@@ -135,31 +141,6 @@ extension OrderProgressCollectionViewCell {
             self.startFillAnimation(on: currentView)
         }
     }
-//    private func startFillAnimation(on currentView: UIView) {
-//       
-//           // Set the flag to indicate that the animation is in progress
-//        
-//        
-//        UIView.animate(withDuration: 1.0, delay: 0.0, options: [.curveLinear], animations: {
-//            print("startFillAnimation")
-//            self.leadingConstraint.constant = 0
-//            self.contentView.layoutIfNeeded() // Trigger layout update
-//        }, completion: { _ in
-//            UIView.animate(withDuration: 1.0, animations: {
-//                self.animatedView.backgroundColor = .appRevampPurpleMainColor.withAlphaComponent(0.0)
-//                
-//                self.contentView.layoutIfNeeded()
-//            }) { _ in
-//                // Repeat the animation
-//                self.leadingConstraint.constant = -currentView.frame.width
-//                self.animatedView.backgroundColor = .appRevampPurpleMainColor
-//                self.contentView.layoutIfNeeded()
-//                self.startFillAnimation(on: currentView)
-//            }
-//        })
-//    }
-    
-    
     private func startFillAnimation(on currentView: UIView) {
         guard fillAnimator?.state != .active else {
             return
@@ -171,9 +152,12 @@ extension OrderProgressCollectionViewCell {
             self.contentView.layoutIfNeeded()
         }
 
-        fillAnimator?.addCompletion { _ in
+        fillAnimator?.addCompletion { [weak self] _ in
+            guard let self else {
+                return
+            }
             // Second part of the animation
-            UIViewPropertyAnimator.runningPropertyAnimator(withDuration: 1.0, delay: 0.0, options: [], animations: {
+            self.secondAnimator = UIViewPropertyAnimator.runningPropertyAnimator(withDuration: 1.0, delay: 0.0, options: [], animations: {
                 self.animatedView.backgroundColor = .appRevampPurpleMainColor.withAlphaComponent(0.0)
                 self.contentView.layoutIfNeeded()
             }) { _ in
@@ -188,38 +172,6 @@ extension OrderProgressCollectionViewCell {
         // Start the animation
         fillAnimator?.startAnimation()
     }
-//    private func startFillAnimation(on currentView: UIView) {
-//        // Check if the animation is already in progress
-//        guard !isAnimationInProgress else {
-//            return
-//        }
-//        
-//        // Set the flag to indicate that the animation is in progress
-//        isAnimationInProgress = true
-//        
-//        UIView.animate(withDuration: 1.0, delay: 0.0, options: [.curveLinear], animations: {
-//            print("startFillAnimation")
-//            self.leadingConstraint.constant = 0
-//            self.contentView.layoutIfNeeded() // Trigger layout update
-//        }, completion: { _ in
-//            UIView.animate(withDuration: 1.0, animations: {
-//                self.animatedView.backgroundColor = .appRevampPurpleMainColor.withAlphaComponent(0.0)
-//                self.contentView.layoutIfNeeded()
-//            }) { _ in
-//                // Reset the flag to indicate that the animation is complete
-//                self.isAnimationInProgress = false
-//                
-//                // Repeat the animation only if it wasn't canceled
-//                if !self.isAnimationInProgress {
-//                    self.leadingConstraint.constant = -currentView.frame.width
-//                    self.animatedView.backgroundColor = .appRevampPurpleMainColor
-//                    self.contentView.layoutIfNeeded()
-//                    self.startFillAnimation(on: currentView)
-//                }
-//            }
-//        })
-//    }
-
 }
 
 extension OrderProgressCollectionViewCell {

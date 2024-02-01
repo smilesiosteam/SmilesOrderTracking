@@ -179,6 +179,7 @@ public final class OrderTrackingViewController: UIViewController, Toastable, Map
         
         viewModel.navigationDelegate?.fireSuccessfulOrderCompletionEvent()
         viewModel.navigationDelegate?.fireOrderTrackingEvent()
+        processAnimation(stop: false)
     }
     
     public override func viewWillDisappear(_ animated: Bool) {
@@ -186,6 +187,8 @@ public final class OrderTrackingViewController: UIViewController, Toastable, Map
         if viewModel.orderStatus != .orderProcessing {
             hideFloatingView()
         }
+        
+        processAnimation(stop: true)
     }
     
     @objc private func applicationDidBecomeActive(notification: NSNotification) {
@@ -388,8 +391,9 @@ public final class OrderTrackingViewController: UIViewController, Toastable, Map
         if let cell = collectionView.cellForItem(at: IndexPath(row: 0, section: 0)) as? OrderProgressCollectionViewCell {
             if stop == false {
                 collectionView.reloadItems(at: [IndexPath(row: 0, section: 0)])
+                collectionView.reloadData()
             } else {
-                cell.processAnimation(stop: true)
+                cell.processAnimation()
             }
         }
         // Process the animation for header view

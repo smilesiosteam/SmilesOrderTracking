@@ -23,8 +23,14 @@ extension OrderTrackable {
     
     var orderLocation: LocationCollectionViewCell.ViewModel {
         var vieModel = LocationCollectionViewCell.ViewModel()
-        vieModel.startAddress = response.orderDetails?.restaurantAddress
-        vieModel.endAddress = response.orderDetails?.deliveryAdrress
+        if orderType == .delivery {
+            vieModel.startAddress = response.orderDetails?.restaurantAddress
+            vieModel.endAddress = response.orderDetails?.deliveryAdrress
+        } else {
+            vieModel.startAddress = response.orderDetails?.deliveryAdrress
+            vieModel.endAddress = response.orderDetails?.restaurantAddress
+        }
+        
         let restaurantNumber = (response.orderDetails?.restaurentNumber).asStringOrEmpty()
         vieModel.restaurantNumber = restaurantNumber
         let orderId = response.orderDetails?.orderId
@@ -32,6 +38,7 @@ extension OrderTrackable {
         vieModel.orderId = "\(orderId.asIntOrEmpty())"
         vieModel.restaurantId = restaurantId.asStringOrEmpty()
         vieModel.type = restaurantNumber.isEmpty ? .hideCallButton : .details
+        vieModel.orderType = orderType
         return vieModel
     }
     

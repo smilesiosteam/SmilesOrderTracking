@@ -67,6 +67,7 @@ final class LocationCollectionViewCell: UICollectionViewCell {
         startAddressLabel.text = viewModel.startAddress
         endAddressLabel.text = viewModel.endAddress
         configCellType()
+        setPinImages()
     }
     
     private func configControllers() {
@@ -75,6 +76,11 @@ final class LocationCollectionViewCell: UICollectionViewCell {
         containerView.layer.cornerRadius = 12
         containerView.layer.borderWidth = 1
         containerView.layer.borderColor = UIColor.black.withAlphaComponent(0.1).cgColor
+    }
+    
+    private func setPinImages() {
+        endImage.image = UIImage(named: viewModel.endImage, in: .module, with: nil)
+        startImage.image = UIImage(named: viewModel.startImage, in: .module, with: nil)
     }
     
     private func configFont() {
@@ -133,6 +139,15 @@ extension LocationCollectionViewCell {
         var restaurantId = ""
         var restaurantNumber: String?
         var type: CellType = .showCancelButton
+        var orderType: OrderTrackingCellType = .delivery
+        
+        var startImage: String {
+            orderType == .delivery ? "startAddress" : "endAddress"
+        }
+        
+        var endImage: String {
+            orderType == .delivery ? "endAddress" : "startAddress"
+        }
     }
 }
 

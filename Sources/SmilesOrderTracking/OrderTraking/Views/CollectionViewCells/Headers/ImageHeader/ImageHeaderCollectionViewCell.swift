@@ -45,7 +45,6 @@ final class ImageHeaderCollectionViewCell: UICollectionReusableView {
     // MARK: - Functions
     func updateCell(with viewModel: ViewModel, delegate: HeaderCollectionViewProtocol) {
         self.delegate = delegate
-        print(viewModel.isShowSupportHeader)
         
         headerStack.isHidden =  !viewModel.isShowSupportHeader
         animationView?.removeFromSuperview()
@@ -98,7 +97,6 @@ final class ImageHeaderCollectionViewCell: UICollectionReusableView {
 extension ImageHeaderCollectionViewCell {
     struct ViewModel: Equatable {
         var isShowSupportHeader = false
-        var url: String?
         var type: CellType
     }
     

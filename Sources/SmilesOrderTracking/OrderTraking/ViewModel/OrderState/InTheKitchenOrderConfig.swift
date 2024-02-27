@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct InTheKitchenOrderConfig: OrderTrackable, GetSupportable, CanceledOrderConfigProtocol {
+struct InTheKitchenOrderConfig: OrderTrackable, GetSupportable, CanceledOrderConfigProtocol, AnimationHeaderProtocol {
     var response: OrderTrackingStatusResponse
     
     func buildConfig() -> GetSupportModel {
@@ -46,7 +46,7 @@ struct InTheKitchenOrderConfig: OrderTrackable, GetSupportable, CanceledOrderCon
             cells.append(.subscription(model: orderSubscription))
         }
         
-        let header: TrackingHeaderType = .map(model: orderMapModel)
+        let header: TrackingHeaderType = getAnimationHeader(isShowButtons: true)
         return .init(header: header, cells: cells)
     }
     

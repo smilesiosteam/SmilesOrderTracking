@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct WaitingOrderConfig: OrderTrackable, AnimationHeaderProtocol, GetSupportable {
+struct WaitingOrderConfig: OrderTrackable, AnimationHeaderProtocol, GetSupportable, CanceledOrderConfigProtocol {
     var response: OrderTrackingStatusResponse
     
     func build() -> OrderTrackingModel {
@@ -24,7 +24,11 @@ struct WaitingOrderConfig: OrderTrackable, AnimationHeaderProtocol, GetSupportab
             cells.append(.text(model: .init(title: orderText)))
         }
         
-        cells.append(.location(model: location))
+        if orderType == .pickup {
+            cells.append(.orderActions(model: getOrderActionsModel()))
+        } else {
+            cells.append(.location(model: location))
+        }
         
         if let orderPoint {
             cells.append(.point(model: orderPoint))

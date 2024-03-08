@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct ProcessingOrderConfig: OrderTrackable, AnimationHeaderProtocol, GetSupportable {
+struct ProcessingOrderConfig: OrderTrackable, AnimationHeaderProtocol, GetSupportable, CanceledOrderConfigProtocol {
     // This for get support view
     func buildConfig() -> GetSupportModel {
         var progressBar = orderProgressBar
@@ -30,12 +30,18 @@ struct ProcessingOrderConfig: OrderTrackable, AnimationHeaderProtocol, GetSuppor
         } else {
             text = orderText
         }
-        let cells: [TrackingCellType] = [
+        
+        var cells: [TrackingCellType] = [
             .progressBar(model: progressBar),
             .text(model: .init(title: text)),
-            .location(model: getOrderLocation()),
-            .restaurant(model: orderRestaurant)
         ]
+        
+        if orderType == .pickup {
+            cells.append(.orderActions(model: getOrderActionsModel()))
+        } else {
+            cells.append(.location(model: getOrderLocation()))
+        }
+        cells.append(.restaurant(model: orderRestaurant))
         
         return .init(header: getAnimationHeader(isShowButtons: true), cells: cells)
     }

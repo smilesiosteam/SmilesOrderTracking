@@ -139,14 +139,12 @@ extension LocationCollectionViewCell {
         var restaurantId = ""
         var restaurantNumber: String?
         var type: CellType = .showCancelButton
-        var orderType: OrderTrackingCellType = .delivery
-        
         var startImage: String {
-            orderType == .delivery ? "startAddress" : "endAddress"
+             "startAddress"
         }
         
         var endImage: String {
-            orderType == .delivery ? "endAddress" : "startAddress"
+            "endAddress"
         }
     }
 }

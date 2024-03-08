@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct AcceptedOrderConfig: OrderTrackable, GetSupportable {
+struct AcceptedOrderConfig: OrderTrackable, GetSupportable, CanceledOrderConfigProtocol {
     func buildConfig() -> GetSupportModel {
         let cells: [GetSupportCellType] = [
             .progressBar(model: getProgressBarModel())
@@ -26,9 +26,12 @@ struct AcceptedOrderConfig: OrderTrackable, GetSupportable {
         
         if orderType == .pickup {
             cells.append(.driver(model: getDriverModel()))
+            cells.append(.orderActions(model: getOrderActionsModel()))
+        } else {
+            cells.append(.location(model: orderLocation))
         }
         
-        cells.append(.location(model: orderLocation))
+       
         if let orderPoint {
             cells.append(.point(model: orderPoint))
         }

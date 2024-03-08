@@ -107,8 +107,7 @@ final class InTheKitchenOrderConfigTests: XCTestCase {
         driver.placeName = response.orderDetails?.restaurantName ?? ""
         
         // Location
-        var location = OrderStatusStub.location
-        location.type = .details
+        let location = OrderStatusStub.orderAction
         
         // Point
         let point = OrderStatusStub.point
@@ -119,7 +118,7 @@ final class InTheKitchenOrderConfigTests: XCTestCase {
         let cells: [TrackingCellType] = [
             .progressBar(model: progressBar),
             .driver(model: driver),
-            .location(model: location),
+            .orderActions(model: location),
             .point(model: point),
             .subscription(model: subscription)
         ]

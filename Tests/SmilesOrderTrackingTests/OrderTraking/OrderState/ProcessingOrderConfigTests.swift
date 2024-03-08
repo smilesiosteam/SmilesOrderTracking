@@ -35,7 +35,7 @@ final class ProcessingOrderConfigTests: XCTestCase {
         let response = OrderStatusStub.getOrderStatusModel
         let url = URL(string: response.orderDetails?.largeImageAnimationUrl ?? "")
         var viewModel = ImageHeaderCollectionViewCell.ViewModel(type: .animation(url: url, backgroundColor: response.orderDetails?.trackingColorCode ?? ""))
-        viewModel.isShowSupportHeader = false
+        viewModel.isShowSupportHeader = true
         let header: TrackingHeaderType = .image(model: viewModel)
         // When
         let result = sut.build().header

@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct ReadyForPickupOrderConfig: OrderTrackable, GetSupportable {
+struct ReadyForPickupOrderConfig: OrderTrackable, GetSupportable, CanceledOrderConfigProtocol {
     var response: OrderTrackingStatusResponse
     
     func buildConfig() -> GetSupportModel {
@@ -20,7 +20,7 @@ struct ReadyForPickupOrderConfig: OrderTrackable, GetSupportable {
         
         cells.append(.driver(model: getDriverModel()))
         
-        cells.append(.location(model: orderLocation))
+        cells.append(.orderActions(model: getOrderActionsModel()))
         
         if let orderSubscription {
             cells.append(.subscription(model: orderSubscription))

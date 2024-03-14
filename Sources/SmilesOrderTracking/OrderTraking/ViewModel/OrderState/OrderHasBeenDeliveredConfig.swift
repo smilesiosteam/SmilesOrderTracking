@@ -25,9 +25,6 @@ struct OrderHasBeenDeliveredConfig: OrderTrackable, GetSupportable, CanceledOrde
         var progressBar = orderProgressBar
         progressBar.step = .completed
         progressBar.hideTimeLabel = true
-        
-        let location = orderLocation
-        
         var cells: [TrackingCellType] = [
             .progressBar(model: progressBar)
         ]

@@ -87,13 +87,14 @@ final class GetSupportUseCase: GetSupportUseCaseProtocol {
         handler.getOrderTrackingStatus(orderId: orderId,
                                        orderStatus: "5",
                                        orderNumber: orderNumber, isComingFromFirebase: false)
-        .sink { [weak self] completion in
+        .sink { completion in
             switch completion {
                 
             case .finished:
                 print("finished")
             case .failure(let error):
-                self?.stateSubject.send(.showError(message: error.localizedDescription))
+//                self?.stateSubject.send(.showError(message: error.localizedDescription))
+                debugPrint(error.localizedDescription)
             }
         } receiveValue: { [weak self] response in
             guard let self else {

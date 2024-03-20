@@ -123,7 +123,8 @@ final class OrderTrackingUseCase: OrderTrackingUseCaseProtocol {
         .sink { [weak self] completion in
             self?.stateSubject.send(.hideLoader)
             if case .failure(let error) = completion {
-                self?.stateSubject.send(.showErrorAndPop(message: error.localizedDescription))
+                debugPrint(error.localizedDescription)
+//                self?.stateSubject.send(.showErrorAndPop(message: error.localizedDescription))
             }
         } receiveValue: { [weak self] response in
             guard let self else {

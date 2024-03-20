@@ -448,6 +448,7 @@ public final class OrderTrackingViewController: UIViewController, Toastable, Map
             DispatchQueue.main.async {
                 self.animateHeaderVisibility(show: false)
                 self.topConstraint.constant = 120
+                self.view.layoutIfNeeded()
             }
         }
     }
@@ -459,6 +460,7 @@ public final class OrderTrackingViewController: UIViewController, Toastable, Map
             DispatchQueue.main.async {
                 self.animateHeaderVisibility(show: true)
                 self.topConstraint.constant = 0
+                self.view.layoutIfNeeded()
             }
             
         }

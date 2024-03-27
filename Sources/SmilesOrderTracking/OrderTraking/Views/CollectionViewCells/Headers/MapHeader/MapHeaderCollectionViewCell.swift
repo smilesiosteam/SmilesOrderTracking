@@ -25,7 +25,8 @@ final class MapHeaderCollectionViewCell: UICollectionReusableView {
     private weak var delegate: HeaderCollectionViewProtocol?
     private var isFirstTimeSetCamera = false
     private var moveMarker: MoveMarker?
-    private var driverMarker :GMSMarker?
+    private var driverMarker: GMSMarker?
+    private var destinationCoordinates: CLLocationCoordinate2D?
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -49,6 +50,7 @@ final class MapHeaderCollectionViewCell: UICollectionReusableView {
         configCellType(type: viewModel.type)
         let startPoint = CLLocationCoordinate2D(latitude: viewModel.startPoint.lat, longitude: viewModel.startPoint.lang)
         let endPoint = CLLocationCoordinate2D(latitude: viewModel.endPoint.lat, longitude: viewModel.endPoint.lang)
+        destinationCoordinates = endPoint
         addBoundForMap(startPoint: startPoint, endPoint: endPoint)
         
         mapView.addMarker(model: viewModel.startPoint)
@@ -124,7 +126,8 @@ final class MapHeaderCollectionViewCell: UICollectionReusableView {
 //            mapView?.animate(to: camera)
             isFirstTimeSetCamera = true
         }
-        moveMarker?.rotateMarker(nextCoordinate: coordinate)
+        
+        moveMarker?.rotateMarker(nextCoordinate: coordinate, destinationCoordinates: destinationCoordinates)
     }
 }
 

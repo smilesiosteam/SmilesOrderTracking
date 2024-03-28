@@ -39,20 +39,6 @@ final class MoveMarker {
     
     func rotateMarker(nextCoordinate: CLLocationCoordinate2D, destinationCoordinates: CLLocationCoordinate2D?) {
         guard setCarMarker(currentCoor: nextCoordinate) else { return }
-        guard let currentLat = markerCar?.position.latitude else { return }
-        guard let currentLng = markerCar?.position.longitude else { return }
-        
-        let currentLocation = CLLocation(latitude: currentLat, longitude: currentLng)
-        let nextLocation = CLLocation(latitude: nextCoordinate.latitude, longitude: nextCoordinate.longitude)
-        
-        let angle = getBearingBetweenTwoPoints(point1: currentLocation, point2: nextLocation)
-        
-        let rotation = CGFloat(angle / 180 * Double.pi)
-        
-        UIView.animate(withDuration: 0.7) {
-            self.markerCar?.iconView?.transform = CGAffineTransform(rotationAngle: CGFloat(rotation))
-            self.mapView.animate(toViewingAngle: Double(rotation))
-        }
         
         moveRiderMarker(nextCoordinate: nextCoordinate, destinationCoordinates: destinationCoordinates)
     }
@@ -60,7 +46,7 @@ final class MoveMarker {
     func setCarMarker(currentCoor: CLLocationCoordinate2D) -> Bool {
         let currentLat = markerCar?.position.latitude
         let currentLng = markerCar?.position.longitude
-        if let currentLat, let currentLng {
+        if let _ = currentLat, let _ = currentLng {
             return true
         } else {
             if let image = UIImage(named: "DriverPin", in: .module, with: nil) {
